@@ -344,231 +344,231 @@
 
 ## MODULE 11 — CSRF (10) *(PS: 12 labs)*
 
-- [ ] 11.01 What is CSRF?
-- [ ] 11.02 Same-Origin Policy and CSRF
-- [ ] 11.03 CSRF via GET Request
-- [ ] 11.04 CSRF via POST Request
-- [ ] 11.05 CSRF Token Bypass Techniques
-- [ ] 11.06 SameSite Cookie Bypass
-- [ ] 11.07 CSRF via CORS Misconfiguration
-- [ ] 11.08 CSRF via JSON (Content-Type tricks)
-- [ ] 11.09 CSRF to Account Takeover
-- [ ] 11.10 Defense — tokens, SameSite, double-submit cookie
+- [x] 11.01 What is CSRF?
+- [x] 11.02 Same-Origin Policy and CSRF
+- [x] 11.03 CSRF via GET Request
+- [x] 11.04 CSRF via POST Request
+- [x] 11.05 CSRF Token Bypass Techniques
+- [x] 11.06 SameSite Cookie Bypass
+- [x] 11.07 CSRF via CORS Misconfiguration
+- [x] 11.08 CSRF via JSON (Content-Type tricks)
+- [x] 11.09 CSRF to Account Takeover
+- [x] 11.10 Defense — tokens, SameSite, double-submit cookie
 
 ---
 
 ## MODULE 12 — CORS (12) *(PS: 4 labs)*
 
-- [ ] 12.01 What is CORS and Why It Exists
-- [ ] 12.02 Simple vs Preflight Requests
-- [ ] 12.03 CORS Headers — Full Reference
-- [ ] 12.04 Origin Reflection Misconfiguration
-- [ ] 12.05 Null Origin Misconfiguration
-- [ ] 12.06 Wildcard with Credentials
-- [ ] 12.07 Subdomain Trust
-- [ ] 12.08 Regex Bypass (evil.com matching .com)
-- [ ] 12.09 CORS to Credential Theft
-- [ ] 12.10 CORS to Account Takeover Chain
-- [ ] 12.11 Detecting CORS Misconfigurations (CORScanner, manual)
-- [ ] 12.12 Defense — Strict Origin Whitelisting
+- [x] 12.01 What is CORS and Why It Exists
+- [x] 12.02 Simple vs Preflight Requests
+- [x] 12.03 CORS Headers — Full Reference
+- [x] 12.04 Origin Reflection Misconfiguration
+- [x] 12.05 Null Origin Misconfiguration
+- [x] 12.06 Wildcard with Credentials
+- [x] 12.07 Subdomain Trust
+- [x] 12.08 Regex Bypass (evil.com matching .com)
+- [x] 12.09 CORS to Credential Theft
+- [x] 12.10 CORS to Account Takeover Chain
+- [x] 12.11 Detecting CORS Misconfigurations (CORScanner, manual)
+- [x] 12.12 Defense — Strict Origin Whitelisting
 
 ---
 
 ## MODULE 13 — SSRF (20) *(PS: 7 labs)*
 
-- [ ] 13.01 What is SSRF?
-- [ ] 13.02 Basic SSRF — Fetching Internal URLs
-- [ ] 13.03 SSRF via URL Parameters
-- [ ] 13.04 SSRF via HTTP Headers (Host, Referer, X-Forwarded-For)
-- [ ] 13.05 SSRF via File Imports (PDF, webhooks, image fetchers)
-- [ ] 13.06 SSRF via XML (XXE chained)
-- [ ] 13.07 Blind SSRF (Burp Collaborator / interactsh)
-- [ ] 13.08 Semi-Blind SSRF (timing-based)
-- [ ] 13.09 SSRF — Cloud Metadata (AWS 169.254.169.254, GCP, Azure)
-- [ ] 13.10 SSRF — AWS IMDSv1 vs IMDSv2
-- [ ] 13.11 SSRF — Internal Port Scanning
-- [ ] 13.12 SSRF — Internal Services (Redis, Elasticsearch, Memcached)
-- [ ] 13.13 SSRF — Protocol Smuggling (file://, gopher://, dict://, ftp://)
-- [ ] 13.14 SSRF — Localhost Bypass (127.0.0.1, [::1], 0.0.0.0, 2130706433)
-- [ ] 13.15 SSRF — DNS Rebinding
-- [ ] 13.16 SSRF — URL Parser Confusion
-- [ ] 13.17 SSRF WAF Bypass
-- [ ] 13.18 SSRF to RCE via Internal Services
-- [ ] 13.19 SSRF to Cloud Credential Theft → Full Takeover
-- [ ] 13.20 Defense — Allowlists, IMDSv2, Network Segmentation
+- [x] 13.01 What is SSRF?
+- [x] 13.02 Basic SSRF — Fetching Internal URLs
+- [x] 13.03 SSRF via URL Parameters
+- [x] 13.04 SSRF via HTTP Headers (Host, Referer, X-Forwarded-For)
+- [x] 13.05 SSRF via File Imports (PDF, webhooks, image fetchers)
+- [x] 13.06 SSRF via XML (XXE chained)
+- [x] 13.07 Blind SSRF (Burp Collaborator / interactsh)
+- [x] 13.08 Semi-Blind SSRF (timing-based)
+- [x] 13.09 SSRF — Cloud Metadata (AWS 169.254.169.254, GCP, Azure)
+- [x] 13.10 SSRF — AWS IMDSv1 vs IMDSv2
+- [x] 13.11 SSRF — Internal Port Scanning
+- [x] 13.12 SSRF — Internal Services (Redis, Elasticsearch, Memcached)
+- [x] 13.13 SSRF — Protocol Smuggling (file://, gopher://, dict://, ftp://)
+- [x] 13.14 SSRF — Localhost Bypass (127.0.0.1, [::1], 0.0.0.0, 2130706433)
+- [x] 13.15 SSRF — DNS Rebinding
+- [x] 13.16 SSRF — URL Parser Confusion
+- [x] 13.17 SSRF WAF Bypass
+- [x] 13.18 SSRF to RCE via Internal Services
+- [x] 13.19 SSRF to Cloud Credential Theft → Full Takeover
+- [x] 13.20 Defense — Allowlists, IMDSv2, Network Segmentation
 
 ---
 
 ## MODULE 14 — XXE (10) *(PS: 9 labs)*
 
-- [ ] 14.01 What is XXE?
-- [ ] 14.02 XML Basics and DTD
-- [ ] 14.03 Classic XXE — File Read (/etc/passwd)
-- [ ] 14.04 XXE via SVG Upload
-- [ ] 14.05 XXE via XLSX / DOCX
-- [ ] 14.06 Blind XXE — OOB Data Exfiltration
-- [ ] 14.07 XXE via XInclude
-- [ ] 14.08 XXE to SSRF
-- [ ] 14.09 XXE WAF Bypass (encoding, whitespace)
-- [ ] 14.10 Defense — Disable External Entity Processing
+- [x] 14.01 What is XXE?
+- [x] 14.02 XML Basics and DTD
+- [x] 14.03 Classic XXE — File Read (/etc/passwd)
+- [x] 14.04 XXE via SVG Upload
+- [x] 14.05 XXE via XLSX / DOCX
+- [x] 14.06 Blind XXE — OOB Data Exfiltration
+- [x] 14.07 XXE via XInclude
+- [x] 14.08 XXE to SSRF
+- [x] 14.09 XXE WAF Bypass (encoding, whitespace)
+- [x] 14.10 Defense — Disable External Entity Processing
 
 ---
 
 ## MODULE 15 — Insecure Deserialization (12) *(PS: 10 labs)*
 
-- [ ] 15.01 What is Serialization and Deserialization?
-- [ ] 15.02 Java Deserialization (ysoserial)
-- [ ] 15.03 PHP Object Injection
-- [ ] 15.04 Python Pickle Deserialization
-- [ ] 15.05 .NET Deserialization (BinaryFormatter, ViewState)
-- [ ] 15.06 Ruby Deserialization
-- [ ] 15.07 Node.js Deserialization (node-serialize)
-- [ ] 15.08 JSON Deserialization Type Confusion
-- [ ] 15.09 YAML Deserialization
-- [ ] 15.10 XML Deserialization
-- [ ] 15.11 Magic Methods Abuse (__wakeup, __destruct, readObject)
-- [ ] 15.12 Defense — Avoid Untrusted Deserialization, Use Safe Formats
+- [x] 15.01 What is Serialization and Deserialization?
+- [x] 15.02 Java Deserialization (ysoserial)
+- [x] 15.03 PHP Object Injection
+- [x] 15.04 Python Pickle Deserialization
+- [x] 15.05 .NET Deserialization (BinaryFormatter, ViewState)
+- [x] 15.06 Ruby Deserialization
+- [x] 15.07 Node.js Deserialization (node-serialize)
+- [x] 15.08 JSON Deserialization Type Confusion
+- [x] 15.09 YAML Deserialization
+- [x] 15.10 XML Deserialization
+- [x] 15.11 Magic Methods Abuse (__wakeup, __destruct, readObject)
+- [x] 15.12 Defense — Avoid Untrusted Deserialization, Use Safe Formats
 
 ---
 
 ## MODULE 16 — Authentication Attacks (28) *(PS: 14 labs)*
 
-- [ ] 16.01 Username Enumeration (error messages, timing)
-- [ ] 16.02 Password Brute Force
-- [ ] 16.03 Credential Stuffing
-- [ ] 16.04 Password Spraying
-- [ ] 16.05 Default Credentials
-- [ ] 16.06 Weak Password Policies
-- [ ] 16.07 Forgot Password — Token Predictability
-- [ ] 16.08 Forgot Password — Host Header Poisoning
-- [ ] 16.09 Forgot Password — Token Reuse
-- [ ] 16.10 Account Lockout Bypass
-- [ ] 16.11 MFA Bypass — Response Manipulation
-- [ ] 16.12 MFA Bypass — Code Reuse
-- [ ] 16.13 MFA Bypass — Brute Force OTP
-- [ ] 16.14 MFA Bypass — Backup Code Abuse
-- [ ] 16.15 MFA Bypass — SIM Swapping
-- [ ] 16.16 Login CSRF
-- [ ] 16.17 Basic Auth Cracking
-- [ ] 16.18 HTTP Digest Auth Attacks
-- [ ] 16.19 NTLM Authentication Attacks
-- [ ] 16.20 OAuth Login CSRF
-- [ ] 16.21 Magic Link Vulnerabilities
-- [ ] 16.22 SSO Bypass (SAML, OAuth)
-- [ ] 16.23 Pre-Authentication SQLi
-- [ ] 16.24 Username/Password in URL
-- [ ] 16.25 Autocomplete on Sensitive Fields
-- [ ] 16.26 Verbose Error Messages
-- [ ] 16.27 Client-Side Auth Bypass (JavaScript checks)
-- [ ] 16.28 Defense — Rate Limiting, Lockout, MFA, Secure Password Storage
+- [x] 16.01 Username Enumeration (error messages, timing)
+- [x] 16.02 Password Brute Force
+- [x] 16.03 Credential Stuffing
+- [x] 16.04 Password Spraying
+- [x] 16.05 Default Credentials
+- [x] 16.06 Weak Password Policies
+- [x] 16.07 Forgot Password — Token Predictability
+- [x] 16.08 Forgot Password — Host Header Poisoning
+- [x] 16.09 Forgot Password — Token Reuse
+- [x] 16.10 Account Lockout Bypass
+- [x] 16.11 MFA Bypass — Response Manipulation
+- [x] 16.12 MFA Bypass — Code Reuse
+- [x] 16.13 MFA Bypass — Brute Force OTP
+- [x] 16.14 MFA Bypass — Backup Code Abuse
+- [x] 16.15 MFA Bypass — SIM Swapping
+- [x] 16.16 Login CSRF
+- [x] 16.17 Basic Auth Cracking
+- [x] 16.18 HTTP Digest Auth Attacks
+- [x] 16.19 NTLM Authentication Attacks
+- [x] 16.20 OAuth Login CSRF
+- [x] 16.21 Magic Link Vulnerabilities
+- [x] 16.22 SSO Bypass (SAML, OAuth)
+- [x] 16.23 Pre-Authentication SQLi
+- [x] 16.24 Username/Password in URL
+- [x] 16.25 Autocomplete on Sensitive Fields
+- [x] 16.26 Verbose Error Messages
+- [x] 16.27 Client-Side Auth Bypass (JavaScript checks)
+- [x] 16.28 Defense — Rate Limiting, Lockout, MFA, Secure Password Storage
 
 ---
 
 ## MODULE 17 — Session Management (15) *(PS: Authentication labs)*
 
-- [ ] 17.01 What is a Session?
-- [ ] 17.02 Session Token Entropy and Predictability
-- [ ] 17.03 Session Fixation
-- [ ] 17.04 Session Hijacking via Cookie Theft (XSS)
-- [ ] 17.05 Session Hijacking via Network Sniffing
-- [ ] 17.06 Session Puzzle / Session Confusion
-- [ ] 17.07 Insecure Session Storage (localStorage, URL params)
-- [ ] 17.08 Session Not Invalidated on Logout
-- [ ] 17.09 Long-Lived Sessions
-- [ ] 17.10 Concurrent Session Not Invalidated
-- [ ] 17.11 Cookie Flags — Attack Scenarios
-- [ ] 17.12 Cookie Scope Abuse (Domain and Path)
-- [ ] 17.13 Cookie Tossing
-- [ ] 17.14 Client-Side Session Tokens (JWT, Signed Cookies)
-- [ ] 17.15 Defense — Secure Session Configuration
+- [x] 17.01 What is a Session?
+- [x] 17.02 Session Token Entropy and Predictability
+- [x] 17.03 Session Fixation
+- [x] 17.04 Session Hijacking via Cookie Theft (XSS)
+- [x] 17.05 Session Hijacking via Network Sniffing
+- [x] 17.06 Session Puzzle / Session Confusion
+- [x] 17.07 Insecure Session Storage (localStorage, URL params)
+- [x] 17.08 Session Not Invalidated on Logout
+- [x] 17.09 Long-Lived Sessions
+- [x] 17.10 Concurrent Session Not Invalidated
+- [x] 17.11 Cookie Flags — Attack Scenarios
+- [x] 17.12 Cookie Scope Abuse (Domain and Path)
+- [x] 17.13 Cookie Tossing
+- [x] 17.14 Client-Side Session Tokens (JWT, Signed Cookies)
+- [x] 17.15 Defense — Secure Session Configuration
 
 ---
 
 ## MODULE 18 — JWT Attacks (18) *(PS: 8 labs)*
 
-- [ ] 18.01 What is a JWT?
-- [ ] 18.02 JWT Structure (Header.Payload.Signature)
-- [ ] 18.03 JWT Claims Reference (iss, sub, aud, exp, nbf, iat, jti)
-- [ ] 18.04 Algorithm None Attack
-- [ ] 18.05 RS256 to HS256 Algorithm Confusion
-- [ ] 18.06 Weak Secret Brute Force (hashcat, jwt_tool)
-- [ ] 18.07 JWT Header Injection — jwk claim
-- [ ] 18.08 JWT Header Injection — jku claim
-- [ ] 18.09 JWT Header Injection — kid claim (SQLi, path traversal)
-- [ ] 18.10 JWT Expiry Manipulation (exp claim)
-- [ ] 18.11 JWT Replay Attack
-- [ ] 18.12 JWT Substitution Attack (swapping tokens between users)
-- [ ] 18.13 JWT in Cookies vs Authorization Header
-- [ ] 18.14 JWT Cracking with jwt_tool
-- [ ] 18.15 JWT Cracking with hashcat
-- [ ] 18.16 Refresh Token Attacks
-- [ ] 18.17 JWT Confusion in Multi-Tenant Apps
-- [ ] 18.18 Defense — Strong Algorithms, Validation, Short Expiry
+- [x] 18.01 What is a JWT?
+- [x] 18.02 JWT Structure (Header.Payload.Signature)
+- [x] 18.03 JWT Claims Reference (iss, sub, aud, exp, nbf, iat, jti)
+- [x] 18.04 Algorithm None Attack
+- [x] 18.05 RS256 to HS256 Algorithm Confusion
+- [x] 18.06 Weak Secret Brute Force (hashcat, jwt_tool)
+- [x] 18.07 JWT Header Injection — jwk claim
+- [x] 18.08 JWT Header Injection — jku claim
+- [x] 18.09 JWT Header Injection — kid claim (SQLi, path traversal)
+- [x] 18.10 JWT Expiry Manipulation (exp claim)
+- [x] 18.11 JWT Replay Attack
+- [x] 18.12 JWT Substitution Attack (swapping tokens between users)
+- [x] 18.13 JWT in Cookies vs Authorization Header
+- [x] 18.14 JWT Cracking with jwt_tool
+- [x] 18.15 JWT Cracking with hashcat
+- [x] 18.16 Refresh Token Attacks
+- [x] 18.17 JWT Confusion in Multi-Tenant Apps
+- [x] 18.18 Defense — Strong Algorithms, Validation, Short Expiry
 
 ---
 
 ## MODULE 19 — OAuth 2.0 Attacks (20) *(PS: 6 labs)*
 
-- [ ] 19.01 OAuth 2.0 Overview and Flow Types
-- [ ] 19.02 Authorization Code Flow — Step by Step
-- [ ] 19.03 Implicit Flow (deprecated) — Vulnerabilities
-- [ ] 19.04 Client Credentials Flow
-- [ ] 19.05 PKCE — What It Protects Against
-- [ ] 19.06 OAuth State Parameter — CSRF in OAuth
-- [ ] 19.07 Redirect URI Manipulation
-- [ ] 19.08 Open Redirect in Redirect URI
-- [ ] 19.09 Authorization Code Interception
-- [ ] 19.10 Token Leakage via Referer Header
-- [ ] 19.11 Token Leakage via Browser History
-- [ ] 19.12 Account Linking Abuse
-- [ ] 19.13 Scope Escalation
-- [ ] 19.14 Token Replay Attack
-- [ ] 19.15 Client Secret Exposure
-- [ ] 19.16 OAuth Misconfig — Wildcard Redirect URI
-- [ ] 19.17 OAuth Misconfig — Lack of State Validation
-- [ ] 19.18 OAuth to Account Takeover Chain
-- [ ] 19.19 OpenID Connect (OIDC) Attack Surface
-- [ ] 19.20 Defense — Strict Redirect URI, PKCE, State Validation
+- [x] 19.01 OAuth 2.0 Overview and Flow Types
+- [x] 19.02 Authorization Code Flow — Step by Step
+- [x] 19.03 Implicit Flow (deprecated) — Vulnerabilities
+- [x] 19.04 Client Credentials Flow
+- [x] 19.05 PKCE — What It Protects Against
+- [x] 19.06 OAuth State Parameter — CSRF in OAuth
+- [x] 19.07 Redirect URI Manipulation
+- [x] 19.08 Open Redirect in Redirect URI
+- [x] 19.09 Authorization Code Interception
+- [x] 19.10 Token Leakage via Referer Header
+- [x] 19.11 Token Leakage via Browser History
+- [x] 19.12 Account Linking Abuse
+- [x] 19.13 Scope Escalation
+- [x] 19.14 Token Replay Attack
+- [x] 19.15 Client Secret Exposure
+- [x] 19.16 OAuth Misconfig — Wildcard Redirect URI
+- [x] 19.17 OAuth Misconfig — Lack of State Validation
+- [x] 19.18 OAuth to Account Takeover Chain
+- [x] 19.19 OpenID Connect (OIDC) Attack Surface
+- [x] 19.20 Defense — Strict Redirect URI, PKCE, State Validation
 
 ---
 
 ## MODULE 20 — SAML Attacks (10)
 
-- [ ] 20.01 What is SAML and How SSO Works
-- [ ] 20.02 SAML Assertion Structure
-- [ ] 20.03 XML Signature Wrapping (XSW) Attacks
-- [ ] 20.04 SAML Replay Attack
-- [ ] 20.05 SAML Attribute Manipulation
-- [ ] 20.06 SAML Comment Injection
-- [ ] 20.07 SAML External Entity (SAML + XXE)
-- [ ] 20.08 SAML Signature Bypass (none algorithm)
-- [ ] 20.09 SAML to Account Takeover
-- [ ] 20.10 Defense — Strict Schema Validation, Signed Assertions
+- [x] 20.01 What is SAML and How SSO Works
+- [x] 20.02 SAML Assertion Structure
+- [x] 20.03 XML Signature Wrapping (XSW) Attacks
+- [x] 20.04 SAML Replay Attack
+- [x] 20.05 SAML Attribute Manipulation
+- [x] 20.06 SAML Comment Injection
+- [x] 20.07 SAML External Entity (SAML + XXE)
+- [x] 20.08 SAML Signature Bypass (none algorithm)
+- [x] 20.09 SAML to Account Takeover
+- [x] 20.10 Defense — Strict Schema Validation, Signed Assertions
 
 ---
 
 ## MODULE 21 — Access Control (20) *(PS: 13 labs)*
 
-- [ ] 21.01 Vertical Privilege Escalation
-- [ ] 21.02 Horizontal Privilege Escalation
-- [ ] 21.03 IDOR — Insecure Direct Object Reference
-- [ ] 21.04 IDOR in URL Parameters
-- [ ] 21.05 IDOR in POST Body
-- [ ] 21.06 IDOR in Cookies
-- [ ] 21.07 IDOR in HTTP Headers
-- [ ] 21.08 Mass Assignment Vulnerability
-- [ ] 21.09 BOLA — Broken Object Level Authorization (OWASP API #1)
-- [ ] 21.10 BFLA — Broken Function Level Authorization (OWASP API #5)
-- [ ] 21.11 Forced Browsing / Unprotected Admin Endpoints
-- [ ] 21.12 Parameter Tampering (role=admin, isAdmin=true)
-- [ ] 21.13 HTTP Method Bypass (GET vs POST vs PUT)
-- [ ] 21.14 Path Traversal to Bypass Access Controls
-- [ ] 21.15 IDOR via API Versioning
-- [ ] 21.16 GraphQL Authorization Bypass
-- [ ] 21.17 JWT Claim Manipulation for Privilege Escalation
-- [ ] 21.18 Account Takeover via IDOR on Password Reset
-- [ ] 21.19 Referrer-Based Access Control Bypass
-- [ ] 21.20 Defense — Server-Side Authorization, Object-Level Checks
+- [x] 21.01 Vertical Privilege Escalation
+- [x] 21.02 Horizontal Privilege Escalation
+- [x] 21.03 IDOR — Insecure Direct Object Reference
+- [x] 21.04 IDOR in URL Parameters
+- [x] 21.05 IDOR in POST Body
+- [x] 21.06 IDOR in Cookies
+- [x] 21.07 IDOR in HTTP Headers
+- [x] 21.08 Mass Assignment Vulnerability
+- [x] 21.09 BOLA — Broken Object Level Authorization (OWASP API #1)
+- [x] 21.10 BFLA — Broken Function Level Authorization (OWASP API #5)
+- [x] 21.11 Forced Browsing / Unprotected Admin Endpoints
+- [x] 21.12 Parameter Tampering (role=admin, isAdmin=true)
+- [x] 21.13 HTTP Method Bypass (GET vs POST vs PUT)
+- [x] 21.14 Path Traversal to Bypass Access Controls
+- [x] 21.15 IDOR via API Versioning
+- [x] 21.16 GraphQL Authorization Bypass
+- [x] 21.17 JWT Claim Manipulation for Privilege Escalation
+- [x] 21.18 Account Takeover via IDOR on Password Reset
+- [x] 21.19 Referrer-Based Access Control Bypass
+- [x] 21.20 Defense — Server-Side Authorization, Object-Level Checks
 
 ---
 

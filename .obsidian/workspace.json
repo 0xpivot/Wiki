@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "89ff932b0f701dc5",
+    "type": "split",
+    "children": [
+      {
+        "id": "945a173c6f41e527",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "896f5ba5607d01da",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "01 - OAuth 2.0 Overview and Flow Types"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "2c4ef27a61150cb7",
+    "type": "split",
+    "children": [
+      {
+        "id": "01c405ae6a00618c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "aa7b2d3cbbe644e4",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "7bfd238f05f5d1e8",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "27ee9de01260a336",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "105865b2856041c7",
+    "type": "split",
+    "children": [
+      {
+        "id": "294ff7e33b3bdc2d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "65bed5e0018937b9",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 01 - OAuth 2.0 Overview and Flow Types"
+            }
+          },
+          {
+            "id": "9f6bd71f2a4cff0d",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 01 - OAuth 2.0 Overview and Flow Types"
+            }
+          },
+          {
+            "id": "eba69a11be59d387",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "2a84ca8795730e69",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "cf464e07b7ee7030",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 01 - OAuth 2.0 Overview and Flow Types"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "896f5ba5607d01da",
+  "lastOpenFiles": [
+    "22 - File Upload/12 - Image Upload Magic Bytes Bypass.md",
+    "22 - File Upload/12 - Image Upload Magic Bytes Bypass.md.tmp.464075.2dcfb9909493",
+    "22 - File Upload/11 - ZIP Slip (malicious ZIP with path traversal).md",
+    "22 - File Upload/11 - ZIP Slip (malicious ZIP with path traversal).md.tmp.464075.e0c2b60847b8",
+    "22 - File Upload/10 - File Upload + XXE (malicious DOCX XLSX).md",
+    "22 - File Upload/10 - File Upload + XXE (malicious DOCX XLSX).md.tmp.464075.b68110357e79",
+    "22 - File Upload/09 - File Upload + XSS (SVG with XSS payload).md",
+    "22 - File Upload/09 - File Upload + XSS (SVG with XSS payload).md.tmp.464075.b7a4b07dc51b",
+    "22 - File Upload/08 - File Upload + SSRF (SVG with SSRF payload).md",
+    "22 - File Upload/08 - File Upload + SSRF (SVG with SSRF payload).md.tmp.464075.bf1775c90b26",
+    "22 - File Upload/07 - File Upload + Path Traversal.md",
+    "22 - File Upload/07 - File Upload + Path Traversal.md.tmp.464075.73189ad3431e",
+    "22 - File Upload/06 - Null Byte Injection (file.php%00.jpg).md",
+    "22 - File Upload/06 - Null Byte Injection (file.php%00.jpg).md.tmp.464075.3c787b9738d2",
+    "22 - File Upload/05 - Double Extension (file.php.jpg).md",
+    "22 - File Upload/05 - Double Extension (file.php.jpg).md.tmp.464075.484543926862",
+    "22 - File Upload/04 - Extension Bypass (.php5, .phtml, .phar, .shtml).md",
+    "22 - File Upload/04 - Extension Bypass (.php5, .phtml, .phar, .shtml).md.tmp.464075.b56527d81b58",
+    "22 - File Upload/03 - Content-Type Bypass.md",
+    "22 - File Upload/03 - Content-Type Bypass.md.tmp.464075.9b682716c79a",
+    "22 - File Upload/02 - Unrestricted File Upload — Webshell Upload.md",
+    "22 - File Upload/01 - What Makes File Upload Dangerous.md",
+    "21 - Access Control/20 - Defense — Server-Side Authorization, Object-Level Checks.md",
+    "21 - Access Control/19 - Referrer-Based Access Control Bypass.md",
+    "21 - Access Control/18 - Account Takeover via IDOR on Password Reset.md",
+    "21 - Access Control/17 - JWT Claim Manipulation for Privilege Escalation.md",
+    "21 - Access Control/16 - GraphQL Authorization Bypass.md",
+    "21 - Access Control/15 - IDOR via API Versioning.md",
+    "21 - Access Control/14 - Path Traversal to Bypass Access Controls.md",
+    "21 - Access Control/13 - HTTP Method Bypass (GET vs POST vs PUT).md",
+    "21 - Access Control/12 - Parameter Tampering (role=admin, isAdmin=true).md",
+    "21 - Access Control/11 - Forced Browsing and Unprotected Admin Endpoints.md",
+    "21 - Access Control/10 - BFLA — Broken Function Level Authorization (OWASP API 5).md",
+    "21 - Access Control/09 - BOLA — Broken Object Level Authorization (OWASP API 1).md",
+    "21 - Access Control/08 - Mass Assignment Vulnerability.md",
+    "21 - Access Control/07 - IDOR in HTTP Headers.md"
+  ]
+}
