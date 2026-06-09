@@ -83,5 +83,5 @@ In 2017, Omer Gil published the original research on Web Cache Deception, demons
 - This vuln + CSRF (Cross-Site Request Forgery) → Using `<img>` or `<script>` tags to force the victim's browser to make the request silently.
 
 ## Related Notes
-- [[27.01 What is Web Caching?]]
-- [[27.02 Cache Keys and Unkeyed Inputs]]
+- [[01 - What is Web Caching?]]
+- [[02 - Cache Keys and Unkeyed Inputs]]

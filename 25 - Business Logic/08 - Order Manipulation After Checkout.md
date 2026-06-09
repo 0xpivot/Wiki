@@ -89,9 +89,9 @@ A security researcher was testing a major airline's ticketing system. The resear
   3. **Snapshotting:** The Fulfillment service should not query the dynamic "Cart" table. When checkout completes, the contents of the cart should be copied into an immutable `Order_Line_Items` table. Any future modifications to the cart should not affect the finalized line items.
 
 ## Chaining Opportunities
-- This vuln + [[25.02 Price Manipulation in E-commerce]] → If you can't manipulate the price *before* checkout because the payment gateway is secure, try paying the full price for a cheap item, and manipulating the order *after* checkout to swap it for the expensive item.
+- This vuln + [[02 - Price Manipulation in E-commerce]] → If you can't manipulate the price *before* checkout because the payment gateway is secure, try paying the full price for a cheap item, and manipulating the order *after* checkout to swap it for the expensive item.
 - This vuln + [[10 - Chaining Playbook (E-commerce)]] → Demonstrates the critical importance of testing state transitions in business logic.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.07 Workflow Bypass (skipping payment step)]]
+- [[01 - What are Business Logic Flaws?]]
+- [[07 - Workflow Bypass (skipping payment step)]]

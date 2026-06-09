@@ -92,9 +92,9 @@ A Bug Bounty hunter was testing a human resources portal. Standard employees cou
   3. **Centralized Middleware:** Do not write role checks inside individual functions (where developers might forget them). Implement centralized middleware. For example, route all admin endpoints under `/api/admin/*`, and apply a global middleware to that route that strictly enforces `if (session.role != 'ADMIN') return 403;`.
 
 ## Chaining Opportunities
-- This vuln + [[25.15 Hidden API Parameters]] → Finding hidden endpoints is the first step; injecting hidden parameters into them is the second.
+- This vuln + [[15 - Hidden API Parameters]] → Finding hidden endpoints is the first step; injecting hidden parameters into them is the second.
 - This vuln + [[10 - Chaining Playbook (Privilege Escalation)]] → This is the definition of Vertical Privilege Escalation.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.14 Exploiting Trust Between Microservices]]
+- [[01 - What are Business Logic Flaws?]]
+- [[14 - Exploiting Trust Between Microservices]]

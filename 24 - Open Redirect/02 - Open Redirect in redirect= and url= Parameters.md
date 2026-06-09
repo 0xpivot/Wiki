@@ -127,8 +127,8 @@ A bug bounty hunter was testing a video streaming platform. They found that when
 
 ## Chaining Opportunities
 - This vuln + [[07 - XSS / Cross-Site Scripting]] → If the application reflects the redirect URL into an anchor tag (`<a href="URL">`), use `javascript:alert(1)` to achieve Reflected or DOM XSS.
-- This vuln + [[24.03 Bypass Techniques (//evil.com, /\evil.com, ///evil.com)]] → Often, developers put basic filters in place (e.g., blocking `http://`). Combine parameter discovery with bypass techniques to defeat these filters.
+- This vuln + [[03 - Bypass Techniques]] → Often, developers put basic filters in place (e.g., blocking `http://`). Combine parameter discovery with bypass techniques to defeat these filters.
 
 ## Related Notes
-- [[24.01 What is Open Redirect?]]
-- [[24.03 Bypass Techniques (//evil.com, /\evil.com, ///evil.com)]]
+- [[01 - What is Open Redirect?]]
+- [[03 - Bypass Techniques]]

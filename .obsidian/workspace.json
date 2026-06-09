@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
-                "mode": "source",
+                "file": "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02 - WebSocket Upgrade Security Implications"
+              "title": "01 - API1 — Broken Object Level Authorization (BOLA)"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
+                "file": "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 02 - WebSocket Upgrade Security Implications"
+              "title": "Backlinks for 01 - API1 — Broken Object Level Authorization (BOLA)"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
+                "file": "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 02 - WebSocket Upgrade Security Implications"
+              "title": "Outgoing links from 01 - API1 — Broken Object Level Authorization (BOLA)"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
+                "file": "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 02 - WebSocket Upgrade Security Implications"
+              "title": "Outline of 01 - API1 — Broken Object Level Authorization (BOLA)"
             }
           }
         ]
@@ -185,41 +185,41 @@
   },
   "active": "896f5ba5607d01da",
   "lastOpenFiles": [
-    "29 - WebSockets Security/06 - WebSocket SQLi.md",
-    "27 - Web Cache Poisoning and Deception/05 - Cache Poisoning via Unkeyed Headers.md",
-    "29 - WebSockets Security/10 - Defense — Origin Check, Authentication per Message.md",
-    "29 - WebSockets Security/09 - Lack of Authentication on WebSocket Endpoints.md",
-    "29 - WebSockets Security/01 - WebSocket Protocol — How It Works.md",
-    "29 - WebSockets Security/08 - WebSocket DoS.md",
-    "27 - Web Cache Poisoning and Deception/02 - Cache Keys and Unkeyed Inputs.md",
-    "27 - Web Cache Poisoning and Deception/01 - What is Web Caching?.md",
-    "28 - Clickjacking/01 - What is Clickjacking?.md",
-    "29 - WebSockets Security/07 - WebSocket Command Injection.md",
-    "29 - WebSockets Security/05 - WebSocket XSS.md",
-    "29 - WebSockets Security/04 - WebSocket Message Manipulation.md",
-    "29 - WebSockets Security/03 - Cross-Site WebSocket Hijacking (CSWSH).md",
-    "29 - WebSockets Security/02 - WebSocket Upgrade Security Implications.md",
-    "29 - WebSockets Security",
-    "28 - Clickjacking/06 - Defense — X-Frame-Options, CSP frame-ancestors.md",
-    "28 - Clickjacking/05 - Clickjacking + CSRF Chain.md",
-    "28 - Clickjacking/04 - Drag and Drop Clickjacking.md",
-    "28 - Clickjacking/03 - Multistep Clickjacking.md",
-    "28 - Clickjacking/02 - Basic iframe Clickjacking.md",
-    "26 - HTTP Request Smuggling/01 - What is HTTP Request Smuggling?.md",
-    "28 - Clickjacking",
-    "27 - Web Cache Poisoning and Deception/10 - Defense — Cache Key Configuration, Vary Header.md",
-    "27 - Web Cache Poisoning and Deception/09 - Web Cache Deception Attack.md",
-    "27 - Web Cache Poisoning and Deception/08 - Cache Poisoning to Redirect Users.md",
-    "27 - Web Cache Poisoning and Deception/07 - Cache Poisoning to Deliver XSS.md",
+    "31 - API Security/02 - API2 — Broken Authentication.md",
+    "31 - API Security/04 - API4 — Unrestricted Resource Consumption.md",
+    "31 - API Security/07 - API7 — Server Side Request Forgery (SSRF).md",
+    "31 - API Security/21 - API Key Rotation Failures.md",
+    "18 - JWT/02 - JWT Structure.md",
+    "31 - API Security/23 - SOAP API Attacks.md",
+    "31 - API Security/22 - Unauthenticated API Endpoints.md",
+    "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
+    "31 - API Security/03 - API3 — Broken Object Property Level Authorization.md",
+    "31 - API Security/05 - API5 — Broken Function Level Authorization (BFLA).md",
+    "31 - API Security/06 - API6 — Unrestricted Access to Sensitive Business Flows.md",
+    "31 - API Security/09 - API9 — Improper Inventory Management.md",
+    "31 - API Security/10 - API10 — Unsafe Consumption of APIs.md",
+    "31 - API Security/16 - Lack of Resource Rate Limiting.md",
+    "31 - API Security/18 - API Documentation Discovery.md",
+    "31 - API Security/15 - Excessive Data Exposure.md",
     "27 - Web Cache Poisoning and Deception/06 - Cache Poisoning via Fat GET.md",
-    "27 - Web Cache Poisoning and Deception/04 - Cache Poisoning via X-Forwarded-Scheme.md",
+    "30 - GraphQL Security/09 - GraphQL Mutations — Unauthorized Write Operations.md",
+    "31 - API Security/24 - gRPC Security Testing.md",
+    "31 - API Security/08 - API8 — Security Misconfiguration.md",
+    "31 - API Security/25 - Web LLM Attacks.md",
+    "28 - Clickjacking/04 - Drag and Drop Clickjacking.md",
+    "30 - GraphQL Security/03 - Introspection Query — Information Disclosure.md",
+    "31 - API Security/20 - API Token Leakage in Logs.md",
+    "31 - API Security/14 - Mass Assignment in REST APIs.md",
+    "31 - API Security/13 - API Versioning Abuse.md",
+    "31 - API Security",
+    "30 - GraphQL Security",
+    "bad_links_list.txt",
+    "29 - WebSockets Security",
+    "28 - Clickjacking",
     "27 - Web Cache Poisoning and Deception",
     "26 - HTTP Request Smuggling",
     "25 - Business Logic",
     "24 - Open Redirect/03 - Bypass Techniques (__evil.com, _",
-    "24 - Open Redirect",
-    "23 - Path Traversal",
-    "22 - File Upload/12 - Image Upload Magic Bytes Bypass.md.tmp.464075.2dcfb9909493",
-    "22 - File Upload/11 - ZIP Slip (malicious ZIP with path traversal).md.tmp.464075.e0c2b60847b8"
+    "24 - Open Redirect"
   ]
 }

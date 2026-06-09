@@ -127,10 +127,10 @@ During a penetration test on a photo-sharing application, the tester noticed the
 
 ## Chaining Opportunities
 - This vuln + [[Cloud Infrastructure (AWS, GCP, Azure)]] → Once SSRF is confirmed via SVG, directly target cloud metadata endpoints (`169.254.169.254` or `metadata.google.internal`) to steal IAM credentials and achieve full cloud environment takeover.
-- This vuln + [[10 - File Upload + XXE (malicious DOCX/XLSX)]] → If the `<image>` tag doesn't work, attempt XXE payloads (`<!ENTITY xxe SYSTEM "http://...">`) inside the SVG, as both attacks target the underlying XML parsing library.
+- This vuln + [[10 - File Upload + XXE (malicious DOCX XLSX)]] → If the `<image>` tag doesn't work, attempt XXE payloads (`<!ENTITY xxe SYSTEM "http://...">`) inside the SVG, as both attacks target the underlying XML parsing library.
 
 ## Related Notes
-- [[13 - SSRF — What is SSRF]]
+- [[01 - What is SSRF]]
 - [[09 - File Upload + XSS (SVG with XSS payload)]]
-- [[10 - File Upload + XXE (malicious DOCX/XLSX)]]
+- [[10 - File Upload + XXE (malicious DOCX XLSX)]]
 - [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]]

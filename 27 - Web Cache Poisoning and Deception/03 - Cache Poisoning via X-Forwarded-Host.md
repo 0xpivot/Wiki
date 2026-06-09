@@ -93,9 +93,9 @@ A bug bounty hunter found a cache poisoning vulnerability on a major e-commerce 
   2. **Cache Key Configuration:** If the application *must* support multiple dynamic domains via XFH, configure the CDN or Varnish Cache to include the `X-Forwarded-Host` header in the Cache Key. This prevents an attacker's `evil.com` request from overwriting the cache for `store.com`.
 
 ## Chaining Opportunities
-- This vuln + [[27.07 Cache Poisoning to Deliver XSS]] → Using XFH to rewrite script tags is the primary method for delivering Stored XSS via Cache Poisoning.
-- This vuln + [[27.08 Cache Poisoning to Redirect Users]] → If the application uses XFH to generate 302 Redirects, you can poison the cache to steal traffic.
+- This vuln + [[07 - Cache Poisoning to Deliver XSS]] → Using XFH to rewrite script tags is the primary method for delivering Stored XSS via Cache Poisoning.
+- This vuln + [[08 - Cache Poisoning to Redirect Users]] → If the application uses XFH to generate 302 Redirects, you can poison the cache to steal traffic.
 
 ## Related Notes
-- [[27.02 Cache Keys and Unkeyed Inputs]]
-- [[27.04 Cache Poisoning via X-Forwarded-Scheme]]
+- [[02 - Cache Keys and Unkeyed Inputs]]
+- [[04 - Cache Poisoning via X-Forwarded-Scheme]]

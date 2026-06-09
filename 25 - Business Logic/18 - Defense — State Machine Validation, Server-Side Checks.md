@@ -82,6 +82,6 @@ Attacker sends: POST /api/cart/add {"item_id": 5, "price": 0.01}
 - [ ] Are actions that should only happen once protected by Idempotency Keys or strict status flags?
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.07 Workflow Bypass (skipping payment step)]]
-- [[25.09 Race Conditions in Financial Transactions]]
+- [[01 - What are Business Logic Flaws?]]
+- [[07 - Workflow Bypass (skipping payment step)]]
+- [[09 - Race Conditions in Financial Transactions]]

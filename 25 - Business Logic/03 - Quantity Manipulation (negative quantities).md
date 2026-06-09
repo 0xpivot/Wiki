@@ -10,7 +10,7 @@ topic: "25.03 Quantity Manipulation (negative quantities)"
 ## What is it?
 Quantity Manipulation occurs when an e-commerce or financial application fails to properly validate the boundaries and data types of a "quantity" or "amount" parameter. 
 
-If developers secure the `price` parameter (as seen in [[25.02 Price Manipulation in E-commerce]]), attackers will naturally target the `quantity` parameter. If an attacker submits a negative quantity (e.g., `-1`), and the server calculates the total as `Price * Quantity` without ensuring the quantity is positive, the resulting total becomes negative.
+If developers secure the `price` parameter (as seen in [[02 - Price Manipulation in E-commerce]]), attackers will naturally target the `quantity` parameter. If an attacker submits a negative quantity (e.g., `-1`), and the server calculates the total as `Price * Quantity` without ensuring the quantity is positive, the resulting total becomes negative.
 
 This leads to catastrophic scenarios. If you put a $1,000 TV in your cart, and a $10 pen, but set the pen's quantity to `-100`, the server calculates: `$1000 + ($10 * -100) = $0`. You get the TV for free. Alternatively, a negative total might cause the payment gateway to actually *refund* the attacker's credit card.
 
@@ -107,9 +107,9 @@ A Bug Bounty hunter was testing a mobile food delivery app. The app allowed user
   ```
 
 ## Chaining Opportunities
-- This vuln + [[25.02 Price Manipulation in E-commerce]] → Often found together as developers fail to grasp client-side trust issues.
+- This vuln + [[02 - Price Manipulation in E-commerce]] → Often found together as developers fail to grasp client-side trust issues.
 - This vuln + Integer Overflows → If `-1` is blocked, submitting `4294967295` (32-bit max) + 1 might wrap the integer back to a negative number inside the backend database, bypassing the `quantity > 0` validation.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.04 Discount/Coupon Abuse]]
+- [[01 - What are Business Logic Flaws?]]
+- [[04 - Discount_Coupon Abuse]]

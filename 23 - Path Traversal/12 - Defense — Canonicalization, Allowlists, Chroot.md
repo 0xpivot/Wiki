@@ -120,6 +120,6 @@ ReadWritePaths=/var/www/html/uploads/
 - [ ] Is the application running in a restricted OS environment (Docker, Chroot, or AppArmor) with minimal read permissions?
 
 ## Related Notes
-- [[23.01 What is Path Traversal?]]
-- [[23.05 Local File Inclusion (LFI)]]
-- [[23.10 Remote File Inclusion (RFI)]]
+- [[01 - What is Path Traversal?]]
+- [[05 - Local File Inclusion (LFI)]]
+- [[10 - Remote File Inclusion (RFI)]]

@@ -56,9 +56,9 @@ Displays perfect visual clone of trusted-bank.com
 A classic example occurred with a major government tax portal. The portal had a vulnerability on its logout endpoint: `https://tax.gov/logout?url=...`. Attackers sent millions of SMS messages during tax season stating: "Your tax refund failed. Login to verify: `https://tax.gov/logout?url=https://tax-refund-portal.net`". Users saw `tax.gov`, clicked the link, and were redirected to a perfect clone of the government site that asked for their Social Security Number and banking details. The Open Redirect bypassed the users' natural skepticism.
 
 ## Chaining Opportunities
-- This vuln + [[24.03 Bypass Techniques]] → Use URL obfuscation to hide the phishing domain in the email link (e.g., `https://trusted.com/login?next=%2f%2fevil.com`).
-- This vuln + [[11.01 CSRF (Cross-Site Request Forgery)]] → Redirect the user to a page that automatically submits a hidden CSRF form back to the trusted domain, hijacking their account.
+- This vuln + [[03 - Bypass Techniques]] → Use URL obfuscation to hide the phishing domain in the email link (e.g., `https://trusted.com/login?next=%2f%2fevil.com`).
+- This vuln + [[01 - CSRF]] → Redirect the user to a page that automatically submits a hidden CSRF form back to the trusted domain, hijacking their account.
 
 ## Related Notes
-- [[24.01 What is Open Redirect?]]
-- [[24.02 Open Redirect in redirect= and url= Parameters]]
+- [[01 - What is Open Redirect?]]
+- [[02 - Open Redirect in redirect= and url= Parameters]]

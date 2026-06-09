@@ -88,8 +88,8 @@ A Bug Bounty hunter was analyzing a popular rideshare app. The app offered a $20
   4. **Alias Normalization:** Normalize emails before checking for duplicates (e.g., strip everything after the `+` sign for Gmail addresses).
 
 ## Chaining Opportunities
-- This vuln + [[25.07 Workflow Bypass (skipping payment step)]] → Skip the required payment step on the referred account to instantly trigger the reward on the main account.
+- This vuln + [[07 - Workflow Bypass (skipping payment step)]] → Skip the required payment step on the referred account to instantly trigger the reward on the main account.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.04 Discount/Coupon Abuse]]
+- [[01 - What are Business Logic Flaws?]]
+- [[04 - Discount_Coupon Abuse]]

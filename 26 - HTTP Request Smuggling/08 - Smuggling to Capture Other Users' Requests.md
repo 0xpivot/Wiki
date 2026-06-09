@@ -104,13 +104,13 @@ James Kettle famously used this technique during his research. He found a smuggl
 
 ## How to Fix It
 - **Developer remediation:**
-  1. Fixing the underlying Request Smuggling vulnerability is the only true fix (See [[26.01 What is HTTP Request Smuggling?]]).
+  1. Fixing the underlying Request Smuggling vulnerability is the only true fix (See [[01 - What is HTTP Request Smuggling?]]).
   2. As defense-in-depth, strict input validation on data storage endpoints helps. If the `/profile/update` endpoint expects a bio, but it receives a string starting with `GET / HTTP/1.1`, the Web Application Firewall (WAF) or application logic should recognize it as an anomalous HTTP header injection and reject the update.
 
 ## Chaining Opportunities
 - This vuln + [[16 - Authentication]] → Capturing cookies or JWTs leads directly to Account Takeover.
-- This vuln + [[26.09 Smuggling to Deliver XSS]] → If you can't capture the request, you can reflect XSS into the victim's browser instead.
+- This vuln + [[09 - Smuggling to Deliver XSS]] → If you can't capture the request, you can reflect XSS into the victim's browser instead.
 
 ## Related Notes
-- [[26.01 What is HTTP Request Smuggling?]]
-- [[26.06 Response Queue Poisoning]]
+- [[01 - What is HTTP Request Smuggling?]]
+- [[06 - Response Queue Poisoning]]

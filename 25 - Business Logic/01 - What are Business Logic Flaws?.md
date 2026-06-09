@@ -68,10 +68,10 @@ A classic example occurred in a major cryptocurrency exchange. The exchange allo
   3. Validate data types and boundaries (e.g., quantities must be `> 0`).
 
 ## Chaining Opportunities
-- This vuln + [[25.09 Race Conditions in Financial Transactions]] → Logic flaws are frequently exploited via Race Conditions, taking advantage of the microsecond delay between the server checking a rule and enforcing it.
-- This vuln + [[25.13 Function-Level Access Control Bypass]] → Logic flaws often result in users accessing administrative or premium functions without authorization.
+- This vuln + [[09 - Race Conditions in Financial Transactions]] → Logic flaws are frequently exploited via Race Conditions, taking advantage of the microsecond delay between the server checking a rule and enforcing it.
+- This vuln + [[13 - Function-Level Access Control Bypass]] → Logic flaws often result in users accessing administrative or premium functions without authorization.
 
 ## Related Notes
-- [[25.02 Price Manipulation in E-commerce]]
-- [[25.03 Quantity Manipulation (negative quantities)]]
-- [[25.07 Workflow Bypass (skipping payment step)]]
+- [[02 - Price Manipulation in E-commerce]]
+- [[03 - Quantity Manipulation (negative quantities)]]
+- [[07 - Workflow Bypass (skipping payment step)]]

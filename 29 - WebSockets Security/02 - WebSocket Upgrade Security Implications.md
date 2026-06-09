@@ -153,5 +153,5 @@ Securing the Upgrade Request requires a defense-in-depth approach.
    - **Message-Based:** The server accepts all WebSocket connections regardless of origin or cookies. However, the socket is placed in an "unauthenticated" quarantine state. The server ignores all commands until the client explicitly sends an authentication frame: `{"action": "auth", "token": "SECURE_JWT_HERE"}`. Again, the attacker cannot steal the token to send this frame.
 
 ## Related Notes
-- [[29.01 WebSocket Protocol — How It Works]]
-- [[29.03 Cross-Site WebSocket Hijacking (CSWSH)]]
+- [[01 - WebSocket Protocol — How It Works]]
+- [[03 - Cross-Site WebSocket Hijacking (CSWSH)]]

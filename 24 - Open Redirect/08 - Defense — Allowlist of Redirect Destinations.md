@@ -88,6 +88,6 @@ public class RedirectValidator {
 - [ ] If making outbound HTTP requests (SSRF defense), has automatic redirect following been disabled in the HTTP client?
 
 ## Related Notes
-- [[24.01 What is Open Redirect?]]
-- [[24.03 Bypass Techniques]]
-- [[24.06 Open Redirect + OAuth (token stealing)]]
+- [[01 - What is Open Redirect?]]
+- [[03 - Bypass Techniques]]
+- [[06 - Open Redirect + OAuth (token stealing)]]

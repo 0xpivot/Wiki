@@ -167,6 +167,6 @@ execFile('ping', ['-c', '4', userInput], (error, stdout, stderr) => {
 If the input must be an IP address, validate it against a strict regular expression before processing. Reject the WebSocket frame immediately if the input contains unexpected characters.
 
 ## Related Notes
-- [[07.01 What is OS Command Injection?]]
-- [[07.03 Out-of-Band (OOB) Command Injection]]
-- [[29.04 WebSocket Message Manipulation]]
+- [[01 - What is OS Command Injection?]]
+- [[03 - Out-of-Band (OOB) Command Injection]]
+- [[04 - WebSocket Message Manipulation]]

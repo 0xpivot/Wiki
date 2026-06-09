@@ -83,7 +83,7 @@ Javascript, sending 5,000 cookies to `evil.com` instantly.
 - Open Burp Suite `Proxy -> WebSockets history` to confirm the data is flowing via WebSockets.
 
 **Step 2: Basic HTML Injection Testing**
-- Intercept an outgoing message using Burp Repeater (as detailed in [[29.04 WebSocket Message Manipulation]]).
+- Intercept an outgoing message using Burp Repeater (as detailed in [[04 - WebSocket Message Manipulation]]).
 - Inject a harmless HTML probe to test for basic DOM injection:
   `{"message": "Hello <u>Underlined</u> and <h1>Massive Header</h1>"}`
 - Forward the frame. Observe your own browser. Did the text render as an actual `<h1>` header, or did the literal string `<h1>Massive Header</h1>` appear on the screen?
@@ -135,6 +135,6 @@ Do not rely entirely on the frontend. The backend server should aggressively san
 Implement a strict `Content-Security-Policy` HTTP header on the page hosting the WebSocket connection. A strong CSP (e.g., `default-src 'self'; script-src 'self'`) will prevent the browser from executing inline Javascript (like `onerror=alert(1)`), serving as a crucial safety net even if a dangerous sink is accidentally used.
 
 ## Related Notes
-- [[23.01 Stored XSS Basics]]
-- [[23.04 Blind XSS]]
-- [[29.04 WebSocket Message Manipulation]]
+- [[01 - Stored XSS Basics]]
+- [[04 - Blind XSS]]
+- [[04 - WebSocket Message Manipulation]]

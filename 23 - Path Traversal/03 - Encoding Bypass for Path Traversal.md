@@ -143,10 +143,10 @@ In a classic PortSwigger lab scenario, the application prevents path traversal b
   ```
 
 ## Chaining Opportunities
-- This vuln + [[23.07 LFI to RCE via Log Poisoning]] → If a WAF blocks `../`, use double URL encoding to reach the `/var/log/apache2/access.log` file to execute PHP code you previously injected via the User-Agent header.
+- This vuln + [[07 - LFI to RCE via Log Poisoning]] → If a WAF blocks `../`, use double URL encoding to reach the `/var/log/apache2/access.log` file to execute PHP code you previously injected via the User-Agent header.
 - This vuln + [[10 - Chaining Playbook (Database Credentials)]] → Use encoding bypasses to steal `.env` files or backend API keys, bypassing strict edge-node WAFs (like Cloudflare or AWS WAF) that only look for standard `../` patterns.
 
 ## Related Notes
-- [[23.01 What is Path Traversal?]]
-- [[23.02 Basic Path Traversal (../../../etc/passwd)]]
-- [[23.12 Defense — Canonicalization, Allowlists, Chroot]]
+- [[01 - What is Path Traversal?]]
+- [[02 - Basic Path Traversal (.._.._.._etc_passwd)]]
+- [[12 - Defense — Canonicalization, Allowlists, Chroot]]

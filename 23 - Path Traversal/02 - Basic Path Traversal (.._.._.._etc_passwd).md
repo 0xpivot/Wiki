@@ -126,9 +126,9 @@ A penetration tester encountered an application with an endpoint: `https://compa
 
 ## Chaining Opportunities
 - This vuln + [[10 - Chaining Playbook (Database Credentials)]] → Use the basic traversal to read the web application's configuration files (e.g., `.env`, `wp-config.php`, `web.config`) and steal database connection strings.
-- This vuln + [[23.07 LFI to RCE via Log Poisoning]] → Once you confirm you can read files, attempt to read the web server access logs (e.g., `/var/log/apache2/access.log`). If successful, you can inject PHP code into the log file and execute it.
+- This vuln + [[07 - LFI to RCE via Log Poisoning]] → Once you confirm you can read files, attempt to read the web server access logs (e.g., `/var/log/apache2/access.log`). If successful, you can inject PHP code into the log file and execute it.
 
 ## Related Notes
-- [[23.01 What is Path Traversal?]]
-- [[23.03 Encoding Bypass for Path Traversal]]
-- [[23.05 Local File Inclusion (LFI)]]
+- [[01 - What is Path Traversal?]]
+- [[03 - Encoding Bypass for Path Traversal]]
+- [[05 - Local File Inclusion (LFI)]]

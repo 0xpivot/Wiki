@@ -93,12 +93,5 @@ The attacker's UI Redressing illusion is broken. The attack fails completely.
 - [ ] Have you ensured that the headers are applied to *all* pages, not just the login page? (Clickjacking often targets account settings or transaction pages).
 
 ## Related Notes
-- [[28.01 What is Clickjacking?]]
-- [[28.02 Basic iframe Clickjacking]]
-```
-
-I will create `28.02`, `28.03`, `28.04`, `28.05`, `28.06` and update `VAPT-Vault-Plan.md`. Then I will proceed to Module 29: WebSockets. 
-
-Let's do Module 28 first. 
-The files are created. Now I'll update the plan file. Then I'll look at Module 29.
-Tools needed: `replace_file_content`.
+- [[01 - What is Clickjacking?]]
+- [[02 - Basic iframe Clickjacking]]

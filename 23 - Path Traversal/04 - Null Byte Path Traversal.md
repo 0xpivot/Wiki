@@ -113,10 +113,10 @@ In older versions of PHP (prior to 5.3.4), the `include()` and `require()` funct
   ```
 
 ## Chaining Opportunities
-- This vuln + [[23.05 Local File Inclusion (LFI)]] → Use the null byte to bypass a forced `.php` extension in an `include()` statement. Instead of just reading `/etc/passwd`, include `/var/log/apache2/access.log` to achieve Remote Code Execution (Log Poisoning).
-- This vuln + [[22.06 Null Byte Injection (file.php%00.jpg)]] → The exact same underlying C-string vulnerability applies to File Uploads, allowing attackers to upload webshells that bypass extension allowlists.
+- This vuln + [[05 - Local File Inclusion (LFI)]] → Use the null byte to bypass a forced `.php` extension in an `include()` statement. Instead of just reading `/etc/passwd`, include `/var/log/apache2/access.log` to achieve Remote Code Execution (Log Poisoning).
+- This vuln + [[06 - Null Byte Injection (file.php%00.jpg)]] → The exact same underlying C-string vulnerability applies to File Uploads, allowing attackers to upload webshells that bypass extension allowlists.
 
 ## Related Notes
-- [[23.02 Basic Path Traversal (../../../etc/passwd)]]
-- [[23.05 Local File Inclusion (LFI)]]
-- [[22.06 Null Byte Injection (file.php%00.jpg)]]
+- [[02 - Basic Path Traversal (.._.._.._etc_passwd)]]
+- [[05 - Local File Inclusion (LFI)]]
+- [[06 - Null Byte Injection (file.php%00.jpg)]]

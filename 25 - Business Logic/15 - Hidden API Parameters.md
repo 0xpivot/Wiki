@@ -117,8 +117,8 @@ A classic Mass Assignment vulnerability occurred in GitHub (reported by Egor Hom
   ```
 
 ## Chaining Opportunities
-- This vuln + [[25.13 Function-Level Access Control Bypass]] → Mass assignment is the primary method for vertically escalating privileges (e.g., making yourself an admin) to access restricted functions.
+- This vuln + [[13 - Function-Level Access Control Bypass]] → Mass assignment is the primary method for vertically escalating privileges (e.g., making yourself an admin) to access restricted functions.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.13 Function-Level Access Control Bypass]]
+- [[01 - What are Business Logic Flaws?]]
+- [[13 - Function-Level Access Control Bypass]]

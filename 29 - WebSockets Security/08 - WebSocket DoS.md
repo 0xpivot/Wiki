@@ -140,5 +140,5 @@ const wss = new WebSocket.Server({
 Do not allow sockets to remain open indefinitely if they are not communicating. Implement a Heartbeat (Ping/Pong) mechanism. If the server does not receive a Pong response from the client within 30 seconds, the server must unilaterally close the socket. This purges "zombie" connections created by attackers attempting connection exhaustion.
 
 ## Related Notes
-- [[29.01 WebSocket Protocol — How It Works]]
-- [[29.04 WebSocket Message Manipulation]]
+- [[01 - WebSocket Protocol — How It Works]]
+- [[04 - WebSocket Message Manipulation]]

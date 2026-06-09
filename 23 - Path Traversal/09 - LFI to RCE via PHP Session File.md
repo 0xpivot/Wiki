@@ -121,6 +121,6 @@ In a known capture-the-flag scenario that mirrors real-world e-commerce platform
 - This vuln + [[07 - XSS / Cross-Site Scripting]] → If the profile name field strictly strips `<script>` tags but allows `<?php` tags, it might not be vulnerable to XSS, but it is highly vulnerable to this LFI-to-RCE chain.
 
 ## Related Notes
-- [[23.05 Local File Inclusion (LFI)]]
-- [[23.07 LFI to RCE via Log Poisoning]]
-- [[23.08 LFI to RCE via /proc/self/environ]]
+- [[05 - Local File Inclusion (LFI)]]
+- [[07 - LFI to RCE via Log Poisoning]]
+- [[08 - LFI to RCE via _proc_self_environ]]

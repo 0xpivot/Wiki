@@ -89,8 +89,8 @@ A classic example is the Drupal 7/8 Cache Poisoning vulnerability. Drupal used t
   2. **Ignore the Header:** The best fix is to stop using unkeyed inputs entirely. Use the strictly validated `Host` header to build URLs, and discard `X-Forwarded-Host` unless you explicitly trust the proxy that set it.
 
 ## Chaining Opportunities
-- This vuln + [[27.03 Cache Poisoning via X-Forwarded-Host]] → A specific implementation of exploiting unkeyed inputs.
+- This vuln + [[03 - Cache Poisoning via X-Forwarded-Host]] → A specific implementation of exploiting unkeyed inputs.
 
 ## Related Notes
-- [[27.01 What is Web Caching?]]
-- [[27.10 Defense — Cache Key Configuration, Vary Header]]
+- [[01 - What is Web Caching?]]
+- [[10 - Defense — Cache Key Configuration, Vary Header]]

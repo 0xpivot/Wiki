@@ -93,12 +93,12 @@ A classic example involves applications that perform logging and display those l
 
 ## How to Fix It
 - **Developer remediation:**
-  1. **Fix Smuggling:** Address the root cause at the proxy layer (See [[26.01 What is HTTP Request Smuggling?]]).
+  1. **Fix Smuggling:** Address the root cause at the proxy layer (See [[01 - What is HTTP Request Smuggling?]]).
   2. **Context-Aware Encoding:** Never trust HTTP headers. If you display a `User-Agent` or `X-Forwarded-For` IP on a webpage, you must HTML-encode it (e.g., `<` becomes `&lt;`). 
 
 ## Chaining Opportunities
-- This vuln + [[27.01 Web Cache Poisoning Basics]] → If the response containing the smuggled XSS payload is served with caching headers (e.g., `Cache-Control: max-age=3600`), the CDN will cache the XSS payload. Now, *every* user who visits that URL for the next hour will be attacked, creating a mass-exploitation event.
+- This vuln + [[01 - Web Cache Poisoning Basics]] → If the response containing the smuggled XSS payload is served with caching headers (e.g., `Cache-Control: max-age=3600`), the CDN will cache the XSS payload. Now, *every* user who visits that URL for the next hour will be attacked, creating a mass-exploitation event.
 
 ## Related Notes
-- [[26.01 What is HTTP Request Smuggling?]]
-- [[26.06 Response Queue Poisoning]]
+- [[01 - What is HTTP Request Smuggling?]]
+- [[06 - Response Queue Poisoning]]

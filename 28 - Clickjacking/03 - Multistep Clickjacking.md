@@ -114,5 +114,5 @@ By mapping the quiz buttons to the checkout flow, the attacker forced authentica
 - This vuln + DOM manipulation → Useful when the target iframe dynamically changes size or layout after the first click.
 
 ## Related Notes
-- [[28.02 Basic iframe Clickjacking]]
-- [[28.04 Drag and Drop Clickjacking]]
+- [[02 - Basic iframe Clickjacking]]
+- [[04 - Drag and Drop Clickjacking]]

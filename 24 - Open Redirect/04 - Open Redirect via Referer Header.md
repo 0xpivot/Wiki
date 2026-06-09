@@ -125,9 +125,9 @@ A security researcher was testing a forum application. When a user clicked "Logo
 
 ## Chaining Opportunities
 - This vuln + [[11 - CSRF / Cross-Site Request Forgery]] → Use the Referer-based open redirect to hide the traces of a CSRF attack. The victim is forced to execute an action (CSRF), and instead of seeing a strange JSON response, the server seamlessly redirects them back to your attacker page, making the attack invisible.
-- This vuln + [[24.05 Open Redirect to Phishing]] → The ultimate goal of this vulnerability is almost always to execute a highly credible phishing attack.
+- This vuln + [[05 - Open Redirect to Phishing]] → The ultimate goal of this vulnerability is almost always to execute a highly credible phishing attack.
 
 ## Related Notes
-- [[24.01 What is Open Redirect?]]
-- [[24.02 Open Redirect in redirect= and url= Parameters]]
-- [[24.05 Open Redirect to Phishing]]
+- [[01 - What is Open Redirect?]]
+- [[02 - Open Redirect in redirect= and url= Parameters]]
+- [[05 - Open Redirect to Phishing]]

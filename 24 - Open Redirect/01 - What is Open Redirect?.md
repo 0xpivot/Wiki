@@ -58,7 +58,7 @@ Think of it like a trusted security guard standing at the front door of a bank. 
 - **Step-by-step walkthrough:**
   1. Identify the vulnerable parameter.
   2. Craft a malicious URL pointing to a domain you control.
-  3. Optionally, obfuscate the URL if there are weak filters in place (see [[24.03 Bypass Techniques]]).
+  3. Optionally, obfuscate the URL if there are weak filters in place (see [[03 - Bypass Techniques]]).
   4. Embed this URL in a phishing email or message sent to the victim.
   5. To escalate, check if the application uses OAuth. If so, use the Open Redirect to steal OAuth tokens.
 
@@ -105,11 +105,11 @@ A major cloud provider had a login portal at `login.cloud.com`. It used a `retur
   ```
 
 ## Chaining Opportunities
-- This vuln + [[24.05 Open Redirect to Phishing]] → The most common and immediate abuse. Gives massive credibility to phishing campaigns.
-- This vuln + [[24.06 Open Redirect + OAuth (token stealing)]] → Upgrades the severity to Critical. Steal access tokens without the user even entering credentials on a phishing page.
-- This vuln + [[13.01 SSRF (Server-Side Request Forgery)]] → If a backend service is fetching a URL but enforces a domain allowlist, use the Open Redirect *on the allowed domain* to bounce the backend request to your internal target.
+- This vuln + [[05 - Open Redirect to Phishing]] → The most common and immediate abuse. Gives massive credibility to phishing campaigns.
+- This vuln + [[06 - Open Redirect + OAuth (token stealing)]] → Upgrades the severity to Critical. Steal access tokens without the user even entering credentials on a phishing page.
+- This vuln + [[01 - SSRF (Server-Side Request Forgery)]] → If a backend service is fetching a URL but enforces a domain allowlist, use the Open Redirect *on the allowed domain* to bounce the backend request to your internal target.
 
 ## Related Notes
-- [[24.02 Open Redirect in redirect= and url= Parameters]]
-- [[24.03 Bypass Techniques (//evil.com, /\evil.com, ///evil.com)]]
-- [[24.08 Defense — Allowlist of Redirect Destinations]]
+- [[02 - Open Redirect in redirect= and url= Parameters]]
+- [[03 - Bypass Techniques]]
+- [[08 - Defense — Allowlist of Redirect Destinations]]

@@ -132,5 +132,5 @@ In a CTF/Boot2Root machine, the attacker found an LFI in `download.php?file=`. N
 - This vuln + [[Missing File Permissions / Sudo Privileges]] → If the web application allows you to write files (e.g., a "save draft" feature), save your payload to a local file, then use `php://filter` to execute or encode it, depending on your goals.
 
 ## Related Notes
-- [[23.05 Local File Inclusion (LFI)]]
-- [[23.10 Remote File Inclusion (RFI)]]
+- [[05 - Local File Inclusion (LFI)]]
+- [[10 - Remote File Inclusion (RFI)]]

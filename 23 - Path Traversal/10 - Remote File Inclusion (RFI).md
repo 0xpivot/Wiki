@@ -118,5 +118,5 @@ In the early 2000s and 2010s, RFI was one of the most common critical vulnerabil
 - This vuln + [[13.01 SSRF (Server-Side Request Forgery)]] → If RFI doesn't execute the code (e.g., the vulnerable function is `file_get_contents()` instead of `include()`), you have an SSRF vulnerability. You can use this to scan the internal network or access internal cloud metadata APIs.
 
 ## Related Notes
-- [[23.05 Local File Inclusion (LFI)]]
-- [[13.01 SSRF (Server-Side Request Forgery)]]
+- [[05 - Local File Inclusion (LFI)]]
+- [[01 - SSRF (Server-Side Request Forgery)]]

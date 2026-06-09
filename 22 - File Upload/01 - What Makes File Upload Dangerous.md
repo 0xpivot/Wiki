@@ -123,7 +123,7 @@ In many historical breaches of WordPress sites, attackers exploited poorly coded
   ```
 
 ## Chaining Opportunities
-- File Upload + [[10 - File Upload + XXE (malicious DOCX/XLSX)]] → If the upload endpoint accepts DOCX or XLSX files, an attacker can upload an XML External Entity payload to extract local files or scan the internal network during the document parsing phase.
+- File Upload + [[10 - File Upload + XXE (malicious DOCX XLSX)]] → If the upload endpoint accepts DOCX or XLSX files, an attacker can upload an XML External Entity payload to extract local files or scan the internal network during the document parsing phase.
 - File Upload + [[07 - File Upload + Path Traversal]] → Attackers can append `../` to the upload filename, forcing the application to drop the malicious file outside the restricted `/uploads/` directory into an executable location like the web root.
 
 ## Related Notes

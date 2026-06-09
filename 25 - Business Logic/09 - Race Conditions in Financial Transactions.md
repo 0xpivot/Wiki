@@ -112,9 +112,9 @@ A highly critical vulnerability was found in a massive global cryptocurrency exc
   3. **Idempotency Keys:** Require the client to send a unique `transaction_id` with every request. The server strictly enforces that a specific `transaction_id` can only be processed once.
 
 ## Chaining Opportunities
-- This vuln + [[25.04 Discount/Coupon Abuse]] → Apply the exact same 10% coupon 10 times concurrently.
-- This vuln + [[25.12 Rate Limit Bypass for Votes / Likes]] → Bypass brute-force protections by sending 50 password guesses concurrently before the "Max 5 Attempts" counter updates.
+- This vuln + [[04 - Discount_Coupon Abuse]] → Apply the exact same 10% coupon 10 times concurrently.
+- This vuln + [[12 - Rate Limit Bypass for Votes _ Likes]] → Bypass brute-force protections by sending 50 password guesses concurrently before the "Max 5 Attempts" counter updates.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.10 Double Submit / Double Spend]]
+- [[01 - What are Business Logic Flaws?]]
+- [[10 - Double Submit _ Double Spend]]

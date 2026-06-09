@@ -105,9 +105,9 @@ In 2021, James Kettle revealed HTTP/2 Request Smuggling. He targeted Netflix. Ne
   3. **Content-Length Validation:** If downgrading, the proxy must ensure it generates a singular, accurate `Content-Length` header based on the HTTP/2 DATA frames, and strictly reject any user-supplied `content-length` header in the HTTP/2 stream.
 
 ## Chaining Opportunities
-- This vuln + [[26.06 Response Queue Poisoning]] → The most devastating outcome of H2 smuggling.
-- This vuln + [[26.08 Smuggling to Capture Other Users' Requests]] → Stealing session tokens in modern architectures.
+- This vuln + [[06 - Response Queue Poisoning]] → The most devastating outcome of H2 smuggling.
+- This vuln + [[08 - Smuggling to Capture Other Users' Requests]] → Stealing session tokens in modern architectures.
 
 ## Related Notes
-- [[26.01 What is HTTP Request Smuggling?]]
-- [[26.02 CL.TE Smuggling]]
+- [[01 - What is HTTP Request Smuggling?]]
+- [[02 - CL.TE Smuggling]]

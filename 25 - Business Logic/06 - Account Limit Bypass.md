@@ -127,9 +127,9 @@ A Bug Bounty hunter was testing a cloud storage provider. Free accounts were str
   4. **Strict Type Validation:** Do not allow arrays to be passed to fields that expect strings.
 
 ## Chaining Opportunities
-- This vuln + [[25.09 Race Conditions in Financial Transactions]] → The absolute best way to bypass a hard server-side limit check is to execute a Race Condition, smashing the endpoint with 30 requests before the database has time to increment the usage counter.
-- This vuln + [[25.04 Discount/Coupon Abuse]] → Bypassing the limit of "One coupon per customer."
+- This vuln + [[09 - Race Conditions in Financial Transactions]] → The absolute best way to bypass a hard server-side limit check is to execute a Race Condition, smashing the endpoint with 30 requests before the database has time to increment the usage counter.
+- This vuln + [[04 - Discount_Coupon Abuse]] → Bypassing the limit of "One coupon per customer."
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.09 Race Conditions in Financial Transactions]]
+- [[01 - What are Business Logic Flaws?]]
+- [[09 - Race Conditions in Financial Transactions]]

@@ -94,8 +94,8 @@ A researcher targeted a Ruby on Rails application behind a Fastly CDN. Rails has
   2. **Proxy Rejection:** The Front-End proxy or CDN should be configured to immediately reject (`400 Bad Request`) any `GET` request that contains a `Content-Length` or `Transfer-Encoding` header, as `GET` requests should mathematically have no body.
 
 ## Chaining Opportunities
-- This vuln + [[27.07 Cache Poisoning to Deliver XSS]] → Using Fat GET to inject XSS payloads into JSONP callbacks or reflected search parameters.
+- This vuln + [[07 - Cache Poisoning to Deliver XSS]] → Using Fat GET to inject XSS payloads into JSONP callbacks or reflected search parameters.
 
 ## Related Notes
-- [[27.02 Cache Keys and Unkeyed Inputs]]
-- [[27.05 Cache Poisoning via Unkeyed Headers]]
+- [[02 - Cache Keys and Unkeyed Inputs]]
+- [[05 - Cache Poisoning via Unkeyed Headers]]

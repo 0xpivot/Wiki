@@ -107,10 +107,10 @@ In older CTF challenges (and unpatched legacy enterprise servers running CGI/Fas
   ```
 
 ## Chaining Opportunities
-- This vuln + [[23.09 LFI to RCE via PHP Session File]] → If `/proc/self/environ` is unreadable or doesn't contain the HTTP headers, pivot to checking PHP Session files (`/var/lib/php/sessions/sess_<id>`) for code execution.
+- This vuln + [[09 - LFI to RCE via PHP Session File]] → If `/proc/self/environ` is unreadable or doesn't contain the HTTP headers, pivot to checking PHP Session files (`/var/lib/php/sessions/sess_<id>`) for code execution.
 - This vuln + [[Missing File Permissions / Sudo Privileges]] → Like all LFI-to-RCE vectors, immediately check `sudo -l` or search for SUID binaries to escalate to root.
 
 ## Related Notes
-- [[23.05 Local File Inclusion (LFI)]]
-- [[23.07 LFI to RCE via Log Poisoning]]
-- [[23.09 LFI to RCE via PHP Session File]]
+- [[05 - Local File Inclusion (LFI)]]
+- [[07 - LFI to RCE via Log Poisoning]]
+- [[09 - LFI to RCE via PHP Session File]]

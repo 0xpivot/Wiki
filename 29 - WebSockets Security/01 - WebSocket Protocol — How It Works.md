@@ -174,6 +174,6 @@ As a penetration tester, gaining visibility into the WebSocket stream is paramou
 In the following notes, we will break down exactly how to exploit the flaws mentioned in this architectural overview. We will start by attacking the HTTP Handshake (CSWSH), and then move into attacking the persistent binary frames (Message Manipulation, XSS, SQLi, and Command Injection).
 
 ## Related Notes
-- [[29.02 WebSocket Upgrade Security Implications]]
-- [[29.03 Cross-Site WebSocket Hijacking (CSWSH)]]
-- [[29.04 WebSocket Message Manipulation]]
+- [[02 - WebSocket Upgrade Security Implications]]
+- [[03 - Cross-Site WebSocket Hijacking (CSWSH)]]
+- [[04 - WebSocket Message Manipulation]]

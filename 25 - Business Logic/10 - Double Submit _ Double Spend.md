@@ -83,9 +83,9 @@ A Bug Bounty hunter was testing a peer-to-peer payment app (similar to Venmo). T
   3. **UI Debouncing:** On the frontend, immediately disable the "Submit" button via JavaScript the millisecond it is clicked to prevent accidental double-clicks from slow users. (Note: This is UX defense, not security defense; the backend must still be secured).
 
 ## Chaining Opportunities
-- This vuln + [[25.09 Race Conditions in Financial Transactions]] → If sequential Double Submits are blocked by the database, use Race Conditions to squeeze the duplicate requests through before the database can update the state.
-- This vuln + [[25.11 Referral Abuse / Self-Referral]] → Claim the same referral bonus multiple times.
+- This vuln + [[09 - Race Conditions in Financial Transactions]] → If sequential Double Submits are blocked by the database, use Race Conditions to squeeze the duplicate requests through before the database can update the state.
+- This vuln + [[11 - Referral Abuse _ Self-Referral]] → Claim the same referral bonus multiple times.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.09 Race Conditions in Financial Transactions]]
+- [[01 - What are Business Logic Flaws?]]
+- [[09 - Race Conditions in Financial Transactions]]

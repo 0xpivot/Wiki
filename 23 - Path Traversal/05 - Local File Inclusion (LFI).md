@@ -115,10 +115,10 @@ A Bug Bounty hunter found a parameter `?view=dashboard` on a target application.
   ```
 
 ## Chaining Opportunities
-- This vuln + [[23.07 LFI to RCE via Log Poisoning]] → The most common path from LFI to RCE. Poison the Apache/Nginx access or error logs with PHP code, then include the log file.
-- This vuln + [[22.02 Unrestricted File Upload — Webshell Upload]] → If the site allows you to upload an image but strictly verifies it is a `.jpg`, upload a valid `.jpg` that has PHP code hidden in the EXIF metadata. Then use LFI to `include('uploads/image.jpg')`. The `include()` function doesn't care about extensions; it will execute the PHP code hidden inside the JPEG!
+- This vuln + [[07 - LFI to RCE via Log Poisoning]] → The most common path from LFI to RCE. Poison the Apache/Nginx access or error logs with PHP code, then include the log file.
+- This vuln + [[02 - Unrestricted File Upload — Webshell Upload]] → If the site allows you to upload an image but strictly verifies it is a `.jpg`, upload a valid `.jpg` that has PHP code hidden in the EXIF metadata. Then use LFI to `include('uploads/image.jpg')`. The `include()` function doesn't care about extensions; it will execute the PHP code hidden inside the JPEG!
 
 ## Related Notes
-- [[23.01 What is Path Traversal?]]
-- [[23.06 LFI via PHP Wrappers (php://filter, php://input, data://)]]
-- [[23.07 LFI to RCE via Log Poisoning]]
+- [[01 - What is Path Traversal?]]
+- [[06 - LFI via PHP Wrappers (php:__filter, php:__input, data:__)]]
+- [[07 - LFI to RCE via Log Poisoning]]

@@ -108,9 +108,9 @@ A Bug Bounty hunter targeted a social media platform that paid content creators 
   3. **Idempotency / Unique Constraints:** If a user can only vote once, the database must have a `UNIQUE` constraint on the `(user_id, poll_id)` columns. Even if the application logic fails, the database will throw an exception and prevent the duplicate action.
 
 ## Chaining Opportunities
-- This vuln + [[25.09 Race Conditions in Financial Transactions]] → Race conditions are the ultimate rate-limit bypass. Send 50 requests before the rate-limit counter hits 1.
+- This vuln + [[09 - Race Conditions in Financial Transactions]] → Race conditions are the ultimate rate-limit bypass. Send 50 requests before the rate-limit counter hits 1.
 - This vuln + [[02 - Bruteforce and Wordlists]] → Bypassing rate limits on login pages allows for infinite credential stuffing and brute-forcing.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.10 Double Submit / Double Spend]]
+- [[01 - What are Business Logic Flaws?]]
+- [[10 - Double Submit _ Double Spend]]

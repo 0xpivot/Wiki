@@ -128,10 +128,10 @@ A Bug Bounty hunter encountered a strict filter on a Node.js application. The de
   ```
 
 ## Chaining Opportunities
-- This vuln + [[13.02 SSRF via URL Parsing Quirks]] → The exact same techniques (e.g., `target.com@evil.com`) are used to bypass SSRF filters. If you master URL parsing bypasses for Open Redirects, you master them for SSRF.
-- This vuln + [[24.06 Open Redirect + OAuth (token stealing)]] → Bypass weak checks on the `redirect_uri` parameter in OAuth flows to steal authorization codes.
+- This vuln + [[02 - SSRF via URL Parsing Quirks]] → The exact same techniques (e.g., `target.com@evil.com`) are used to bypass SSRF filters. If you master URL parsing bypasses for Open Redirects, you master them for SSRF.
+- This vuln + [[06 - Open Redirect + OAuth (token stealing)]] → Bypass weak checks on the `redirect_uri` parameter in OAuth flows to steal authorization codes.
 
 ## Related Notes
-- [[24.01 What is Open Redirect?]]
-- [[24.02 Open Redirect in redirect= and url= Parameters]]
-- [[24.08 Defense — Allowlist of Redirect Destinations]]
+- [[01 - What is Open Redirect?]]
+- [[02 - Open Redirect in redirect= and url= Parameters]]
+- [[08 - Defense — Allowlist of Redirect Destinations]]

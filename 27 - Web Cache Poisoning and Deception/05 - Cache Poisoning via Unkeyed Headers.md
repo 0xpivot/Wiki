@@ -84,9 +84,9 @@ A bug bounty hunter found that a major streaming service used an unkeyed `X-Coun
   2. **Add to Cache Key:** If a custom header (like `X-Custom-Language`) is genuinely needed to generate localized HTML, the backend must return the `Vary: X-Custom-Language` header in the response. This forces the cache server to include the language in the Cache Key, preventing users with different headers from receiving the same cached copy.
 
 ## Chaining Opportunities
-- This vuln + [[27.08 Cache Poisoning to Redirect Users]] → Using unkeyed routing headers to force 301 Redirects.
-- This vuln + [[27.07 Cache Poisoning to Deliver XSS]] → Finding obscure headers that reflect into the DOM without sanitization.
+- This vuln + [[08 - Cache Poisoning to Redirect Users]] → Using unkeyed routing headers to force 301 Redirects.
+- This vuln + [[07 - Cache Poisoning to Deliver XSS]] → Finding obscure headers that reflect into the DOM without sanitization.
 
 ## Related Notes
-- [[27.02 Cache Keys and Unkeyed Inputs]]
-- [[27.06 Cache Poisoning via Fat GET]]
+- [[02 - Cache Keys and Unkeyed Inputs]]
+- [[06 - Cache Poisoning via Fat GET]]

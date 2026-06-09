@@ -80,5 +80,5 @@ A Bug Bounty hunter targeted a massive social media application. The app used Fa
 - This vuln + [[19 - OAuth (Account Takeover)]] → This is the fundamental mechanism for escalating an Open Redirect into full Account Takeover in modern architectures.
 
 ## Related Notes
-- [[24.01 What is Open Redirect?]]
-- [[24.05 Open Redirect to Phishing]]
+- [[01 - What is Open Redirect?]]
+- [[05 - Open Redirect to Phishing]]

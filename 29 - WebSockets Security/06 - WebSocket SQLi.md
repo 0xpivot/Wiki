@@ -169,6 +169,6 @@ db.query(query, values, (err, res) => {
 Before the JSON payload even reaches the database logic, it should be validated against a strict schema. If the `id` field is expected to be an integer, the backend schema validator should reject the message entirely if it contains a string or special characters, dropping the WebSocket frame before any backend processing occurs.
 
 ## Related Notes
-- [[06.01 What is SQL Injection?]]
-- [[06.03 Blind SQLi (Boolean & Time-based)]]
-- [[29.04 WebSocket Message Manipulation]]
+- [[01 - What is SQL Injection?]]
+- [[03 - Blind SQLi (Boolean & Time-based)]]
+- [[04 - WebSocket Message Manipulation]]

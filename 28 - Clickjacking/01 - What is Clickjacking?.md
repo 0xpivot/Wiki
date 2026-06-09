@@ -76,7 +76,7 @@ The bank processes the request using the victim's active session cookie.
 
 ## How to Exploit It
 - **Step-by-step walkthrough:**
-  (Detailed exploitation is covered in [[28.02 Basic iframe Clickjacking]]). The core premise is:
+  (Detailed exploitation is covered in [[02 - Basic iframe Clickjacking]]). The core premise is:
   1. Find a target page without framing protections.
   2. Write an attacker HTML page containing the target page in an iframe.
   3. Use CSS (`position: absolute; top: Xpx; left: Ypx; opacity: 0.0`) to position the target iframe's critical button perfectly under a decoy button on your attacker page.
@@ -92,9 +92,9 @@ One of the most famous early examples of Clickjacking was the Twitter "Don't Cli
   3. **SameSite Cookies:** Set session cookies to `SameSite=Lax` or `SameSite=Strict`. This prevents the browser from sending the user's session cookie when the site is loaded inside a third-party iframe, neutralizing the impact of Clickjacking even if framing is possible.
 
 ## Chaining Opportunities
-- This vuln + [[10.01 What is CSRF?]] → If a site has anti-CSRF tokens, you can't force the browser to make the request via script. However, you *can* use Clickjacking to make the user manually click the button containing the valid CSRF token, completely bypassing CSRF protections.
-- This vuln + [[28.04 Drag and Drop Clickjacking]] → Stealing sensitive data by tricking the user into dragging it out of the hidden iframe.
+- This vuln + [[01 - What is CSRF?]] → If a site has anti-CSRF tokens, you can't force the browser to make the request via script. However, you *can* use Clickjacking to make the user manually click the button containing the valid CSRF token, completely bypassing CSRF protections.
+- This vuln + [[04 - Drag and Drop Clickjacking]] → Stealing sensitive data by tricking the user into dragging it out of the hidden iframe.
 
 ## Related Notes
-- [[28.02 Basic iframe Clickjacking]]
-- [[28.06 Defense — X-Frame-Options, CSP frame-ancestors]]
+- [[02 - Basic iframe Clickjacking]]
+- [[06 - Defense — X-Frame-Options, CSP frame-ancestors]]

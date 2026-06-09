@@ -19,7 +19,7 @@ Think of it like a translator working between a Russian speaker and a French spe
 ### 1. End-to-End HTTP/2 (The Best Fix)
 HTTP/2 eliminates the `Content-Length` and `Transfer-Encoding` ambiguity entirely by using explicit binary framing. 
 - **The Fix:** Ensure that your Front-End proxy communicates with your Back-End server exclusively over HTTP/2. 
-- **The Trap:** Do not just enable HTTP/2 on the Front-End. If the Front-End *downgrades* the traffic to HTTP/1.1 before sending it to the Back-End, you are still vulnerable to H2.CL and H2.TE smuggling (See [[26.05 HTTP/2 Request Smuggling (H2.CL, H2.TE)]]).
+- **The Trap:** Do not just enable HTTP/2 on the Front-End. If the Front-End *downgrades* the traffic to HTTP/1.1 before sending it to the Back-End, you are still vulnerable to H2.CL and H2.TE smuggling (See [[05 - HTTP_2 Request Smuggling (H2.CL, H2.TE)]]).
 
 ### 2. Strict Request Normalization
 If you must use HTTP/1.1, configure the Front-End proxy to strictly normalize requests:
@@ -88,5 +88,5 @@ hello
 - [ ] If the application does not require streaming uploads, is `Transfer-Encoding` explicitly disabled on the backend web server?
 
 ## Related Notes
-- [[26.01 What is HTTP Request Smuggling?]]
-- [[26.05 HTTP/2 Request Smuggling (H2.CL, H2.TE)]]
+- [[01 - What is HTTP Request Smuggling?]]
+- [[05 - HTTP/2 Request Smuggling (H2.CL, H2.TE)]]

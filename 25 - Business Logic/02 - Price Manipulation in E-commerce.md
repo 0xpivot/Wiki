@@ -125,8 +125,8 @@ A Bug Bounty hunter was testing a software vendor that sold expensive enterprise
   ```
 
 ## Chaining Opportunities
-- This vuln + [[25.03 Quantity Manipulation (negative quantities)]] → If the price parameter is secure, try manipulating the quantity parameter instead.
+- This vuln + [[03 - Quantity Manipulation (negative quantities)]] → If the price parameter is secure, try manipulating the quantity parameter instead.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.03 Quantity Manipulation (negative quantities)]]
+- [[01 - What are Business Logic Flaws?]]
+- [[03 - Quantity Manipulation (negative quantities)]]

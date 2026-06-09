@@ -96,9 +96,9 @@ James Kettle used Response Queue Poisoning against a target running an older ver
   2. **Fix the Smuggling Root Cause:** Ensure end-to-end HTTP/2 or strict RFC 7230 compliance on the front-end proxy to prevent smuggling from occurring in the first place.
 
 ## Chaining Opportunities
-- This vuln + [[27.01 Web Cache Poisoning Basics]] → If a CDN caches the desynchronized response, you achieve Web Cache Poisoning, amplifying the attack to affect all users globally.
-- This vuln + [[26.09 Smuggling to Deliver XSS]] → Using queue poisoning to swap out legitimate JS files for malicious ones.
+- This vuln + [[01 - Web Cache Poisoning Basics]] → If a CDN caches the desynchronized response, you achieve Web Cache Poisoning, amplifying the attack to affect all users globally.
+- This vuln + [[09 - Smuggling to Deliver XSS]] → Using queue poisoning to swap out legitimate JS files for malicious ones.
 
 ## Related Notes
-- [[26.01 What is HTTP Request Smuggling?]]
-- [[26.08 Smuggling to Capture Other Users' Requests]]
+- [[01 - What is HTTP Request Smuggling?]]
+- [[08 - Smuggling to Capture Other Users' Requests]]

@@ -83,9 +83,9 @@ A Bug Bounty hunter was testing a financial application. The application used an
   2. **Fix the Smuggling:** Prevent the smuggling at the Front-End by upgrading to end-to-end HTTP/2 or rejecting ambiguous `Content-Length` and `Transfer-Encoding` headers.
 
 ## Chaining Opportunities
-- This vuln + [[25.13 Function-Level Access Control Bypass]] → Combining smuggling with access control bypass to achieve remote code execution on internal admin panels.
-- This vuln + [[13.01 SSRF (Server-Side Request Forgery)]] → Accessing internal metadata endpoints (like AWS IMDS `169.254.169.254`) by smuggling a request with a manipulated `Host` header.
+- This vuln + [[13 - Function-Level Access Control Bypass]] → Combining smuggling with access control bypass to achieve remote code execution on internal admin panels.
+- This vuln + [[01 - SSRF (Server-Side Request Forgery)]] → Accessing internal metadata endpoints (like AWS IMDS `169.254.169.254`) by smuggling a request with a manipulated `Host` header.
 
 ## Related Notes
-- [[26.01 What is HTTP Request Smuggling?]]
-- [[25.14 Exploiting Trust Between Microservices]]
+- [[01 - What is HTTP Request Smuggling?]]
+- [[14 - Exploiting Trust Between Microservices]]

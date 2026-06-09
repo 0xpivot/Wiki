@@ -134,6 +134,6 @@ In a bug bounty program, a researcher found an application that allowed users to
 - This vuln + [[Blind Out-of-Band (OOB) Techniques]] → If the output of the file (`/etc/passwd`) is never displayed to the user, chain the XXE with an OOB technique (using an external DTD) to exfiltrate the file contents over HTTP or DNS.
 
 ## Related Notes
-- [[14 - XXE — What is XXE]]
+- [[01 - What is XXE]]
 - [[08 - File Upload + SSRF (SVG with SSRF payload)]]
 - [[15 - Defense — Extension Allowlists, Content Validation, Separate Storage]]

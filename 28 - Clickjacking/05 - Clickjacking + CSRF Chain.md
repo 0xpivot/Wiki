@@ -81,9 +81,9 @@ An attacker targeted a password manager web interface. Changing the master passw
   2. **SameSite Cookies:** Setting session cookies to `SameSite=Lax` or `Strict` ensures that even if the site is framed, the POST request triggered by the click will not contain the user's session cookie, causing the backend to reject the request as unauthenticated.
 
 ## Chaining Opportunities
-- This vuln + [[10.01 What is CSRF?]] → The definitive bypass for anti-CSRF tokens when framing is allowed.
-- This vuln + [[23.01 Stored XSS Basics]] → Using Clickjacking to force a victim to store an XSS payload on their own account.
+- This vuln + [[01 - What is CSRF?]] → The definitive bypass for anti-CSRF tokens when framing is allowed.
+- This vuln + [[01 - Stored XSS Basics]] → Using Clickjacking to force a victim to store an XSS payload on their own account.
 
 ## Related Notes
-- [[28.02 Basic iframe Clickjacking]]
-- [[28.06 Defense — X-Frame-Options, CSP frame-ancestors]]
+- [[02 - Basic iframe Clickjacking]]
+- [[06 - Defense — X-Frame-Options, CSP frame-ancestors]]

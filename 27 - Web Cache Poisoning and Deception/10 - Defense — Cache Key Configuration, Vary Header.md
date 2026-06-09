@@ -86,5 +86,5 @@ Backend returns `404 Not Found`. ATTACK BLOCKED!
 - [ ] Is the web server configured to reject `GET` requests that contain an HTTP body?
 
 ## Related Notes
-- [[27.02 Cache Keys and Unkeyed Inputs]]
-- [[27.09 Web Cache Deception Attack]]
+- [[02 - Cache Keys and Unkeyed Inputs]]
+- [[09 - Web Cache Deception Attack]]

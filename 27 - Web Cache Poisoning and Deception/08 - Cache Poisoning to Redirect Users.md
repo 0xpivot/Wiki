@@ -99,8 +99,8 @@ A security researcher found a severe vulnerability in a default configuration of
 
 ## Chaining Opportunities
 - This vuln + Phishing → The ultimate goal of redirecting traffic is to harvest credentials on a look-alike domain.
-- This vuln + [[16.03 OAuth Misconfigurations (Implicit Flow)]] → Redirecting the OAuth callback URL to steal the victim's access token.
+- This vuln + [[03 - OAuth Misconfigurations (Implicit Flow)]] → Redirecting the OAuth callback URL to steal the victim's access token.
 
 ## Related Notes
-- [[27.03 Cache Poisoning via X-Forwarded-Host]]
-- [[27.04 Cache Poisoning via X-Forwarded-Scheme]]
+- [[03 - Cache Poisoning via X-Forwarded-Host]]
+- [[04 - Cache Poisoning via X-Forwarded-Scheme]]

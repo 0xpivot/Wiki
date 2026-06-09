@@ -48,7 +48,7 @@ Attacker loops this process every 13 days, gaining infinite premium access on on
 - **Step-by-step walkthrough:**
   1. Intercept the API request made when clicking "Start Trial".
   2. Look for any user-controlled inputs governing time.
-  3. Change `"plan": "premium_trial"` to `"plan": "premium"` with `"price": 0` (See [[25.02 Price Manipulation in E-commerce]]).
+  3. Change `"plan": "premium_trial"` to `"plan": "premium"` with `"price": 0` (See [[02 - Price Manipulation in E-commerce]]).
   4. If the trial relies on a Stripe/Braintree token, cancel the trial in the SaaS app, but intercept the cancellation request and prevent it from reaching the payment provider. Desyncing the SaaS app state from the Payment Gateway state often leads to infinite premium access.
 
 - **Actual payloads:**
@@ -86,8 +86,8 @@ A security researcher was testing a cloud video editing platform. The platform o
   3. **State Integrity:** Once an account uses a trial, a boolean flag (`has_used_trial = true`) must be permanently flipped in the database.
 
 ## Chaining Opportunities
-- This vuln + [[25.07 Workflow Bypass (skipping payment step)]] → Bypass the step that requires entering a credit card to begin the trial, allowing mass creation of trial accounts without financial verification.
+- This vuln + [[07 - Workflow Bypass (skipping payment step)]] → Bypass the step that requires entering a credit card to begin the trial, allowing mass creation of trial accounts without financial verification.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.06 Account Limit Bypass]]
+- [[01 - What are Business Logic Flaws?]]
+- [[06 - Account Limit Bypass]]

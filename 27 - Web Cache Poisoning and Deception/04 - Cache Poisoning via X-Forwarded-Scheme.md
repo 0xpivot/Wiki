@@ -98,8 +98,8 @@ A researcher targeted a popular blogging platform. The platform used Varnish Cac
   3. **Trust Configuration:** Only accept `X-Forwarded-` headers from trusted internal proxy IP addresses. If a request arrives from the public internet containing these headers, the edge proxy should strip them before forwarding to the backend.
 
 ## Chaining Opportunities
-- This vuln + [[27.03 Cache Poisoning via X-Forwarded-Host]] → Combine both headers to turn a DoS attack into an Open Redirect attack.
+- This vuln + [[03 - Cache Poisoning via X-Forwarded-Host]] → Combine both headers to turn a DoS attack into an Open Redirect attack.
 
 ## Related Notes
-- [[27.01 What is Web Caching?]]
-- [[27.08 Cache Poisoning to Redirect Users]]
+- [[01 - What is Web Caching?]]
+- [[08 - Cache Poisoning to Redirect Users]]

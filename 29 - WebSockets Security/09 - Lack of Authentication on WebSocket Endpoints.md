@@ -148,6 +148,6 @@ Even if the socket is authenticated, the backend must map the active socket obje
 - *Secure Logic:* "Socket ID 942 just requested to view Document 55. Let me check the session attached to Socket 942. It belongs to User Alice. Does Alice have read access to Document 55? Yes. Okay, return the data."
 
 ## Related Notes
-- [[29.01 WebSocket Protocol — How It Works]]
-- [[29.02 WebSocket Upgrade Security Implications]]
-- [[29.10 Defense — Origin Check, Authentication per Message]]
+- [[01 - WebSocket Protocol — How It Works]]
+- [[02 - WebSocket Upgrade Security Implications]]
+- [[10 - Defense — Origin Check, Authentication per Message]]

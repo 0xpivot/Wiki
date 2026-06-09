@@ -110,5 +110,5 @@ Once a timing delay suggests a vulnerability, you must confirm it by forcing the
 - **Log Analysis:** Defenders can detect timing probes by looking at proxy logs. Look for requests that take exactly `10000ms`, `30000ms`, or `60000ms` to complete (standard proxy timeout thresholds), coupled with unusually short `Content-Length` headers or malformed `Transfer-Encoding` headers.
 
 ## Related Notes
-- [[26.02 CL.TE Smuggling]]
-- [[26.03 TE.CL Smuggling]]
+- [[02 - CL.TE Smuggling]]
+- [[03 - TE.CL Smuggling]]

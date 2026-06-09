@@ -91,8 +91,8 @@ A Bug Bounty hunter was testing a web application that fetched RSS feeds. The ap
   ```
 
 ## Chaining Opportunities
-- This vuln + [[13.01 SSRF (Server-Side Request Forgery)]] → The perfect chain. An Open Redirect is the ultimate weapon against strict SSRF allowlists.
+- This vuln + [[01 - SSRF (Server-Side Request Forgery)]] → The perfect chain. An Open Redirect is the ultimate weapon against strict SSRF allowlists.
 
 ## Related Notes
-- [[24.01 What is Open Redirect?]]
-- [[13.01 SSRF (Server-Side Request Forgery)]]
+- [[01 - What is Open Redirect?]]
+- [[01 - SSRF (Server-Side Request Forgery)]]

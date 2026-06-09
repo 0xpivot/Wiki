@@ -78,7 +78,7 @@ network, it successfully hits the internal admin server.
   4. Wait for the next user to connect.
   5. The backend server acts as an open proxy for the smuggled request. It fetches the AWS IAM credentials from the metadata service.
   6. The backend appends the victim's request to the response and sends it back to the victim (Response Queue Poisoning).
-  7. **Note:** To actually *read* the credentials, you must chain this with "Capture Other Users' Requests" (See [[26.08 Smuggling to Capture Other Users' Requests]]) so the backend writes the metadata response into a storage location you control.
+  7. **Note:** To actually *read* the credentials, you must chain this with "Capture Other Users' Requests" (See [[08 - Smuggling to Capture Other Users' Requests]]) so the backend writes the metadata response into a storage location you control.
 
 - **Actual payloads:**
   **Smuggling a request to an internal admin panel (CL.TE):**
@@ -100,14 +100,14 @@ A Bug Bounty hunter targeted a company's main marketing site. The site was compl
 
 ## How to Fix It
 - **Developer remediation:**
-  1. Fix the smuggling vulnerability (See [[26.01 What is HTTP Request Smuggling?]]).
+  1. Fix the smuggling vulnerability (See [[01 - What is HTTP Request Smuggling?]]).
   2. **Host Header Validation:** The Back-End server must rigidly validate the `Host` header. If the Back-End expects traffic for `public-web.com`, it should immediately reject any request (including smuggled ones) that contain `Host: 10.0.0.99` or `Host: localhost`.
   3. **Network Segmentation:** The public-facing Web Server should be placed in a DMZ (Demilitarized Zone) with strict firewall rules that prevent it from communicating with highly sensitive internal servers (like Jenkins or Admin panels) unless absolutely necessary.
 
 ## Chaining Opportunities
-- This vuln + [[13.01 SSRF (Server-Side Request Forgery)]] → Smuggling is merely the delivery mechanism; SSRF is the impact.
-- This vuln + [[26.08 Smuggling to Capture Other Users' Requests]] → Required to actually read the data retrieved by the SSRF attack.
+- This vuln + [[01 - SSRF (Server-Side Request Forgery)]] → Smuggling is merely the delivery mechanism; SSRF is the impact.
+- This vuln + [[08 - Smuggling to Capture Other Users' Requests]] → Required to actually read the data retrieved by the SSRF attack.
 
 ## Related Notes
-- [[26.01 What is HTTP Request Smuggling?]]
-- [[13.01 SSRF (Server-Side Request Forgery)]]
+- [[01 - What is HTTP Request Smuggling?]]
+- [[01 - SSRF (Server-Side Request Forgery)]]

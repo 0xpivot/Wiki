@@ -78,9 +78,9 @@ A classic example is a website that dynamically generates a "Back to Top" link b
   2. **Disable Caching for Dynamic Content:** If a page's content changes based on who is asking or what headers they send, that page should not be cached. Return `Cache-Control: no-store, no-cache`.
 
 ## Chaining Opportunities
-- This vuln + [[24.01 What is Open Redirect?]] → Poison the cache to redirect all users on the homepage to a phishing site.
-- This vuln + [[26.06 Response Queue Poisoning]] → Use HTTP Request Smuggling to trick the cache into saving the wrong response entirely.
+- This vuln + [[01 - What is Open Redirect?]] → Poison the cache to redirect all users on the homepage to a phishing site.
+- This vuln + [[06 - Response Queue Poisoning]] → Use HTTP Request Smuggling to trick the cache into saving the wrong response entirely.
 
 ## Related Notes
-- [[27.02 Cache Keys and Unkeyed Inputs]]
-- [[27.07 Cache Poisoning to Deliver XSS]]
+- [[02 - Cache Keys and Unkeyed Inputs]]
+- [[07 - Cache Poisoning to Deliver XSS]]

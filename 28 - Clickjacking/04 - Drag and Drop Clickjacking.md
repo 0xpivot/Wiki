@@ -116,5 +116,5 @@ An attacker targeted a cryptocurrency exchange. The user's wallet recovery phras
 - This vuln + Data Exfiltration → A primary method for bypassing Same-Origin Policy reading restrictions via UI interaction.
 
 ## Related Notes
-- [[28.02 Basic iframe Clickjacking]]
-- [[28.03 Multistep Clickjacking]]
+- [[02 - Basic iframe Clickjacking]]
+- [[03 - Multistep Clickjacking]]

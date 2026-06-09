@@ -66,7 +66,7 @@ valid HTTP method. The legitimate user receives the error!]
   1. You need a deep understanding of HTTP RFCs and protocol specifications.
   2. Send requests with both `Content-Length` and `Transfer-Encoding: chunked` headers.
   3. Send requests with malformed headers: `Transfer-Encoding: xchunked`, `Transfer-Encoding : chunked` (with a space), `Transfer-Encoding: chunked\r\n`.
-  4. Use a Time-Delay technique (See [[26.11 Detecting Smuggling]]) to observe if the backend hangs while waiting for data.
+  4. Use a Time-Delay technique (See [[11 - Detecting Smuggling (timing, differential responses)]]) to observe if the backend hangs while waiting for data.
   5. If the front-end and back-end handle the malformed headers differently, you have the necessary conditions for a smuggling attack.
 
 - **Tool commands with flags explained:**
@@ -95,9 +95,9 @@ In 2019, James Kettle (albinowax) released groundbreaking research on HTTP Reque
   3. **Disable Connection Reuse:** (Not recommended for performance) If the front-end closes the TCP connection to the backend after every single request, smuggled data cannot poison the next user.
 
 ## Chaining Opportunities
-- This vuln + [[25.13 Function-Level Access Control Bypass]] → Smuggle a request to an admin endpoint. When an actual Admin uses the site, their session cookies are appended to your smuggled request, executing the admin action on your behalf.
-- This vuln + [[26.06 Response Queue Poisoning]] → Steal the sensitive data intended for the next user.
+- This vuln + [[13 - Function-Level Access Control Bypass]] → Smuggle a request to an admin endpoint. When an actual Admin uses the site, their session cookies are appended to your smuggled request, executing the admin action on your behalf.
+- This vuln + [[06 - Response Queue Poisoning]] → Steal the sensitive data intended for the next user.
 
 ## Related Notes
-- [[26.02 CL.TE Smuggling]]
-- [[26.03 TE.CL Smuggling]]
+- [[02 - CL.TE Smuggling]]
+- [[03 - TE.CL Smuggling]]

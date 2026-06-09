@@ -129,9 +129,9 @@ A Bug Bounty hunter noticed that the `POST /place_order` endpoint did not actual
   3. **Cryptographic Verification:** Never trust client-provided payment statuses (like `status=APPROVED` in a URL). The backend server must communicate directly with the payment gateway (via secure Webhooks or backend API calls) to verify that a transaction actually occurred and that the funds were captured for the exact amount required.
 
 ## Chaining Opportunities
-- This vuln + [[25.05 Free Trial Abuse]] → Bypass the credit-card verification step required to start a free trial, allowing for mass generation of premium accounts.
+- This vuln + [[05 - Free Trial Abuse]] → Bypass the credit-card verification step required to start a free trial, allowing for mass generation of premium accounts.
 - This vuln + [[10 - Chaining Playbook (E-commerce)]] → An essential part of the complete e-commerce destruction playbook.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.08 Order Manipulation After Checkout]]
+- [[01 - What are Business Logic Flaws?]]
+- [[08 - Order Manipulation After Checkout]]

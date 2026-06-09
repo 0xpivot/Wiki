@@ -128,10 +128,10 @@ A major enterprise software product contained an API endpoint for downloading di
   ```
 
 ## Chaining Opportunities
-- This vuln + [[22.07 File Upload + Path Traversal]] → Attackers use Path Traversal within the `filename` parameter of a multipart upload to drop a webshell into a directory where execution is permitted.
+- This vuln + [[07 - File Upload + Path Traversal]] → Attackers use Path Traversal within the `filename` parameter of a multipart upload to drop a webshell into a directory where execution is permitted.
 - This vuln + [[Missing File Permissions / Sudo Privileges]] → Use path traversal to read an SSH private key (`~/.ssh/id_rsa`), log in via SSH, and check for `sudo` privileges to escalate to root.
 
 ## Related Notes
-- [[23.02 Basic Path Traversal (../../../etc/passwd)]]
-- [[23.03 Encoding Bypass for Path Traversal]]
-- [[23.05 Local File Inclusion (LFI)]]
+- [[02 - Basic Path Traversal (.._.._.._etc_passwd)]]
+- [[03 - Encoding Bypass for Path Traversal]]
+- [[05 - Local File Inclusion (LFI)]]

@@ -125,9 +125,9 @@ An attacker found that a popular social media platform did not use `X-Frame-Opti
   Implement the `Content-Security-Policy: frame-ancestors 'none'` HTTP response header on all state-changing endpoints to completely prevent the browser from rendering the page inside any iframe.
 
 ## Chaining Opportunities
-- This vuln + [[28.03 Multistep Clickjacking]] → When the action requires multiple clicks (e.g., clicking a dropdown menu, then clicking "Delete").
-- This vuln + [[16.03 OAuth Misconfigurations (Implicit Flow)]] → Forcing victim to authorize malicious OAuth applications.
+- This vuln + [[03 - Multistep Clickjacking]] → When the action requires multiple clicks (e.g., clicking a dropdown menu, then clicking "Delete").
+- This vuln + [[03 - OAuth Misconfigurations (Implicit Flow)]] → Forcing victim to authorize malicious OAuth applications.
 
 ## Related Notes
-- [[28.01 What is Clickjacking?]]
-- [[28.05 Clickjacking + CSRF Chain]]
+- [[01 - What is Clickjacking?]]
+- [[05 - Clickjacking + CSRF Chain]]

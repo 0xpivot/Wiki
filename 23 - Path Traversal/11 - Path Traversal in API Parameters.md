@@ -140,6 +140,6 @@ A Bug Bounty hunter analyzed a modern React application powered by a NodeJS API.
 - This vuln + [[13.01 SSRF (Server-Side Request Forgery)]] → If the API parameter points to an internal URL instead of a file (e.g., fetching a profile picture from an internal microservice), Path Traversal in the URL path can be used to hit different microservice endpoints (e.g., `/api/fetch?url=http://internal-service/images/../../admin/delete`).
 
 ## Related Notes
-- [[23.01 What is Path Traversal?]]
-- [[23.03 Encoding Bypass for Path Traversal]]
-- [[23.12 Defense — Canonicalization, Allowlists, Chroot]]
+- [[01 - What is Path Traversal?]]
+- [[03 - Encoding Bypass for Path Traversal]]
+- [[12 - Defense — Canonicalization, Allowlists, Chroot]]

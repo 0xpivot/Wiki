@@ -152,6 +152,6 @@ By sending a carefully crafted string array `{"amount": ["-1000"]}`, the researc
 3. **Strict Schema Validation (The WAF Replacement):** Because traditional WAFs cannot inspect WebSocket JSON, the application must implement its own strict schema validation layer. Use libraries like `Joi` (Node.js) or `Pydantic` (Python) to define rigid schemas for every `action` type. If a message contains an unexpected field, a string instead of an integer, or an integer out of bounds, the server must drop the message immediately before it ever reaches the business logic controllers.
 
 ## Related Notes
-- [[29.01 WebSocket Protocol — How It Works]]
-- [[29.05 WebSocket XSS]]
-- [[25.01 What are Business Logic Vulnerabilities?]]
+- [[01 - WebSocket Protocol — How It Works]]
+- [[05 - WebSocket XSS]]
+- [[01 - What are Business Logic Vulnerabilities?]]

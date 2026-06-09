@@ -73,7 +73,7 @@ Server says: "Valid session cookie! Here is the dashboard data!"
   11. The platform automatically grants you access to all of `@company.com`'s private bug bounty programs.
 
 - **Actual payloads:**
-  **Mass Assignment during Registration (See [[25.15 Hidden API Parameters]]):**
+  **Mass Assignment during Registration (See [[15 - Hidden API Parameters]]):**
   ```json
   {
     "email": "victim@target.com",
@@ -90,12 +90,12 @@ A security researcher tested a popular team-collaboration tool (similar to Slack
 - **Developer remediation:**
   1. **Strict Backend Enforcement:** Every single API endpoint must verify the user's state. Middleware should be used: `if (!user.isEmailVerified) return 403 Forbidden;`.
   2. **State Revocation on Change:** If a user changes their email address, the backend MUST immediately and atomically set `verified = false` before updating the email column.
-  3. **Verification Tokens:** Do not rely on sequential integers for verification codes (e.g., `123456`) unless heavy rate-limiting is applied (See [[25.12 Rate Limit Bypass for Votes / Likes]]). Use cryptographically secure, long random tokens sent via email links.
+  3. **Verification Tokens:** Do not rely on sequential integers for verification codes (e.g., `123456`) unless heavy rate-limiting is applied (See [[12 - Rate Limit Bypass for Votes _ Likes]]). Use cryptographically secure, long random tokens sent via email links.
 
 ## Chaining Opportunities
-- This vuln + [[25.15 Hidden API Parameters]] → Injecting `is_verified=true` during registration.
-- This vuln + [[24.01 What is Open Redirect?]] → Stealing the verification token by manipulating the callback URL in the verification email.
+- This vuln + [[15 - Hidden API Parameters]] → Injecting `is_verified=true` during registration.
+- This vuln + [[01 - What is Open Redirect?]] → Stealing the verification token by manipulating the callback URL in the verification email.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.17 Phone Number Verification Bypass]]
+- [[01 - What are Business Logic Flaws?]]
+- [[17 - Phone Number Verification Bypass]]

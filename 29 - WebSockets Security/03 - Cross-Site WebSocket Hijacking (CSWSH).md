@@ -202,6 +202,6 @@ Developers must implement multiple layers of defense to permanently eradicate CS
    - *Why this works:* When the victim visits `evil.com`, the browser will refuse to attach the `SameSite` session cookie to the cross-site WebSocket Upgrade Request targeting `bank.com`. The backend will receive an unauthenticated request and reject the connection.
 
 ## Related Notes
-- [[29.01 WebSocket Protocol — How It Works]]
-- [[29.02 WebSocket Upgrade Security Implications]]
-- [[10.01 What is CSRF?]]
+- [[01 - WebSocket Protocol — How It Works]]
+- [[02 - WebSocket Upgrade Security Implications]]
+- [[01 - What is CSRF?]]

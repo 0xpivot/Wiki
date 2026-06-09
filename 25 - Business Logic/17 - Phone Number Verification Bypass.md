@@ -45,7 +45,7 @@ POST /verify_otp {"code": "4892"} ──> 200 OK! (Session Granted!)
   1. **OTP Brute Force:** Trigger an SMS code to your own phone. Do not look at the code. Go to the verification page and enter `0000`. Intercept the request in Burp Suite. Send it to Intruder. Set the payload to Numbers (0000 to 9999). Run the attack. If it succeeds, the OTP mechanism is fundamentally broken.
   2. **Response Manipulation:** Intercept the `POST /verify_otp` request. The server replies `{"success": false}`. Use Burp Intercept to change the response to `{"success": true}`. If the frontend JavaScript blindly trusts this and logs you in, and the backend doesn't re-verify the session token, you win.
   3. **The Pre-Auth Bypass:** (Similar to 25.16). Do not verify the phone. Try to access `/api/dashboard` directly.
-  4. **Concurrent Requests (Race Condition):** If there is a rate limit (e.g., "Max 3 tries"), try sending 50 guesses simultaneously using the HTTP/2 Single Packet attack (See [[25.09 Race Conditions in Financial Transactions]]).
+  4. **Concurrent Requests (Race Condition):** If there is a rate limit (e.g., "Max 3 tries"), try sending 50 guesses simultaneously using the HTTP/2 Single Packet attack (See [[09 - Race Conditions in Financial Transactions]]).
   5. **Endpoint Confusion:** Sometimes `POST /api/v1/verify` has rate limiting, but the older `POST /api/v0/verify` or the mobile endpoint `POST /api/mobile/verify` forgot to implement the rate limit.
 
 ## How to Exploit It
@@ -79,9 +79,9 @@ The hunter wrote a script that clicked "Resend OTP" 1,000 times in 1 minute. The
   3. **State Invalidation on Use:** The moment an OTP is successfully used, it MUST be marked as consumed. It cannot be used for a subsequent transaction.
 
 ## Chaining Opportunities
-- This vuln + [[25.12 Rate Limit Bypass for Votes / Likes]] → Bypassing the 5-attempt rate limit by rotating IP headers allows you to brute force the entire 10,000 OTP space.
+- This vuln + [[12 - Rate Limit Bypass for Votes _ Likes]] → Bypassing the 5-attempt rate limit by rotating IP headers allows you to brute force the entire 10,000 OTP space.
 - This vuln + Account Takeover (ATO) → Bypassing SMS 2FA is the final step in completely taking over a victim's account.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.16 Email Verification Bypass]]
+- [[01 - What are Business Logic Flaws?]]
+- [[16 - Email Verification Bypass]]

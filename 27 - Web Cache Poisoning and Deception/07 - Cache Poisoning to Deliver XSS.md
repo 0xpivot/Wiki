@@ -93,9 +93,9 @@ The backend generated a 301 Redirect, but the HTML body contained the unescaped 
   2. **Context-Aware Encoding:** Even if an input is used, it MUST be strictly HTML-encoded before being reflected in the DOM, regardless of whether it came from a header or a URL parameter.
 
 ## Chaining Opportunities
-- This vuln + [[27.03 Cache Poisoning via X-Forwarded-Host]] → The primary delivery mechanism for rewriting `<script src="...">` tags.
-- This vuln + [[27.06 Cache Poisoning via Fat GET]] → Using Fat GET bodies to smuggle XSS payloads into JSONP or search parameters.
+- This vuln + [[03 - Cache Poisoning via X-Forwarded-Host]] → The primary delivery mechanism for rewriting `<script src="...">` tags.
+- This vuln + [[06 - Cache Poisoning via Fat GET]] → Using Fat GET bodies to smuggle XSS payloads into JSONP or search parameters.
 
 ## Related Notes
-- [[27.01 What is Web Caching?]]
-- [[27.08 Cache Poisoning to Redirect Users]]
+- [[01 - What is Web Caching?]]
+- [[08 - Cache Poisoning to Redirect Users]]

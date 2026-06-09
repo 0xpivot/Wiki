@@ -91,8 +91,8 @@ A Bug Bounty hunter tested a major food delivery app. The app had a promotion: "
   3. **Atomic Operations (Mutex):** Use database locking or mutexes when applying coupons to prevent Race Conditions from applying the same coupon simultaneously across multiple threads.
 
 ## Chaining Opportunities
-- This vuln + [[25.09 Race Conditions in Financial Transactions]] → The most common way to bypass "coupon already applied" checks is by sending 20 requests at the exact same millisecond.
+- This vuln + [[09 - Race Conditions in Financial Transactions]] → The most common way to bypass "coupon already applied" checks is by sending 20 requests at the exact same millisecond.
 
 ## Related Notes
-- [[25.01 What are Business Logic Flaws?]]
-- [[25.05 Free Trial Abuse]]
+- [[01 - What are Business Logic Flaws?]]
+- [[05 - Free Trial Abuse]]

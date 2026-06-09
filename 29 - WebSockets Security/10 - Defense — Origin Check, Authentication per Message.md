@@ -159,6 +159,6 @@ Server <--(WS Frame: {"status":"deleted"})-- Client
 - [ ] Is all data extracted from the socket parameterized before hitting the database?
 
 ## Related Notes
-- [[29.02 WebSocket Upgrade Security Implications]]
-- [[29.03 Cross-Site WebSocket Hijacking (CSWSH)]]
-- [[29.04 WebSocket Message Manipulation]]
+- [[02 - WebSocket Upgrade Security Implications]]
+- [[03 - Cross-Site WebSocket Hijacking (CSWSH)]]
+- [[04 - WebSocket Message Manipulation]]
