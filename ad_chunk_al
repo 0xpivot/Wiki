@@ -1,0 +1,10 @@
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/01 - Lateral Movement via RDP and Hijacking Sessions.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/02 - Lateral Movement via WinRM and PSRemoting.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/03 - Lateral Movement via SMB PsExec SmbExec.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/04 - Lateral Movement via WMI WMIExec.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/05 - Dumping LSASS Memory Mimikatz Procdump Comsvcs.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/06 - Dumping Local SAM and LSA Secrets.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/07 - Pass-the-Hash PtH Mechanics and Execution.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/08 - Over-Pass-the-Hash Pass-the-Key.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/09 - Pass-the-Ticket PtT and Ticket Management.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/10 - Extracting Credentials from Browsers and Credential Manager.md

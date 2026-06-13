@@ -4,21 +4,35 @@
     "type": "split",
     "children": [
       {
-        "id": "945a173c6f41e527",
+        "id": "a15064200ce94d3a",
         "type": "tabs",
         "children": [
           {
-            "id": "896f5ba5607d01da",
+            "id": "285b51f77f5087a7",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
-                "mode": "preview",
+                "file": "Network Security/A - 79 - Advanced Network Services/02 - Modbus Protocol Exploitation.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "01 - API1 — Broken Object Level Authorization (BOLA)"
+              "title": "02 - Modbus Protocol Exploitation"
+            }
+          },
+          {
+            "id": "0fd62b1c4e5a8576",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Active Directory/A - 63 - AD CS Exploitation/04 - ESC3 - Enrollment Agent Abuse.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "04 - ESC3 - Enrollment Agent Abuse"
             }
           }
         ]
@@ -78,7 +92,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 305.5086555480957
   },
   "right": {
     "id": "105865b2856041c7",
@@ -94,7 +108,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
+                "file": "37 - Cloud Infrastructure/01 - AWS IAM — Roles, Policies, Misconfigurations.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +118,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 01 - API1 — Broken Object Level Authorization (BOLA)"
+              "title": "Backlinks for 01 - AWS IAM — Roles, Policies, Misconfigurations"
             }
           },
           {
@@ -113,12 +127,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
+                "file": "37 - Cloud Infrastructure/01 - AWS IAM — Roles, Policies, Misconfigurations.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 01 - API1 — Broken Object Level Authorization (BOLA)"
+              "title": "Outgoing links from 01 - AWS IAM — Roles, Policies, Misconfigurations"
             }
           },
           {
@@ -156,13 +170,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
+                "file": "37 - Cloud Infrastructure/01 - AWS IAM — Roles, Policies, Misconfigurations.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 01 - API1 — Broken Object Level Authorization (BOLA)"
+              "title": "Outline of 01 - AWS IAM — Roles, Policies, Misconfigurations"
             }
           }
         ]
@@ -183,43 +197,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "896f5ba5607d01da",
+  "active": "285b51f77f5087a7",
   "lastOpenFiles": [
-    "31 - API Security/02 - API2 — Broken Authentication.md",
-    "31 - API Security/04 - API4 — Unrestricted Resource Consumption.md",
-    "31 - API Security/07 - API7 — Server Side Request Forgery (SSRF).md",
-    "31 - API Security/21 - API Key Rotation Failures.md",
-    "18 - JWT/02 - JWT Structure.md",
-    "31 - API Security/23 - SOAP API Attacks.md",
-    "31 - API Security/22 - Unauthenticated API Endpoints.md",
-    "31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md",
-    "31 - API Security/03 - API3 — Broken Object Property Level Authorization.md",
-    "31 - API Security/05 - API5 — Broken Function Level Authorization (BFLA).md",
-    "31 - API Security/06 - API6 — Unrestricted Access to Sensitive Business Flows.md",
-    "31 - API Security/09 - API9 — Improper Inventory Management.md",
-    "31 - API Security/10 - API10 — Unsafe Consumption of APIs.md",
-    "31 - API Security/16 - Lack of Resource Rate Limiting.md",
-    "31 - API Security/18 - API Documentation Discovery.md",
-    "31 - API Security/15 - Excessive Data Exposure.md",
-    "27 - Web Cache Poisoning and Deception/06 - Cache Poisoning via Fat GET.md",
-    "30 - GraphQL Security/09 - GraphQL Mutations — Unauthorized Write Operations.md",
-    "31 - API Security/24 - gRPC Security Testing.md",
-    "31 - API Security/08 - API8 — Security Misconfiguration.md",
-    "31 - API Security/25 - Web LLM Attacks.md",
-    "28 - Clickjacking/04 - Drag and Drop Clickjacking.md",
-    "30 - GraphQL Security/03 - Introspection Query — Information Disclosure.md",
-    "31 - API Security/20 - API Token Leakage in Logs.md",
-    "31 - API Security/14 - Mass Assignment in REST APIs.md",
-    "31 - API Security/13 - API Versioning Abuse.md",
-    "31 - API Security",
-    "30 - GraphQL Security",
-    "bad_links_list.txt",
-    "29 - WebSockets Security",
-    "28 - Clickjacking",
-    "27 - Web Cache Poisoning and Deception",
-    "26 - HTTP Request Smuggling",
-    "25 - Business Logic",
-    "24 - Open Redirect/03 - Bypass Techniques (__evil.com, _",
-    "24 - Open Redirect"
+    "Network Security/A - 79 - Advanced Network Services/03 - DNP3 Protocol Exploitation.md",
+    "Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/01 - Port Forwarding Local Remote and Dynamic.md",
+    "Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 91 - Cloud Threat Hunting AWS Azure GCP.md",
+    "Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 90 - Network Threat Hunting Zeek Suricata PCAP.md",
+    "Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 89 - Endpoint Threat Hunting Windows Sysmon EDR.md",
+    "Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 88 - Threat Hunting Foundations and Methodologies.md",
+    "Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/02 - The Threat Hunting Loop Hypothesis to Triage.md",
+    "Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/01 - Introduction to Proactive Threat Hunting.md",
+    "Specialized Testing/I - 49 - IoT Security/19 - SCADA ICS Security Concepts.md",
+    "Specialized Testing/I - 49 - IoT Security/16 - IP Camera Exploitation.md",
+    "Specialized Testing/I - 49 - IoT Security/13 - Modbus DNP3 Industrial Protocol Attacks.md",
+    "API Security/I - 31 - API Security/24 - gRPC Security Testing.md",
+    "API Security/I - 31 - API Security/23 - SOAP API Attacks.md",
+    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/02 - API VAPT/API VAPT 01 - API Reconnaissance and Endpoint Discovery.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 05 - Chaining API Logic Flaws for Unlimited Financial Fraud.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 04 - Webhook SSRF to Internal Network Pivoting via Gopher.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 03 - REST API Mass Assignment to Privilege Escalation and RCE.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 02 - Forging RSA JWTs via JWKS Spoofing and Key Confusion.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 01 - Exploiting GraphQL Introspection to BOLA and PII Dump.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/03 - Network/Network Ultra 04 - Advanced BGP Hijacking and DNS Amplification Campaigns.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web/Web Ultra 05 - Chaining DOM XSS with CORS Misconfigs for Mass Data Exfiltration.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web/Web Ultra 04 - HTTP2 Request Smuggling to Cache Poisoning and Admin Takeover.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web/Web Ultra 03 - Blind SSRF to AWS Metadata Exfiltration via DNS Rebinding.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/03 - Network/Network Ultra 03 - Exploiting Legacy Mainframes and SCADA in OT Environments.md",
+    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/01 - Web VAPT/Web VAPT 04 - Client-Side Exploitation XSS CSRF CORS.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web/Web Ultra 02 - Bypassing Cloudflare WAF for Blind SQLi to RCE via xp_cmdshell.md",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/04 - Active Directory",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/03 - Network",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web",
+    "Interview Preparation/10 - Ultimate Expert Scenario Bank",
+    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/04 - Active Directory VAPT",
+    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/03 - Network VAPT",
+    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/02 - API VAPT",
+    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/01 - Web VAPT",
+    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides"
   ]
 }

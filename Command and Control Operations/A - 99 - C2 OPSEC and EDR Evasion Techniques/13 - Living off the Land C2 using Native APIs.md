@@ -1,0 +1,104 @@
+---
+tags: [c2, opsec, evasion, edr, vapt]
+difficulty: advanced
+module: "99 - C2 OPSEC and EDR Evasion Techniques"
+topic: "99.13 Living off the Land C2 using Native APIs"
+---
+
+# 99.13 Living off the Land C2 using Native APIs
+
+## Overview
+Living off the Land (LotL) using Native APIs is an advanced evasion technique where threat actors bypass standard, monitored Windows APIs (Win32 API) in favor of lower-level, undocumented system functions provided by the OS. Endpoint Detection and Response (EDR) solutions typically hook high-level APIs in user mode. By using Native APIs, attackers can execute malicious actions—such as process injection or memory manipulation—while bypassing these primary detection mechanisms.
+
+## In-Depth Technical Mechanics
+EDRs rely heavily on user-mode hooking to monitor application behavior. They inject a DLL into every newly created process. This DLL intercepts calls to critical functions in `kernel32.dll` or `ntdll.dll` (e.g., `VirtualAlloc`, `CreateRemoteThread`). If a call seems malicious, the EDR blocks it.
+
+Attackers evade this through several progressive techniques:
+1. **Direct Native API Calls:** Instead of calling `VirtualAlloc` in `kernel32.dll`, the attacker calls its underlying implementation, `NtAllocateVirtualMemory`, directly in `ntdll.dll`. This bypasses any hooks placed exclusively in `kernel32.dll`.
+2. **Direct Syscalls:** If the EDR also hooks `ntdll.dll` (which is common), attackers employ direct system calls. Every Native API function relies on a `syscall` instruction to transition from user mode to the kernel. An attacker embeds the assembly instructions to perform the `syscall` directly within their payload. They dynamically resolve the System Service Number (SSN) for the desired function, populate the CPU registers, and execute the `syscall` instruction themselves, entirely bypassing the `ntdll.dll` hooks.
+3. **Indirect Syscalls:** EDRs adapted by checking if the `syscall` instruction originated from within the legitimate `ntdll.dll` memory space. If it came from the executable's `.text` section or unbacked memory, it's flagged. Indirect syscalls solve this by preparing the registers and then jumping to the memory address of a legitimate `syscall` instruction inside `ntdll.dll`. The execution flow appears legitimate because the kernel transition originates from the expected location.
+
+## Memory and Kernel Structures
+Understanding the transition mechanics is critical:
+- **System Service Number (SSN):** A unique identifier for every kernel function. The SSN is typically loaded into the `EAX` register before a syscall. Resolving the correct SSN dynamically (e.g., using techniques like Hell's Gate or Halo's Gate) is essential because SSNs change between Windows builds.
+- **`syscall` Instruction:** The assembly instruction that triggers the transition from user mode (Ring 3) to kernel mode (Ring 0).
+- **Call Stacks:** The sequence of function calls leading to a specific instruction. Defenders analyze the call stack when a thread enters the kernel. A legitimate call stack traces back through `ntdll.dll` and `kernel32.dll` to the main executable. Anomalous call stacks (e.g., missing `ntdll.dll` frames) indicate direct syscall usage.
+
+## Architectural Diagram
+```text
++-------------------+       +-------------------+
+|  Malware Payload  |       |  EDR User-Mode DLL|
++--------+----------+       +--------+----------+
+         |                           |
+         | 1. Win32 API Call         |
+         v                           |
++--------+----------+                |
+|  kernel32.dll     | <--------------+ 2. Hooked! (Intercepted)
++--------+----------+
+         |
+   (Alternative Path: Direct Syscall)
+         |
+         v
++--------+----------+
+|  ntdll.dll        | <--------------+ 3. Direct Syscall Bypasses ntdll hook
++--------+----------+                |    (Executes 'syscall' manually)
+         |
+         v
++--------+----------+
+|  Kernel (Ring 0)  |
++-------------------+
+```
+
+## Real-World Attack Scenario
+A red team is tasked with injecting a beacon into `explorer.exe`. Initial attempts using standard Win32 APIs like `VirtualAllocEx` and `CreateRemoteThread` are immediately blocked by the target's EDR, which hooks these functions in user mode. The team develops a custom loader using Indirect Syscalls. The loader dynamically parses `ntdll.dll` from disk to find the SSNs for `NtAllocateVirtualMemory`, `NtWriteVirtualMemory`, and `NtCreateThreadEx`. It then prepares the CPU registers and executes a jump into the legitimate `syscall` instructions within the loaded `ntdll.dll` in memory. The EDR's user-mode hooks are never triggered, and the beacon successfully injects into `explorer.exe` without alerting the SOC.
+
+## EDR Telemetry and Detection Engineering
+Detecting Native API abuse and syscalls requires looking beyond user-mode hooks:
+- **Kernel Callbacks:** Because user-mode hooks are bypassed, defenders must rely on telemetry generated by the kernel itself. When an attacker uses `NtCreateUserProcess` via a direct syscall, the kernel still triggers the `PspCreateProcessNotifyRoutine` callback, alerting the EDR driver.
+- **Event Tracing for Windows - Threat Intelligence (ETW-Ti):** ETW-Ti provides deep visibility into memory operations and thread manipulations that bypass user-mode logging. Correlating ETW-Ti events can reveal anomalous behavior.
+- **Call Stack Analysis:** When a kernel transition occurs, analyzing the origin is vital. If the return address is not within `ntdll.dll` or `win32u.dll`, or if the call stack is malformed, it strongly indicates a direct syscall originating from an unbacked payload.
+
+## Mitigation Strategies
+Mitigating these techniques involves shifting defense strategies:
+- **Kernel-Level Telemetry:** Ensure EDR solutions are configured to prioritize kernel callbacks and ETW-Ti data rather than relying solely on easily bypassed user-mode hooking.
+- **Memory Scanning:** Implement robust memory scanning to identify the source of direct syscalls. Payloads executing direct syscalls often reside in unbacked or suspiciously allocated memory regions.
+- **Behavioral Heuristics:** Use Endpoint Protection Platforms (EPP) with strict behavioral heuristics that evaluate the entire process lifecycle and relationships, rather than analyzing individual API calls in isolation.
+
+## Chaining Opportunities
+Living off the Land using Native APIs is a foundational technique often chained with others:
+- It is practically a prerequisite for implementing sleep evasion techniques (see [[11 - Evading Memory Scanners Sleeping and Encrypting Memory]]) effectively without triggering EDRs during the protection toggling phases.
+- It is heavily utilized in custom loaders designed to deploy FUD payloads (see [[14 - Creating FUD Fully Undetectable Payloads]]).
+
+## Related Notes
+- [[11 - Evading Memory Scanners Sleeping and Encrypting Memory]]
+- [[12 - Malicious Driver loading and Bring Your Own Vulnerable Driver BYOVD]]
+- [[13 - Living off the Land C2 using Native APIs]]
+- [[14 - Creating FUD Fully Undetectable Payloads]]
+- [[15 - Continuous Testing against EDR Sandboxes]]
+
+## Extended Technical Glossary and Context
+- **NTAPI:** Native API, undocumented system functions provided by Windows.
+- **Syscall:** Instruction to transition from user mode to kernel mode.
+- **SSN:** System Service Number, identifier for a kernel function.
+- **Direct Syscall:** Executing the syscall instruction directly from the payload.
+- **Indirect Syscall:** Jumping to a legitimate syscall instruction in ntdll.dll.
+- **ntdll.dll:** DLL containing Native API functions.
+- **kernel32.dll:** DLL containing higher-level Win32 API functions.
+- **User-Mode Hooking:** Intercepting API calls in user space.
+- **Kernel Callbacks:** OS notifications for specific system events.
+- **ETW-Ti:** Event Tracing for Windows - Threat Intelligence.
+- **LotL:** Living off the Land, using native tools for malicious purposes.
+- **Call Stack:** Sequence of active subroutines in a thread.
+- **Ring 0:** Kernel mode privilege level.
+- **Ring 3:** User mode privilege level.
+- **Hell's Gate:** Technique for dynamically resolving SSNs.
+- **Halo's Gate:** Advanced technique for resolving SSNs, even if hooked.
+- **API Hashing:** Hiding API imports by resolving them via hashes.
+- **Process Injection:** Executing code within the address space of another process.
+- **EDR:** Endpoint Detection and Response.
+- **C2:** Command and Control.
+- **VAPT:** Vulnerability Assessment and Penetration Testing.
+- **OPSEC:** Operations Security.
+- **FUD:** Fully Undetectable.
+- **Unbacked Memory:** Memory regions not mapped to a file on disk.
+- **SOC:** Security Operations Center.

@@ -1,0 +1,194 @@
+---
+tags: [darkweb, scraping, automation, vapt]
+difficulty: advanced
+module: "87 - Automated Dark Web Monitoring and Scraping"
+topic: "87.04 Building Custom Tor Scrapers with BeautifulSoup"
+---
+
+# Building Custom Tor Scrapers with BeautifulSoup
+
+## 1. The Mechanics of Dark Web Parsing
+
+Once an automated script successfully routes its traffic through the Tor network and negotiates the initial barrage of anti-bot protections, the core mission begins: extracting structured intelligence from unstructured, archaic, and often intentionally obfuscated HTML.
+
+The vast majority of Dark Web services—ranging from elite hacking forums like Exploit and XSS, to data leak sites maintained by ransomware syndicates—do not provide clean, RESTful APIs. Analysts must rely on traditional web scraping methodologies. In the Python ecosystem, `BeautifulSoup4` (BS4) combined with `requests` is the definitive standard for parsing `.onion` sites. 
+
+However, Dark Web HTML is notoriously erratic. Scrapers built with rigid, brittle parsing rules will fail almost immediately. This document explores the architectural patterns required to build highly resilient, fault-tolerant scrapers tailored specifically for underground environments.
+
+## 2. Architecting a Resilient Scraper State Machine
+
+A production-grade Dark Web scraper cannot be a simple top-to-bottom script. It must be a robust state machine capable of handling network drops, malformed DOM structures, session expiration, and dynamic layout shifts.
+
+### 2.1 Separation of Concerns
+The optimal architecture divides the scraper into three distinct layers:
+1.  **The Transport Layer:** Handles Tor proxy routing, circuit rotation (`stem`), session persistence, and anti-bot evasion.
+2.  **The Extraction Layer:** Utilizes BeautifulSoup to parse the raw HTML string, locate specific DOM nodes, and extract raw text or links. This layer should not handle network calls.
+3.  **The Data Processing Layer:** Cleans the extracted data (e.g., regex extraction of Bitcoin addresses or PGP keys), normalizes it, deduplicates it, and inserts it into a secure backend database (e.g., Elasticsearch, PostgreSQL).
+
+### 2.2 Robust DOM Traversal with BeautifulSoup
+
+Dark Web forums frequently use deeply nested, ancient table layouts (`<table border="1">...`) instead of modern HTML5 `<div>` or `<section>` tags. Relying on strict CSS selectors (e.g., `soup.select_one('div.post-content > span.author')`) is dangerous because threat actors often randomize CSS class names to thwart automated collection.
+
+**Best Practice: Fuzzy Matching and Regular Expressions**
+Instead of relying on exact class names, resilient scrapers search for distinct structural landmarks or regular expressions within the text content itself.
+
+```python
+from bs4 import BeautifulSoup
+import lxml # Significantly faster and more fault-tolerant than html.parser
+import re
+
+def extract_forum_posts(html_content):
+    # Using lxml backend is crucial for handling broken/malformed HTML common on the Dark Web
+    soup = BeautifulSoup(html_content, 'lxml')
+    posts = []
+    
+    # Instead of searching for a specific dynamic class, search for tables containing structural clues.
+    # Older vBulletin or SMF forum software often hardcode specific cellpadding.
+    for post_block in soup.find_all('table', attrs={'cellpadding': '3'}):
+        try:
+            # Fuzzy text matching for the author field using regex on the href
+            author_tag = post_block.find('a', href=re.compile(r'profile\.php\?id=\d+'))
+            author = author_tag.text.strip() if author_tag else "Unknown"
+            
+            # Extracting the post content via regex match on class prefixes
+            content_div = post_block.find('div', class_=re.compile(r'post_.*'))
+            content = content_div.text.strip() if content_div else ""
+            
+            # Extract potential indicators of compromise (IOCs) directly from the text
+            btc_addresses = re.findall(r'\b[13][a-km-zA-HJ-NP-Z1-9]{25,34}\b', content)
+            
+            if content:
+                posts.append({
+                    'author': author,
+                    'content': content,
+                    'iocs': btc_addresses
+                })
+        except AttributeError as e:
+            # Fault tolerance: if one post is structurally mangled, log and continue to the next
+            print(f"[!] Warning: Malformed post structure skipped. Error: {e}")
+            continue
+            
+    return posts
+```
+
+## 3. Handling Pagination and Recursive Crawling
+
+Extracting data from a single page is trivial; traversing an entire forum requires recursive logic. Dark Web paginators often lack clear "Next Page" identifiers, or use dynamic offsets (e.g., `?start=15`, `?start=30`).
+
+### 3.1 The Spidering Loop and Link Normalization
+A robust crawler maintains a strict `visited` set and a `queue` of URLs to process. It must enforce depth limits to prevent falling into crawler traps (infinite loops generated by malicious server-side scripts intended to exhaust the scraper's memory). Furthermore, links must be properly normalized since onion sites often use relative links (`../../post.php`).
+
+```python
+from collections import deque
+from urllib.parse import urljoin, urlparse
+
+def crawl_forum(start_url, fetch_function, max_pages=50):
+    queue = deque([start_url])
+    visited = set([start_url])
+    collected_data = []
+    pages_scraped = 0
+    base_domain = urlparse(start_url).netloc
+    
+    while queue and pages_scraped < max_pages:
+        current_url = queue.popleft()
+        print(f"[*] Scraping: {current_url}")
+        
+        # The fetch_function represents the Tor transport layer call
+        html = fetch_function(current_url) 
+        if not html:
+            continue
+            
+        soup = BeautifulSoup(html, 'lxml')
+        
+        # 1. Extract Intelligence
+        collected_data.extend(extract_forum_posts(html))
+        
+        # 2. Extract and Normalize Pagination Links
+        for link in soup.find_all('a', href=True):
+            href = link['href']
+            
+            # Heuristic filter for pagination links
+            if 'page=' in href or 'start=' in href or 'forumdisplay' in href:
+                # urljoin automatically handles relative paths
+                full_url = urljoin(start_url, href)
+                
+                # Security: Ensure we stay on the same domain and avoid infinite loops
+                if urlparse(full_url).netloc == base_domain and full_url not in visited:
+                    visited.add(full_url)
+                    queue.append(full_url)
+                    
+        pages_scraped += 1
+        
+    return collected_data
+```
+
+## 4. Storing Data Securely Offline
+
+Once data is extracted, it must be stored securely. Flat files are insufficient. Using SQLite allows for local, structured storage with immediate deduplication using `UNIQUE` constraints.
+
+```sql
+-- Example SQLite Schema for Dark Web Intelligence
+CREATE TABLE IF NOT EXISTS scraped_posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_url TEXT NOT NULL,
+    author TEXT NOT NULL,
+    content TEXT,
+    date_scraped DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(source_url, author, content) -- Prevents duplicate ingestion
+);
+```
+
+## 5. ASCII Diagram: Scraper State Machine
+
+```text
++-------------------------------------------------------------------------+
+|                  Resilient Dark Web Scraping Architecture               |
++-------------------------------------------------------------------------+
+       |
+       v
+[ URL Queue ] <----------------------------------------------+
+       |                                                     |
+       v                                                     |
+[ Tor Transport Layer ] --(Connection Drop/Ban)--> [ stem: NEWNYM Circuit Rotation ]
+       |                                                     ^
+    (200 OK)                                                 |
+       |                                                     |
+       v                                                     |
+[ Beautiful Soup Parser ] --(Detects Anti-Bot Challenge)-----+
+       |
+  +----+----+
+  |         |
+  v         v
+[Data]   [New Links]
+  |         |
+  v         v
+[ DB ]   [ URL Filter & Normalizer ]
+            |
+            +------------------------------------------------+
+```
+
+## 6. Real-World Attack Scenario
+
+### Scraping a Carding Forum for Exposed Dumps
+
+**Scenario:** A financial institution's CTI team is monitoring a notorious Russian carding forum. They need to extract newly posted "dumps" (stolen credit card numbers) that might belong to their bank's BIN (Bank Identification Number) range before cybercriminals can utilize them.
+
+**The Execution:**
+1. **Target Identification:** The team identifies the specific sub-forum URL where free dumps are occasionally posted by threat actors building reputation.
+2. **Parser Design:** The HTML on this forum is atrocious. Threat actors often post dumps inside `[code]` blocks, but sometimes directly in the text body, obfuscated with spaces (e.g., `4 1 4 7 - 1 2 3 4 - ...`). The scraper is built not to look for structured tables, but to extract the entire `div.post-message` block.
+3. **Regex Extraction:** The Python script uses massive, highly optimized regular expressions applied to the raw BeautifulSoup `.get_text()` output to identify credit card patterns, completely ignoring the surrounding broken HTML formatting.
+4. **Resilience:** Mid-scrape, the forum administrators update the site template, changing the `post-message` class to `thread-msg`. Because the scraper's parser logic was wrapped in generic `try-except` blocks and used fallback fuzzy matching (searching for elements containing specific forum signatures), it continues to operate at 80% efficiency rather than crashing entirely.
+5. **Data Ingestion:** Extracted cards are securely hashed and matched against the bank's internal BIN database. If a match occurs, an automated alert is triggered to cancel the compromised card.
+
+## 7. Defensive Countermeasures
+*   **Dynamic DOM Obfuscation:** Randomizing HTML element IDs and Class names upon every page load breaks scrapers that rely on strict selectors.
+*   **Honeypot Links:** Embedding hidden links inside zero-pixel transparent images or using `display: none` CSS. If a scraper follows the link, the backend permanently bans the scraper's session and IP.
+
+## Chaining Opportunities
+*   Data extracted using BeautifulSoup must often be correlated with external feeds or analyzed using tools described in [[Automated Threat Intelligence Platforms]].
+*   If BeautifulSoup encounters a page where the content is rendered entirely via client-side JavaScript, the parsing techniques here will fail, and the analyst must pivot to the techniques detailed in [[05 - Using Selenium and Playwright over Tor]].
+
+## Related Notes
+*   [[02 - Routing Python Scripts through Tor Proxies]]
+*   [[Regex for Threat Hunters]]
+*   [[Building CTI Databases with Elasticsearch]]

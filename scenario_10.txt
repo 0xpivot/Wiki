@@ -1,0 +1,16 @@
+## Real-World Attack Scenario: OWASSRF Deserialization
+
+**The Context:** A ransomware affiliate has purchased a set of valid, low-privileged Active Directory credentials (`sales_rep:Summer2023!`) from a dark web market. The target organization has patched ProxyLogon and ProxyShell and implemented WAF rules specifically blocking the ProxyNotShell Autodiscover SSRF vector. However, they have not applied the latest Exchange Cumulative Updates that fix the underlying code vulnerabilities.
+
+**The Reconnaissance:** 
+The attacker verifies the credentials work by logging into the external Outlook Web Access (OWA) portal. They attempt the standard ProxyNotShell Autodiscover SSRF payload, but the WAF blocks it. Knowing the architecture, the attacker pivots to the OWASSRF bypass vector.
+
+**The Execution:**
+1. **OWA SSRF Trigger:** The attacker crafts an authenticated HTTP GET request using the compromised credentials, but targets the OWA endpoint directly: `/owa/sales_rep@target.com/powershell`. 
+2. **Bypassing the WAF:** Because the WAF rules were narrowly scoped to `/autodiscover/`, this request sails through. The Exchange frontend processes the OWA request and, due to the underlying SSRF flaw, improperly routes it to the backend PowerShell remoting service.
+3. **WinRM Deserialization:** Now connected to the backend `/powershell` endpoint, the attacker establishes a WinRM session. They transmit a highly obfuscated, malicious serialized XML payload generated via `ysoserial.net` (using a `TypeConfuseDelegate` gadget).
+4. **In-Memory Execution:** When the Exchange Command Processor (`w3wp.exe`) attempts to deserialize the XML object, the gadget chain triggers. The deserialization flaw allows the attacker to execute arbitrary code during the object reconstruction phase, completely bypassing normal PowerShell execution policies.
+5. **Reverse Shell:** The payload executes a base64-encoded PowerShell command that downloads and executes a Cobalt Strike stager directly into memory.
+
+**The Outcome:**
+The attacker bypassed the protective WAF rules by using the OWA endpoint instead of Autodiscover. Utilizing only a standard user's credentials, they achieved `NT AUTHORITY\SYSTEM` Remote Code Execution entirely in memory, dropping no webshells to disk. The Cobalt Strike beacon calls back to the attacker's C2 server, granting them full interactive control over the Exchange server to begin lateral movement and ransomware deployment.

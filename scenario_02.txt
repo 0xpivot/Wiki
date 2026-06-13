@@ -1,0 +1,16 @@
+## Real-World Attack Scenario: Pass-the-PRT for Cloud Pivot
+
+**The Context:** A red team is engaged in an objective-based assessment where the goal is to access sensitive financial data stored in a heavily restricted SharePoint Online site. The target organization utilizes Entra ID with strict Conditional Access (CA) policies: access to SharePoint is only permitted from Hybrid Entra Joined, "Compliant" devices, and requires Phishing-Resistant MFA via Windows Hello for Business. The red team has already achieved local Administrator privileges on a developer's Windows 11 laptop, but they do not have the user's PIN or biometric data to perform a new interactive login, nor do they know the plaintext password.
+
+**The Reconnaissance:** 
+The attacker enumerates the endpoint and confirms it is Hybrid Entra Joined and equipped with a TPM 2.0 module. Because of the TPM, the cryptographic `SessionKey` protecting the user's Primary Refresh Token (PRT) cannot be extracted from LSASS memory or decrypted offline. However, the attacker knows that the `CloudAP` plugin must still perform cryptographic signing operations on behalf of the user to request new Access Tokens for cloud applications.
+
+**The Execution:**
+1. **In-Memory Interaction:** Instead of attempting to dump LSASS and extract the PRT (which would fail due to the TPM), the attacker uploads a custom C# utility based on `ROADtoken` to the compromised endpoint.
+2. **Requesting the Nonce:** From their external attack infrastructure, the attacker initiates an OAuth 2.0 device authorization flow against Entra ID, requesting access to Microsoft Graph and SharePoint Online. Entra ID responds with a cryptographic nonce.
+3. **Hardware-Backed Signing:** The attacker feeds this nonce into the `ROADtoken` utility running on the developer's laptop. The utility interacts with the local COM interface of the `CloudAP` plugin. `CloudAP` unknowingly sends the nonce to the TPM, which signs it using the hardware-protected `SessionKey`.
+4. **Token Exfiltration:** The utility outputs a fully signed JSON Web Token (JWT) string, representing a valid `x-ms-RefreshTokenCredential` header. The attacker quickly exfiltrates this signed string back to their infrastructure.
+5. **Session Hijacking:** Using a specialized tool like `roadtx`, the attacker crafts an HTTP POST request to `login.microsoftonline.com`, injecting the exfiltrated, signed JWT. 
+
+**The Outcome:**
+Entra ID validates the signature against the device's public key. Because the PRT was originally obtained via Windows Hello for Business (MFA) and the signature proves possession of the compliant device, all Conditional Access requirements are instantly satisfied. Entra ID issues valid Access and Refresh tokens directly to the attacker's machine. The attacker uses these tokens to authenticate to SharePoint Online via the REST API, bypassing all CA and MFA controls, and successfully exfiltrates the targeted financial documents without ever triggering a new MFA prompt on the victim's device.

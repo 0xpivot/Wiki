@@ -1,0 +1,16 @@
+## Real-World Attack Scenario: The Golden SAML Pivot
+
+**The Context:** An advanced nation-state actor has infiltrated the Tier-0 on-premises infrastructure of a defense contractor. The contractor heavily relies on Microsoft 365 for sensitive communications, protected by strict conditional access and hardware MFA. All cloud authentication is federated through an on-premises Active Directory Federation Services (AD FS) farm. The attacker's objective is to access the CEO's Exchange Online mailbox without triggering MFA prompts or anomalous login alerts that usually accompany password resets.
+
+**The Reconnaissance:** 
+The attacker leverages their Domain Admin privileges to perform internal reconnaissance. They identify the AD FS database hosted on a dedicated SQL server. More importantly, they query Active Directory and locate the Distributed Key Management (DKM) container (`CN=ADFS,CN=Microsoft,CN=Program Data...`), which holds the master key required to decrypt the AD FS token-signing certificates.
+
+**The Execution:**
+1. **Extraction:** The attacker uses `Mimikatz` on the compromised AD FS server to extract the DKM key from Active Directory. With the DKM key in hand, they decrypt the WID/SQL database, extracting the AD FS Token-Signing private key and saving it as a `.pfx` file.
+2. **Exfiltration:** The `.pfx` file is exfiltrated to the attacker’s external command and control (C2) infrastructure. At this point, the attacker no longer needs to interact with the on-premises network.
+3. **SAML Forgery:** Using a tool like `shimit` or `AADInternals`, the attacker crafts a forged SAML 2.0 XML assertion. They manually set the identity claim to the CEO's ImmutableID. Crucially, they inject the `<AuthnContextClassRef>` claim to indicate that MFA was successfully completed at the Identity Provider level.
+4. **Signing the Assertion:** The forged XML is cryptographically signed using the stolen AD FS private key.
+5. **The Bypass:** The attacker sends an HTTP POST request containing the forged SAML token directly to Entra ID’s login endpoint.
+
+**The Outcome:**
+Entra ID evaluates the SAML token, verifies the cryptographic signature against the trusted public key, and unconditionally accepts it. Because the token explicitly claims MFA was satisfied, Entra ID bypasses all CA policies and issues a valid Access Token for the CEO. The attacker utilizes this token to authenticate to Exchange Online via the Graph API, seamlessly exfiltrating years of sensitive correspondence without the CEO ever receiving an MFA prompt, executing a perfect Golden SAML attack.

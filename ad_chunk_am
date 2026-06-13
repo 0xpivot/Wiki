@@ -1,0 +1,10 @@
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/11 - Extracting Credentials from Configuration Files.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/12 - Harvesting Credentials from Password Managers.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/13 - NTDS.dit Extraction via VSSAdmin and NTDSUtil.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/14 - Parsing NTDS.dit Secretsdump.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 68 - AD Lateral Movement and Credential Access/15 - Token Impersonation and Stealing Incognito.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 69 - AD Access Controls and Escalation/01 - Exploiting Weak ACLs GenericAll GenericWrite.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 69 - AD Access Controls and Escalation/02 - Exploiting WriteDacl and WriteOwner.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 69 - AD Access Controls and Escalation/03 - Exploiting ForceChangePassword.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 69 - AD Access Controls and Escalation/04 - Exploiting AddMember on Sensitive Groups.md
+/home/sanchit/Notes/VAPT/Active Directory/I - 69 - AD Access Controls and Escalation/05 - Exploiting Weak GPO Permissions.md

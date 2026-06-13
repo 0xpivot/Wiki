@@ -1,0 +1,16 @@
+## Real-World Attack Scenario: Unauthenticated ProxyLogon RCE
+
+**The Context:** A state-sponsored APT is targeting a municipality's unpatched internet-facing Microsoft Exchange 2019 server. The server acts as both the frontend Client Access Service (CAS) and the backend mailbox server. The attacker has no credentials and requires a stealthy foothold into the internal network to deploy ransomware.
+
+**The Reconnaissance:** 
+The attacker scans the target IP and identifies the open port 443. They send a preliminary HTTP request to `/mapi/` and observe the NTLM challenge response, which leaks the internal Fully Qualified Domain Name (FQDN) of the backend Exchange server: `MAIL-SRV1.corp.local`.
+
+**The Execution:**
+1. **SSRF Authentication Bypass:** The attacker crafts an HTTP POST request to the static `/ecp/y.js` endpoint but injects a malicious `X-BEResource` cookie: `X-BEResource=MAIL-SRV1.corp.local~1942062522~%2Fecp%2FproxyLogon.ecp`. The CAS frontend parses this cookie and incorrectly routes the request to the backend ECP, entirely bypassing the frontend authentication checks.
+2. **Admin Impersonation:** Using the SSRF, the attacker queries the backend for the Administrator's Security Identifier (SID) and requests an OAuth token, effectively authenticating to the backend as the Exchange Administrator.
+3. **Malicious Configuration:** Now authenticated via the SSRF, the attacker interacts with the ECP JSON API to locate the Offline Address Book (OAB) Virtual Directory. They modify its `ExternalUrl` property to include a one-line ASP.NET webshell (China Chopper payload).
+4. **Webshell Dropping:** The attacker sends a command to "Reset" the OAB Virtual Directory, specifying an export path of `C:\inetpub\wwwroot\aspnet_client\discover.aspx`. Exchange writes the configuration backup—including the injected webshell code—directly to the public-facing web directory.
+5. **Command Execution:** The attacker sends an HTTP GET request to `/aspnet_client/discover.aspx?cmd=whoami`.
+
+**The Outcome:**
+The ASP.NET engine compiles and executes the injected code, returning `nt authority\system`. The attacker successfully chained a pre-auth SSRF with an authenticated arbitrary file write to achieve unauthenticated Remote Code Execution. They proceed to drop a Cobalt Strike beacon, dump LSASS to harvest domain credentials, and establish a permanent backdoor, initiating a full-scale network intrusion from a single exposed port.

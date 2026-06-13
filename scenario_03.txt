@@ -1,0 +1,16 @@
+## Real-World Attack Scenario: The Sync Server Skeleton Key
+
+**The Context:** During a covert penetration test, an attacker has established a foothold in a large enterprise network via a vulnerable internal web application. The organization utilizes a hybrid identity model, heavily relying on Azure AD Connect with Password Hash Synchronization (PHS) to allow users to authenticate to Microsoft 365. The on-premises Domain Controllers are heavily monitored by Microsoft Defender for Identity (MDI), making traditional attacks like Kerberoasting or direct domain controller exploitation highly risky. The attacker opts for a stealthier path: targeting the identity bridge itself.
+
+**The Reconnaissance:** 
+Using low-noise LDAP queries via a custom script, the attacker enumerates the domain and identifies the user `MSOL_38472948a7b6`. Recognizing the standard naming convention for the AD DS Connector account, they look up its permissions and confirm it holds the `DS-Replication-Get-Changes-All` privilege. They then query the `servicePrincipalName` attributes and locate the Azure AD Connect server, `SRV-IDENTITY-01`.
+
+**The Execution:**
+1. **Targeting the Bridge:** The attacker discovers that `SRV-IDENTITY-01` is missing a critical local privilege escalation patch (e.g., PrintNightmare). They exploit the vulnerability, instantly elevating their access from a standard domain user to `NT AUTHORITY\SYSTEM` on the AD Connect server.
+2. **Bypassing EDR:** Knowing that EDR is actively monitoring LSASS, the attacker avoids standard credential dumping tools. Instead, they leverage the legitimate `ADSync` service already running on the machine. 
+3. **Cryptographic Unwrapping:** The attacker executes a custom, obfuscated PowerShell script (similar to `AADInternals`). The script dynamically imports Windows DPAPI functions, impersonates the `ADSync` service account, and queries the `HKLM\SOFTWARE\Microsoft\Azure AD Connect\Synchronization\Encryption` registry key to extract the encrypted `mcrypt` key.
+4. **Database Extraction:** The script successfully decrypts the `mcrypt` key using the service account's DPAPI context. It then connects to the local SQL Express instance (`LocalDB`) via named pipes, queries the `mms_management_agent` table, and decrypts the XML configuration block.
+5. **The Final Blow:** The output cleanly reveals the plaintext password for the `MSOL_38472948a7b6` account: `TrU$tN00n3!99`. 
+
+**The Outcome:**
+Armed with the plaintext password of the highly privileged connector account, the attacker executes a DCSync attack using Impacket’s `secretsdump.py` over an encrypted tunnel. They selectively extract the NTLM hash of the `krbtgt` account, avoiding a full NTDS.dit dump to minimize network anomalies. The attacker then forges a Golden Ticket, achieving total administrative control over the entire on-premises forest without ever triggering the MDI alerts monitoring the Domain Controllers.
