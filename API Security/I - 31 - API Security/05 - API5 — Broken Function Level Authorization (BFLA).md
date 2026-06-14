@@ -28,42 +28,20 @@ APIs often structure URLs hierarchically:
 
 ## 3. Architectural Context
 
-```text
-========================================================================================
-                      BFLA ATTACK ARCHITECTURE DIAGRAM
-========================================================================================
+```mermaid
+flowchart TD
+    U["Standard User\n(Role: 'Guest')"]
+    G["API Gateway\n(Routes traffic)"]
+    AuthN["AuthN Service\n(Verifies JWT signature.\nValidates identity. Passes)"]
+    AuthZ["AuthZ Middleware\n(MISSING OR MISCONFIGURED FOR '/admin/*'\nFails to check if Role == 'Admin')"]
+    Logic["Controller / Logic\n(Executes user deletion logic)"]
+    DB["Database\n(User 123 is deleted.)"]
 
-   [ Standard User ]
-   (Role: "Guest")
-          |
-          | 1. Discovers hidden admin endpoint via Swagger/Fuzzing
-          | 2. Sends: DELETE /api/v1/admin/users/123
-          V
-  +-----------------------+
-  |      API Gateway      | --> Routes traffic
-  +-----------------------+
-          |
-          V
-  +-----------------------+
-  |    AuthN Service      | --> Verifies JWT signature. 
-  |                       |     Validates identity. (Passes)
-  +-----------------------+
-          |
-          V
-  +-----------------------+
-  |    AuthZ Middleware   | --> MISSING OR MISCONFIGURED FOR '/admin/*'
-  | (Function Level Check)|     Fails to check if Role == 'Admin'
-  +-----------------------+
-          |
-          V
-  +-----------------------+
-  |   Controller / Logic  | --> Executes user deletion logic
-  +-----------------------+
-          |
-          V
-      [ Database ]        --> User 123 is deleted.
-
-========================================================================================
+    U -- "1. Discovers hidden admin endpoint via Swagger/Fuzzing\n2. Sends: DELETE /api/v1/admin/users/123" --> G
+    G --> AuthN
+    AuthN --> AuthZ
+    AuthZ --> Logic
+    Logic --> DB
 ```
 
 ## 4. Attack Vectors and Threat Modeling

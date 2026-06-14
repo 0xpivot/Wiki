@@ -27,36 +27,21 @@ Developers often build APIs with "happy path" assumptions, expecting clients to 
 
 ## 3. Architectural Context
 
-```text
-========================================================================================
-                   UNRESTRICTED RESOURCE CONSUMPTION ARCHITECTURE
-========================================================================================
+```mermaid
+flowchart TD
+    A["Attacker"]
+    G["API Gateway\n(Missing Rate Limiting / Payload Size Limits)"]
+    App["Application Server (Node)\n(CPU spikes 100%)"]
+    DB["Database\n(Struggles to query millions of rows)"]
+    Crash["CRASH\n(Memory Exhaustion / OOM Kill)"]
+    U["Legitimate User"]
+    Err["Receives 503 Service Unavailable / Timeout"]
 
-   [ Attacker ]
-        |
-        | 1. Malicious Request: GET /api/data?limit=999999999
-        |    (or deep GraphQL query, or large file upload)
-        V
-+-------------------+
-|    API Gateway    |  --> Missing Rate Limiting
-|                   |  --> Missing Payload Size Limits
-+-------------------+
-        |
-        | 2. Forwards massive request
-        V
-+-------------------+       +-----------------------+
-|   Application     | ----> |      Database         |
-|   Server (Node)   | <---- | (Struggles to query   |
-| (CPU spikes 100%) |       |  millions of rows)    |
-+-------------------+       +-----------------------+
-        |
-        | 3. Memory Exhaustion / OOM Kill
-        X
-    [ CRASH ]
-
-   [ Legitimate User ] -> Receives 503 Service Unavailable / Timeout
-
-========================================================================================
+    A -- "1. Malicious Request: GET /api/data?limit=999999999\n(or deep GraphQL query, large file upload)" --> G
+    G -- "2. Forwards massive request" --> App
+    App <--> DB
+    App -- "3. Memory Exhaustion / OOM Kill" --> Crash
+    U --> Err
 ```
 
 ## 4. Attack Vectors and Threat Modeling

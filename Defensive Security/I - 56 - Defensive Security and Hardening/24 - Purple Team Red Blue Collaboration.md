@@ -22,27 +22,14 @@ In a Purple Team engagement (White Box / Crystal Box), communication is constant
 
 ## The ASCII Architecture: Purple Team Feedback Loop
 
-```text
-+-----------------------+        +-----------------------+
-|  1. Threat Intel      |        |  2. Plan & Develop    |
-| - Identify Actor TTPs |        | - Create Attack Scen. |
-| - MITRE ATT&CK Map    |        | - Define Test Scope   |
-+-----------------------+        +-----------------------+
-            ^                                |
-            |                                v
-+-----------------------+        +-----------------------+
-|  6. Measure & Tune    |        |  3. Execution Phase   |
-| - Track Improvement   | <====  | - Red Executes TTP    |
-| - Update Runbooks     |        | - Blue Observes       |
-+-----------------------+        +-----------------------+
-            ^                                |
-            |                                v
-+-----------------------+        +-----------------------+
-|  5. Engineering       |        |  4. Analysis Phase    |
-| - Write SIEM Rules    |        | - Did EDR block it?   |
-| - Deploy Custom Alerts| <====  | - Did SIEM alert?     |
-| - Re-test TTP         |        | - Was telemetry logged?|
-+-----------------------+        +-----------------------+
+```mermaid
+flowchart TD
+    P1["1. Threat Intel\n- Identify Actor TTPs\n- MITRE ATT&CK Map"] --> P2["2. Plan & Develop\n- Create Attack Scen.\n- Define Test Scope"]
+    P2 --> P3["3. Execution Phase\n- Red Executes TTP\n- Blue Observes"]
+    P3 --> P4["4. Analysis Phase\n- Did EDR block it?\n- Did SIEM alert?\n- Was telemetry logged?"]
+    P4 --> P5["5. Engineering\n- Write SIEM Rules\n- Deploy Custom Alerts\n- Re-test TTP"]
+    P5 --> P6["6. Measure & Tune\n- Track Improvement\n- Update Runbooks"]
+    P6 --> P1
 ```
 
 ## Objectives of a Purple Team Engagement

@@ -11,33 +11,28 @@ topic: "57.03 OWASP Mobile Top 10"
 The OWASP Mobile Top 10 maps the most critical security risks facing mobile applications on iOS and Android platforms. Unlike web applications where the attack surface is primarily server-side, mobile applications present a unique hybrid attack surface. Attackers have full control over the client environment—they can decompile the binary, manipulate the local file system, intercept network traffic, and attach debuggers to runtime processes. This requires a distinctly different threat modeling approach.
 
 ## Mobile Architecture and Attack Surface ASCII Diagram
-```text
-  +-------------------------------------------------------------+
-  |                   Attacker Controlled Device                |
-  |                                                             |
-  |  [ Static Analysis ]                [ Dynamic Analysis ]    |
-  |  - Decompilation (M7)               - Frida/Objection (M7)  |
-  |  - Hardcoded Secrets (M1, M9)       - Memory Dumping        |
-  |                                                             |
-  |  +-------------------------------------------------------+  |
-  |  |                 Mobile App Sandbox                    |  |
-  |  |  +---------------+ +---------------+ +-------------+  |  |
-  |  |  | Shared Prefs/ | | SQLite DBs    | | Keystore/   |  |  |
-  |  |  | Plists (M9)   | | (M9)          | | Keychain    |  |  |
-  |  |  +---------------+ +---------------+ +-------------+  |  |
-  |  +--------------------------|----------------------------+  |
-  +-----------------------------|-------------------------------+
-                                |
-                   (M5: Insecure Communication)
-                     MitM / TLS Interception
-                                |
-                                v
-  +-------------------------------------------------------------+
-  |                     Backend Infrastructure                  |
-  |  (M3: Auth/Authz)                                           |
-  |  (M4: Input Validation)                                     |
-  |  (M8: Misconfigurations)                                    |
-  +-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Device ["Attacker Controlled Device"]
+        STATIC["Static Analysis<br>- Decompilation (M7)<br>- Hardcoded Secrets (M1, M9)"]
+        DYNAMIC["Dynamic Analysis<br>- Frida/Objection (M7)<br>- Memory Dumping"]
+
+        subgraph Sandbox ["Mobile App Sandbox"]
+            direction LR
+            PREF["Shared Prefs/<br>Plists (M9)"]
+            DB["SQLite DBs<br>(M9)"]
+            KEY["Keystore/<br>Keychain"]
+        end
+    end
+
+    COMM["(M5: Insecure Communication)<br>MitM / TLS Interception"]
+    
+    subgraph Backend ["Backend Infrastructure"]
+        BACK["(M3: Auth/Authz)<br>(M4: Input Validation)<br>(M8: Misconfigurations)"]
+    end
+
+    Sandbox --> COMM
+    COMM --> Backend
 ```
 
 ## Deep Dive into the Mobile Top 10

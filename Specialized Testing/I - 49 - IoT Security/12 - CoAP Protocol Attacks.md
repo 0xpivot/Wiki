@@ -24,25 +24,13 @@ Unlike MQTT, which is heavily centralized around a broker, CoAP uses a tradition
 
 ## 3. ASCII Diagram: CoAP Amplification DDoS Attack Flow
 
-```text
-    [ Attacker ] (Spoofed IP: Target Victim)
-         |
-         | 1. CoAP GET /.well-known/core (Small Request: ~10 bytes)
-         |    Source IP = Victim IP
-         |    Dest IP = Exposed IoT Device
-         v
-    +-----------------------+
-    | Exposed CoAP Server   | (IoT Node, Port 5683)
-    +-----------------------+
-         |
-         | 2. Server Processes Request
-         | 3. Large CoAP Response sent back to Source IP
-         |    (Resource Directory: ~500+ bytes)
-         |    Amplification Factor ~ 10x to 50x
-         v
-     [ Victim ] (Targeted for DDoS)
-         ^
-         |  (Thousands of similar responses arrive simultaneously)
+```mermaid
+flowchart TD
+    Attacker["[ Attacker ]<br>(Spoofed IP: Target Victim)"] -->|1. CoAP GET /.well-known/core<br>Small Request: ~10 bytes<br>Source IP = Victim IP<br>Dest IP = Exposed IoT Device| Server["Exposed CoAP Server<br>(IoT Node, Port 5683)"]
+
+    Server -->|2. Server Processes Request<br>3. Large CoAP Response sent back to Source IP<br>Amplification Factor ~ 10x to 50x| Victim["[ Victim ]<br>(Targeted for DDoS)"]
+    
+    Victim -.->|Thousands of similar responses arrive simultaneously| Victim
 ```
 
 ## 4. Primary Vulnerabilities

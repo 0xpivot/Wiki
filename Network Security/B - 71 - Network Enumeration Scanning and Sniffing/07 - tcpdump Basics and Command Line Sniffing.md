@@ -126,53 +126,18 @@ Historically `tcpdump` writes in the standard `libpcap` format (.pcap). Modern n
 
 ## ASCII Architecture Diagram
 
-```text
-+-----------------------------------------------------------------------------+
-|                      tcpdump Architecture and Data Flow                     |
-+-----------------------------------------------------------------------------+
-
-      [ Network Interface Card (NIC) - e.g., eth0 ]
-                          |
-                          | (1) Raw Packets Arrive
-                          v
-+-----------------------------------------------------------------------------+
-|                          Linux Kernel Space                                 |
-|                                                                             |
-|   +---------------------------------------------------------------------+   |
-|   |                       Network Stack                                 |   |
-|   +---------------------------------------------------------------------+   |
-|            |                                            |                   |
-| (Normal Routing/Processing)                             |                   |
-|            |                                            |                   |
-|            v                                            v                   |
-|   [ Application ]                  (2) Packet Cloned to Raw Socket via      |
-|   (e.g., Apache)                       PF_PACKET / AF_PACKET                |
-|                                                         |                   |
-|                                                         v                   |
-|                                       +-----------------------------------+ |
-|                                       |       Berkeley Packet Filter      | |
-|                                       |               (BPF)               | |
-|                                       |                                   | |
-|                                       |  Filter logic injected by tcpdump | |
-|                                       |  (e.g., 'tcp and port 80')        | |
-|                                       +-----------------------------------+ |
-|                                                |             |              |
-+------------------------------------------------|-------------|--------------+
-                                                 |             |
-                                  (3) Drop Packet|             | (4) Pass Packet
-                                    (No Match)   v             v
-                                              [DROP]    +-------------+
-                                                        | User Space  |
-                                                        |   tcpdump   |
-                                                        |   Process   |
-                                                        +-------------+
-                                                              |
-                                      +-----------------------+------------------------+
-                                      |                                                |
-                                      v                                                v
-                              (5) Terminal Output                               (6) PCAP File
-                            (Formatted via -v, -X, -A)                      (Raw Binary via -w)
-                            > IP 10.0.0.5.12345 > 192.168.1.1.80: Flags [S]     capture.pcap
+```mermaid
+flowchart TD
+    NIC["Network Interface Card (NIC) - e.g., eth0"] -->|"(1) Raw Packets Arrive"| KernelStack["Network Stack"]
+    subgraph KernelSpace["Linux Kernel Space"]
+        KernelStack -->|Normal Routing/Processing| App["Application (e.g., Apache)"]
+        KernelStack -->|"(2) Packet Cloned to Raw Socket via<br/>PF_PACKET / AF_PACKET"| BPF["Berkeley Packet Filter (BPF)<br/>Filter logic injected by tcpdump<br/>(e.g., 'tcp and port 80')"]
+    end
+    BPF -->|"(3) Drop Packet (No Match)"| Drop["[DROP]"]
+    BPF -->|"(4) Pass Packet"| TcpdumpProc["User Space<br/>tcpdump Process"]
+    
+    TcpdumpProc -->|"(5) Terminal Output<br/>(Formatted via -v, -X, -A)"| Terminal["> IP 10.0.0.5.12345 > 192.168.1.1.80: Flags [S]"]
+    TcpdumpProc -->|"(6) PCAP File<br/>(Raw Binary via -w)"| PcapFile["capture.pcap"]
 ```
 
 ## Defensive Perspective

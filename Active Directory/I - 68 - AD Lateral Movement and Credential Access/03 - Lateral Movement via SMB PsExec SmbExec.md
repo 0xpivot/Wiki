@@ -18,31 +18,18 @@ While highly reliable and running entirely under the powerful `NT AUTHORITY\SYST
 
 ## Architectural ASCII Diagram: The PsExec Attack Flow
 
-```text
-+-----------------------+                                +-----------------------------------+
-|                       |                                |                                   |
-|   Attacker Node       |                                |      Target Windows Server        |
-|                       |                                |                                   |
-|  +-----------------+  |   1. Connects to IPC$ &        |  +-----------------------------+  |
-|  |                 |  |      Authenticates (SMB)       |  | SMB Service (Port 445)      |  |
-|  |   PsExec.exe /  |=====================================>| (Authenticates User)        |  |
-|  |   psexec.py     |  |                                |  +-----------------------------+  |
-|  |                 |  |   2. Uploads binary to ADMIN$  |                 |                 |
-|  +-----------------+  |      (C:\Windows)              |                 v                 |
-|           ^           |                                |  +-----------------------------+  |
-|           |           |   3. Connects to SVCCTL        |  | Service Control Manager     |  |
-|           |           |      (Named Pipe via SMB)      |  | (SCM) via Named Pipe        |  |
-|           |           |=====================================> creates & starts service  |  |
-|           |           |                                |  +-----------------------------+  |
-|           |           |                                |                 |                 |
-|           |           |                                |                 v                 |
-|           |           |                                |  +-----------------------------+  |
-|           |           |   4. Binary executes as SYSTEM |  | Target Process (e.g. cmd)   |  |
-|           +================================================== running as NT AUTH\SYSTEM |  |
-|                       |      (Input/Output bound to    |  |                             |  |
-|                       |       Named Pipes)             |  +-----------------------------+  |
-|                       |                                |                                   |
-+-----------------------+                                +-----------------------------------+
+```mermaid
+graph TD
+    A["Attacker Node<br>PsExec.exe / psexec.py"]
+    B["Target Windows Server<br>SMB Service (Port 445)<br>(Authenticates User)"]
+    C["Target Windows Server<br>Service Control Manager<br>(SCM) via Named Pipe<br>creates & starts service"]
+    D["Target Windows Server<br>Target Process (e.g. cmd)<br>running as NT AUTH\SYSTEM"]
+
+    A -->|"1. Connects to IPC$ & Authenticates (SMB)"| B
+    A -->|"2. Uploads binary to ADMIN$ (C:\Windows)"| B
+    A -->|"3. Connects to SVCCTL (Named Pipe via SMB)"| C
+    C --> D
+    D -.->|"4. Binary executes as SYSTEM<br>(Input/Output bound to Named Pipes)"| A
 ```
 
 ---

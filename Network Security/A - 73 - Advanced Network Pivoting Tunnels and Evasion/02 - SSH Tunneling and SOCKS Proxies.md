@@ -14,17 +14,18 @@ While basic local and remote port forwarding map one-to-one connections, SSH's a
 
 ## 2. ASCII Architecture Diagram
 
-```text
-[Attacker Machine]                                    [Compromised Pivot (SSH Server)]
-  (Proxychains)                                                 10.0.0.5
-      |                                                            |
-      |   +-----------------------------------------------+        |       [Internal Network]
-      |   | SSH Tunnel (Encrypted TCP Stream)             |        |       192.168.200.0/24
-      |==>| 1. SOCKS Handshake (Local Port 9050)          |=======>|       /
-      |   | 2. Payload Encapsulated in SSH Channel        |        |===> [Target A: 192.168.200.10:80]
-      |   | 3. SSH Server unwraps and forwards            |        |
-      |   +-----------------------------------------------+        |===> [Target B: 192.168.200.20:445]
-      |                                                            |
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker Machine<br/>(Proxychains)
+    participant Pivot as Compromised Pivot (SSH Server)<br/>10.0.0.5
+    participant TargetA as Target A: 192.168.200.10:80<br/>(Internal Network)
+    participant TargetB as Target B: 192.168.200.20:445<br/>(Internal Network)
+
+    Note over Attacker, Pivot: SSH Tunnel (Encrypted TCP Stream)
+    Attacker->>Pivot: 1. SOCKS Handshake (Local Port 9050)<br/>2. Payload Encapsulated in SSH Channel
+    Note over Pivot: 3. SSH Server unwraps and forwards
+    Pivot->>TargetA: Forwards to Target A
+    Pivot->>TargetB: Forwards to Target B
 ```
 
 ## 3. SOCKS Protocol Analysis: SOCKS4 vs SOCKS5

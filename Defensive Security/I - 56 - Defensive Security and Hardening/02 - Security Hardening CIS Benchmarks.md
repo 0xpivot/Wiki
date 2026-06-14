@@ -21,33 +21,31 @@ For VAPT professionals, understanding CIS benchmarks is a two-way street:
 
 ## Architectural ASCII Diagram: CIS Control Mapping Flow
 
-```text
-  [Threat Landscape] ----> informs ----> [CIS Controls (v8)]  (The "What")
-                                              |
-                                              | mappings & implementation
-                                              v
-                                      [CIS Benchmarks]        (The "How")
-                                              |
-               +------------------------------+------------------------------+
-               |                              |                              |
-      Level 1 Profile                Level 2 Profile                   STIG Mapping
-   (Practical Security)           (Defense-in-Depth)             (Gov/Mil Compliance)
-               |                              |                              |
-               v                              v                              v
-      +-----------------+            +-----------------+            +-----------------+
-      | OS Configuration|            | App Configuration|           | Cloud Resources |
-      | (Win/Linux/Mac) |            | (DB, Web Server) |           | (AWS, GCP, Az)  |
-      +--------+--------+            +--------+--------+            +--------+--------+
-               |                              |                              |
-               +------------------------------+------------------------------+
-                                              |
-                                              v
-                                    [Assessment Tools]
-                            (CIS-CAT Pro, OpenSCAP, Nessus, Qualys)
-                                              |
-                                              v
-                               [Remediation & Automation]
-                            (Ansible, Chef, Puppet, GPO, MDM)
+```mermaid
+flowchart TD
+    Threat["Threat Landscape"] -- "informs" --> CISControls["CIS Controls (v8)\n(The 'What')"]
+    CISControls -- "mappings & implementation" --> CISBenchmarks["CIS Benchmarks\n(The 'How')"]
+
+    CISBenchmarks --> Profiles
+    
+    subgraph Profiles
+        direction LR
+        L1Profile["Level 1 Profile\n(Practical Security)"]
+        L2Profile["Level 2 Profile\n(Defense-in-Depth)"]
+        STIGMapping["STIG Mapping\n(Gov/Mil Compliance)"]
+    end
+
+    Profiles --> Configurations
+
+    subgraph Configurations
+        direction LR
+        OSConfig["OS Configuration\n(Win/Linux/Mac)"]
+        AppConfig["App Configuration\n(DB, Web Server)"]
+        CloudRes["Cloud Resources\n(AWS, GCP, Az)"]
+    end
+
+    Configurations --> AssessTools["Assessment Tools\n(CIS-CAT Pro, OpenSCAP, Nessus, Qualys)"]
+    AssessTools --> Remediation["Remediation & Automation\n(Ansible, Chef, Puppet, GPO, MDM)"]
 ```
 
 ---

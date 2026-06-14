@@ -20,29 +20,22 @@ ML WAFs typically employ two primary models, often used in tandem:
 
 ### ASCII Architecture of an ML WAF Evaluation
 
-```text
-[ Incoming HTTP Request ]
-         |
-         v
-+-------------------------------------------------+
-| Feature Extraction Engine                       | 
-| -> Payload Length: 145                          |
-| -> Character Entropy: 0.88                      |
-| -> Special Char Ratio (%,<,>,'): 0.12           |
-| -> Path Sequence Match: True                    |
-+-------------------------------------------------+
-         |
-         v
-+-------------------------------------------------+      [ Pre-Trained Global Model ]
-| Model Inference (Neural Network)                | <--- (Weights, Biases, Embeddings)
-+-------------------------------------------------+
-         |
-         v
-  [ Calculated Anomaly Score: 0.85 ]
-         |
-         +--> [ Threshold > 0.80 ] ---> Action: BLOCK (False Positive / True Positive)
-         |
-         +--> [ Threshold < 0.80 ] ---> Action: ALLOW (True Negative / Evasion!)
+```mermaid
+flowchart TD
+    Incoming[Incoming HTTP Request]
+    FEE["Feature Extraction Engine <br/> -> Payload Length: 145 <br/> -> Character Entropy: 0.88 <br/> -> Special Char Ratio (%,<,>,'): 0.12 <br/> -> Path Sequence Match: True"]
+    Model["Model Inference (Neural Network)"]
+    GlobalModel["Pre-Trained Global Model <br/> (Weights, Biases, Embeddings)"]
+    Score["Calculated Anomaly Score: 0.85"]
+    Block["Threshold > 0.80 <br/> Action: BLOCK (False Positive / True Positive)"]
+    Allow["Threshold < 0.80 <br/> Action: ALLOW (True Negative / Evasion!)"]
+
+    Incoming --> FEE
+    FEE --> Model
+    GlobalModel --> Model
+    Model --> Score
+    Score --> Block
+    Score --> Allow
 ```
 
 ## Adversarial Attacks against ML Models

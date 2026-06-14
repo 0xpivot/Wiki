@@ -15,32 +15,17 @@ Without comprehensive logging, an organization is effectively blind to ongoing a
 
 Modern environments generate massive volumes of log data. Simply writing logs to local files is insufficient for security monitoring. Organizations employ centralized logging architectures, typically culminating in a Security Information and Event Management (SIEM) system.
 
-```text
-+-------------------+       +-------------------+       +-------------------+
-| Log Sources       |       | Log Forwarders    |       | Aggregation &     |
-|                   |       | (Agents)          |       | Parsing           |
-| - Windows Servers |       |                   |       |                   |
-| - Linux Syslog    +------>+ - Winlogbeat      +------>+ - Logstash        |
-| - Firewalls/IDS   |       | - Filebeat        |       | - Fluentd         |
-| - Web Servers     |       | - Splunk Univ Fwd |       | - Syslog-ng       |
-+-------------------+       +-------------------+       +---------+---------+
-                                                                  |
-                                                                  v
-+-------------------+       +-------------------+       +---------+---------+
-| Threat Intel      |       | SIEM / Log Data   |       | Storage / Indexing|
-| - MISP            |       | Lake              |       |                   |
-| - OTX             +------>+ - Splunk          +<------+ - Elasticsearch   |
-| - ThreatFeeds     |       | - Microsoft Sentnl|       | - Splunk Indexer  |
-+-------------------+       | - ELK Stack       |       | - AWS OpenSearch  |
-                            +---------+---------+       +-------------------+
-                                      |
-                                      v
-                            +---------+---------+
-                            | Security Analyst  |
-                            | - Dashboards      |
-                            | - Alerts / Rules  |
-                            | - Threat Hunting  |
-                            +-------------------+
+```mermaid
+flowchart TD
+    Sources["Log Sources\n- Windows Servers\n- Linux Syslog\n- Firewalls/IDS\n- Web Servers"] --> Forwarders["Log Forwarders (Agents)\n- Winlogbeat\n- Filebeat\n- Splunk Univ Fwd"]
+    Forwarders --> Aggregation["Aggregation & Parsing\n- Logstash\n- Fluentd\n- Syslog-ng"]
+    
+    Aggregation --> Storage["Storage / Indexing\n- Elasticsearch\n- Splunk Indexer\n- AWS OpenSearch"]
+    
+    ThreatIntel["Threat Intel\n- MISP\n- OTX\n- ThreatFeeds"] --> SIEM["SIEM / Log Data Lake\n- Splunk\n- Microsoft Sentnl\n- ELK Stack"]
+    Storage --> SIEM
+    
+    SIEM --> Analyst["Security Analyst\n- Dashboards\n- Alerts / Rules\n- Threat Hunting"]
 ```
 
 ### Key Stages of the Pipeline:

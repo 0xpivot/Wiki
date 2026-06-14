@@ -40,40 +40,16 @@ The resulting stream of tokens sent to the parser is **identical** in both cases
 
 ### 2.1 Execution Flow Diagram
 
-```text
-+-------------------------------------------------------------+
-|                        ATTACKER                             |
-|  Payload: U N I O N / * * / S E L E C T                     |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                      WAF REGEX ENGINE                       |
-| 1. Receives Payload: "UNION/**/SELECT"                      |
-| 2. Evaluates against Rule: /UNION\s+SELECT/i                |
-| 3. Match Evaluation:                                        |
-|    Is there whitespace between UNION and SELECT? No.        |
-|    There are literal slash and asterisk characters.         |
-| 4. Match: FALSE                                             |
-| 5. Decision: ALLOW                                          |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                   BACKEND DATABASE ENGINE                   |
-| 1. Lexer processes input stream.                            |
-| 2. Encounters '/*'. Enters comment mode.                    |
-| 3. Encounters '*/'. Exits comment mode.                     |
-| 4. Tokens passed to Parser: [UNION] [SELECT]                |
-| 5. Abstract Syntax Tree (AST) built successfully.           |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                    PAYLOAD EXECUTION                        |
-| Database executes the injected UNION SELECT query.          |
-| Exfiltrated data returned to the attacker.                  |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["ATTACKER <br/> Payload: U N I O N / * * / S E L E C T"]
+    WAF["WAF REGEX ENGINE <br/> 1. Receives Payload: UNION/**/SELECT <br/> 2. Evaluates against Rule: /UNION\\s+SELECT/i <br/> 3. Match Evaluation: <br/> Is there whitespace between UNION and SELECT? No. <br/> There are literal slash and asterisk characters. <br/> 4. Match: FALSE <br/> 5. Decision: ALLOW"]
+    Backend["BACKEND DATABASE ENGINE <br/> 1. Lexer processes input stream. <br/> 2. Encounters '/*'. Enters comment mode. <br/> 3. Encounters '*/'. Exits comment mode. <br/> 4. Tokens passed to Parser: [UNION] [SELECT] <br/> 5. Abstract Syntax Tree (AST) built successfully."]
+    Execution["PAYLOAD EXECUTION <br/> Database executes the injected UNION SELECT query. <br/> Exfiltrated data returned to the attacker."]
+
+    Attacker --> WAF
+    WAF --> Backend
+    Backend --> Execution
 ```
 
 ---

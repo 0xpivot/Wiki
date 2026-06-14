@@ -24,27 +24,21 @@ Modern applications are highly interconnected. Features that commonly introduce 
 
 ### Visualizing the SSRF Architecture
 
-```ascii
-                                            +--------------------------------------+
-                                            |           INTERNAL NETWORK           |
-                                            |                                      |
-  [ Attacker ]                              |   +------------------------------+   |
-       |                                    |   | AWS / GCP Metadata Service   |   |
-       | (1) POST /api/v1/fetch             |   | http://169.254.169.254       |   |
-       |     {"url": "http://169.254..."}   |   +------------------------------+   |
-       |                                    |                  ^                   |
-       v                                    |                  |                   |
- +-----------+     (2) Proxies request      |                  | (3) Request sent  |
- | Internet  | ------------------------>  +-------------+      | from Server       |
- | Firewall  |                            | TARGET API  |------+                   |
- +-----------+                            |   SERVER    |      |                   |
-                                          +-------------+      | (4) Request sent  |
-       ^                                    |                  v from Server       |
-       | (6) Server returns                 |   +------------------------------+   |
-       |     internal metadata              |   | Internal Admin Dashboard     |   |
-       +------------------------------------+   | http://localhost:8080/admin  |   |
-                                            |   +------------------------------+   |
-                                            +--------------------------------------+
+```mermaid
+flowchart TD
+    A["Attacker"]
+    FW["Internet Firewall"]
+    subgraph Internal ["INTERNAL NETWORK"]
+        API["TARGET API SERVER"]
+        Meta["AWS / GCP Metadata Service\nhttp://169.254.169.254"]
+        Admin["Internal Admin Dashboard\nhttp://localhost:8080/admin"]
+    end
+
+    A -- "1. POST /api/v1/fetch\n{'url': 'http://169.254...'}" --> FW
+    FW -- "2. Proxies request" --> API
+    API -- "3. Request sent from Server" --> Meta
+    API -- "4. Request sent from Server" --> Admin
+    API -- "6. Server returns internal metadata" --> A
 ```
 
 ## 3. Types of SSRF

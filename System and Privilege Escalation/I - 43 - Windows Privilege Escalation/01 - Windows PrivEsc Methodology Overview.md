@@ -69,62 +69,42 @@ The attack surface for local privilege escalation on Windows can be broadly cate
 
 The general workflow for approaching Windows Privilege Escalation follows a cyclical pattern of Enumeration, Analysis, Exploitation, and Post-Exploitation.
 
-```text
-+-------------------------------------------------------------------------+
-|                    WINDOWS PRIVILEGE ESCALATION WORKFLOW                |
-+-------------------------------------------------------------------------+
-
-[ 1. INITIAL RECONNAISSANCE ]
-      |
-      +---> System Info (OS version, Architecture, Applied Patches)
-      |
-      +---> User & Token Privileges (whoami /all, local groups)
-      |
-      +---> Network Configuration (netstat, arp, ipconfig)
-      
-             |
-             v
-             
-[ 2. AUTOMATED & MANUAL ENUMERATION ]
-      |
-      +---> Run Automated Checkers: WinPEAS / PowerUp / Seatbelt
-      |
-      +---> Manual checks: Services (accesschk), Registry (reg query)
-      |
-      +---> Credential hunting: Filesystem search, DPAPI, SAM backups
-
-             |
-             v
-             
-[ 3. ANALYSIS & VULNERABILITY IDENTIFICATION ]
-      |
-      +---> Correlate findings (e.g., writable folder + service path)
-      |
-      +---> Cross-reference missing OS patches with exploit databases
-      |
-      +---> Identify exploitable token privileges
-
-             |
-             v
-             
-[ 4. EXPLOITATION & WEAPONIZATION ]
-      |
-      +---> Craft targeted payload (msfvenom, custom compile C++/C#)
-      |
-      +---> Stage payload in accessible directory (e.g., C:\Temp)
-      |
-      +---> Trigger execution (Restart service, reboot, wait for task)
-
-             |
-             v
-             
-[ 5. VERIFICATION & POST-EXPLOITATION ]
-      |
-      +---> Verify Administrator/SYSTEM shell (whoami)
-      |
-      +---> Establish persistence (Scheduled tasks, backdoors)
-      |
-      +---> Dump Hashes (LSASS memory dump, SAM/SYSTEM hives)
+```mermaid
+flowchart TD
+    subgraph WF[WINDOWS PRIVILEGE ESCALATION WORKFLOW]
+        IR["[ 1. INITIAL RECONNAISSANCE ]"]
+        IR --> SI["System Info (OS version, Architecture, Applied Patches)"]
+        IR --> UTP["User & Token Privileges (whoami /all, local groups)"]
+        IR --> NC["Network Configuration (netstat, arp, ipconfig)"]
+        
+        AME["[ 2. AUTOMATED & MANUAL ENUMERATION ]"]
+        IR --> AME
+        
+        AME --> RAC["Run Automated Checkers: WinPEAS / PowerUp / Seatbelt"]
+        AME --> MC["Manual checks: Services (accesschk), Registry (reg query)"]
+        AME --> CH["Credential hunting: Filesystem search, DPAPI, SAM backups"]
+        
+        AVI["[ 3. ANALYSIS & VULNERABILITY IDENTIFICATION ]"]
+        AME --> AVI
+        
+        AVI --> CF["Correlate findings (e.g., writable folder + service path)"]
+        AVI --> CRM["Cross-reference missing OS patches with exploit databases"]
+        AVI --> IETP["Identify exploitable token privileges"]
+        
+        EW["[ 4. EXPLOITATION & WEAPONIZATION ]"]
+        AVI --> EW
+        
+        EW --> CTP["Craft targeted payload (msfvenom, custom compile C++/C#)"]
+        EW --> SP["Stage payload in accessible directory (e.g., C:\\Temp)"]
+        EW --> TE["Trigger execution (Restart service, reboot, wait for task)"]
+        
+        VPE["[ 5. VERIFICATION & POST-EXPLOITATION ]"]
+        EW --> VPE
+        
+        VPE --> VAS["Verify Administrator/SYSTEM shell (whoami)"]
+        VPE --> EP["Establish persistence (Scheduled tasks, backdoors)"]
+        VPE --> DH["Dump Hashes (LSASS memory dump, SAM/SYSTEM hives)"]
+    end
 ```
 
 ### Phase 1: Information Gathering

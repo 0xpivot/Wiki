@@ -31,39 +31,40 @@ When acquiring evidence, analysts typically use one of three primary image forma
 
 ## Forensic Acquisition and Analysis Pipeline Diagram
 
-```text
-+-------------------+        +--------------------+        +---------------------+
-| Physical Device   |        | Hardware/Software  |        | Forensic Workstation|
-| (HDD, SSD, USB)   +------->+ Write-Blocker      +------->+ (FTK Imager / dd)   |
-+-------------------+        +--------------------+        +----------+----------+
-                                                                      |
-                                                                      v
-                                                           +----------+----------+
-                                                           | Forensic Image      |
-                                                           | (.E01, .RAW, .AFF4) |
-                                                           +----------+----------+
-                                                                      |
-                   +--------------------------------------------------+--------------------------------------------------+
-                   |                                                                                                     |
-                   v                                                                                                     v
-+------------------+------------------+                                                       +--------------------------+------------------+
-|          Autopsy (Sleuth Kit)       |                                                       |    AccessData FTK (Forensic Toolkit)        |
-|-------------------------------------|                                                       |---------------------------------------------|
-| 1. Ingest Modules                   |                                                       | 1. Data Processing Engine (Oracle/Postgres) |
-|    - Hash Lookup (NSRL)             |                                                       | 2. Known File Filter (KFF)                  |
-|    - Exif Parser / Keyword Search   |                                                       | 3. Advanced Registry Parsing                |
-|    - Email / Web Artifact Parser    |                                                       | 4. Decryption & Password Recovery (PRTK)    |
-| 2. Timeline Analysis                |                                                       | 5. Live Search & Indexed Search             |
-| 3. Deleted File Recovery            |                                                       | 6. Custom Carving (Data Carving)            |
-+-------------------------------------+                                                       +---------------------------------------------+
-                   |                                                                                                     |
-                   +--------------------------------------------------+--------------------------------------------------+
-                                                                      |
-                                                                      v
-                                                           +----------+----------+
-                                                           | Extracted Artifacts |
-                                                           | (MFT, Registry, Logs|
-                                                           +----------+----------+
+```mermaid
+flowchart TD
+    PhysDevice["Physical Device\n(HDD, SSD, USB)"]
+    WriteBlocker["Hardware/Software\nWrite-Blocker"]
+    ForensicWS["Forensic Workstation\n(FTK Imager / dd)"]
+    ForensicImage["Forensic Image\n(.E01, .RAW, .AFF4)"]
+
+    PhysDevice --> WriteBlocker
+    WriteBlocker --> ForensicWS
+    ForensicWS --> ForensicImage
+
+    subgraph Autopsy["Autopsy (Sleuth Kit)"]
+        direction TB
+        A1["1. Ingest Modules\n- Hash Lookup (NSRL)\n- Exif Parser / Keyword Search\n- Email / Web Artifact Parser"]
+        A2["2. Timeline Analysis"]
+        A3["3. Deleted File Recovery"]
+    end
+
+    subgraph FTK["AccessData FTK (Forensic Toolkit)"]
+        direction TB
+        F1["1. Data Processing Engine (Oracle/Postgres)"]
+        F2["2. Known File Filter (KFF)"]
+        F3["3. Advanced Registry Parsing"]
+        F4["4. Decryption & Password Recovery (PRTK)"]
+        F5["5. Live Search & Indexed Search"]
+        F6["6. Custom Carving (Data Carving)"]
+    end
+
+    ExtractedArtifacts["Extracted Artifacts\n(MFT, Registry, Logs)"]
+
+    ForensicImage --> Autopsy
+    ForensicImage --> FTK
+    Autopsy --> ExtractedArtifacts
+    FTK --> ExtractedArtifacts
 ```
 
 ## Deep Dive: Autopsy and The Sleuth Kit (TSK)

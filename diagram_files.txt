@@ -1,0 +1,1126 @@
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/05 - CBC Padding Oracle Attack.md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/06 - Predictable IVs and Nonces.md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/03 - Unsalted Password Hashes.md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/11 - BEAST Attack.md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/09 - Weak TLS Configuration (SSLv3, TLS 1.0, RC4, DES).md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/02 - Rainbow Table Attacks.md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/10 - Certificate Validation Bypass.md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/07 - Insecure Random Number Generation.md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/01 - Weak Hashing Algorithms (MD5, SHA1 for passwords).md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/14 - Diffie-Hellman Weak Parameters (Logjam).md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/04 - ECB Mode Encryption — Block Boundary Manipulation.md
+./Specialized Testing/I - 32 - Cryptography Vulnerabilities/08 - Hardcoded Secrets in Code.md
+./Specialized Testing/I - 49 - IoT Security/04 - Hardcoded Credentials in Firmware.md
+./Specialized Testing/I - 49 - IoT Security/07 - UART JTAG Hardware Debugging Interfaces.md
+./Specialized Testing/I - 49 - IoT Security/14 - Shodan for IoT Device Discovery.md
+./Specialized Testing/I - 49 - IoT Security/01 - IoT Attack Surface Overview.md
+./Specialized Testing/I - 49 - IoT Security/20 - Defense Network Segmentation Patch Management.md
+./Specialized Testing/I - 49 - IoT Security/16 - IP Camera Exploitation.md
+./Specialized Testing/I - 49 - IoT Security/02 - IoT Device Firmware Extraction.md
+./Specialized Testing/I - 49 - IoT Security/17 - Smart Home Device Attacks.md
+./Specialized Testing/I - 49 - IoT Security/03 - Firmware Analysis and Reverse Engineering.md
+./Specialized Testing/I - 49 - IoT Security/12 - CoAP Protocol Attacks.md
+./Specialized Testing/I - 49 - IoT Security/13 - Modbus DNP3 Industrial Protocol Attacks.md
+./Specialized Testing/I - 49 - IoT Security/18 - Medical Device Security Overview.md
+./Specialized Testing/I - 49 - IoT Security/15 - Router Exploitation.md
+./Specialized Testing/I - 49 - IoT Security/19 - SCADA ICS Security Concepts.md
+./Specialized Testing/I - 49 - IoT Security/11 - MQTT Unauthenticated Broker Exploitation.md
+./Specialized Testing/I - 49 - IoT Security/06 - Insecure Update Mechanisms.md
+./Specialized Testing/I - 49 - IoT Security/05 - Telnet SSH Exposed on IoT Devices.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/09 - Cron Job Abuse Writable Scripts.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/20 - LXC LXD Group Abuse.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/13 - Shared Library Injection.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/27 - D-Bus Interface Misconfigurations.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/12 - LD_PRELOAD Abuse.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/19 - Docker Group Membership.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/30 - Tmux Screen Session Hijacking.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/23 - Kernel Exploits.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/25 - DirtyPipe CVE-2022-0847.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/17 - SSH Private Key Reuse.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/28 - proc Filesystem Information Leakage.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/14 - NFS No_Root_Squash Exploitation.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/16 - Password in Config Files History Env Vars.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/35 - Defense File Permission Hardening.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/29 - Core Dump Analysis for Credentials.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/18 - Writeable etc hosts.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/24 - PwnKit CVE-2021-4034.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/33 - Python Perl Ruby Library Hijacking.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/31 - tmp Race Conditions.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/34 - Logrotate Exploitation.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/21 - Disk Group Reading Raw Device Files.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/15 - Weak File Permissions on Sensitive Files.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/22 - Wildcard Injection in Cron.md
+./System and Privilege Escalation/I - 44 - Linux Privilege Escalation/32 - Insecure Sudo Rules.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/27 - Kernel Exploits.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/26 - Insecure File Folder Permissions.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/05 - Modifiable Service Binaries.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/34 - LOLBins.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/04 - Weak Service Permissions.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/40 - Defense Least Privilege and Patching.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/30 - WSL Abuse.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/33 - NTDS.dit Extraction.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/25 - Abusing SeBackupPrivilege SeRestorePrivilege.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/03 - Unquoted Service Paths.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/20 - Pass the Hash on Local Admin.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/17 - Stored Credentials Files.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/06 - DLL Hijacking.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/28 - Named Pipe Impersonation.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/35 - AppLocker and WDAC Bypass.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/01 - Windows PrivEsc Methodology Overview.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/29 - COM Object Hijacking.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/37 - AMSI Bypass Techniques.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/31 - Credential Dumping.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/21 - Password in GPP.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/12 - UAC Bypass Techniques.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/24 - Abusing SeTakeOwnershipPrivilege.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/07 - DLL Search Order Abuse.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/10 - JuicyPotato RoguePotato PrintSpoofer.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/23 - Abusing SeDebugPrivilege.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/39 - Windows Defender Evasion Basics.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/36 - Bypassing PowerShell Execution Policy.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/18 - PowerShell History File.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/38 - Event Log Clearing and Evasion.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/19 - DPAPI.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/32 - Volume Shadow Copy Theft.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/22 - LAPS.md
+./System and Privilege Escalation/I - 43 - Windows Privilege Escalation/08 - AlwaysInstallElevated.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/23 - COM Hijacking for Persistence.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/17 - Credential Dumping Windows.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/12 - Lateral Movement WMI.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/09 - Pivoting Port Forwarding.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/16 - Token Stealing with Incognito.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/19 - Browser Credential Extraction.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/30 - Defense EDR SIEM Honeytokens.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/21 - SSH Agent Hijacking.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/24 - DLL Side-Loading for Persistence.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/25 - Rootkits.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/15 - Lateral Movement RDP Pass-Through.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/01 - Post-Exploitation Goals and Phases.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/18 - Credential Dumping Linux.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/13 - Lateral Movement WinRM.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/26 - Bootkit.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/28 - Clearing Tracks Windows.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/11 - Pivoting Dynamic Port Forwarding.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/27 - Memory-Only Malware.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/07 - Web Shell Persistence.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/08 - Reverse Shell Stability.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/20 - Email Client Credential Extraction.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/10 - Pivoting SOCKS Proxy.md
+./System and Privilege Escalation/A - 45 - Post-Exploitation and Persistence/14 - Lateral Movement PsExec SMBExec.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/09 - Anonymous FTP and Directory Traversal.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/02 - DHCP Starvation and Rogue DHCP Servers.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/03 - DNS Spoofing and Cache Poisoning.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/05 - SMB Relay Attacks NTLM Relay on Network Level.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/12 - Exploiting NFS and Weak RPC Exports.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/04 - Exploiting SNMP Public Private Strings.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/07 - VLAN Hopping Attacks.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/11 - Exploiting VNC Unauthenticated Access.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/13 - Exploiting Telnet and Cleartext Protocols.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/14 - Bypassing Network Access Control NAC.md
+./Network Security/I - 72 - Network Exploitation and Protocol Abuse/06 - IPv6 Spoofing and MITM mitm6.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/11 - Enumerating FTP and TFTP.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/07 - tcpdump Basics and Command Line Sniffing.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/12 - Enumerating SMTP VRFY EXPN.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/09 - Enumerating SMB Null Sessions Enum4linux.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/13 - Vulnerability Scanning with Nessus and OpenVAS.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/14 - Active vs Passive Reconnaissance in Networks.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/10 - Enumerating SNMP Snmpwalk.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/08 - Enumerating DNS Nslookup Dig Fierce.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/06 - Wireshark Basics and Packet Capture Analysis.md
+./Network Security/B - 71 - Network Enumeration Scanning and Sniffing/15 - Identifying Firewalls and WAFs.md
+./Network Security/I - 35 - Network Protocol Attacks/26 - GitLab GitHub — Exposed Tokens, LFI CVEs.md
+./Network Security/I - 35 - Network Protocol Attacks/06 - DNS — Zone Transfer (AXFR), Cache Poisoning, Spoofing.md
+./Network Security/I - 35 - Network Protocol Attacks/12 - LDAP — Anonymous Bind, Enumeration, Injection.md
+./Network Security/I - 35 - Network Protocol Attacks/31 - MSMQ — Unauthenticated Access.md
+./Network Security/I - 35 - Network Protocol Attacks/30 - X11 — Exposed Display Server.md
+./Network Security/I - 35 - Network Protocol Attacks/32 - MQTT — Unauthenticated Broker.md
+./Network Security/I - 35 - Network Protocol Attacks/07 - DHCP — Starvation, Rogue DHCP Server.md
+./Network Security/I - 35 - Network Protocol Attacks/29 - VNC — No Authentication, Weak Password.md
+./Network Security/I - 35 - Network Protocol Attacks/22 - etcd — Exposed Key-Value Store.md
+./Network Security/I - 35 - Network Protocol Attacks/08 - SNMP — Default Community Strings, Information Disclosure.md
+./Network Security/I - 35 - Network Protocol Attacks/25 - Jenkins — Groovy Script Console, Unauthenticated RCE.md
+./Network Security/I - 35 - Network Protocol Attacks/23 - Consul — Service Mesh Misconfig.md
+./Network Security/I - 35 - Network Protocol Attacks/05 - IMAP POP3 — Credential Attacks.md
+./Network Security/I - 35 - Network Protocol Attacks/11 - NetBIOS — Enumeration, NBNS Poisoning.md
+./Network Security/I - 35 - Network Protocol Attacks/24 - Zookeeper — Unauthenticated Access.md
+./Network Security/I - 35 - Network Protocol Attacks/13 - Kerberos — Pass-the-Hash, Pass-the-Ticket, Golden-Silver Ticket, Kerberoasting, AS-REP Roasting.md
+./Network Security/I - 35 - Network Protocol Attacks/09 - RDP — Brute Force, BlueKeep, DejaBlue.md
+./Network Security/I - 35 - Network Protocol Attacks/10 - SMB — EternalBlue, Null Session, Relay Attacks.md
+./Network Security/I - 35 - Network Protocol Attacks/27 - Jira Confluence — Authentication Bypass CVEs.md
+./Network Security/I - 35 - Network Protocol Attacks/28 - Prometheus Grafana — Metrics Exposure, Credential Disclosure.md
+./Network Security/I - 35 - Network Protocol Attacks/14 - NFS — No_Root_Squash Exploitation.md
+./Network Security/I - 35 - Network Protocol Attacks/03 - Telnet — Cleartext Protocol Attacks.md
+./Network Security/I - 35 - Network Protocol Attacks/35 - BGP — Route Hijacking.md
+./Network Security/I - 35 - Network Protocol Attacks/33 - CoAP — IoT Protocol Attacks.md
+./Network Security/I - 35 - Network Protocol Attacks/34 - SIP VoIP — Enumeration, Eavesdropping, Toll Fraud.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/08 - HTTP HTTPS and TLS Handshake Explained.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/06 - DNS Protocol Basics and Name Resolution.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/12 - SMTP POP3 and IMAP Email Protocols.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/09 - SMB Protocol Basics and File Sharing.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/02 - IP Addressing Subnetting and CIDR Notation.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/11 - SSH Protocol Basics and Key Authentication.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/07 - DHCP Protocol Basics and Address Allocation.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/10 - FTP TFTP and Telnet Protocols.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/05 - ARP Protocol and Layer 2 Networking.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/14 - Firewalls IDS IPS and NAT Explained.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/04 - Understanding TCP UDP and ICMP.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/01 - OSI Model and TCP IP Protocol Suite.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/03 - Introduction to Routing and Switching.md
+./Network Security/B - 70 - Network Foundations and Core Concepts/13 - SNMP Protocol Basics and Community Strings.md
+./Network Security/A - 79 - Advanced Network Services/03 - DNP3 Protocol Exploitation.md
+./Network Security/A - 79 - Advanced Network Services/01 - Introduction to ICS and SCADA Security.md
+./Network Security/A - 79 - Advanced Network Services/14 - Attacking BGP Routing and Infrastructure.md
+./Network Security/A - 79 - Advanced Network Services/04 - Siemens S7 Protocol Attacks.md
+./Network Security/A - 79 - Advanced Network Services/05 - Attacking SAP NetWeaver and RFCs.md
+./Network Security/A - 79 - Advanced Network Services/02 - Modbus Protocol Exploitation.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/08 - ICMP Tunneling PingTunnel.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/11 - Bypassing Deep Packet Inspection DPI.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/04 - Chisel for TCP UDP Tunneling.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/13 - Double Pivoting and Multi-hop Routing.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/14 - VPN Exploitation and Compromise.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/02 - SSH Tunneling and SOCKS Proxies.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/12 - Evading Network IDS IPS Signatures.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/10 - Bypassing Firewalls via Egress Testing.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/09 - DNS Tunneling Iodine dnscat2.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/06 - Meterpreter Portfwd and Autoroute.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/07 - Socat Relays and Bind Shells.md
+./Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/15 - C2 Infrastructure Traffic Obfuscation.md
+./Active Directory/A - 63 - AD CS Exploitation/05 - ESC4 - Template Access Control Abuse.md
+./Active Directory/A - 63 - AD CS Exploitation/08 - ESC7 - Certificate Authority Access Control Abuse.md
+./Active Directory/A - 63 - AD CS Exploitation/09 - ESC8 - NTLM Relay to AD CS HTTP Endpoints.md
+./Active Directory/A - 63 - AD CS Exploitation/10 - ESC9 - No Security Extension Abuse.md
+./Active Directory/A - 63 - AD CS Exploitation/03 - ESC2 - Any Purpose EKU Abuse.md
+./Active Directory/A - 63 - AD CS Exploitation/07 - ESC6 - EDITF_ATTRIBUTESUBJECTALTNAME2 Abuse.md
+./Active Directory/A - 63 - AD CS Exploitation/04 - ESC3 - Enrollment Agent Abuse.md
+./Active Directory/A - 63 - AD CS Exploitation/02 - ESC1 - Misconfigured Certificate Templates.md
+./Active Directory/A - 63 - AD CS Exploitation/01 - AD CS Architecture and Enumeration.md
+./Active Directory/A - 63 - AD CS Exploitation/06 - ESC5 - PKI Control Abuse.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/10 - Extracting Credentials from Browsers and Credential Manager.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/01 - Lateral Movement via RDP and Hijacking Sessions.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/06 - Dumping Local SAM and LSA Secrets.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/04 - Lateral Movement via WMI WMIExec.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/07 - Pass-the-Hash PtH Mechanics and Execution.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/08 - Over-Pass-the-Hash Pass-the-Key.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/03 - Lateral Movement via SMB PsExec SmbExec.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/02 - Lateral Movement via WinRM and PSRemoting.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/05 - Dumping LSASS Memory Mimikatz Procdump Comsvcs.md
+./Active Directory/I - 68 - AD Lateral Movement and Credential Access/09 - Pass-the-Ticket PtT and Ticket Management.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/10 - Resource-Based Constrained Delegation RBCD via Relay.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/07 - NTLM Relay to LDAP - LDAP Signing Bypasses.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/13 - EPA Extended Protection Bypasses.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/08 - NTLM Relay to SMB - SMB Signing Bypasses.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/15 - Coercion and Relay Defense Strategies.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/06 - Coercer - The Universal Coercion Toolkit.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/12 - Drop-the-MIC - Bypassing NTLM MIC.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/14 - Relay across Forest Trusts.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/11 - Shadow Credentials - MSDS-KeyCredentialLink.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/01 - Authentication Coercion Overview.md
+./Active Directory/A - 64 - Advanced Coercion and Relay/09 - NTLM Relay to AD CS - Web Enrollment.md
+./Active Directory/A - 36 - Active Directory Attacks/10 - Silver Ticket Attack.md
+./Active Directory/A - 36 - Active Directory Attacks/09 - Golden Ticket Attack.md
+./Active Directory/A - 36 - Active Directory Attacks/17 - ACL Abuse.md
+./Active Directory/A - 36 - Active Directory Attacks/07 - Pass the Ticket (PtT).md
+./Active Directory/A - 36 - Active Directory Attacks/27 - ZeroLogon (CVE-2020-1472).md
+./Active Directory/A - 36 - Active Directory Attacks/24 - Domain Privilege Escalation via Trust Relationships.md
+./Active Directory/A - 36 - Active Directory Attacks/12 - SMB Relay.md
+./Active Directory/A - 36 - Active Directory Attacks/16 - DCShadow Attack.md
+./Active Directory/A - 36 - Active Directory Attacks/22 - SAM Hive Extraction.md
+./Active Directory/A - 36 - Active Directory Attacks/21 - LSASS Dumping.md
+./Active Directory/A - 36 - Active Directory Attacks/08 - Overpass the Hash.md
+./Active Directory/A - 36 - Active Directory Attacks/30 - Defense — Tiering, Least Privilege, LAPS, Defender for Identity.md
+./Active Directory/A - 36 - Active Directory Attacks/01 - Active Directory Overview.md
+./Active Directory/A - 36 - Active Directory Attacks/23 - BloodHound — Attack Path Analysis.md
+./Active Directory/A - 36 - Active Directory Attacks/25 - Forest Trust Attacks.md
+./Active Directory/A - 36 - Active Directory Attacks/29 - Exchange — ProxyLogon, ProxyShell, ProxyNotShell.md
+./Active Directory/A - 36 - Active Directory Attacks/19 - AdminSDHolder Abuse.md
+./Active Directory/A - 36 - Active Directory Attacks/18 - GPO Abuse.md
+./Active Directory/A - 36 - Active Directory Attacks/14 - LLMNR NBT-NS Poisoning.md
+./Active Directory/A - 36 - Active Directory Attacks/11 - NTLM Relay Attack.md
+./Active Directory/A - 36 - Active Directory Attacks/26 - PrintNightmare (CVE-2021-34527).md
+./Active Directory/A - 36 - Active Directory Attacks/15 - DCSync Attack.md
+./Active Directory/A - 36 - Active Directory Attacks/20 - Mimikatz — Credential Dumping.md
+./Active Directory/A - 36 - Active Directory Attacks/13 - LDAP Relay.md
+./Active Directory/A - 36 - Active Directory Attacks/28 - MS14-068.md
+./Active Directory/A - 78 - AD Exotic Protocols and Cross-Forest/13 - Delegated Authentication Bypass.md
+./Active Directory/A - 78 - AD Exotic Protocols and Cross-Forest/12 - Advanced Golden SAML Attacks.md
+./Active Directory/A - 78 - AD Exotic Protocols and Cross-Forest/11 - Forging Ticket Granting Tickets TGTs.md
+./Active Directory/A - 78 - AD Exotic Protocols and Cross-Forest/15 - Tier 0 Compromise and Domain Dominance.md
+./Active Directory/A - 78 - AD Exotic Protocols and Cross-Forest/14 - SCCM and WSUS Exploitation in AD.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/14 - Kerberos Unconstrained Delegation Basics.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/01 - Exploiting Weak ACLs GenericAll GenericWrite.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/12 - Exploiting LAPS Local Administrator Password Solution Basics.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/11 - Bypassing UAC User Account Control.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/10 - DLL Hijacking Basics for Privilege Escalation.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/06 - Exploiting Weak Service Permissions.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/07 - Unquoted Service Paths in AD Environments.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/15 - Defending Against Basic AD Attacks.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/03 - Exploiting ForceChangePassword.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/02 - Exploiting WriteDacl and WriteOwner.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/08 - AlwaysInstallElevated Abuse.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/05 - Exploiting Weak GPO Permissions.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/09 - Exploiting Weak Registry Permissions.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/04 - Exploiting AddMember on Sensitive Groups.md
+./Active Directory/I - 69 - AD Access Controls and Escalation/13 - Kerberos Constrained Delegation Basics.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/02 - Pass-the-PRT Primary Refresh Token Attacks.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/01 - Entra ID vs On-Prem AD Architecture.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/15 - DPAPI and DPAPI-NG Master Key Extraction.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/06 - Pass-the-Certificate in Hybrid Environments.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/09 - ProxyShell Chaining.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/04 - Seamless SSO Desktop SSO Abuse.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/16 - Bypassing Microsoft Defender for Identity MDI.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/12 - Bypassing LAPS Local Admin Password Solution.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/17 - Custom BloodHound Cypher Queries for Tier 0 Paths.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/07 - PrivExchange - Exchange to Domain Admin.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/18 - Overcoming Tiered Administration Models.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/08 - ProxyLogon Chaining.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/05 - Golden SAML - Forging IDP Tokens.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/13 - Extracting gMSA Group Managed Service Accounts.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/10 - ProxyNotShell and OWASSRF.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/19 - DCSync Bypasses and Replication Evasion.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/03 - Azure AD Connect Sync Credential Extraction.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/20 - Ultimate Active Directory Pentest Methodology.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/11 - Exchange Web Services EWS Abuse.md
+./Active Directory/A - 65 - Hybrid Identity and Exchange/14 - GPO Abuse at Scale.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/01 - What is Active Directory Domains Trees and Forests.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/12 - Active Directory Schema and Attributes.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/11 - Security Identifiers SIDs and Relative IDs RIDs.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/06 - Group Policy Objects GPOs Explained.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/02 - Understanding FSMO Roles and Domain Controllers.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/14 - User Account Control UAC in AD Environments.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/10 - Active Directory Trusts One-way Two-way Transitive.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/15 - Setting Up a Vulnerable AD Lab GOAD.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/08 - NTLM vs Kerberos Authentication Basics.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/05 - Users Groups and Computers OUs vs Containers.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/07 - Access Control Lists ACLs and Access Control Entries ACEs.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/13 - Local Administrator vs Domain Administrator.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/04 - LDAP Structure and Querying Basics.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/03 - Active Directory DNS and Name Resolution.md
+./Active Directory/B - 66 - AD Foundations and Core Concepts/09 - Service Principal Names SPNs and Delegation.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/01 - Introduction to BloodHound and SharpHound.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/11 - Identifying Local Administrators via RPC.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/14 - Kerberoasting Basics and Identification.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/09 - Identifying Domain Controllers and Global Catalogs.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/06 - Enumerating SMB Shares and Null Sessions.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/10 - Enumerating AD Trusts and Forest Boundaries.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/05 - Enumerating Users and Groups via LDAP.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/07 - Discovering GPOs and Analyzing Passwords in SYSVOL.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/12 - Password Spraying Basics and Lockout Policies.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/03 - Ping Sweeping and Host Discovery in AD.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/08 - Enumerating SPNs and Finding Service Accounts.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/13 - AS-REP Roasting Basics and Detection.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/04 - NetExec CrackMapExec Basics and Module Usage.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/15 - LLMNR and NBT-NS Poisoning Basics Responder.md
+./Active Directory/B - 67 - AD Enumeration and Tooling Basics/02 - Using PowerView for AD Enumeration.md
+./Web Application Security/A - 80 - Enterprise Web Apps/10 - Exploiting JBoss and WildFly Application Servers.md
+./Web Application Security/A - 80 - Enterprise Web Apps/08 - Advanced Java Server Faces JSF Exploitation.md
+./Web Application Security/A - 80 - Enterprise Web Apps/07 - Exploiting Atlassian Jira and Confluence.md
+./Web Application Security/A - 80 - Enterprise Web Apps/03 - Liferay Portal Exploitation Techniques.md
+./Web Application Security/A - 80 - Enterprise Web Apps/12 - Attacking Node.js Prototype Pollution.md
+./Web Application Security/A - 80 - Enterprise Web Apps/09 - Spring Framework Vulnerabilities Spring4Shell.md
+./Web Application Security/A - 80 - Enterprise Web Apps/04 - Apache Struts Remote Code Execution.md
+./Web Application Security/A - 80 - Enterprise Web Apps/01 - Oracle WebLogic Deserialization Vulnerabilities.md
+./Web Application Security/A - 80 - Enterprise Web Apps/06 - Attacking Microsoft SharePoint Servers.md
+./Web Application Security/A - 80 - Enterprise Web Apps/11 - .NET Deserialization ysoserial.net.md
+./Web Application Security/A - 80 - Enterprise Web Apps/02 - Exploiting Adobe ColdFusion Server Vulnerabilities.md
+./Web Application Security/B - 05 - Recon/01 - Passive vs Active Recon.md
+./Web Application Security/B - 22 - File Upload/11 - ZIP Slip (malicious ZIP with path traversal).md
+./Web Application Security/B - 22 - File Upload/12 - Image Upload Magic Bytes Bypass.md
+./Web Application Security/B - 22 - File Upload/15 - Defense — Extension Allowlists, Content Validation, Separate Storage.md
+./Web Application Security/I - 13 - SSRF/05 - SSRF via File Imports.md
+./Web Application Security/I - 13 - SSRF/15 - SSRF DNS Rebinding.md
+./Web Application Security/I - 20 - SAML/09 - SAML to Account Takeover.md
+./Web Application Security/I - 20 - SAML/06 - SAML Comment Injection.md
+./Web Application Security/I - 58 - Advanced Web Techniques/22 - DNS Rebinding Deep Dive.md
+./Web Application Security/I - 58 - Advanced Web Techniques/14 - Insecure Randomness in Web Context.md
+./Web Application Security/I - 58 - Advanced Web Techniques/19 - Browser Fingerprinting Detection Evasion.md
+./Web Application Security/I - 58 - Advanced Web Techniques/15 - Account Takeover via Email Domain Takeover.md
+./Web Application Security/I - 58 - Advanced Web Techniques/11 - Compression Side-Channel BREACH TIME.md
+./Web Application Security/I - 58 - Advanced Web Techniques/01 - HTTP Parameter Pollution HPP.md
+./Web Application Security/I - 58 - Advanced Web Techniques/21 - Reverse Tabnapping.md
+./Web Application Security/I - 58 - Advanced Web Techniques/17 - Unicode Normalization Attacks.md
+./Web Application Security/I - 58 - Advanced Web Techniques/18 - Homograph Attacks.md
+./Web Application Security/I - 34 - Subdomain Takeover/06 - MX Takeover.md
+./Web Application Security/I - 34 - Subdomain Takeover/05 - NS Takeover.md
+./Web Application Security/I - 34 - Subdomain Takeover/04 - Subdomain Takeover — Full Exploit Walkthrough.md
+./Web Application Security/I - 34 - Subdomain Takeover/03 - Fingerprinting Vulnerable Services.md
+./Web Application Security/I - 34 - Subdomain Takeover/07 - Tools.md
+./Web Application Security/I - 34 - Subdomain Takeover/01 - What is Subdomain Takeover.md
+./Web Application Security/I - 34 - Subdomain Takeover/08 - Defense.md
+./Web Application Security/A - 27 - Web Cache Poisoning and Deception/04 - Cache Poisoning via X-Forwarded-Scheme.md
+./Web Application Security/A - 27 - Web Cache Poisoning and Deception/01 - What is Web Caching?.md
+./Web Application Security/A - 27 - Web Cache Poisoning and Deception/06 - Cache Poisoning via Fat GET.md
+./Web Application Security/A - 27 - Web Cache Poisoning and Deception/05 - Cache Poisoning via Unkeyed Headers.md
+./Web Application Security/A - 27 - Web Cache Poisoning and Deception/02 - Cache Keys and Unkeyed Inputs.md
+./Web Application Security/A - 27 - Web Cache Poisoning and Deception/08 - Cache Poisoning to Redirect Users.md
+./Web Application Security/I - 09 - SSTI/02 - Template Engines Overview.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/15 - Out-of-Band Bypass.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/14 - Wildcard Bypass.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/13 - JSON XML Wrapping.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/17 - Slowloris and Rate Manipulation.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/09 - Keyword Splitting and Concatenation.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/08 - Whitespace Substitution.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/19 - CDN Origin Direct Access.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/01 - What is a WAF and How It Works.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/07 - Comment Insertion.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/16 - IP Rotation.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/20 - ML-Based WAF Evasion Concepts.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/02 - WAF Fingerprinting.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/10 - HTTP Parameter Pollution.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/03 - URL Encoding Bypass.md
+./Web Application Security/A - 39 - WAF Bypass Techniques/05 - Unicode Normalization Bypass.md
+./Web Application Security/B - 01 - Foundations/20 - TCP IP Model.md
+./Web Application Security/B - 01 - Foundations/04 - Subnets and CIDR.md
+./Web Application Security/B - 01 - Foundations/16 - VPNs How They Tunnel Traffic.md
+./Web Application Security/B - 01 - Foundations/21 - Packet Structure Reading Raw Traffic.md
+./Web Application Security/B - 01 - Foundations/01 - What is a Network.md
+./Web Application Security/B - 01 - Foundations/10 - ARP Address Resolution Protocol.md
+./Web Application Security/B - 01 - Foundations/19 - OSI Model 7 Layers.md
+./Web Application Security/B - 01 - Foundations/18 - Certificates and Certificate Authorities.md
+./Web Application Security/B - 01 - Foundations/22 - Wireshark Basics.md
+./Web Application Security/B - 01 - Foundations/02 - IP Addresses.md
+./Web Application Security/B - 01 - Foundations/05 - Ports and Protocols.md
+./Web Application Security/B - 16 - Authentication/22 - SSO Bypass.md
+./Web Application Security/B - 16 - Authentication/26 - Verbose Error Messages.md
+./Web Application Security/B - 02 - HTTP Deep Dive/05 - HTTP Response Structure.md
+./Web Application Security/B - 02 - HTTP Deep Dive/21 - HTTP3 and QUIC.md
+./Web Application Security/B - 02 - HTTP Deep Dive/11 - Cookies Structure Flags Lifecycle.md
+./Web Application Security/B - 02 - HTTP Deep Dive/04 - HTTP Request Structure.md
+./Web Application Security/B - 02 - HTTP Deep Dive/20 - HTTP2 Multiplexing HPACK Server Push.md
+./Web Application Security/I - 29 - WebSockets Security/01 - WebSocket Protocol — How It Works.md
+./Web Application Security/I - 29 - WebSockets Security/05 - WebSocket XSS.md
+./Web Application Security/I - 23 - Path Traversal/02 - Basic Path Traversal (.._.._.._etc_passwd).md
+./Web Application Security/I - 30 - GraphQL Security/02 - GraphQL vs REST — Attack Surface Differences.md
+./Web Application Security/I - 28 - Clickjacking/01 - What is Clickjacking?.md
+./Web Application Security/I - 28 - Clickjacking/05 - Clickjacking + CSRF Chain.md
+./Web Application Security/I - 28 - Clickjacking/04 - Drag and Drop Clickjacking.md
+./Web Application Security/I - 28 - Clickjacking/02 - Basic iframe Clickjacking.md
+./Web Application Security/I - 28 - Clickjacking/03 - Multistep Clickjacking.md
+./Web Application Security/I - 25 - Business Logic/11 - Referral Abuse _ Self-Referral.md
+./Web Application Security/I - 25 - Business Logic/18 - Defense — State Machine Validation, Server-Side Checks.md
+./Web Application Security/I - 25 - Business Logic/07 - Workflow Bypass (skipping payment step).md
+./Web Application Security/I - 25 - Business Logic/12 - Rate Limit Bypass for Votes _ Likes.md
+./Web Application Security/I - 25 - Business Logic/15 - Hidden API Parameters.md
+./Web Application Security/A - 26 - HTTP Request Smuggling/04 - TE.TE Smuggling (obfuscated TE headers).md
+./Web Application Security/A - 26 - HTTP Request Smuggling/10 - Smuggling to Escalate SSRF.md
+./Web Application Security/A - 26 - HTTP Request Smuggling/05 - HTTP_2 Request Smuggling (H2.CL, H2.TE).md
+./Web Application Security/A - 26 - HTTP Request Smuggling/11 - Detecting Smuggling (timing, differential responses).md
+./Web Application Security/A - 26 - HTTP Request Smuggling/03 - TE.CL Smuggling.md
+./Web Application Security/A - 26 - HTTP Request Smuggling/09 - Smuggling to Deliver XSS.md
+./Web Application Security/A - 26 - HTTP Request Smuggling/02 - CL.TE Smuggling.md
+./Web Application Security/A - 26 - HTTP Request Smuggling/08 - Smuggling to Capture Other Users' Requests.md
+./Web Application Security/B - 11 - CSRF/05 - CSRF Token Bypass Techniques.md
+./Web Application Security/I - 10 - Injection Attacks/11 - SSI Injection.md
+./Web Application Security/I - 33 - Information Disclosure/10 - Comment Disclosure in HTML Source.md
+./Web Application Security/I - 33 - Information Disclosure/07 - Backup Files Exposed.md
+./Web Application Security/I - 33 - Information Disclosure/09 - Internal IP Disclosure in Headers.md
+./Web Application Security/I - 33 - Information Disclosure/03 - Debug Endpoints.md
+./Web Application Security/I - 33 - Information Disclosure/02 - Stack Traces in Responses.md
+./Web Application Security/I - 33 - Information Disclosure/11 - API Response Over-Exposure.md
+./Web Application Security/I - 33 - Information Disclosure/01 - Verbose Error Messages.md
+./Web Application Security/I - 33 - Information Disclosure/08 - Version Disclosure.md
+./Web Application Security/I - 33 - Information Disclosure/05 - .git Directory Exposed.md
+./Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/03 - Network VAPT/Network VAPT 04 - Bypassing Firewalls NAC and Network Segregation.md
+./Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/03 - Network VAPT/Network VAPT 03 - Attacking Network Services SMB FTP SSH.md
+./Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/03 - Network VAPT/Network VAPT 01 - External and Internal Network Recon Methodology.md
+./Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/02 - API VAPT/API VAPT 05 - Advanced API Exploits SSRF Mass Assignment.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 25 - Advanced Race Conditions.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 05 - Server-Side Request Forgery SSRF.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 11 - HTTP Request Smuggling.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 29 - Desync Attacks and Advanced Smuggling.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 28 - HTTP Parameter Pollution HPP.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 22 - Prototype Pollution.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 20 - Web Cache Deception and Poisoning.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 21 - Open Redirects and Clickjacking.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 27 - Host Header Injections.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 23 - Subdomain Takeover and Cloud Misconfigs.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 02 - Cross-Site Scripting XSS.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 16 - GraphQL Vulnerabilities.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 24 - WAF Evasion Techniques.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 15 - Cross-Origin Resource Sharing CORS.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 01 - Intro and Reconnaissance.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 26 - Insecure Cryptographic Storage.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 17 - WebSocket Vulnerabilities.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 18 - JWT JSON Web Token Attacks.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 14 - Session Management Vulnerabilities.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 19 - OAuth and SAML Attacks.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 30 - Real World Bug Bounty Scenarios.md
+./Interview Preparation/01 - Web Security/Web QnA - Module 04 - Cross-Site Request Forgery CSRF.md
+./Interview Preparation/10 - Ultimate Expert Scenario Bank/03 - Network/Network Ultra 04 - Advanced BGP Hijacking and DNS Amplification Campaigns.md
+./Interview Preparation/08 - Command and Control Operations/C2 QnA - Module 95 - Sliver C2 Advanced Deployment and Profiles.md
+./Interview Preparation/08 - Command and Control Operations/C2 QnA - Module 96 - Cobalt Strike and Advanced Malleable C2.md
+./Interview Preparation/08 - Command and Control Operations/C2 QnA - Module 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery.md
+./Interview Preparation/08 - Command and Control Operations/C2 QnA - Module 99 - C2 OPSEC and EDR Evasion Techniques.md
+./Interview Preparation/08 - Command and Control Operations/C2 QnA - Module 98 - Building Custom C2 Frameworks from Scratch.md
+./Interview Preparation/08 - Command and Control Operations/C2 QnA - Module 97 - Mythic C2 Custom Agents and Payload Generation.md
+./Interview Preparation/08 - Command and Control Operations/C2 QnA - Module 94 - Command and Control Foundations and Architectures.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 48 - IDS IPS Bypass.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 45 - Wireless Exploitation 802.11x.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 51 - Kerberos Network Level Attacks.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 53 - IPv6 Exploitation.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 47 - Firewall Evasion Techniques.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 44 - BGP and Routing Attacks.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 50 - DNS Amplification and Spoofing.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 55 - Software Defined Networking SDN Attacks.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 43 - ARP Spoofing and MITM.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 41 - TCP IP Internals.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 52 - NTLM Relay and SMB Signing.md
+./Interview Preparation/03 - Network Security/Network QnA - Module 42 - VLAN Hopping and Layer 2 Attacks.md
+./Interview Preparation/06 - CTI and OSINT/CTI QnA - Module 83 - Threat Modeling and Adversary Emulation.md
+./Interview Preparation/06 - CTI and OSINT/CTI QnA - Module 87 - Automated Dark Web Monitoring and Scraping.md
+./Interview Preparation/06 - CTI and OSINT/CTI QnA - Module 85 - OSINT for Threat Intelligence and Actor Tracking.md
+./Interview Preparation/06 - CTI and OSINT/CTI QnA - Module 86 - Deep Web and Dark Web Investigations.md
+./Interview Preparation/06 - CTI and OSINT/CTI QnA - Module 82 - Cyber Threat Intelligence CTI Foundations.md
+./Interview Preparation/06 - CTI and OSINT/CTI QnA - Module 84 - OPSEC for Threat Intelligence.md
+./Interview Preparation/02 - API Security/API QnA - Module 39 - Improper Inventory Management.md
+./Interview Preparation/02 - API Security/API QnA - Module 34 - Unrestricted Resource Consumption.md
+./Interview Preparation/02 - API Security/API QnA - Module 37 - Server Side Request Forgery SSRF in APIs.md
+./Interview Preparation/02 - API Security/API QnA - Module 36 - Unrestricted Access to Sensitive Business Flows.md
+./Interview Preparation/02 - API Security/API QnA - Module 35 - Broken Function Level Authorization.md
+./Interview Preparation/02 - API Security/API QnA - Module 32 - Broken Authentication.md
+./Interview Preparation/02 - API Security/API QnA - Module 33 - Broken Object Property Level Authorization.md
+./Interview Preparation/02 - API Security/API QnA - Module 40 - Unsafe Consumption of APIs.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 74 - Resource-Based Constrained Delegation RBCD.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 73 - Silver Tickets.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 69 - Overpass the Hash.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 76 - Active Directory Certificate Services AD CS.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 75 - Unconstrained Delegation Attacks.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 64 - SMB Relaying.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 71 - DCShadow Attacks.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 61 - AD Enumeration and BloodHound.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 68 - Pass the Ticket PtT.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 77 - Cross-Forest and Cross-Domain Trust Attacks.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 78 - Lateral Movement via WMI WinRM and DCOM.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 70 - DCSync Attacks.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 66 - Local Privilege Escalation Windows.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 65 - IPv6 DNS Takeover mitm6.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 63 - Kerberoasting.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 67 - Pass the Hash PtH.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 72 - Golden Tickets.md
+./Interview Preparation/04 - Active Directory/AD QnA - Module 62 - AS-REP Roasting.md
+./Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 91 - Cloud Threat Hunting AWS Azure GCP.md
+./Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 90 - Network Threat Hunting Zeek Suricata PCAP.md
+./Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 92 - Advanced Memory Forensics and Rootkit Detection.md
+./Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 89 - Endpoint Threat Hunting Windows Sysmon EDR.md
+./Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 88 - Threat Hunting Foundations and Methodologies.md
+./Interview Preparation/05 - Cloud Security/Cloud QnA - Module 79 - Advanced Cloud Security Architecture.md
+./Interview Preparation/05 - Cloud Security/Cloud QnA - Module 81 - Cloud Native Exploitation and Serverless.md
+./Interview Preparation/05 - Cloud Security/Cloud QnA - Module 80 - Container Security and Kubernetes K8s.md
+./API Security/I - 31 - API Security/04 - API4 — Unrestricted Resource Consumption.md
+./API Security/I - 31 - API Security/07 - API7 — Server Side Request Forgery (SSRF).md
+./API Security/I - 31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA).md
+./API Security/I - 31 - API Security/21 - API Key Rotation Failures.md
+./API Security/I - 31 - API Security/17 - API Fuzzing with ffuf and Burp.md
+./API Security/I - 31 - API Security/08 - API8 — Security Misconfiguration.md
+./API Security/I - 31 - API Security/24 - gRPC Security Testing.md
+./API Security/I - 31 - API Security/13 - API Versioning Abuse.md
+./API Security/I - 31 - API Security/19 - REST API Method Override Attacks.md
+./API Security/I - 31 - API Security/20 - API Token Leakage in Logs.md
+./API Security/I - 31 - API Security/22 - Unauthenticated API Endpoints.md
+./API Security/I - 31 - API Security/10 - API10 — Unsafe Consumption of APIs.md
+./API Security/I - 31 - API Security/05 - API5 — Broken Function Level Authorization (BFLA).md
+./API Security/I - 31 - API Security/06 - API6 — Unrestricted Access to Sensitive Business Flows.md
+./API Security/I - 31 - API Security/02 - API2 — Broken Authentication.md
+./API Security/I - 31 - API Security/09 - API9 — Improper Inventory Management.md
+./API Security/I - 31 - API Security/11 - API Key Exposure in Source Code JS Files.md
+./API Security/I - 31 - API Security/03 - API3 — Broken Object Property Level Authorization.md
+./API Security/I - 31 - API Security/18 - API Documentation Discovery.md
+./API Security/I - 31 - API Security/16 - Lack of Resource Rate Limiting.md
+./API Security/I - 31 - API Security/25 - Web LLM Attacks.md
+./API Security/I - 31 - API Security/12 - API Key in URL Parameters.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/05 - Web Server Hardening.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/18 - Honeypots and Honeytokens.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/16 - Disk Forensics Autopsy FTK.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/21 - Security Monitoring What to Alert On.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/02 - Security Hardening CIS Benchmarks.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/11 - SIEM Concepts Log Aggregation Alerting.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/14 - Digital Forensics Evidence Collection.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/12 - SOC Operations Tier 1 2 3 Overview.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/04 - Windows Hardening.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/19 - Threat Hunting Hypothesis-Driven Approach.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/15 - Memory Forensics Volatility.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/08 - Network Segmentation and VLANs.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/09 - Zero Trust Architecture.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/13 - Incident Response PICERL.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/07 - Firewall Rules Allowlist vs Denylist.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/06 - Database Hardening.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/22 - Patch Management Strategy.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/20 - EDR Solutions CrowdStrike SentinelOne Defender.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/17 - Log Analysis for Attack Detection.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/03 - Linux Hardening.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/10 - Intrusion Detection IDS vs IPS.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/25 - Security Maturity Models.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/01 - Defense-in-Depth Layered Security Model.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/24 - Purple Team Red Blue Collaboration.md
+./Defensive Security/I - 56 - Defensive Security and Hardening/23 - Vulnerability Management Program.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/07 - SQLi File Read Credentials RCE.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/11 - XXE SSRF Internal API Access Data Exfiltration.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/25 - Full Red Team Simulation — Recon to Domain Admin.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/19 - Recon Default Creds Internal Network AD Compromise.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/13 - GraphQL Introspection Mutation Abuse Privilege Escalation.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/18 - SSTI RCE Container Escape Host Compromise.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/09 - JWT Algorithm Confusion Admin JWT Full App Takeover.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/10 - CORS Misconfiguration CSRF Credential Theft.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/16 - HTTP Smuggling Cache Poisoning Stored XSS.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/12 - Path Traversal LFI Log Poisoning RCE.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/08 - File Upload Webshell RCE Lateral Movement.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/14 - Host Header Injection Password Reset Poisoning Account Takeover.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/15 - Mass Assignment Admin Role Full App Control.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/21 - OAuth State CSRF Account Linking ATO.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/20 - API Key in JS Cloud Access S3 Data Exfiltration.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/17 - Subdomain Takeover Cookie Theft Account Takeover.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/06 - IDOR PII Exfiltration Mass Account Breach.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/22 - Race Condition Double Spend Financial Fraud.md
+./Tools and Real-World Scenarios/A - 40 - Vulnerability Chaining Playbook/23 - Deserialization RCE Persistence via Cron.md
+./Tools and Real-World Scenarios/I - 41 - Tools/22 - Amass.md
+./Tools and Real-World Scenarios/I - 41 - Tools/03 - Nmap.md
+./Tools and Real-World Scenarios/I - 41 - Tools/21 - John the Ripper.md
+./Tools and Real-World Scenarios/I - 41 - Tools/13 - Hydra.md
+./Tools and Real-World Scenarios/I - 41 - Tools/07 - Gobuster.md
+./Tools and Real-World Scenarios/I - 41 - Tools/32 - LinkFinder JSParser.md
+./Tools and Real-World Scenarios/I - 41 - Tools/30 - XSStrike dalfox.md
+./Tools and Real-World Scenarios/I - 41 - Tools/04 - Masscan.md
+./Tools and Real-World Scenarios/I - 41 - Tools/08 - Feroxbuster.md
+./Tools and Real-World Scenarios/I - 41 - Tools/18 - Mimikatz.md
+./Tools and Real-World Scenarios/I - 41 - Tools/14 - CrackMapExec NetExec.md
+./Tools and Real-World Scenarios/I - 41 - Tools/12 - Metasploit Framework.md
+./Tools and Real-World Scenarios/I - 41 - Tools/28 - Wireshark tcpdump.md
+./Tools and Real-World Scenarios/I - 41 - Tools/20 - Hashcat.md
+./Tools and Real-World Scenarios/I - 41 - Tools/11 - Nuclei.md
+./Tools and Real-World Scenarios/I - 41 - Tools/25 - Shodan CLI.md
+./Tools and Real-World Scenarios/I - 41 - Tools/27 - WhatWeb Wappalyzer.md
+./Tools and Real-World Scenarios/I - 41 - Tools/19 - jwt_tool.md
+./Tools and Real-World Scenarios/I - 41 - Tools/26 - Arjun.md
+./Tools and Real-World Scenarios/I - 41 - Tools/02 - OWASP ZAP.md
+./Tools and Real-World Scenarios/I - 41 - Tools/23 - Subfinder.md
+./Tools and Real-World Scenarios/I - 41 - Tools/01 - Burp Suite.md
+./Tools and Real-World Scenarios/I - 41 - Tools/29 - Interactsh Burp Collaborator.md
+./Tools and Real-World Scenarios/I - 41 - Tools/31 - ScoutSuite Prowler.md
+./Tools and Real-World Scenarios/I - 41 - Tools/10 - Nikto.md
+./Tools and Real-World Scenarios/I - 41 - Tools/16 - Impacket.md
+./Tools and Real-World Scenarios/I - 41 - Tools/09 - sqlmap.md
+./Tools and Real-World Scenarios/I - 41 - Tools/05 - Rustscan.md
+./Tools and Real-World Scenarios/I - 41 - Tools/06 - ffuf.md
+./Tools and Real-World Scenarios/I - 41 - Tools/15 - BloodHound.md
+./Tools and Real-World Scenarios/I - 41 - Tools/24 - theHarvester.md
+./Tools and Real-World Scenarios/I - 41 - Tools/17 - Responder.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/25 - waybackurls Wayback Machine URL Fetcher.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/67 - wpscan Full Config and Exploit Usage.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/14 - puredns Fast DNS Resolver.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/45 - Nmap NSE Scripts Reference.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/21 - Feroxbuster Recursive with Smart Filtering.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/13 - shuffledns DNS Bruteforcing at Scale.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/11 - crt.sh Certificate Transparency Query.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/41 - jwt_tool JWT Attack Toolkit.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/60 - CrackMapExec NetExec Full Command Reference.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/63 - Rubeus Kerberos Attack Toolkit.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/73 - WinPEAS Complete Output Analysis.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/29 - Nikto Full Config and Output Interpretation.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/38 - CORStest CORS Misconfiguration Tester.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/33 - dalfox XSS Scanner DOM-aware.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/07 - Shodan Web and CLI Complete Guide.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/04 - theHarvester Full Usage Guide.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/28 - ParamSpider Parameter Mining from Web Archives.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/65 - hashcat Full Mode and Rule Reference.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/61 - Responder All Modes and Config.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/58 - SharpHound Data Collection for BloodHound.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/02 - Subfinder Config Sources API Keys.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/56 - proxychains SOCKS Proxy Chaining.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/74 - Seatbelt C Host Enumeration.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/01 - Amass Full Config and Usage.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/27 - x8 Hidden Parameter Discovery.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/22 - Katana Web Crawler by Project Discovery.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/66 - John the Ripper Complete Guide.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/53 - Socat Advanced Netcat Replacement.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/71 - pspy Linux Process Snooper.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/35 - tplmap Template Injection Tester.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/31 - sqlmap Full Flag Reference and Tamper Scripts.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/51 - Medusa Parallel Login Brute Forcer.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/34 - SSTImap SSTI Scanner and Exploiter.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/72 - LinPEAS Complete Output Analysis.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/08 - Censys Search Syntax and API.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/49 - Msfvenom Payload Generation Reference.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/50 - Hydra All Protocols Reference.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/59 - Impacket All Scripts.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/69 - smbclient Full Usage Guide.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/30 - Nuclei Writing Custom Templates.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/36 - Commix Command Injection Exploiter.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/57 - BloodHound Complete Usage and Query Reference.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/76 - Pacu AWS Exploitation Framework.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/54 - Chisel TCP Tunneling over HTTP.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/44 - noSQLmap NoSQL Injection Tool.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/17 - Burp Extensions Active Scan Autorize JWT.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/23 - Hakrawler Fast Web Crawler.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/46 - Masscan High-Speed Port Scanner.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/43 - PHPGGC PHP Gadget Chain Generator.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/39 - smuggler HTTP Request Smuggling Detector.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/52 - Netcat nc ncat Swiss Army Knife.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/15 - httpx HTTP Probing at Scale.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/10 - Zoomeye Alternative to Shodan.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/12 - dnsx DNS Bulk Resolution and Probing.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/68 - enum4linux SMB Enumeration.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/78 - trivy Container and IaC Vulnerability Scanner.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/79 - kube-hunter Kubernetes Vulnerability Scanner.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/09 - FOFA Chinese IoT Search Engine.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/47 - Rustscan Fast Pre-Scanner for Nmap.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/42 - ysoserial Java Deserialization Payload Generator.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/48 - Metasploit Auxiliary Exploits Post Modules.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/37 - corsy CORS Scanner.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/75 - Snaffler Finding Secrets in AD.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/62 - Mimikatz All Modules.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/03 - Assetfinder Lightweight Subdomain Discovery.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/24 - gau GetAllUrls from Wayback and OTX.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/16 - Burp Suite Pro Complete Feature Reference.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/05 - Recon-ng Modular OSINT Framework.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/64 - Certify AD CS Attack Tool.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/55 - Ligolo-ng Layer 3 Pivot Tool.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/32 - XSStrike XSS Fuzzer and Exploit.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/80 - kubectl Security Commands for Pentesters.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/06 - Maltego Visual OSINT and Link Analysis.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/26 - arjun Parameter Discovery.md
+./Tools and Real-World Scenarios/B - 59 - Complete Tools Reference/70 - sqlcmd Connecting to MSSQL.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/20 - Chain HTTP Smuggling to Privilege Escalation.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/07 - Facebook Bug SSRF via Profile Picture.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/25 - Full Active Directory Pentest Simulation.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/26 - CTF Challenge Walkthroughs Web Category.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/11 - Chain Recon to DB Admin.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/06 - HackerOne Disclosed Reports Top 10.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/12 - Chain Phishing to Domain Admin.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/21 - Full Web App Pentest Simulation.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/09 - Shopify Bug IDOR on Admin Panel.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/22 - Full API Pentest Simulation.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/27 - CTF Challenge Walkthroughs Crypto Category.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/14 - Chain Deserialization to IAM Takeover.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/29 - TryHackMe Learning Path Mapping.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/24 - Full Internal Network Pentest Simulation.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/19 - Chain Path Traversal to Shell.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/10 - Uber Bug SQLi via Subdomain.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/15 - Chain GraphQL Introspection to Admin.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/30 - Building a Home Lab for VAPT Practice.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/08 - Twitter Bug XSS in OAuth Flow.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/02 - Bug Bounty Report Account Takeover Chain.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/16 - Chain Race Condition to Financial Loss.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/13 - Chain XSS to Mass Export PII.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/03 - Bug Bounty Report SSRF to RCE.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/23 - Full Cloud Infrastructure Pentest Simulation.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/01 - Bug Bounty Report Critical SQLi.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/28 - HackTheBox Machine Walkthroughs Methodology.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/18 - Chain Open Redirect to API Takeover.md
+./Tools and Real-World Scenarios/A - 60 - Advanced Chaining and Real-World Scenarios/05 - Bug Bounty Report XXE in XML API.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/11 - Multi-Tier C2 Architectures.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/02 - C2 Architecture Listeners Implants and Team Servers.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/03 - Communication Protocols HTTP HTTPS DNS SMB.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/08 - Cloud Infrastructure for C2 AWS Azure DigitalOcean.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/07 - Redirectors Socat Iptables Nginx.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/06 - Domain Fronting and CDN Abuse.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/14 - Popular Open Source Frameworks Metasploit Empire Covenant.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/12 - C2 OPSEC Best Practices.md
+./Command and Control Operations/I - 94 - Command and Control Foundations and Architectures/05 - Staged vs Stageless Payloads.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/10 - AMSI Antimalware Scan Interface Bypass Techniques.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/06 - Process Hollowing and Injection OPSEC.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/01 - Modern EDR Architecture and Detection Mechanisms.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/14 - Creating FUD Fully Undetectable Payloads.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/02 - Bypassing Static Signatures and YARA.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/11 - Evading Memory Scanners Sleeping and Encrypting Memory.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/07 - Thread Stack Spoofing and Call Stack Evasion.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/09 - ETW Event Tracing for Windows Patching.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/08 - PPID Spoofing and Command Line Obfuscation.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/12 - Malicious Driver loading and Bring Your Own Vulnerable Driver BYOVD.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/03 - Bypassing Heuristics and Behavioral Analysis.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/13 - Living off the Land C2 using Native APIs.md
+./Command and Control Operations/A - 99 - C2 OPSEC and EDR Evasion Techniques/15 - Continuous Testing against EDR Sandboxes.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/07 - Medusa Agent Cross-Platform Python C2.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/05 - Apollo Agent Advanced Windows C2.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/15 - Mythic Scripting API Automating Operations.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/12 - Developing Custom Mythic Agents from Scratch.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/09 - Mythic Browser Scripts and UI Customization.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/06 - Poseidon Agent macOS and Linux C2.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/10 - SOCKS Proxies and Pivoting with Mythic.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/01 - Introduction to Mythic C2 Architecture and Docker.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/14 - Evading Signatures with Unique Mythic Payloads.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/13 - Mythic Event Feed and Team Collaboration.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/08 - Customizing Mythic Agent Builds and OPSEC.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/04 - Understanding Mythic Payload Types Agents.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/11 - Integrating BOFs in Mythic.md
+./Command and Control Operations/A - 97 - Mythic C2 Custom Agents and Payload Generation/03 - Mythic C2 Profiles HTTP WebSocket SMB.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/03 - Listeners Beacons and SMB Named Pipes.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/06 - Malleable C2 PE and Memory Indicators.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/14 - Lateral Movement and Pivoting with Cobalt Strike.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/08 - Crafting Advanced Malleable C2 Profiles for OPSEC.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/15 - EDR Evasion with Custom Cobalt Strike Kits.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/09 - Artifact Kit and Payload Obfuscation.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/07 - Malleable C2 Process Injection and Evasion.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/01 - Cobalt Strike Architecture and Team Server Setup.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/02 - Understanding the Beacon Payload.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/05 - Malleable C2 HTTP-GET and HTTP-POST blocks.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/04 - Introduction to Malleable C2 Profiles.md
+./Command and Control Operations/A - 96 - Cobalt Strike and Advanced Malleable C2/10 - Resource Kit and Web Delivery.md
+./Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/07 - Sliver Armory Installing Custom Extensions.md
+./Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/04 - Sliver Listeners mTLS WireGuard HTTP DNS.md
+./Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/06 - Sliver Stagers and Shellcode Execution.md
+./Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/08 - Evasion Techniques in Sliver Process Hollowing BlockDLLs.md
+./Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/10 - Integrating BOFs Beacon Object Files in Sliver.md
+./Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/03 - Generating Sliver Implants Beacons vs Sessions.md
+./Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/09 - Sliver Lateral Movement PsExec WMI.md
+./Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/01 - Introduction to Sliver C2 Architecture.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/13 - Evading Memory Scanners by modifying Slivers Memory Allocation.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/12 - Custom CGO Bindings for Native Windows API Abuse.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/10 - Modifying the Sliver Stager to Bypass Heuristic Detection.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/07 - Building Custom Loaders for Sliver Shellcode.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/06 - Integrating Custom Syscalls directly into the Sliver Agent.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/08 - Bypassing CrowdStrike Falcon with Custom Sliver Profiles.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/09 - Evading Microsoft Defender for Endpoint MDE with Sliver.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/15 - Case Study A Fully Undetectable FUD Sliver Campaign.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/11 - Implementing Sleep Obfuscation Ekko Foliage in Custom Builds.md
+./Command and Control Operations/A - 100 - Deep Dive Sliver Custom Compiles and EDR Bypass Mastery/14 - Automating the Custom Compile Pipeline with CI CD.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/04 - Cryptography for Custom C2 AES RSA and Key Exchange.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/13 - Obfuscating the Custom Agent AV EDR Evasion.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/15 - Open-Sourcing vs Private Use Operational Considerations.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/11 - Implementing Evasion Techniques directly in the Agent.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/01 - Why Build a Custom C2 Framework.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/03 - Designing the Communication Protocol HTTP REST vs Websockets.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/08 - File Upload and Download Capabilities.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/12 - Developing a Web Interface for the C2 React Vue.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/06 - Developing the Agent C C++ Golang.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/14 - Adding Lateral Movement Modules to Custom C2.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/10 - Asynchronous Execution and Background Jobs.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/05 - Developing the Team Server Python Flask FastAPI.md
+./Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/02 - Core Components Server Agent and Protocol.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/02 - Microsoft Sysmon Configuration and Telemetry.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/01 - Windows Event Logs Deep Dive Event IDs 4624 4688.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/04 - Hunting for Living off the Land Binaries LOLBAS.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/07 - Detecting Malicious Scheduled Tasks and Services.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/13 - Hunting for Fileless Malware and In-Memory Execution.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/03 - Hunting for Process Injection and Hollowing.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/12 - Endpoint Detection and Response EDR Telemetry Analysis.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/10 - Identifying Suspicious Parent-Child Process Trees.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/05 - Detecting PowerShell Downgrade and Obfuscation.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/15 - MacOS and Linux Endpoint Hunting Basics.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/11 - Hunting for UAC Bypasses.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/14 - Analyzing Windows Prefetch Amcache and Shimcache.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/09 - Detecting Credential Dumping LSASS Access.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/06 - Hunting for WMI Abuse and Persistence.md
+./Threat Hunting and Incident Response/I - 89 - Endpoint Threat Hunting Windows Sysmon EDR/08 - Hunting for Registry Modifications and Run Keys.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/11 - Analyzing Network Flow NetFlow IPFIX Data.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/01 - Packet Capture PCAP Analysis at Scale.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/02 - Introduction to Zeek Network Security Monitor.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/10 - Hunting for Web Shells in HTTP Traffic.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/14 - Correlating Network and Endpoint Events.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/08 - Analyzing Suspicious TLS SSL Traffic JA3 Fingerprinting.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/09 - Detecting Lateral Movement via SMB and RDP.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/04 - Suricata IDS IPS Rule Writing and Tuning.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/06 - Detecting Domain Generation Algorithms DGAs.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/03 - Writing Custom Zeek Scripts for Detection.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/13 - RITA Real Intelligence Threat Analytics for C2.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/12 - Detecting Suspicious User Agent Strings.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/07 - Hunting for DNS Tunneling and Exfiltration.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/05 - Hunting for C2 Beacons and Jitter.md
+./Threat Hunting and Incident Response/I - 90 - Network Threat Hunting Zeek Suricata PCAP/15 - Dealing with Encrypted Network Traffic in Hunts.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/06 - Kusto Query Language KQL Basics in Microsoft Sentinel.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/15 - Case Study Tracking APT29 across a SIEM.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/12 - Machine Learning for Log Anomaly Detection.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/11 - Using Jupyter Notebooks for Threat Hunting.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/13 - Designing High-Fidelity Alerting Rules.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/04 - Introduction to Elastic Stack ELK for Threat Hunting.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/08 - Integrating MISP with Splunk ELK.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/07 - Advanced KQL Joins and Time-Series Analysis.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/09 - SOAR Security Orchestration and Automated Response.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/03 - Statistical Outlier Detection in Splunk.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/14 - Creating Honeytokens and Deception Decoys.md
+./Threat Hunting and Incident Response/A - 93 - Threat Hunting with SIEM Splunk ELK KQL/01 - Building a Hunting Dashboard in Splunk.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/09 - Direct Kernel Object Manipulation DKOM Detection.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/03 - Detecting Hidden and Unlinked Processes.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/01 - Introduction to Volatility 3 and Memory Acquisition.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/07 - Recovering Passwords and Keys from LSASS Memory.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/10 - Analyzing Master Boot Record MBR and VBR Infections.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/08 - Kernel Level Rootkits SSDT Hooking Detection.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/06 - Analyzing Network Connections in Memory Netscan.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/04 - Hunting for Injected Threads and Hollowed Processes.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/05 - Extracting Malware Payloads from Memory Dumps.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/02 - Analyzing Windows Process Structures EPROCESS.md
+./Threat Hunting and Incident Response/A - 92 - Advanced Memory Forensics and Rootkit Detection/14 - Analyzing Hypervisor-Level Rootkits Blue Pill.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/13 - Transitioning from Hunt to Incident Response.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/02 - The Threat Hunting Loop Hypothesis to Triage.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/12 - False Positives vs False Negatives in Hunting.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/07 - Baseline Establishment and Anomaly Detection.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/06 - The Pyramid of Pain in Hunting.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/01 - Introduction to Proactive Threat Hunting.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/03 - Hypothesis Generation Methodologies.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/14 - Automating Hunts vs Manual Investigations.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/15 - Measuring the ROI of a Threat Hunting Program.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/04 - Known Bad vs Known Good vs Outliers.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/11 - Creating a Threat Hunting Runbook.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/05 - Crown Jewel Analysis and Identifying Vital Assets.md
+./Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/09 - Threat Hunting Maturity Model THMM.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/01 - Differences in Cloud vs On-Premises Hunting.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/02 - AWS CloudTrail Analysis for Persistence.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/06 - Hunting for Illicit Consent Grants in Azure.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/04 - Analyzing AWS GuardDuty and Security Hub Findings.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/10 - Hunting for Cloud Metadata SSRF Exfiltration.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/14 - Correlating Cloud Identity with Network Activity.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/13 - Hunting in Kubernetes Cluster Audit Logs.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/11 - Identifying Anomalous Cloud Storage Access Buckets.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/15 - Building a Cloud Native Threat Hunting Pipeline.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/03 - Hunting for Compromised IAM Credentials in AWS.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/05 - Azure Activity Logs and Entra ID Sign-in Logs.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/08 - GCP Cloud Audit Logs Analysis.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/07 - Microsoft Defender for Cloud Telemetry.md
+./Threat Hunting and Incident Response/A - 91 - Cloud Threat Hunting AWS Azure GCP/12 - Serverless Function Lambda Abuse Detection.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/10 - Ingesting Scraped Data into Elasticsearch.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/06 - Scraping Telegram Channels with Telethon.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/09 - Real-time Alerting for Brand Mentions on Dark Forums.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/14 - Building a Custom CTI Dashboard.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/13 - Dark Web Data Enrichment using MISP.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/01 - Challenges in Scraping the Dark Web.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/08 - NLP for Identifying Credential Leaks in Dumps.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/15 - Legal and Storage Considerations for Malicious Data.md
+./Cyber Threat Intelligence and OSINT/A - 87 - Automated Dark Web Monitoring and Scraping/11 - Network Graphing of Criminal Relationships.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/07 - OPSEC for Dark Web Researchers.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/02 - The Onion Router Tor Architecture and Mechanics.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/14 - Malicious Exit Node Profiling and SSL Stripping.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/09 - Managing Sockpuppet Personas and Identities.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/03 - Tor Hidden Services v3 Cryptography.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/15 - Operational Security Failures in Historic Takedowns.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/06 - Freenet and ZeroNet Decentralized Networks.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/13 - Deanonymizing Tor Users via Browser Exploits.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/11 - Monero XMR Cryptography and Tracing Resistance.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/12 - De-anonymization Techniques and Traffic Correlation.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/10 - Cryptocurrencies in the Dark Web Bitcoin Privacy.md
+./Cyber Threat Intelligence and OSINT/B - 83 - Dark Web Infrastructure and Tor Internals/08 - Setting up a Secure Investigation VM Whonix Tails.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/11 - Setting up a MISP Malware Information Sharing Platform.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/14 - Writing Actionable CTI Reports.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/01 - Introduction to Cyber Threat Intelligence CTI.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/07 - Intelligence Driven Incident Response.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/05 - Mitre ATT&CK Framework Deep Dive.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/13 - Evaluating Source Reliability and Information Credibility.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/03 - Tactical vs Operational vs Strategic Intelligence.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/15 - Legal and Ethical Boundaries of CTI.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/06 - Lockheed Martin Cyber Kill Chain.md
+./Cyber Threat Intelligence and OSINT/B - 82 - CTI Foundations and Intelligence Lifecycle/02 - The Intelligence Cycle Direction Collection Processing.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/07 - Financial Crime Syndicates FIN7 FIN11.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/01 - The Complexity of Attribution False Flags.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/05 - North Korean APTs Lazarus Group HIDDEN COBRA.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/15 - Constructing the Attribution Case.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/11 - Linguistic Profiling in Threat Actor Communications.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/09 - Code Overlap and String Similarity Analysis.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/04 - Chinese State-Sponsored APTs Equation Group Axiom.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/03 - Russian State-Sponsored APTs Cozy Bear Fancy Bear.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/12 - Infrastructure Reuse and IP BGP Profiling.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/14 - Evaluating Public Attribution Reports.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/13 - TTP Overlap using ATT&CK Navigator.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/02 - Advanced Persistent Threats APT Definitions.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/10 - Tracking Threat Actors via PDB Paths.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/08 - Analyzing Malware Compilations Timestamps and Toolmarks.md
+./Cyber Threat Intelligence and OSINT/A - 86 - Advanced Threat Actor Attribution and TTPs/06 - Iranian State-Sponsored APTs MuddyWater Charming Kitten.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/15 - OSINT OPSEC Preventing Counter-Intelligence.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/12 - Utilizing Maltego for Infrastructure Graphing.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/05 - WHOIS History and Domain Registration Reversals.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/13 - SpiderFoot and Automating OSINT Gathering.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/09 - Tracking Pastebin and Ghostbin Leaks.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/07 - Social Media Intelligence SOCMINT on Threat Actors.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/06 - Tracking Malicious SSL TLS Certificates.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/14 - Identifying Command and Control C2 Servers via OSINT.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/11 - Geolocation and Tracking Threat Actors.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/08 - Code Repository Intelligence GitHub GitLab Search.md
+./Cyber Threat Intelligence and OSINT/I - 85 - OSINT for Threat Intelligence and Actor Tracking/04 - RiskIQ PassiveTotal and Passive DNS.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/09 - Bulletproof Hosting Providers and Fast Flux.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/06 - Double and Triple Extortion Leak Sites.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/12 - Translating and Parsing Russian Chinese Threat Slang.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/04 - Initial Access Brokers IABs Ecosystem.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/02 - Escrow Systems and PGP Authentication in Markets.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/11 - Navigating and Searching Dark Web Indexes Ahmia.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/08 - Malware Crypting and FUD Services.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/05 - Ransomware as a Service RaaS Operations.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/10 - Credit Card Carding Forums and Dumps.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/01 - Evolution of Dark Web Marketplaces Silk Road to Present.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/07 - Data Breach Forums BreachForums Alternatives.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/15 - Tracking Phishing Kits and MaaS Offerings.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/03 - Russian Hacker Forums Exploit.in XSS.is.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/14 - Monitoring Telegram and Discord for Threat Intel.md
+./Cyber Threat Intelligence and OSINT/I - 84 - Dark Web Forums Marketplaces and Data Leaks/13 - Infiltrating Closed Forums Proof of Concept Challenges.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/04 - Exploiting AWS Lambda and Serverless Functions.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/03 - S3 Bucket Misconfigurations and Ransomware.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/08 - EKS Cluster Takeover from Pod to Node to IAM.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/12 - Route53 Subdomain Takeover and DNS Hijacking.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/15 - Pacu and AWS CLI Penetration Testing Workflows.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/01 - AWS IAM Privilege Escalation Advanced Vectors.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/13 - EC2 User Data and Startup Script Injection.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/02 - AWS SSRF to Metadata and IMDSv2 Bypass.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/10 - SecretsManager and Parameter Store Data Exfiltration.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/06 - Cognito Misconfigurations and Privilege Escalation.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/05 - API Gateway Authorization Bypasses.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/11 - AWS Systems Manager SSM Run Command Abuse.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/07 - AWS RDS Database Snapshots and Public Exposure.md
+./Cloud and Container Security/A - 62 - Advanced AWS Exploitation/14 - Cross-Account Trust Abuse and AssumeRole Chaining.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/15 - MicroBurst Toolkit and Azure Pentesting Workflows.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/04 - Azure Blob Storage Public Access and SAS Tokens.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/12 - Azure Custom Role Definition Abuse.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/07 - Azure Automation Accounts and Runbooks Exploitation.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/02 - Exploiting Azure Managed Identities.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/13 - Bypassing Conditional Access Policies CAPs.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/05 - Azure SSRF to IMDS Data Exfiltration.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/08 - Azure Key Vault Extraction and Secrets Dumping.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/01 - Azure AD Privilege Escalation Vectors.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/06 - Abusing Azure Service Principals.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/09 - Attacking Azure DevOps CI CD Pipelines.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/10 - Azure Logic Apps Abuse.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/14 - Lateral Movement from On-Prem AD to Azure.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/11 - Illicit Consent Grants and OAuth Phishing in Azure.md
+./Cloud and Container Security/A - 76 - Advanced Azure and Entra ID Exploitation/03 - Azure Function Apps and Exposed Secrets.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/18 - Kubernetes Secret Enumeration.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/22 - Defense — Pod Security Admission, Network Policies, RBAC Hardening.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/08 - Dockerfile Security Misconfigurations.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/19 - Lateral Movement in K8s.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/12 - Exposed Kubernetes Dashboard.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/09 - Secrets in Docker Images.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/13 - Kubernetes API Server — Unauthenticated Access.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/06 - Container Escape — SYS_PTRACE Capability.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/02 - Docker Daemon Exposed.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/05 - Container Escape — Mounted Host Filesystem.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/01 - Docker Overview — Images, Containers, Registries.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/21 - Supply Chain — Malicious Container Images.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/11 - Kubernetes RBAC — ClusterAdmin Misconfig.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/14 - Kubernetes etcd — Direct Access to Secrets.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/07 - Container Escape — Kernel Exploits.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/20 - Admission Controller Bypass.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/03 - Docker Socket Mount Privilege Escalation.md
+./Cloud and Container Security/I - 38 - Container and Kubernetes Security/10 - Kubernetes Architecture — Control Plane, Nodes, Pods.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/08 - Extracting Secrets from GCP Secret Manager.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/03 - GCP Metadata Server SSRF to Credential Theft.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/10 - Exploiting GCP Service Account Impersonation.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/02 - Exploiting GCP Default Service Accounts.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/05 - GCP Cloud Functions Privilege Escalation.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/11 - Attacking Google Workspace and G Suite.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/12 - Privilege Escalation via GCP Deployment Manager.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/06 - Abuse of OS Login and SSH Keys in GCP.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/15 - GCPBuster and GCP Pentesting Workflows.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/13 - GCP Cloud Build CI CD Poisoning.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/04 - GCP Cloud Storage Public Bucket Access.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/14 - Lateral Movement across GCP Projects.md
+./Cloud and Container Security/A - 77 - Advanced GCP Exploitation/07 - Exploiting GCP Workload Identity.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/01 - OSINT for Cloud Assets Domain to Cloud IP.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/09 - Cloud Metadata Services IMDS Overview.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/05 - Using GCP CLI gcloud for Reconnaissance.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/02 - Discovering Exposed Cloud Storage S3 Scanner.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/03 - Using AWS CLI for Reconnaissance.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/07 - Enumerating Azure Entra ID and Subscriptions.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/06 - Enumerating AWS IAM Permissions.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/04 - Using Azure CLI and AzureHound for Recon.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/10 - Identifying Serverless Endpoints and API Gateways.md
+./Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/08 - Enumerating GCP Projects and Service Accounts.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/02 - Cloud Shared Responsibility Model.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/01 - Introduction to Cloud Computing IaaS PaaS SaaS.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/05 - Introduction to GCP Architecture and Services.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/15 - Introduction to Containerization Docker Basics.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/08 - Understanding Azure Active Directory Entra ID Basics.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/12 - Serverless Computing Basics Lambda Functions.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/13 - Managed Databases RDS SQL Azure Cloud SQL.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/06 - Cloud Identity and Access Management IAM Basics.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/10 - Cloud Storage Basics S3 Blobs Buckets.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/11 - Cloud Networking VPCs Subnets and Security Groups.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/14 - Cloud API Gateways and Endpoints.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/03 - Introduction to AWS Architecture and Services.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/04 - Introduction to Azure Architecture and Services.md
+./Cloud and Container Security/B - 74 - Cloud Foundations Identity and Access/09 - Understanding GCP Service Accounts and IAM.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/12 - Serverless Container Exploitation Fargate Cloud Run.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/06 - Bypassing AppArmor and Seccomp in Containers.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/14 - Exploiting Exotic AWS and GCP Container Services.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/01 - Kubernetes Architecture and Attack Surface.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/15 - Ultimate Container Pentesting Methodology.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/08 - Lateral Movement in Kubernetes Pod to Pod.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/13 - Attacking Istio and Service Meshes.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/10 - Escaping Privileged Containers Deep Dive.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/09 - Secrets Extraction from etcd.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/11 - Exploiting Cloud Native CI CD Pipelines.md
+./Cloud and Container Security/A - 81 - Advanced Container Breakouts/07 - Exploiting Tiller and Helm v2 v3.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/18 - Azure AD — Misconfiguration, Privilege Escalation.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/26 - Cloud Enumeration Tools.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/30 - Terraform CloudFormation Misconfigurations.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/35 - Defense — Least Privilege IAM, IMDSv2, Logging, SCP.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/04 - AWS Lambda — Privilege Escalation, Event Injection.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/24 - Cloud Metadata Endpoint Cheat Sheet.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/25 - IMDSv2 Bypass Techniques.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/31 - Kubernetes on Cloud — EKS, GKE, AKS.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/17 - GCP Compute Engine — Default Service Account Abuse.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/15 - GCP Metadata Server — Credential Theft.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/05 - AWS ECS EKS — Container Privilege Escalation.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/34 - Cloud Backdoor via IAM Role.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/16 - GCP Cloud Functions — Privilege Escalation.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/32 - Cloud Storage Mining.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/29 - Container Registry Attacks.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/22 - Azure Service Principal Abuse.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/08 - AWS RDS — Publicly Exposed Databases.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/19 - Azure Blob Storage — Public Access.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/01 - AWS IAM — Roles, Policies, Misconfigurations.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/23 - Azure Managed Identity Abuse.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/02 - AWS S3 — Public Access, ACL Misconfiguration.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/21 - Azure SSRF via Metadata.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/33 - CI CD Pipeline Attacks.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/28 - Serverless Security Testing.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/07 - AWS CloudTrail — Disabling Logging.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/10 - AWS API Gateway — Authorization Bypass.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/27 - Cloud SSRF to Credential Theft — Full Chain.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/20 - Azure Function Apps — Exposed Secrets.md
+./Cloud and Container Security/I - 37 - Cloud Infrastructure/11 - AWS Cognito — Misconfigured User Pools.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/10 - Debugging with GDB and Pwndbg.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/18 - Reverse Engineering Go Binaries.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/06 - Introduction to IDA Pro and Ghidra.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/05 - Static Analysis Tools Strings Binwalk ExifTool.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/09 - Dynamic Analysis Basics.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/13 - Bypassing Anti-Debugging Checks.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/16 - Analyzing Malware Loaders and Droppers.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/07 - Decompiling vs Disassembling.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/01 - Introduction to Reverse Engineering and Assembly.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/04 - ELF File Format Overview Linux.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/20 - Scripting in Ghidra and IDA Python APIs.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/19 - Reverse Engineering Rust Binaries.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/03 - PE File Format Overview Windows.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/11 - Debugging with x64dbg and OllyDbg.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/02 - CPU Registers Stack and Heap Basics.md
+./Exploit Dev and Reverse Engineering/A - 61 - Reverse Engineering/14 - Unpacking Packed Executables UPX.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/07 - MITRE ATT&CK Mapping Findings.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/08 - Cyber Kill Chain Lockheed Martin Model.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/06 - MITRE ATT&CK Framework.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/15 - IOCs Indicators of Compromise.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/10 - CVE Research Finding PoCs.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/03 - NVD National Vulnerability Database.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/13 - Patch Diffing Finding Vulns.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/09 - Threat Modeling STRIDE PASTA DREAD.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/11 - Vulnerability Disclosure Process.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/04 - Exploit-DB and Packet Storm.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/01 - What is Threat Intelligence.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/14 - 1-Day vs 0-Day Research Concepts.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/12 - Bug Bounty Programs HackerOne Bugcrowd Intigriti.md
+./Methodology and Standards/I - 55 - Threat Intelligence and CVEs/02 - CVE CVSS CWE Terminology.md
+./Methodology and Standards/B - 04 - VAPT Methodology/03 - Reconnaissance Phase.md
+./Methodology and Standards/B - 04 - VAPT Methodology/08 - Reporting Phase.md
+./Methodology and Standards/B - 04 - VAPT Methodology/05 - Vulnerability Identification Phase.md
+./Methodology and Standards/I - 42 - VAPT Reporting/05 - Severity Ratings.md
+./Methodology and Standards/I - 42 - VAPT Reporting/04 - Findings Section.md
+./Methodology and Standards/I - 42 - VAPT Reporting/01 - Why Reporting Matters.md
+./Methodology and Standards/I - 42 - VAPT Reporting/11 - Remediation Guidance.md
+./Methodology and Standards/I - 42 - VAPT Reporting/15 - Sample Full Report.md
+./Methodology and Standards/I - 42 - VAPT Reporting/08 - Risk Rating vs CVSS.md
+./Methodology and Standards/I - 42 - VAPT Reporting/13 - Retesting Methodology.md
+./Methodology and Standards/I - 42 - VAPT Reporting/03 - Executive Summary.md
+./Methodology and Standards/I - 42 - VAPT Reporting/06 - CVSS v3.1 Scoring.md
+./Methodology and Standards/I - 42 - VAPT Reporting/14 - Sample Finding — SQL Injection.md
+./Methodology and Standards/I - 42 - VAPT Reporting/09 - Proof of Concept.md
+./Methodology and Standards/I - 42 - VAPT Reporting/02 - VAPT Report Structure.md
+./Methodology and Standards/I - 42 - VAPT Reporting/10 - Screenshots and Evidence.md
+./Methodology and Standards/I - 42 - VAPT Reporting/07 - CVSS Vector String.md
+./Methodology and Standards/I - 42 - VAPT Reporting/12 - Attack Narrative.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/05 - OWASP ASVS Application Security Verification Standard.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/15 - ISO 27001 Information Security Management.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/11 - OWASP ZAP Full Configuration Guide.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/07 - OWASP WSTG Testing Checklist.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/02 - OWASP API Security Top 10 2023.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/04 - OWASP Testing Guide OTG Web Application.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/13 - PCI DSS Payment Card Security Requirements.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/14 - GDPR Security Requirements for Developers.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/01 - OWASP Top 10 2021 Full Walkthrough.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/03 - OWASP Mobile Top 10.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/10 - OWASP ModSecurity CRS WAF Rules.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/08 - OWASP Cheat Sheet Series Key Sheets.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/12 - NIST Cybersecurity Framework.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/06 - OWASP SAMM Software Assurance Maturity Model.md
+./Methodology and Standards/I - 57 - OWASP Frameworks and Standards/09 - OWASP Dependency-Check.md

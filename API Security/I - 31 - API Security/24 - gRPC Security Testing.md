@@ -28,21 +28,15 @@ gRPC uses HTTP/2 POST requests.
 
 ## Architecture and Attack Flow
 
-```text
-+------------------+     1. Compiled Binary Payload      +------------------+
-|                  |     (application/grpc)              |                  |
-| Attacker / Proxy |====================================>|   gRPC Gateway / |
-| (grpcui / Burp)  |           HTTP/2 Stream             |   Microservice   |
-|                  |<====================================|                  |
-+------------------+     2. Binary Response / Trailers   +------------------+
-        |
-        | 3. Reflection / Protobuf Decoding
-        v
-+------------------+
-|   Readable JSON  |
-|   / Manipulated  |
-|   Payload        |
-+------------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker / Proxy\n(grpcui / Burp)"]
+    GW["gRPC Gateway / Microservice"]
+    JSON["Readable JSON / Manipulated Payload"]
+
+    Attacker -- "1. Compiled Binary Payload\n(application/grpc)\nHTTP/2 Stream" --> GW
+    GW -- "2. Binary Response / Trailers" --> Attacker
+    Attacker -- "3. Reflection / Protobuf Decoding" --> JSON
 ```
 
 ## Security Testing Methodology

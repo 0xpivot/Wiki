@@ -20,35 +20,18 @@ However, misconfigured S3 buckets remain one of the leading causes of massive da
 
 ## 2. Architecture and Attack Flow
 
-```text
-+---------------------+        +-------------------------+        +---------------------------+
-|   Attacker / VAPT   |        |   S3 Enumeration Tools  |        |   AWS S3 Infrastructure   |
-|   Professional      |        |   (S3Scanner, etc.)     |        |   (Target Organization)   |
-+---------------------+        +-------------------------+        +---------------------------+
-           |                               |                                |
-           | 1. Generate bucket name list  |                                |
-           |    (permutations, OSINT)      |                                |
-           |------------------------------>|                                |
-           |                               |                                |
-           | 2. Send HTTP HEAD/GET reqs    |                                |
-           |    to <name>.s3.amazonaws.com |                                |
-           |--------------------------------------------------------------->|
-           |                               |                                |
-           | 3. Parse HTTP Status Codes    |                                |
-           |    (200 OK, 403 Forbidden,    |                                |
-           |     404 Not Found)            |                                |
-           |<---------------------------------------------------------------|
-           |                               |                                |
-           | 4. Identify open buckets      |                                |
-           |<------------------------------|                                |
-           |                               |                                |
-           | 5. List bucket contents &     |                                |
-           |    download sensitive data    |                                |
-           |--------------------------------------------------------------->|
-           |                               |                                |
-           | 6. Test for Write Access      |                                |
-           |    (Upload test file)         |                                |
-           |--------------------------------------------------------------->|
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker / VAPT Professional
+    participant Tools as S3 Enumeration Tools (S3Scanner, etc.)
+    participant S3 as AWS S3 Infrastructure (Target Organization)
+
+    Attacker->>Tools: 1. Generate bucket name list (permutations, OSINT)
+    Tools->>S3: 2. Send HTTP HEAD/GET reqs to name.s3.amazonaws.com
+    S3-->>Tools: 3. Parse HTTP Status Codes (200 OK, 403 Forbidden, 404 Not Found)
+    Tools-->>Attacker: 4. Identify open buckets
+    Attacker->>S3: 5. List bucket contents & download sensitive data
+    Attacker->>S3: 6. Test for Write Access (Upload test file)
 ```
 
 ## 3. The "How": Detailed Methodology

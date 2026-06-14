@@ -19,29 +19,19 @@ When the victim machine receives the spoofed response, it connects to the attack
 
 ## 2. ASCII Diagram of Attack Flow
 
-```text
-    [ Victim (192.168.1.50) ]                                     [ Attacker (192.168.1.100) ]
-              |                                                                |
-              | 1. User types \\FILESRV-TYPO in Explorer                       |
-              |                                                                |
-              | 2. DNS Query for FILESRV-TYPO -> DNS Server (Fails: NXDOMAIN)  |
-              |                                                                |
-              | 3. LLMNR Multicast: "Who is FILESRV-TYPO?"                     |
-              |--------------------------------------------------------------->| (Attacker is listening)
-              |                                                                |
-              | 4. LLMNR Poisoned Response: "I am FILESRV-TYPO! (192.168.1.100)|
-              |<---------------------------------------------------------------|
-              |                                                                |
-              | 5. Victim initiates SMB connection to 192.168.1.100            |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 6. Attacker demands NTLM authentication (Challenge)            |
-              |<---------------------------------------------------------------|
-              |                                                                |
-              | 7. Victim sends NTLMv2 Response (Hash)                         |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              |                                                                | 8. Attacker captures hash or relays it
+```mermaid
+sequenceDiagram
+    participant Victim as Victim (192.168.1.50)
+    participant Attacker as Attacker (192.168.1.100)
+    
+    Note over Victim: 1. User types \\FILESRV-TYPO in Explorer
+    Note over Victim: 2. DNS Query for FILESRV-TYPO -> DNS Server (Fails: NXDOMAIN)
+    Victim->>Attacker: 3. LLMNR Multicast: "Who is FILESRV-TYPO?" (Attacker is listening)
+    Attacker-->>Victim: 4. LLMNR Poisoned Response: "I am FILESRV-TYPO! (192.168.1.100)"
+    Victim->>Attacker: 5. Victim initiates SMB connection to 192.168.1.100
+    Attacker-->>Victim: 6. Attacker demands NTLM authentication (Challenge)
+    Victim->>Attacker: 7. Victim sends NTLMv2 Response (Hash)
+    Note over Attacker: 8. Attacker captures hash or relays it
 ```
 
 ## 3. Attack Mechanics

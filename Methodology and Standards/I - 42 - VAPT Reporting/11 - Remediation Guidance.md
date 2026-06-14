@@ -42,53 +42,16 @@ When documenting a fix, break it down by audience to ensure max readability:
 
 ## ASCII Diagram: The Remediation Lifecycle
 
-```text
-+---------------------------------------------------------+
-|                 VAPT Engagement Lifecycle               |
-+---------------------------------------------------------+
-                             |
-                             v
-+---------------------------------------------------------+
-| 1. Vulnerability Discovery & Verification               |
-|    - Scanner output analysis                            |
-|    - Manual exploitation                                |
-|    - Impact assessment                                  |
-+---------------------------------------------------------+
-                             |
-                             v
-+---------------------------------------------------------+
-| 2. Root Cause Analysis                                  |
-|    - Why does this exist?                               |
-|    - Is it a code flaw? Misconfiguration? Design?       |
-+---------------------------------------------------------+
-                             |
-                             v
-+---------------------------------------------------------+
-| 3. Developing Remediation Strategy                      |
-|    - Identify short-term mitigations (WAF rules)        |
-|    - Identify long-term fixes (Code rewrite, patch)     |
-+---------------------------------------------------------+
-                             |
-                             v
-+---------------------------------------------------------+
-| 4. Client Communication & Reporting                     |
-|    - Documenting findings clearly                       |
-|    - Providing step-by-step fix instructions            |
-+---------------------------------------------------------+
-                             |
-                             v
-+---------------------------------------------------------+
-| 5. Client Implementation Phase                          |
-|    - Patch management                                   |
-|    - Code deployment                                    |
-+---------------------------------------------------------+
-                             |
-                             v
-+---------------------------------------------------------+
-| 6. Retesting & Validation (Verification)                |
-|    - Confirming the fix is effective                    |
-|    - Ensuring no bypasses exist                         |
-+---------------------------------------------------------+
+```mermaid
+flowchart TD
+    S1["1. Vulnerability Discovery & Verification<br>- Scanner output analysis<br>- Manual exploitation<br>- Impact assessment"]
+    S2["2. Root Cause Analysis<br>- Why does this exist?<br>- Is it a code flaw? Misconfiguration? Design?"]
+    S3["3. Developing Remediation Strategy<br>- Identify short-term mitigations (WAF rules)<br>- Identify long-term fixes (Code rewrite, patch)"]
+    S4["4. Client Communication & Reporting<br>- Documenting findings clearly<br>- Providing step-by-step fix instructions"]
+    S5["5. Client Implementation Phase<br>- Patch management<br>- Code deployment"]
+    S6["6. Retesting & Validation (Verification)<br>- Confirming the fix is effective<br>- Ensuring no bypasses exist"]
+
+    S1 --> S2 --> S3 --> S4 --> S5 --> S6
 ```
 
 ## Deep Dive: Short-Term vs. Long-Term

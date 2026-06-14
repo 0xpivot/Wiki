@@ -19,31 +19,18 @@ Some common unkeyed headers include:
 Think of it like a personalized license plate factory. The factory manager (Cache) sorts orders only by the state (The Key). You order a license plate for California and put a secret post-it note on the order saying "Actually, print 'HACKED' on all plates today." (Unkeyed Header). The factory manager doesn't read the post-it, but the guy stamping the metal (Backend) does. Because the manager grouped all California orders together, every driver in California receives a plate that says 'HACKED'.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    POISONING VIA UNKEYED HEADERS
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["1. Attacker Discovers an Unkeyed Header <br/> GET / HTTP/1.1 <br/> Host: target.com <br/> X-Original-URL: /admin <-- Changes the backend route!"]
+    Back["2. Backend Processes X-Original-URL <br/> Backend says: 'Even though the request is for '/', the X-Original-URL says '/admin'. <br/> I will return the Admin login page.'"]
+    Cache["3. Cache Saves the Response <br/> Cache says: 'I will save this response for the Key: GET / | target.com' <br/> (The cache completely ignores the X-Original-URL header)."]
+    Victim["4. Victim Requests the Homepage <br/> GET / HTTP/1.1 <br/> Host: target.com"]
+    Result["5. Cache Serves Poisoned Content <br/> Cache serves the Admin login page to the regular user trying to access the homepage!"]
 
-[1. Attacker Discovers an Unkeyed Header]
-GET / HTTP/1.1
-Host: target.com
-X-Original-URL: /admin               <-- Changes the backend route!
-
-[2. Backend Processes X-Original-URL]
-Backend says: "Even though the request is for '/', the X-Original-URL says '/admin'.
-I will return the Admin login page."
-
-[3. Cache Saves the Response]
-Cache says: "I will save this response for the Key: GET / | target.com"
-(The cache completely ignores the X-Original-URL header).
-
-[4. Victim Requests the Homepage]
-GET / HTTP/1.1
-Host: target.com
-
-[5. Cache Serves Poisoned Content]
-Cache serves the Admin login page to the regular user trying to access the homepage!
-================================================================================
+    Attacker --> Back
+    Back --> Cache
+    Victim --> Result
+    Cache -.-> Result
 ```
 
 ## How to Find It

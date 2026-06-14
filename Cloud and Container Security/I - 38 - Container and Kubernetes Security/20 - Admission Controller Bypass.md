@@ -18,18 +18,13 @@ Bypassing these controllers allows an attacker to deploy malicious workloads tha
 
 ### The API Request Lifecycle
 
-```text
-+----------------+      +---------+      +---------+      +-----------------------+      +--------+
-|  User/Attacker | ---> |  AuthN  | ---> |  AuthZ  | ---> | Admission Controllers | ---> |  etcd  |
-|  (kubectl)     |      | (Valid?)|      | (RBAC)  |      |  Mutating / Validating|      | (Saved)|
-+----------------+      +---------+      +---------+      +-----------+-----------+      +--------+
-                                                                      |
-                                                          +-----------v-----------+
-                                                          | Webhook Servers       |
-                                                          | - OPA Gatekeeper      |
-                                                          | - Kyverno             |
-                                                          | - Custom Webhooks     |
-                                                          +-----------------------+
+```mermaid
+graph TD
+    A[User/Attacker <br/> kubectl] --> B[AuthN <br/> Valid?]
+    B --> C[AuthZ <br/> RBAC]
+    C --> D[Admission Controllers <br/> Mutating / Validating]
+    D --> E[etcd <br/> Saved]
+    D --> F[Webhook Servers <br/> - OPA Gatekeeper <br/> - Kyverno <br/> - Custom Webhooks]
 ```
 
 1. **MutatingAdmissionWebhook**: Modifies the object before it is saved (e.g., automatically injecting a sidecar container).

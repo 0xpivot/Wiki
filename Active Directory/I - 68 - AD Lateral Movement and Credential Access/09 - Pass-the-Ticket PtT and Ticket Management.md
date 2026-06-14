@@ -28,33 +28,16 @@ When a user logs in, the Local Security Authority Subsystem Service (LSASS) nego
 
 ## ASCII Diagram: The Pass-the-Ticket Architecture
 
-```text
-       [Compromised Host A]                               [Attacker Host B]
-       (Victim is logged in)
-                                                          
-  +-----------------------------+                  +-----------------------------+
-  | LSASS Process Memory        |                  | Attacker's Logon Session    |
-  |                             |                  |                             |
-  | [Logon Session: Victim]     |                  | [Logon Session: Attacker]   |
-  | - TGT (krbtgt/DOMAIN)       | =======(1)======>|                             |
-  | - TGS (cifs/SERVER01)       |   Extraction     |                             |
-  +-----------------------------+                  +-----------------------------+
-                                                                 |
-                                                                (2) Injection
-                                                                 |
-                                                                 v
-                                                   +-----------------------------+
-                                                   | Attacker's Logon Session    |
-                                                   |                             |
-                                                   | [Logon Session: Attacker]   |
-                                                   | - TGT (krbtgt/DOMAIN)       | <--- Injected!
-                                                   +-----------------------------+
-                                                                 |
-                                                                (3) Usage
-                                                                 |
-                                                                 v
-                                                     [Target Domain Controller]
-                                                     [Target Server (SERVER01)]
+```mermaid
+graph TD
+    A["Compromised Host A<br>LSASS Process Memory<br>[Logon Session: Victim]<br>- TGT (krbtgt/DOMAIN)<br>- TGS (cifs/SERVER01)"]
+    B["Attacker Host B<br>Attacker's Logon Session<br>[Logon Session: Attacker]"]
+    C["Attacker Host B<br>Attacker's Logon Session<br>[Logon Session: Attacker]<br>- TGT (krbtgt/DOMAIN) <--- Injected!"]
+    D["Target Domain Controller<br>Target Server (SERVER01)"]
+
+    A -->|"(1) Extraction"| B
+    B -->|"(2) Injection"| C
+    C -->|"(3) Usage"| D
 ```
 
 ## Methodology: Tools and Execution

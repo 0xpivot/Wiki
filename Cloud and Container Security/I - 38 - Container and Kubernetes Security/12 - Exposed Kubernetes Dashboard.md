@@ -16,33 +16,13 @@ While incredibly useful for administration, the Dashboard is also a massive, cen
 
 The vulnerability stems from a combination of network exposure and overly permissive authentication configurations.
 
-```text
-+-------------------------------------------------------------------------+
-|                          Attacker (Internet)                            |
-+-----------------------------+-------------------------------------------+
-                              | (Unauthenticated HTTP/HTTPS)
-                              v
-+-----------------------------+-------------------------------------------+
-|                      Cloud Load Balancer / NodePort                     |
-|                   (Misconfigured to expose Dashboard)                   |
-+-----------------------------+-------------------------------------------+
-                              |
-+-----------------------------|-------------------------------------------+
-|        KUBERNETES CLUSTER   |                                           |
-|                             v                                           |
-|    +------------------------+-----------------------+                   |
-|    |               kubernetes-dashboard Pod         |                   |
-|    |                                                |                   |
-|    |  [ Web UI ] ---> [ ServiceAccount Token ]      |                   |
-|    |                        |                       |                   |
-|    +------------------------|-----------------------+                   |
-|                             | (API Requests)                            |
-|                             v                                           |
-|    +------------------------+-----------------------+                   |
-|    |                   kube-apiserver               |                   |
-|    |      (Processes request based on SA RBAC)      |                   |
-|    +------------------------------------------------+                   |
-+-------------------------------------------------------------------------+
+```mermaid
+graph TD
+    A[Attacker Internet] -- Unauthenticated HTTP/HTTPS --> B[Cloud Load Balancer / NodePort <br/> Misconfigured to expose Dashboard]
+    subgraph KUBERNETES CLUSTER
+        B --> C[kubernetes-dashboard Pod <br/> Web UI ---> ServiceAccount Token]
+        C -- API Requests --> D[kube-apiserver <br/> Processes request based on SA RBAC]
+    end
 ```
 
 ### The Historical Context (Pre-1.10.1)

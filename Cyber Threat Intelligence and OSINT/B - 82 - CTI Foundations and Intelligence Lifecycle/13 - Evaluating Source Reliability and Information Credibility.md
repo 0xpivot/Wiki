@@ -41,36 +41,25 @@ This metric assesses the likelihood of the information being true based on logic
 *   **5 - Improbable:** The information is fundamentally flawed, contradicts physical or technical reality, or is a known fabrication.
 *   **6 - Truth Cannot Be Judged:** The information is completely opaque, lacking enough technical detail to even attempt verification.
 
-### ASCII Diagram: The Admiralty Matrix Evaluation Process
+### Mermaid Diagram: The Admiralty Matrix Evaluation Process
 
-```text
-                     +-----------------------+
-                     | Raw Intelligence Data |
-                     +-----------------------+
-                                |
-             +------------------+------------------+
-             |                                     |
-    +-----------------+                   +-----------------+
-    | Evaluate Source |                   | Evaluate Data   |
-    | (Track Record,  |                   | (Corroboration, |
-    |  Access, Bias)  |                   |  Feasibility)   |
-    +-----------------+                   +-----------------+
-             |                                     |
-    [A, B, C, D, E, F]                    [1, 2, 3, 4, 5, 6]
-             |                                     |
-             +------------------+------------------+
-                                |
-                     +-----------------------+
-                     | Final Rating Output   |
-                     |       e.g., B2        |
-                     | (Usually Reliable /   |
-                     |  Probably True)       |
-                     +-----------------------+
-                                |
-                     +-----------------------+
-                     | Intelligence Consumer |
-                     | Action Threshold      |
-                     +-----------------------+
+```mermaid
+flowchart TD
+    Raw["Raw Intelligence Data"]
+    EvalSource["Evaluate Source<br/>(Track Record, Access, Bias)"]
+    EvalData["Evaluate Data<br/>(Corroboration, Feasibility)"]
+    SourceScore["A, B, C, D, E, F"]
+    DataScore["1, 2, 3, 4, 5, 6"]
+    Final["Final Rating Output<br/>e.g., B2<br/>(Usually Reliable / Probably True)"]
+    Consumer["Intelligence Consumer<br/>Action Threshold"]
+
+    Raw --> EvalSource
+    Raw --> EvalData
+    EvalSource --> SourceScore
+    EvalData --> DataScore
+    SourceScore --> Final
+    DataScore --> Final
+    Final --> Consumer
 ```
 
 ## Cognitive Biases in Evaluation

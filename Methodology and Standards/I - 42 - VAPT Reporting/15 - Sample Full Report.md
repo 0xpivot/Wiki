@@ -28,24 +28,16 @@ A professional report generally follows this structure to ensure logic and flow:
 
 ## ASCII Diagram: Report Consumption
 
-```text
-+---------------------------------------------------------+
-|                  The VAPT Report Audience               |
-+---------------------------------------------------------+
-                             |
-+----------------------------+----------------------------+
-|                            |                            |
-v                            v                            v
-+--------------+             +--------------+             +--------------+
-| Executives   |             | Management   |             | Engineering  |
-| (CISO, CEO)  |             | (IT/Sec Mgrs)|             | (Devs, Ops)  |
-+--------------+             +--------------+             +--------------+
-| Reads:       |             | Reads:       |             | Reads:       |
-| - Exec       |             | - Methodology|             | - Technical  |
-|   Summary    |             | - Scope      |             |   Findings   |
-| - High-Level |             | - Finding    |             | - PoCs       |
-|   Risk       |             |   Summary    |             | - Remediation|
-+--------------+             +--------------+             +--------------+
+```mermaid
+flowchart TD
+    AUD["The VAPT Report Audience"]
+    EXEC["Executives (CISO, CEO)<br>Reads:<br>- Exec Summary<br>- High-Level Risk"]
+    MGR["Management (IT/Sec Mgrs)<br>Reads:<br>- Methodology<br>- Scope<br>- Finding Summary"]
+    ENG["Engineering (Devs, Ops)<br>Reads:<br>- Technical Findings<br>- PoCs<br>- Remediation"]
+
+    AUD --> EXEC
+    AUD --> MGR
+    AUD --> ENG
 ```
 
 ## Section-by-Section Breakdown

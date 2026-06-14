@@ -24,37 +24,18 @@ To hide a process, a rootkit modifies the FLINK of the previous process to point
 
 Critically, the hidden process continues to execute normally. The Windows thread scheduler does not rely on the `ActiveProcessLinks` list to allocate CPU time; it relies on thread scheduling lists (like `KiWaitListHead` or `KiReadySummary`). Therefore, the process is invisible to administrative tools but remains fully operational.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                           DKOM Process Unlinking (Hiding)                         |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  Normal State:                                                                    |
-|                                                                                   |
-|  +--------------+          +--------------+          +--------------+             |
-|  | Process A    |  FLINK   | Process B    |  FLINK   | Process C    |             |
-|  | (svchost)    |--------->| (malware)    |--------->| (explorer)   |             |
-|  |              |<---------|              |<---------|              |             |
-|  +--------------+  BLINK   +--------------+  BLINK   +--------------+             |
-|                                                                                   |
-|                                                                                   |
-|  DKOM Altered State (Process B Hidden):                                           |
-|                                                                                   |
-|  +--------------+                                    +--------------+             |
-|  | Process A    |----------------------------------->| Process C    |             |
-|  | (svchost)    |<-----------------------------------| (explorer)   |             |
-|  +--------------+                                    +--------------+             |
-|                                                                                   |
-|          +-------------------------------------------------+                      |
-|          |                                                 |                      |
-|          v   (Orphaned but executing)                      |                      |
-|  +--------------+                                          |                      |
-|  | Process B    | (Threads still scheduled by OS)          |                      |
-|  | (malware)    |                                          |                      |
-|  +--------------+                                          |                      |
-|                                                                                   |
-|  Result: API calls traversing ActiveProcessLinks skip Process B entirely.         |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart LR
+    subgraph Normal State
+        A1[Process A svchost] <==>|FLINK / BLINK| B1[Process B malware]
+        B1 <==>|FLINK / BLINK| C1[Process C explorer]
+    end
+    subgraph DKOM Altered State Process B Hidden
+        A2[Process A svchost]
+        B2[Process B malware<br>Orphaned but executing<br>Threads still scheduled by OS]
+        C2[Process C explorer]
+        A2 <==>|FLINK / BLINK| C2
+    end
 ```
 
 ## Advanced DKOM Targets Beyond Processes

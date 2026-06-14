@@ -44,30 +44,17 @@ This key accepts values from 60 (seconds) to 7200 (seconds). Attackers may drop 
 
 ## 3. Visual Architecture
 
-```ascii
-+-------------------------------------------------------------------+
-|                  Primary Domain Controller (PDC)                  |
-|                                                                   |
-|  +-----------------------+           +-------------------------+  |
-|  | AdminSDHolder Object  |           |     SDProp Thread       |  |
-|  | (The Template)        |           | (Runs every 60 minutes) |  |
-|  |                       |           +-----------+-------------+  |
-|  | ACL:                  |                       |                |
-|  | - SYSTEM: Full        | <--- Reads ACL        |                |
-|  | - Domain Admins: Full |                       |                |
-|  | - AttackerUser: Full  | ==[ OVERWRITES ]======+                |
-|  +-----------------------+                       |                |
-|                                                  V                |
-|                                     +-------------------------+   |
-|                                     |    Protected Objects    |   |
-|                                     |    (adminCount = 1)     |   |
-|                                     |                         |   |
-|                                     | - Domain Admins         |   |
-|                                     | - Enterprise Admins     |   |
-|                                     | - Administrator         |   |
-|                                     | - Krbtgt                |   |
-|                                     +-------------------------+   |
-+-------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph PDC["Primary Domain Controller (PDC)"]
+        AdminSDHolder["AdminSDHolder Object<br>(The Template)<br><br>ACL:<br>- SYSTEM: Full<br>- Domain Admins: Full<br>- AttackerUser: Full"]
+        SDProp["SDProp Thread<br>(Runs every 60 minutes)"]
+        
+        Protected["Protected Objects<br>(adminCount = 1)<br><br>- Domain Admins<br>- Enterprise Admins<br>- Administrator<br>- Krbtgt"]
+        
+        SDProp -- "Reads ACL" --> AdminSDHolder
+        SDProp -- "OVERWRITES" --> Protected
+    end
 ```
 
 ---

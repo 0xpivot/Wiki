@@ -15,33 +15,19 @@ Identity in GCP is primarily handled through Google Workspace (Cloud Identity) f
 
 ## 2. Architecture and Attack Flow
 
-```text
-+---------------------+        +-------------------------+        +---------------------------+
-|   Attacker / VAPT   |        |   gcloud CLI            |        |   GCP Cloud API           |
-|   Professional      |        |   Configuration         |        |   (Target Organization)   |
-+---------------------+        +-------------------------+        +---------------------------+
-           |                               |                                |
-           | 1. Obtain JSON key file       |                                |
-           |    (Service Account leak)     |                                |
-           |------------------------------>|                                |
-           |                               |                                |
-           | 2. gcloud auth activate-      |                                |
-           |    service-account            |                                |
-           |------------------------------>|                                |
-           |                               |                                |
-           | 3. gcloud config list         |                                |
-           |<------------------------------|                                |
-           |                               |                                |
-           | 4. Enumerate Projects         |                                |
-           |    (gcloud projects list)     |                                |
-           |--------------------------------------------------------------->|
-           |                               |                                |
-           | 5. Analyze IAM Policies       |                                |
-           |    (get-iam-policy)           |                                |
-           |--------------------------------------------------------------->|
-           |                               |                                |
-           | 6. Enumerate Compute & Storage|                                |
-           |<---------------------------------------------------------------|
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker / VAPT Professional
+    participant CLI as gcloud CLI Configuration
+    participant API as GCP Cloud API (Target Organization)
+
+    Attacker->>CLI: 1. Obtain JSON key file (Service Account leak)
+    Attacker->>CLI: 2. gcloud auth activate-service-account
+    Attacker->>CLI: 3. gcloud config list
+    CLI-->>Attacker: 
+    Attacker->>API: 4. Enumerate Projects (gcloud projects list)
+    Attacker->>API: 5. Analyze IAM Policies (get-iam-policy)
+    API-->>Attacker: 6. Enumerate Compute & Storage
 ```
 
 ## 3. The "How": Detailed Methodology with gcloud

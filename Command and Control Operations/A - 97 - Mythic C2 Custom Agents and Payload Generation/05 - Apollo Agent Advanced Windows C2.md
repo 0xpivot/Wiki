@@ -30,40 +30,28 @@ Apollo can instantiate a fully functional SOCKS5 proxy server directly inside th
 
 ## 3. Apollo Execution Flow and SOCKS Routing Diagram
 
-```text
-+--------------------------+
-|   Operator Workstation   |
-|   (proxychains nmap)     |
-+-------------+------------+
-              | (SOCKS5 Traffic on local port 9050)
-              v
-+-------------+------------+
-|    Mythic Core Server    |
-|    (Manages Routing)     |
-+-------------+------------+
-              | (Encrypted C2 Channel - HTTP/SMB)
-              v
-+-------------------------------------------------------------+
-|                    COMPROMISED WINDOWS HOST                 |
-|                                                             |
-|  +-------------------------------------------------------+  |
-|  | apollo.exe (Agent Process)                            |  |
-|  |                                                       |  |
-|  |  [SOCKS Thread] <---------- decapsulates traffic      |  |
-|  |        |                                              |  |
-|  |        v                                              |  |
-|  |  [Winsock API]  ----------+                           |  |
-|  |                           |                           |  |
-|  |  [Task Thread]            |                           |  |
-|  |  (BOF/Assembly Exec)      |                           |  |
-|  +---------------------------|---------------------------+  |
-|                              |                              |
-|                              | Raw TCP/UDP                  |
-|                              v                              |
-|                   +----------------------+                  |
-|                   | Internal Target (DC) |                  |
-|                   +----------------------+                  |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Op["Operator Workstation<br>(proxychains nmap)"]
+    Core["Mythic Core Server<br>(Manages Routing)"]
+    
+    Op -- "(SOCKS5 Traffic on local port 9050)" --> Core
+    
+    subgraph Host["COMPROMISED WINDOWS HOST"]
+        subgraph Agent["apollo.exe (Agent Process)"]
+            Socks["[SOCKS Thread]"]
+            Winsock["[Winsock API]"]
+            Task["[Task Thread]<br>(BOF/Assembly Exec)"]
+            
+            Socks -- "decapsulates traffic" --> Winsock
+            Winsock --> Task
+        end
+        Target["Internal Target (DC)"]
+        
+        Winsock -- "Raw TCP/UDP" --> Target
+    end
+    
+    Core -- "(Encrypted C2 Channel - HTTP/SMB)" --> Agent
 ```
 
 ## 4. Evasion, Sleep, and Jitter Mechanics

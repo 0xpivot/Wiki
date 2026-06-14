@@ -70,43 +70,28 @@ Manual fingerprinting can be tedious. Several robust tools exist to automate the
 
 ## 6. ASCII Diagram: Active Fingerprinting Process Flow
 
-```text
-[ Attacker Workstation ]
-     |
-     | 1. Establish Baseline: Send benign request (GET /)
-     |
-     v
-[ Target Perimeter ] ---> Response: 200 OK (Baseline established)
-     |
-     | 2. Active Probe: Send malicious payload (GET /?q=<script>)
-     |
-     v
-+==========================+
-| Web Application Firewall |
-|                          |
-| +----------------------+ |
-| | Payload Inspection   | |
-| +----------------------+ |
-|            |             |
-| +----------------------+ |
-| | Signature Match!     | | <-- Identifies XSS vector
-| +----------------------+ |
-|            |             |
-| +----------------------+ |
-| | Block Page Generator | |
-| +----------------------+ |
-+==========================+
-     |
-     | 3. WAF intercepts and returns Custom Block Response
-     v
-[ Attacker Workstation ]
-     |
-     | 4. Analysis Phase:
-     |    - Status Code: 403 Forbidden
-     |    - Body Regex Match: Contains "Incident ID: [0-9\-]+"
-     |    - Header Analysis: Server header stripped or altered.
-     |
-     +--> Conclusion: WAF is successfully identified as Imperva Incapsula.
+```mermaid
+flowchart TD
+    AW[Attacker Workstation]
+    TP[Target Perimeter]
+    
+    AW -- "1. Establish Baseline: Send benign request (GET /)" --> TP
+    TP -- "Response: 200 OK (Baseline established)" --> AW
+    
+    AW -- "2. Active Probe: Send malicious payload (GET /?q=<script>)" --> WAF
+    
+    subgraph WAF[Web Application Firewall]
+        PI[Payload Inspection]
+        SM["Signature Match! <br/> Identifies XSS vector"]
+        BPG[Block Page Generator]
+        PI --> SM
+        SM --> BPG
+    end
+    
+    BPG -- "3. WAF intercepts and returns Custom Block Response" --> AW2[Attacker Workstation]
+    
+    AW2 --> Analysis["4. Analysis Phase: <br/> - Status Code: 403 Forbidden <br/> - Body Regex Match: Contains Incident ID <br/> - Header Analysis: Server header stripped or altered."]
+    Analysis --> Conclusion["Conclusion: WAF is successfully identified as Imperva Incapsula."]
 ```
 
 ## 7. Advanced Fingerprinting Techniques

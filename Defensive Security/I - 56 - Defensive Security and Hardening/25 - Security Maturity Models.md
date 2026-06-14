@@ -18,20 +18,19 @@ Without a formal maturity model, security programs suffer from "shiny object syn
 
 ## The ASCII Architecture: The Maturity Progression Model
 
-```text
-       Level 5: Optimized & Adaptive (Proactive Hunting, AI/ML Auto-Response)
-      /
-     / Level 4: Quantitatively Managed (Metrics-driven, Continuous Validation)
-    /
-   / Level 3: Defined & Repeatable (Documented Policies, Standardized Tools)
-  /
- / Level 2: Managed & Siloed (Reactive, Inconsistent processes, Hero-dependent)
-/
-Level 1: Initial & Ad-Hoc (No formal processes, chaotic, putting out fires)
-
-+-------------------------------------------------------------------------+
-| FOUNDATION: Asset Mgmt -> IAM -> Vuln Mgmt -> Detection -> Incident Rsp |
-+-------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    L1["Level 1: Initial & Ad-Hoc\n(No formal processes, chaotic, putting out fires)"] --> L2["Level 2: Managed & Siloed\n(Reactive, Inconsistent processes, Hero-dependent)"]
+    L2 --> L3["Level 3: Defined & Repeatable\n(Documented Policies, Standardized Tools)"]
+    L3 --> L4["Level 4: Quantitatively Managed\n(Metrics-driven, Continuous Validation)"]
+    L4 --> L5["Level 5: Optimized & Adaptive\n(Proactive Hunting, AI/ML Auto-Response)"]
+    
+    subgraph Foundation["FOUNDATION"]
+        direction LR
+        F1["Asset Mgmt"] --> F2["IAM"] --> F3["Vuln Mgmt"] --> F4["Detection"] --> F5["Incident Rsp"]
+    end
+    
+    Foundation --> L1
 ```
 
 ## Prominent Security Maturity Frameworks

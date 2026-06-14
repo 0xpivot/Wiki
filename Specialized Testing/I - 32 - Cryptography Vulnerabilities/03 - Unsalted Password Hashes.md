@@ -29,29 +29,21 @@ If an attacker manages to crack a difficult hash in an unsalted database, and 50
 
 ## 3. Architectural Diagram: Unsalted vs Salted Databases
 
-```ascii
-==================== UNSALTED DATABASE (VULNERABLE) ====================
+```mermaid
+flowchart TD
+    subgraph Vuln [UNSALTED DATABASE - VULNERABLE]
+        direction LR
+        A["Alice: password123"] -->|SHA-256| HA["Hash A: ef92b77..."]
+        B["Bob: iloveyou"] -->|SHA-256| HB["Hash B: 3f8a0c2..."]
+        C["Charlie: password123"] -->|SHA-256| HC["Hash A: ef92b77... IDENTICAL!"]
+    end
 
-User      Password (Input)     Hash Algorithm        Stored Hash (DB Column)
-----      ----------------     --------------        -----------------------
-Alice  -> [ password123 ]  -->    SHA-256     -->  [ ef92b77... (Hash A) ]
-Bob    -> [ iloveyou    ]  -->    SHA-256     -->  [ 3f8a0c2... (Hash B) ]
-Charlie-> [ password123 ]  -->    SHA-256     -->  [ ef92b77... (Hash A) ] <-- IDENTICAL!
-
-*Attacker Attack Vector:* Attacker hashes "password123" once, looks for "ef92b77..." 
-and instantly compromises both Alice and Charlie.
-
-====================== SALTED DATABASE (SECURE) ========================
-
-User      Password        Unique Salt (DB)     Hash Function             Stored Hash
-----      ---------       ----------------     -------------             -----------
-Alice  -> [ password123 ] + [ xk9L2p... ] --> SHA-256(Pass+Salt) --> [ 8b4d9a1... (Hash X) ]
-Bob    -> [ iloveyou    ] + [ z1Qw8m... ] --> SHA-256(Pass+Salt) --> [ 1a9f3b2... (Hash Y) ]
-Charlie-> [ password123 ] + [ m4N7rV... ] --> SHA-256(Pass+Salt) --> [ 5c2e8d9... (Hash Z) ] <-- UNIQUE!
-
-*Attacker Attack Vector:* Even though Alice and Charlie have the same password, 
-their stored hashes are completely different. The attacker cannot use precomputed 
-tables and must crack Alice and Charlie separately.
+    subgraph Secure [SALTED DATABASE - SECURE]
+        direction LR
+        SA["Alice: password123 + Salt: xk9L2p..."] -->|SHA-256| HX["Hash X: 8b4d9a1..."]
+        SB["Bob: iloveyou + Salt: z1Qw8m..."] -->|SHA-256| HY["Hash Y: 1a9f3b2..."]
+        SC["Charlie: password123 + Salt: m4N7rV..."] -->|SHA-256| HZ["Hash Z: 5c2e8d9... UNIQUE!"]
+    end
 ```
 
 ## 4. Identifying and Exploiting Unsalted Hashes

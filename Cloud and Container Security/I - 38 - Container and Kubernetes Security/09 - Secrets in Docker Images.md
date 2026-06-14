@@ -18,19 +18,12 @@ To comprehend secret leakage, one must understand the Union File System (UnionFS
 
 A Docker image is not a single monolithic file. It is composed of a series of read-only "layers." Each instruction in a Dockerfile that modifies the filesystem (like `RUN`, `COPY`, or `ADD`) creates a brand new layer that sits on top of the previous ones.
 
-```text
-+-------------------------------------------------------------------+
-|                     Container Runtime (R/W)                       |
-|   (The ephemeral layer created when `docker run` is executed)     |
-+-------------------------------------------------------------------+
-|   Layer 4 (Read-Only): RUN rm /app/config/database.yml            | <--- DELETION LAYER
-+-------------------------------------------------------------------+
-|   Layer 3 (Read-Only): COPY . /app                                | <--- SECRET ADDED HERE
-+-------------------------------------------------------------------+
-|   Layer 2 (Read-Only): RUN apt-get install python3                |
-+-------------------------------------------------------------------+
-|   Layer 1 (Read-Only): FROM ubuntu:20.04                          |
-+-------------------------------------------------------------------+
+```mermaid
+graph TD
+    A[Layer 1 Read-Only: FROM ubuntu:20.04] --> B[Layer 2 Read-Only: RUN apt-get install python3]
+    B --> C[Layer 3 Read-Only: COPY . /app <br/> <--- SECRET ADDED HERE]
+    C --> D[Layer 4 Read-Only: RUN rm /app/config/database.yml <br/> <--- DELETION LAYER]
+    D --> E[Container Runtime R/W <br/> The ephemeral layer created when docker run is executed]
 ```
 
 ### The "Deletion" Myth

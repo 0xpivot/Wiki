@@ -38,26 +38,15 @@ If the user inputs `{{7*7}}`, the template string becomes `"Hello {{7*7}}"`. The
 
 Below is an ASCII representation of how an attacker escalates from injection to RCE:
 
-```text
-+-----------------------+                                +-----------------------------+
-| Attacker              |                                | Vulnerable Enterprise App   |
-+-----------------------+                                +-----------------------------+
-|                       |                                |                             |
-| 1. Fuzz Input Fields  |        HTTP GET / POST         |                             |
-|    Payload: ${{7*7}}  | -----------------------------> | 2. String Concatenation     |
-|                       |                                |    Input is merged into     |
-|                       |                                |    the raw template string  |
-| 3. Observe Reflection |                                |                             |
-|    Output: 49         | <----------------------------- | 3. Template Engine Evaluates|
-|    (Confirms SSTI)    |                                |    Math logic is executed   |
-|                       |                                |                             |
-| 4. Craft RCE Payload  |        HTTP GET / POST         | 4. Context Traversal        |
-|    Targeting classes  | -----------------------------> |    Engine reflects back to  |
-|    like java.lang.Math|                                |    system-level classes     |
-|                       |                                |                             |
-| 5. Shell Access       | <----------------------------- | 5. RCE Execution            |
-|    (Reverse Shell)    |                                |    (e.g., Runtime.exec)     |
-+-----------------------+                                +-----------------------------+
+```mermaid
+flowchart LR
+    Attacker["Attacker <br/> 1. Fuzz Input Fields <br/> Payload: ${{7*7}} <br/> 3. Observe Reflection <br/> Output: 49 <br/> (Confirms SSTI) <br/> 4. Craft RCE Payload <br/> Targeting classes <br/> like java.lang.Math <br/> 5. Shell Access <br/> (Reverse Shell)"]
+    App["Vulnerable Enterprise App <br/> 2. String Concatenation <br/> Input is merged into <br/> the raw template string <br/> 3. Template Engine Evaluates <br/> Math logic is executed <br/> 4. Context Traversal <br/> Engine reflects back to <br/> system-level classes <br/> 5. RCE Execution <br/> (e.g., Runtime.exec)"]
+
+    Attacker -- "HTTP GET / POST" --> App
+    App --> Attacker
+    Attacker -- "HTTP GET / POST" --> App
+    App --> Attacker
 ```
 
 ## 4. Detection and Fuzzing Methodology

@@ -16,44 +16,23 @@ Modern SOCs deal with massive volumes of data and alerts. To manage this operati
 
 Below is a visualization of the SOC operational flow, demonstrating how security events are processed through the various tiers, the escalation pathways, and how feedback loops drive continuous improvement.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                            Security Data & Telemetry                              |
-|   (SIEM, EDR, Firewalls, IDS/IPS, Cloud Native Logs, Threat Intelligence)         |
-+----------------------------------------+------------------------------------------+
-                                         |
-                                         v
-+-----------------------------------------------------------------------------------+
-|                             Tier 1: Triage Analyst                                |
-|  - Continuous Monitoring (24x7x365)  - Initial Context Gathering                  |
-|  - Alert Qualification               - Basic Remediation (SOAR Playbooks)         |
-|  - False Positive Identification     - Ticket Creation & Escalation               |
-+------------------+-----------------------------------------------+----------------+
-                   | (True Positive / Complex)                     | (False Positive)
-                   v                                               |
-+-------------------------------------------------------+          |
-|                 Tier 2: Incident Responder            |          |
-|  - Deep Dive Analysis & Forensics                     |          |
-|  - Scope & Impact Determination                       |          |
-|  - Containment & Eradication Strategy Execution       |          |
-|  - Malware Analysis (Basic Static/Dynamic)            |          |
-+------------------+------------------------------------+          |
-                   | (Advanced Threat / APT)                       |
-                   v                                               |
-+-------------------------------------------------------+          |
-|           Tier 3: Threat Hunter / SME                 |          |
-|  - Proactive Threat Hunting (Hypothesis driven)       |          |
-|  - Advanced Malware Reverse Engineering               |          |
-|  - Sophisticated Digital Forensics (Memory)           |          |
-|  - Adversary Emulation / Purple Teaming               |          |
-+------------------+------------------------------------+          |
-                   |                                               |
-                   v                                               v
-+-----------------------------------------------------------------------------------+
-|                       SOC Engineering & Architecture                              |
-|  - SIEM/SOAR Administration          - Detection Rule Tuning & Creation           |
-|  - Data Pipeline Management          - Tool Integration & API Automation          |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Telemetry["Security Data & Telemetry\n(SIEM, EDR, Firewalls, IDS/IPS, Cloud Native Logs, Threat Intelligence)"]
+
+    Tier1["Tier 1: Triage Analyst\n- Continuous Monitoring (24x7x365)\n- Initial Context Gathering\n- Alert Qualification\n- Basic Remediation (SOAR Playbooks)\n- False Positive Identification\n- Ticket Creation & Escalation"]
+
+    Tier2["Tier 2: Incident Responder\n- Deep Dive Analysis & Forensics\n- Scope & Impact Determination\n- Containment & Eradication Strategy Execution\n- Malware Analysis (Basic Static/Dynamic)"]
+
+    Tier3["Tier 3: Threat Hunter / SME\n- Proactive Threat Hunting (Hypothesis driven)\n- Advanced Malware Reverse Engineering\n- Sophisticated Digital Forensics (Memory)\n- Adversary Emulation / Purple Teaming"]
+
+    Engineering["SOC Engineering & Architecture\n- SIEM/SOAR Administration\n- Detection Rule Tuning & Creation\n- Data Pipeline Management\n- Tool Integration & API Automation"]
+
+    Telemetry --> Tier1
+    Tier1 -- "(True Positive / Complex)" --> Tier2
+    Tier1 -- "(False Positive)" --> Engineering
+    Tier2 -- "(Advanced Threat / APT)" --> Tier3
+    Tier3 --> Engineering
 ```
 
 ## Tier 1: Triage Analyst (The Frontline)

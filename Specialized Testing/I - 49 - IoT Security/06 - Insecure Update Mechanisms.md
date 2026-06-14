@@ -47,32 +47,27 @@ Even if the transport is secure (HTTPS), flaws in how the firmware is verified a
 
 ## 4. Architecture of an Insecure Update (ASCII Diagram)
 
-```text
-  [ Attacker ]
-       |
-       | 1. Intercepts HTTP request / DNS Spoofs update.vendor.com
-       v
- +-------------------+
- | Malicious Server  |
- | (Fake Update Srv) |
- +-------------------+
-       | 2. Serves trojaned firmware.bin
-       |    (No signature, or spoofed CRC)
-       v
- +-------------------+                               +--------------------+
- |    IoT Device     |                               |   Target Storage   |
- |                   |                               |   (SPI Flash)      |
- |  +-------------+  | 3. Downloads firmware.bin     |                    |
- |  | Update Agent|  |---------------------------\   |  +--------------+  |
- |  +-------------+  |                           |   |  | Bootloader   |  |
- |        |          | 4. Verifies CRC32 (Pass!) |   |  +--------------+  |
- |        v          |                           +----->| Partition A  |  |
- |  +-------------+  | 5. Flashes to Flash       |   |  | (Current OS) |  |
- |  | Flasher Sub-|  |---------------------------/   |  +--------------+  |
- |  | system      |  |                               |  | Partition B  |  |
- |  +-------------+  |                               |  | (MALICIOUS)  |  |
- +-------------------+                               |  +--------------+  |
-                                                     +--------------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker"] -->|1. Intercepts HTTP request / DNS Spoofs update.vendor.com| FakeSrv["Malicious Server<br>(Fake Update Srv)"]
+    
+    subgraph Device["IoT Device"]
+        Agent["Update Agent"]
+        Flasher["Flasher Subsystem"]
+        Agent -->|4. Verifies CRC32 (Pass!)| Flasher
+    end
+
+    FakeSrv -->|2. Serves trojaned firmware.bin| Agent
+    
+    subgraph Flash["Target Storage (SPI Flash)"]
+        Boot["Bootloader"]
+        PartA["Partition A (Current OS)"]
+        PartB["Partition B (MALICIOUS)"]
+        Boot --> PartA
+    end
+    
+    Agent -.->|3. Downloads firmware.bin| Flash
+    Flasher -->|5. Flashes to Flash| PartB
 ```
 
 ## 5. Exploitation Methodology

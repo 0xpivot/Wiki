@@ -33,57 +33,40 @@ A robust understanding of IoT security requires breaking down the ecosystem into
 
 ## ASCII Diagram: The Holistic IoT Attack Surface
 
-```text
-                                +---------------------------------------------------+
-                                |             APPLICATION / USER TIER               |
-                                |                                                   |
-                                |  [Mobile App (iOS/Android)]    [Web Dashboard]    |
-                                |  - Insecure Data Storage       - XSS / CSRF       |
-                                |  - Hardcoded API Keys          - BOLA / IDOR      |
-                                |  - Lack of Certificate Pinning - Weak Auth        |
-                                +---------------------------------------------------+
-                                           |                           |
-                                      (REST APIs)                 (Web APIs)
-                                           |                           |
-                                           v                           v
-+-----------------------+       +---------------------------------------------------+
-|  CLOUD / BACKEND TIER |       |                 CLOUD INFRASTRUCTURE              |
-|                       |<------|  [Authentication]  [Device Management (OTA)]      |
-| - Insecure APIs       |       |  [Database]        [MQTT Broker / Message Queue]  |
-| - Server-Side Forgery |       |                                                   |
-| - Broken Access Ctl   |       |  Vulnerabilities: Misconfigured S3, Weak MQTT     |
-+-----------------------+       |  ACLs, BOLA in Device Provisioning APIs           |
-                                +---------------------------------------------------+
-                                           ^
-                                           | (MQTT, HTTP, CoAP over TLS/Cleartext)
-                                           |
-                                +---------------------------------------------------+
-                                |            NETWORK / TRANSPORT TIER               |
-                                |                                                   |
-                                |  Vulnerabilities: MITM, Replay Attacks, Lack of   |
-                                |  Encryption, Protocol Downgrade, DoS              |
-                                +---------------------------------------------------+
-                                           ^
-                                           | (Wi-Fi, Ethernet, Cellular)
-                                           |
-+-----------------------+       +---------------------------------------------------+
-|     GATEWAY TIER      |       |                   IOT HUB / GATEWAY               |
-| (Optional in some     |<------|  - Translates Zigbee/BLE to IP                    |
-|  architectures)       |       |  - Default Credentials on Local Web UI            |
-+-----------------------+       |  - Rooted Gateway compromises attached devices    |
-                                +---------------------------------------------------+
-                                           ^
-                                           | (BLE, Zigbee, Z-Wave, LoRa, RF 433MHz)
-                                           |
-+-----------------------+       +---------------------------------------------------+
-|  EDGE / DEVICE TIER   |       |                   PHYSICAL IOT DEVICE             |
-|                       |       |                                                   |
-| - Physical Access     |<------|  [Hardware]          [Firmware]      [Network]    |
-| - Firmware Extraction |       |  - UART / JTAG       - Hardcoded     - Open Ports |
-| - Side-Channel Attacks|       |  - SPI / I2C Sniff     Secrets       - Telnet/SSH |
-| - Glitching/Fault Inj.|       |  - Removable Media   - Buffer Over-  - UPnP flaws |
-+-----------------------+       |                        flows                      |
-                                +---------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph App[APPLICATION / USER TIER]
+        Mobile["Mobile App (iOS/Android)<br>- Insecure Data Storage<br>- Hardcoded API Keys<br>- Lack of Certificate Pinning"]
+        Web["Web Dashboard<br>- XSS / CSRF<br>- BOLA / IDOR<br>- Weak Auth"]
+    end
+
+    subgraph Cloud[CLOUD INFRASTRUCTURE & BACKEND]
+        Infra["Authentication | Device Management (OTA)<br>Database | MQTT Broker / Message Queue<br><br>Vulnerabilities: Misconfigured S3, Weak MQTT ACLs, BOLA"]
+        Backend["Cloud / Backend Tier<br>- Insecure APIs<br>- Server-Side Forgery<br>- Broken Access Ctl"]
+        Infra --> Backend
+    end
+
+    App -->|REST APIs / Web APIs| Infra
+
+    subgraph Net[NETWORK / TRANSPORT TIER]
+        Network["Vulnerabilities: MITM, Replay Attacks, Lack of Encryption, Protocol Downgrade, DoS"]
+    end
+
+    Net <-->|MQTT, HTTP, CoAP over TLS/Cleartext| Infra
+
+    subgraph Gateway[IOT HUB / GATEWAY TIER]
+        Hub["IoT Hub / Gateway<br>- Translates Zigbee/BLE to IP<br>- Default Credentials on Local Web UI<br>- Rooted Gateway compromises attached devices"]
+    end
+
+    Gateway <-->|Wi-Fi, Ethernet, Cellular| Net
+
+    subgraph Edge[EDGE / PHYSICAL DEVICE TIER]
+        Device["Hardware: UART/JTAG, SPI/I2C, Media<br>Firmware: Hardcoded Secrets, Buffer Overflows<br>Network: Open Ports, Telnet/SSH, UPnP flaws"]
+        EdgeThreats["Edge Tier Threats<br>- Physical Access<br>- Firmware Extraction<br>- Side-Channel Attacks<br>- Glitching/Fault Inj."]
+        Device --> EdgeThreats
+    end
+
+    Edge <-->|BLE, Zigbee, Z-Wave, LoRa, RF 433MHz| Gateway
 ```
 
 ---

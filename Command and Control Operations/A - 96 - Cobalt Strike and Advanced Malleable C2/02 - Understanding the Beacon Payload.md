@@ -28,36 +28,23 @@ A stageless deployment bundles the entire Beacon payload into the initial execut
 
 ## ASCII Architecture Diagram: Reflective Loading Flow
 
-```text
-+---------------------------------------------------------------------------------+
-|                         STAGELESS BEACON INJECTION FLOW                         |
-+---------------------------------------------------------------------------------+
-
-   1. Initial Execution              2. Memory Allocation           3. Reflective Load
-+-----------------------+         +-----------------------+     +-----------------------+
-|                       |         |                       |     |                       |
-|  Launcher Process     |         |  Allocated Memory     |     |  UDRL (User-Defined   |
-|  (e.g., rundll32.exe) |  ====>  |  (RW or RWX based on  | ==> |  Reflective Loader)   |
-|                       |         |  Malleable C2)        |     |  Executes             |
-+-----------+-----------+         +-----------+-----------+     +-----------+-----------+
-            |                                 |                             |
-            |   VirtualAlloc / NtMapViewOfSection                           |
-            v                                 v                             v
-+---------------------------------------------------------------------------------+
-|  4. Beacon Initialization                                                       |
-|  - Loader resolves KERNEL32/NTDLL functions manually.                           |
-|  - Parses Beacon DLL headers.                                                   |
-|  - Copies sections (.text, .data, .rdata) into allocated memory.                |
-|  - Applies Malleable C2 memory obfuscations (e.g., stomppe, obfuscate).         |
-+---------------------------------------------------------------------------------+
-                                        |
-                                        v
-+---------------------------------------------------------------------------------+
-|  5. Execution and Sleep Cycle                                                   |
-|  - Beacon enters a sleep loop.                                                  |
-|  - Uses Sleep Masking (encrypts its own memory region before sleeping).         |
-|  - Wakes up, decrypts memory, beacons out, executes tasks, repeats.             |
-+---------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Flow["STAGELESS BEACON INJECTION FLOW"]
+        direction LR
+        L1["1. Initial Execution<br>Launcher Process<br>(e.g., rundll32.exe)"]
+        L2["2. Memory Allocation<br>Allocated Memory<br>(RW or RWX based on<br>Malleable C2)"]
+        L3["3. Reflective Load<br>UDRL (User-Defined<br>Reflective Loader)<br>Executes"]
+        
+        L1 ==> L2 ==> L3
+    end
+    
+    L4["4. Beacon Initialization<br>- Loader resolves KERNEL32/NTDLL functions manually.<br>- Parses Beacon DLL headers.<br>- Copies sections (.text, .data, .rdata) into allocated memory.<br>- Applies Malleable C2 memory obfuscations (e.g., stomppe, obfuscate)."]
+    
+    L5["5. Execution and Sleep Cycle<br>- Beacon enters a sleep loop.<br>- Uses Sleep Masking (encrypts its own memory region before sleeping).<br>- Wakes up, decrypts memory, beacons out, executes tasks, repeats."]
+    
+    Flow -- "VirtualAlloc / NtMapViewOfSection" --> L4
+    L4 --> L5
 ```
 
 ---

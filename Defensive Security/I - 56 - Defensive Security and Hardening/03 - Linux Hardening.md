@@ -19,38 +19,24 @@ For VAPT professionals, a poorly hardened Linux machine provides easy avenues fo
 
 ## Architectural ASCII Diagram: Linux Hardening Rings
 
-```text
-       +-------------------------------------------------------------+
-       |                                                             |
-       |                   NETWORK & PERIMETER                       |
-       |       (iptables, ufw, firewalld, TCP Wrappers)              |
-       |                                                             |
-       |    +---------------------------------------------------+    |
-       |    |                                                   |    |
-       |    |                  USERSPACE & APPS                 |    |
-       |    |      (SSH config, disable unused services)        |    |
-       |    |                                                   |    |
-       |    |    +-----------------------------------------+    |    |
-       |    |    |                                         |    |    |
-       |    |    |        FILESYSTEM & PERMISSIONS         |    |    |
-       |    |    |   (fstab, SUID/SGID, AIDE, chmod/chown) |    |    |
-       |    |    |                                         |    |    |
-       |    |    |    +-------------------------------+    |    |    |
-       |    |    |    |                               |    |    |    |
-       |    |    |    |      IDENTITY & ACCESS        |    |    |    |
-       |    |    |    |    (PAM, sudoers, shadow)     |    |    |    |
-       |    |    |    |                               |    |    |    |
-       |    |    |    |    +---------------------+    |    |    |    |
-       |    |    |    |    |                     |    |    |    |    |
-       |    |    |    |    |       KERNEL        |    |    |    |    |
-       |    |    |    |    | (sysctl, AppArmor/  |    |    |    |    |
-       |    |    |    |    |   SELinux, ASLR)    |    |    |    |    |
-       |    |    |    |    |                     |    |    |    |    |
-       |    |    |    |    +---------------------+    |    |    |    |
-       |    |    |    +-------------------------------+    |    |    |
-       |    |    +-----------------------------------------+    |    |
-       |    +---------------------------------------------------+    |
-       +-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph L1["NETWORK & PERIMETER\n(iptables, ufw, firewalld, TCP Wrappers)"]
+        direction TB
+        subgraph L2["USERSPACE & APPS\n(SSH config, disable unused services)"]
+            direction TB
+            subgraph L3["FILESYSTEM & PERMISSIONS\n(fstab, SUID/SGID, AIDE, chmod/chown)"]
+                direction TB
+                subgraph L4["IDENTITY & ACCESS\n(PAM, sudoers, shadow)"]
+                    direction TB
+                    subgraph L5["KERNEL\n(sysctl, AppArmor/SELinux, ASLR)"]
+                        direction TB
+                        Core["Linux OS Core"]
+                    end
+                end
+            end
+        end
+    end
 ```
 
 ---

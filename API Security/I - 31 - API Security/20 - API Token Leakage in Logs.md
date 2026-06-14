@@ -19,32 +19,25 @@ In the OWASP API Security Top 10, this falls under **API8:2023 - Security Miscon
 
 ## ASCII Diagram: API Token Lifecycle and Log Leakage Points
 
-```text
-  [Client] Sends Request with Token (Bearer: eyJhbG...)
-      |
-      |  (1) URL Params Leakage (?token=123)
-      v
-  +-------------------+      (2) Writes to access.log
-  |  Reverse Proxy /  | ================> [ Nginx / Apache Logs ]
-  |   API Gateway     |                   (Often written to disk unencrypted)
-  +-------------------+
-      |
-      |  (3) WAF / Request Body Logging
-      v
-  +-------------------+      (4) Forwards HTTP Headers
-  |  Web Application  | ================> [ APM / Datadog / Splunk ]
-  |  Firewall (WAF)   |                   (Logs Authorization Headers)
-  +-------------------+
-      |
-      |  (5) Application Crash / Unhandled Exception
-      v
-  +-------------------+      (6) Dumps Stack Trace & Env Vars
-  |  Backend API App  | ================> [ Sentry / Error Logs / Kibana ]
-  | (Node, Spring, Go)|                   (Leaks DB Credentials & API Keys)
-  +-------------------+
-      |
-      v
-  [Database]
+```mermaid
+flowchart TD
+    Client["Client\nSends Request with Token (Bearer: eyJhbG...)"]
+    RP["Reverse Proxy / API Gateway"]
+    WAF["Web Application Firewall (WAF)"]
+    App["Backend API App\n(Node, Spring, Go)"]
+    DB["Database"]
+
+    Logs1["Nginx / Apache Logs\n(Often written to disk unencrypted)"]
+    Logs2["APM / Datadog / Splunk\n(Logs Authorization Headers)"]
+    Logs3["Sentry / Error Logs / Kibana\n(Leaks DB Credentials & API Keys)"]
+
+    Client -- "(1) URL Params Leakage (?token=123)" --> RP
+    RP -- "(2) Writes to access.log" --> Logs1
+    RP -- "(3) WAF / Request Body Logging" --> WAF
+    WAF -- "(4) Forwards HTTP Headers" --> Logs2
+    WAF -- "(5) Application Crash / Unhandled Exception" --> App
+    App -- "(6) Dumps Stack Trace & Env Vars" --> Logs3
+    App --> DB
 ```
 
 ---

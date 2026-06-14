@@ -13,36 +13,19 @@ Created by Benjamin Delpy and Vincent Le Toux (the authors of Mimikatz), DCShado
 
 ## 2. ASCII Diagram of Attack Flow
 
-```text
-    [ Attacker Workstation (Rogue DC) ]                           [ Legitimate Domain Controller ]
-              (e.g., WRKSTN-01)                                          (DC01.domain.local)
-              |                                                                |
-              | 1. Modifies AD Configuration Partition                         |
-              |    (Registers WRKSTN-01 as a DC object)                        |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 2. Adds SPNs to Attacker Computer Account                      |
-              |    (e.g., GC/WRKSTN-01, E3514235.../WRKSTN-01)                 |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 3. Starts local RPC server (Mimikatz)                          |
-              |    (Acting as DRSUAPI endpoint)                                |
-              |                                                                |
-              | 4. Triggers KCC (Knowledge Consistency Checker)                |
-              |    (Forces DC01 to replicate from the rogue DC)                |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 5. DC01 connects to WRKSTN-01 to pull changes                  |
-              |<---------------------------------------------------------------|
-              |                                                                |
-              | 6. WRKSTN-01 responds with injected payload                    |
-              |    (e.g., "Add 'attacker' to 'Domain Admins'")                 |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 7. DC01 commits changes to NTDS.DIT                            |
-              |                                                                |
-              | 8. Attacker removes rogue DC configuration (Cleanup)           |
-              |--------------------------------------------------------------->|
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker Workstation (Rogue DC)<br>(e.g., WRKSTN-01)
+    participant DC as Legitimate Domain Controller<br>(DC01.domain.local)
+    
+    Attacker->>DC: 1. Modifies AD Configuration Partition<br>(Registers WRKSTN-01 as a DC object)
+    Attacker->>DC: 2. Adds SPNs to Attacker Computer Account<br>(e.g., GC/WRKSTN-01, E3514235.../WRKSTN-01)
+    Note over Attacker: 3. Starts local RPC server (Mimikatz)<br>(Acting as DRSUAPI endpoint)
+    Attacker->>DC: 4. Triggers KCC (Knowledge Consistency Checker)<br>(Forces DC01 to replicate from the rogue DC)
+    DC-->>Attacker: 5. DC01 connects to WRKSTN-01 to pull changes
+    Attacker->>DC: 6. WRKSTN-01 responds with injected payload<br>(e.g., "Add 'attacker' to 'Domain Admins'")
+    Note over DC: 7. DC01 commits changes to NTDS.DIT
+    Attacker->>DC: 8. Attacker removes rogue DC configuration (Cleanup)
 ```
 
 ## 3. Attack Mechanics

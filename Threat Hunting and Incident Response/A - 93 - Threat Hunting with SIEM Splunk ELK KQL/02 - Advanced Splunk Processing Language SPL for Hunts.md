@@ -54,32 +54,12 @@ Calculates statistics sequentially as events stream through the pipeline. It cal
 
 ## 4. ASCII Data Flow: The Stats Commands
 
-```text
-+-----------------------------------------------------------------------+
-|                 SPL STATS PIPELINE DATA FLOW                          |
-|                                                                       |
-|  [RAW EVENTS: User A, IP 1; User A, IP 2; User B, IP 3]               |
-|                                                                       |
-|  | stats count by user                                                |
-|  +--> Returns:                                                        |
-|       user: A, count: 2                                               |
-|       user: B, count: 1                                               |
-|       (Original IP field is lost!)                                    |
-|                                                                       |
-|  | eventstats count by user                                           |
-|  +--> Returns:                                                        |
-|       user: A, IP: 1, count: 2                                        |
-|       user: A, IP: 2, count: 2                                        |
-|       user: B, IP: 3, count: 1                                        |
-|       (Original fields kept, global aggregate added)                  |
-|                                                                       |
-|  | streamstats count by user                                          |
-|  +--> Returns:                                                        |
-|       user: A, IP: 1, count: 1                                        |
-|       user: A, IP: 2, count: 2                                        |
-|       user: B, IP: 3, count: 1                                        |
-|       (Original fields kept, rolling aggregate added sequentially)    |
-+-----------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    A[RAW EVENTS: User A, IP 1; User A, IP 2; User B, IP 3]
+    A -->|stats count by user| B[user: A, count: 2<br>user: B, count: 1<br>Original IP field is lost!]
+    A -->|eventstats count by user| C[user: A, IP: 1, count: 2<br>user: A, IP: 2, count: 2<br>user: B, IP: 3, count: 1<br>Original fields kept, global aggregate added]
+    A -->|streamstats count by user| D[user: A, IP: 1, count: 1<br>user: A, IP: 2, count: 2<br>user: B, IP: 3, count: 1<br>Original fields kept, rolling aggregate added sequentially]
 ```
 
 ## 5. Advanced Parsing and Logic

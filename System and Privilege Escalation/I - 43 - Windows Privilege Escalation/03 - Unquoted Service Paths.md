@@ -37,26 +37,33 @@ Windows will attempt to execute files in the following precise sequence:
 4.  **Attempt 4:** `C:\Program Files\Enterprise Software\Monitoring Agent\agent.exe`
     - Finally finds the actual target executable.
 
-```text
-+-----------------------------------------------------------------------+
-|                 UNQUOTED SERVICE PATH SEARCH ORDER                    |
-+-----------------------------------------------------------------------+
-| Path: C:\Program Files\My Software\App\service.exe                    |
-+-----------------------------------------------------------------------+
-|
-|   SCM Request to Start Service
-|          |
-|          +--> 1. Is there a "C:\Program.exe"?
-|                  [YES] --> Execute Program.exe as SYSTEM (PWNED!)
-|                  [NO]  --> Continue search...
-|
-|          +--> 2. Is there a "C:\Program Files\My.exe"?
-|                  [YES] --> Execute My.exe as SYSTEM (PWNED!)
-|                  [NO]  --> Continue search...
-|
-|          +--> 3. Is there a "C:\Program Files\My Software\App\service.exe"?
-|                  [YES] --> Execute the intended service binary.
-+-----------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph USP["UNQUOTED SERVICE PATH SEARCH ORDER\nPath: C:\\Program Files\\My Software\\App\\service.exe"]
+        SCM["SCM Request to Start Service"]
+        
+        Q1["1. Is there a 'C:\\Program.exe'?"]
+        YES1["Execute Program.exe as SYSTEM (PWNED!)"]
+        NO1["Continue search..."]
+        
+        Q2["2. Is there a 'C:\\Program Files\\My.exe'?"]
+        YES2["Execute My.exe as SYSTEM (PWNED!)"]
+        NO2["Continue search..."]
+        
+        Q3["3. Is there a 'C:\\Program Files\\My Software\\App\\service.exe'?"]
+        YES3["Execute the intended service binary."]
+        
+        SCM --> Q1
+        Q1 -- "[YES]" --> YES1
+        Q1 -- "[NO]" --> NO1
+        
+        NO1 --> Q2
+        Q2 -- "[YES]" --> YES2
+        Q2 -- "[NO]" --> NO2
+        
+        NO2 --> Q3
+        Q3 -- "[YES]" --> YES3
+    end
 ```
 
 ## Exploitation Prerequisites

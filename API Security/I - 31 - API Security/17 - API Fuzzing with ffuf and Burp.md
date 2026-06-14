@@ -19,43 +19,28 @@ In the API hacking workflow, `ffuf` (Fuzz Faster U Fool) and Burp Suite (specifi
 
 ## ASCII Diagram: API Fuzzing Methodology Workflow
 
-```text
-                               +-----------------------------+
-                               |      Recon & Wordlists      |
-                               | (SecLists, custom lists)    |
-                               +--------------+--------------+
-                                              |
-                                              v
-+-----------------------+      +-----------------------------+       +-------------------------+
-|     ffuf (CLI)        |      |      Fuzzing Engine         |       |  Burp Suite (GUI)       |
-| - Fast, concurrent    | ---> | - Rate limiting handling    | <---- | - Intruder, Extensions  |
-| - Endpoint Discovery  |      | - Header/Method injection   |       | - Parameter Fuzzing     |
-| - Vhost Enumeration   |      | - Payload generation        |       | - Advanced workflows    |
-+-----------------------+      +--------------+--------------+       +-------------------------+
-                                              |
-                                              | (HTTP Requests: GET, POST, PUT, DELETE)
-                                              v
-                               +-----------------------------+
-                               |         Target API          |
-                               +--------------+--------------+
-                                              |
-                                     (HTTP Responses)
-                                              |
-                 +----------------------------+-----------------------------+
-                 |                            |                             |
-                 v                            v                             v
-      +--------------------+       +--------------------+        +--------------------+
-      | Anomalous Status   |       | Size/Time Changes  |        | Stack Traces/Logs  |
-      | (e.g., 500, 403)   |       | (e.g., WAF bypass) |        | (e.g., Debug info) |
-      +--------------------+       +--------------------+        +--------------------+
-                 |                            |                             |
-                 +----------------------------+-----------------------------+
-                                              |
-                                              v
-                               +-----------------------------+
-                               |     Vulnerability Found     |
-                               | (IDOR, BOLA, Injection, etc)|
-                               +-----------------------------+
+```mermaid
+flowchart TD
+    Wordlists["Recon & Wordlists\n(SecLists, custom lists)"]
+    ffuf["ffuf (CLI)\n- Fast, concurrent\n- Endpoint Discovery\n- Vhost Enumeration"]
+    Engine["Fuzzing Engine\n- Rate limiting handling\n- Header/Method injection\n- Payload generation"]
+    Burp["Burp Suite (GUI)\n- Intruder, Extensions\n- Parameter Fuzzing\n- Advanced workflows"]
+    Target["Target API"]
+    Status["Anomalous Status\n(e.g., 500, 403)"]
+    Changes["Size/Time Changes\n(e.g., WAF bypass)"]
+    Logs["Stack Traces/Logs\n(e.g., Debug info)"]
+    Vuln["Vulnerability Found\n(IDOR, BOLA, Injection, etc)"]
+
+    Wordlists --> Engine
+    ffuf --> Engine
+    Burp --> Engine
+    Engine -- "HTTP Requests: GET, POST, PUT, DELETE" --> Target
+    Target -- "HTTP Responses" --> Status
+    Target -- "HTTP Responses" --> Changes
+    Target -- "HTTP Responses" --> Logs
+    Status --> Vuln
+    Changes --> Vuln
+    Logs --> Vuln
 ```
 
 ---

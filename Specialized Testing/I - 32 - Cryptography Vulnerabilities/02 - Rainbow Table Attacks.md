@@ -54,36 +54,32 @@ When an attacker obtains a stolen hash (`H_target`), they use the rainbow table 
 
 ## 4. Architectural Diagram: Rainbow Chain Generation & Lookup
 
-```ascii
-+--------------------------------------------------------------------------+
-|                     Rainbow Table Chain Generation                       |
-+--------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Generation [Rainbow Table Chain Generation]
+        direction LR
+        Pstart["[ P_start ]\n(Stored)"] -->|Hash| H1["[ H1 ]"]
+        H1 -->|R1| P1["[ P1 ]"]
+        P1 -->|Hash| H2["[ H2 ]"]
+        H2 -->|R2| Dots["..."]
+        Dots --> Pend["[ P_end ]\n(Stored)"]
+    end
 
-[ P_start ] --> Hash --> [ H1 ] --> R1 --> [ P1 ] --> Hash --> [ H2 ] --> R2 ... --> [ P_end ]
- (Stored)                                                                            (Stored)
-
-+--------------------------------------------------------------------------+
-|                     Rainbow Table Search / Cracking                      |
-+--------------------------------------------------------------------------+
-Target Hash: [ H_target ]
-
-1. Assume H_target is at the END of a chain.
-   Apply R_last to H_target. Does result match any P_end in DB?
-   --> YES: Go to Step 3.
-   --> NO: Go to Step 2.
-
-2. Assume H_target is one step earlier.
-   Apply R_second_to_last -> Hash -> R_last. Does result match any P_end?
-   (Repeat backwards until a P_end match is found)
-
-3. MATCH FOUND! We matched P_end of Chain X.
-   Take P_start of Chain X from the Database.
-   Re-run the chain forward: P_start -> H1 -> P1 -> H2 ...
-   When Hash output matches [ H_target ], the preceding 'P' is the password!
-
-   [ P_start ] ---> ... ---> [ P_found ] ---> Hash ---> [ H_target ]
-                                |
-                        (The target password!)
+    subgraph Cracking [Rainbow Table Search / Cracking]
+        direction TB
+        Htarget["Target Hash: [ H_target ]"]
+        Step1["1. Assume H_target is at END. Apply R_last. Match P_end?"]
+        Step2["2. Assume earlier. Apply R_prev -> Hash -> R_last..."]
+        Step3["3. MATCH FOUND! Re-run chain forward from P_start."]
+        
+        Htarget --> Step1
+        Step1 -->|YES| Step3
+        Step1 -->|NO| Step2
+        Step2 -.->|Repeat backwards| Step3
+        
+        Step3 --> Pfound["[ P_found ]\n(The target password!)"]
+        Pfound -->|Hash| Htarget_final["[ H_target ]"]
+    end
 ```
 
 ## 5. False Alarms

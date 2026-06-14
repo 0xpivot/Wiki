@@ -18,24 +18,24 @@ When an attacker compromises a single container (Pod), their immediate goal is t
 
 ## Architecture & Attack Vectors
 
-```text
-+------------------------------------------------------------------------------------+
-|                                 Kubernetes Cluster                                 |
-|                                                                                    |
-|  +---------------------+      +---------------------+      +--------------------+  |
-|  |     Node 1          |      |       Node 2        |      |   Control Plane    |  |
-|  | +--------+ +------+ |      | +--------+ +------+ |      | +----------------+ |  |
-|  | | Pod A  | |Pod B | |=====>| | Pod C  | |Pod D | |=====>| |   API Server   | |  |
-|  | |(Comp'd)| |      | | CNI  | |        | |      | | API  | |                | |  |
-|  | +--------+ +------+ |      | +--------+ +------+ |Reqs  | +----------------+ |  |
-|  |    |  Container     |      |                     |      |                    |  |
-|  |    v  Escape        |      |                     |      |                    |  |
-|  |  kubelet / Host OS  |      |                     |      |                    |  |
-|  +---------------------+      +---------------------+      +--------------------+  |
-|           |                                                          |             |
-|           +----------------------------------------------------------+             |
-|                                 Cloud Provider Metadata API                        |
-+------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Kubernetes Cluster
+        subgraph Node 1
+            A[Pod A Comp'd] --> B[Container Escape <br/> kubelet / Host OS]
+            A --> C[Pod B]
+        end
+        subgraph Node 2
+            D[Pod C]
+            E[Pod D]
+        end
+        subgraph Control Plane
+            F[API Server]
+        end
+        A ==>|CNI| D
+        D ==>|API Reqs| F
+        B --> G[Cloud Provider Metadata API]
+    end
 ```
 
 ## 1. Pod-to-Pod Lateral Movement

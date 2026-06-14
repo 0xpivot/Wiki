@@ -59,57 +59,17 @@ The adversary accomplishes their original goals.
 
 Lockheed Martin pairs the Kill Chain with a "Courses of Action" matrix. For each phase, defenders can employ six distinct actions: Detect, Deny, Disrupt, Degrade, Deceive, and Destroy.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        THE CYBER KILL CHAIN VS. DEFENSES                          |
-+-----------------------------------------------------------------------------------+
-|     PHASE        |   ATTACKER ACTION        |        DEFENSIVE COUNTERMEASURE     |
-+------------------+--------------------------+-------------------------------------+
-| 1. RECON         | OSINT, Shodan, Scans     | Web Analytics, Threat Intel,        |
-|                  |                          | Firewall Blacklists (Deny)          |
-+------------------+--------------------------+-------------------------------------+
-|                  |                          |                                     |
-|        ||        |                          |                                     |
-|        \/        |                          |                                     |
-+------------------+--------------------------+-------------------------------------+
-| 2. WEAPONIZATION | Build maldoc with RAT    | YARA signatures, Threat Hunting     |
-|                  |                          | (Detect in the wild)                |
-+------------------+--------------------------+-------------------------------------+
-|                  |                          |                                     |
-|        ||        |                          |                                     |
-|        \/        |                          |                                     |
-+------------------+--------------------------+-------------------------------------+
-| 3. DELIVERY      | Spearphishing Email      | Email Gateway, Proxy Filters,       |
-|                  |                          | DNS Sinkholing (Deny/Disrupt)       |
-+------------------+--------------------------+-------------------------------------+
-|                  |                          |                                     |
-|        ||        |                          |                                     |
-|        \/        |                          |                                     |
-+------------------+--------------------------+-------------------------------------+
-| 4. EXPLOITATION  | Trigger buffer overflow  | Patch Management, ASLR, DEP,        |
-|                  |                          | EDR/AV heuristics (Deny)            |
-+------------------+--------------------------+-------------------------------------+
-|                  |                          |                                     |
-|        ||        |                          |                                     |
-|        \/        |                          |                                     |
-+------------------+--------------------------+-------------------------------------+
-| 5. INSTALLATION  | Registry Run Key added   | EDR Behavioral Analysis, HIPS,      |
-|                  |                          | AppLocker (Detect/Deny)             |
-+------------------+--------------------------+-------------------------------------+
-|                  |                          |                                     |
-|        ||        |                          |                                     |
-|        \/        |                          |                                     |
-+------------------+--------------------------+-------------------------------------+
-| 6. COMMAND &     | Beacon to C2 server      | NIDS, Outbound Proxy rules,         |
-|    CONTROL (C2)  | over HTTPS               | Threat Intel IP blocks (Disrupt)    |
-+------------------+--------------------------+-------------------------------------+
-|                  |                          |                                     |
-|        ||        |                          |                                     |
-|        \/        |                          |                                     |
-+------------------+--------------------------+-------------------------------------+
-| 7. ACTIONS ON    | Exfiltrate DB to Mega    | DLP, Network Segmentation,          |
-|    OBJECTIVES    | or deploy Ransomware     | Honeypots, Zero Trust (Deceive/Deny)|
-+------------------+--------------------------+-------------------------------------+
+```mermaid
+flowchart TD
+    P1["1. RECON<br>Attacker: OSINT, Shodan, Scans<br>Defensive: Web Analytics, Threat Intel, Firewall Blacklists (Deny)"]
+    P2["2. WEAPONIZATION<br>Attacker: Build maldoc with RAT<br>Defensive: YARA signatures, Threat Hunting (Detect in the wild)"]
+    P3["3. DELIVERY<br>Attacker: Spearphishing Email<br>Defensive: Email Gateway, Proxy Filters, DNS Sinkholing (Deny/Disrupt)"]
+    P4["4. EXPLOITATION<br>Attacker: Trigger buffer overflow<br>Defensive: Patch Management, ASLR, DEP, EDR/AV heuristics (Deny)"]
+    P5["5. INSTALLATION<br>Attacker: Registry Run Key added<br>Defensive: EDR Behavioral Analysis, HIPS, AppLocker (Detect/Deny)"]
+    P6["6. COMMAND & CONTROL (C2)<br>Attacker: Beacon to C2 server over HTTPS<br>Defensive: NIDS, Outbound Proxy rules, Threat Intel IP blocks (Disrupt)"]
+    P7["7. ACTIONS ON OBJECTIVES<br>Attacker: Exfiltrate DB to Mega or deploy Ransomware<br>Defensive: DLP, Network Segmentation, Honeypots, Zero Trust (Deceive/Deny)"]
+
+    P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
 ```
 
 ## 4. Strengths and Weaknesses of the Kill Chain

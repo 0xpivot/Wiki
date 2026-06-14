@@ -35,29 +35,18 @@ GCP uses a strict organizational hierarchy to manage policies and access control
 
 ## 4. ASCII Diagram: GCP Resource Hierarchy
 
-```text
-+----------------------------------------------------------------------------------+
-|                            GCP RESOURCE HIERARCHY                                |
-+----------------------------------------------------------------------------------+
-|                                                                                  |
-|                        [ Organization Node ]                                     |
-|                       (e.g., example.com)                                        |
-|                                |                                                 |
-|          +---------------------+---------------------+                           |
-|          |                                           |                           |
-|          v                                           v                           |
-|    [ Folder: Engineering ]                   [ Folder: Finance ]                 |
-|          |                                           |                           |
-|          v                                           v                           |
-|    [ Project: Frontend-Dev ]                 [ Project: Payroll-App ]            |
-|    (Trust & Billing Boundary)                (Trust & Billing Boundary)          |
-|          |                                           |                           |
-|   +------+------+                             +------+------+                    |
-|   |             |                             |             |                    |
-|   v             v                             v             v                    |
-| [ GCE VM ]   [ GCS Bucket ]                [ Cloud SQL ] [ GKE Cluster ]         |
-|                                                                                  |
-+----------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph GCP RESOURCE HIERARCHY
+        A[Organization Node <br/> e.g., example.com] --> B[Folder: Engineering]
+        A --> C[Folder: Finance]
+        B --> D[Project: Frontend-Dev <br/> Trust & Billing Boundary]
+        C --> E[Project: Payroll-App <br/> Trust & Billing Boundary]
+        D --> F[GCE VM]
+        D --> G[GCS Bucket]
+        E --> H[Cloud SQL]
+        E --> I[GKE Cluster]
+    end
 ```
 
 ## 5. Core GCP Services & Security Posture

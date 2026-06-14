@@ -36,36 +36,20 @@ Understanding trusts requires understanding two key concepts:
 
 ## 3. Visual Architecture: The ExtraSids Attack
 
-```ascii
-+-------------------------------------------------------------------------+
-|                        THE PARENT-CHILD TRUST ABUSE                     |
-|                                                                         |
-|   +--------------------------+           +--------------------------+   |
-|   |  CHILD DOMAIN (Dev)      |           |  PARENT DOMAIN (Root)    |   |
-|   |  dev.corp.local          | <=======> |  corp.local              |   |
-|   |                          |  Two-Way  |                          |   |
-|   | [ Compromised by         |   Trust   | [ Target: Enterprise     |   |
-|   |   Attacker ]             |           |   Admins ]               |   |
-|   +--------------------------+           +--------------------------+   |
-|            |                                        ^                   |
-|            | 1. Extract krbtgt hash                 |                   |
-|            |    for dev.corp.local                  |                   |
-|            V                                        |                   |
-|   +---------------------------------------+         |                   |
-|   |             MIMIKATZ                  |         |                   |
-|   |                                       |         |                   |
-|   | > kerberos::golden                    |         |                   |
-|   |   /domain:dev.corp.local              |         |                   |
-|   |   /sid:[Dev Domain SID]               |         |                   |
-|   |   /sids:[Enterprise Admin SID] <---- INJECT!    |                   |
-|   |   /rc4:[Dev krbtgt hash]              |         |                   |
-|   +---------------------------------------+         |                   |
-|            |                                        |                   |
-|            | 2. Inter-Realm TGT Generated           |                   |
-|            +----------------------------------------+                   |
-|             (Presents TGT to Parent DC. Parent DC sees the              |
-|              Enterprise Admin SID in the SIDHistory and grants access)  |
-+-------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Trusts["THE PARENT-CHILD TRUST ABUSE"]
+        direction LR
+        Child["CHILD DOMAIN (Dev)<br>dev.corp.local<br><br>[ Compromised by<br>Attacker ]"]
+        Parent["PARENT DOMAIN (Root)<br>corp.local<br><br>[ Target: Enterprise<br>Admins ]"]
+        
+        Child <== "Two-Way<br>Trust" ==> Parent
+    end
+    
+    Mimikatz["MIMIKATZ<br><br>> kerberos::golden<br>/domain:dev.corp.local<br>/sid:[Dev Domain SID]<br>/sids:[Enterprise Admin SID] <---- INJECT!<br>/rc4:[Dev krbtgt hash]"]
+    
+    Child -- "1. Extract krbtgt hash<br>for dev.corp.local" --> Mimikatz
+    Mimikatz -- "2. Inter-Realm TGT Generated<br><br>(Presents TGT to Parent DC. Parent DC sees the<br>Enterprise Admin SID in the SIDHistory and grants access)" --> Parent
 ```
 
 ---

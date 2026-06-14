@@ -19,40 +19,20 @@ For VAPT professionals, web server misconfigurations yield immediate wins: verbo
 
 ## Architectural ASCII Diagram: Web Request Security Flow
 
-```text
-       [External Threat Actor / Legitimate User]
-                          | (HTTP/HTTPS Requests)
-                          v
-  +-------------------------------------------------------------+
-  |                   NETWORK PERIMETER                         |
-  |             (Cloudflare / CDN / Edge Firewall)              |
-  |             - DDoS Mitigation, Geo-Blocking                 |
-  +-------------------------------------------------------------+
-                          |
-                          v
-  +-------------------------------------------------------------+
-  |              WEB APPLICATION FIREWALL (WAF)                 |
-  |               (ModSecurity, AWS WAF, F5)                    |
-  |     - Inspects Layer 7 Payload, Blocks SQLi/XSS Signatures  |
-  +-------------------------------------------------------------+
-                          | (Sanitized Request)
-                          v
-  +-------------------------------------------------------------+
-  |                 REVERSE PROXY / LOAD BALANCER               |
-  |                        (Nginx / HAProxy)                    |
-  |      - TLS Termination, Rate Limiting, Header Injection     |
-  +-------------------------------------------------------------+
-                          | (Internal Routing)
-                          v
-  +-------------------------------------------------------------+
-  |                 WEB SERVER DAEMON                           |
-  |                 (Apache, IIS, Nginx)                        |
-  | - Processes routing, checks file permissions, serves static |
-  | - Restricted by AppArmor/SELinux, runs as www-data          |
-  +-------------------------------------------------------------+
-                          |
-                          v
-                [Application Logic / Database]
+```mermaid
+flowchart TD
+    User["External Threat Actor / Legitimate User"]
+    NetPerimeter["NETWORK PERIMETER\n(Cloudflare / CDN / Edge Firewall)\n- DDoS Mitigation, Geo-Blocking"]
+    WAF["WEB APPLICATION FIREWALL (WAF)\n(ModSecurity, AWS WAF, F5)\n- Inspects Layer 7 Payload, Blocks SQLi/XSS Signatures"]
+    Proxy["REVERSE PROXY / LOAD BALANCER\n(Nginx / HAProxy)\n- TLS Termination, Rate Limiting, Header Injection"]
+    WebServer["WEB SERVER DAEMON\n(Apache, IIS, Nginx)\n- Processes routing, checks file permissions, serves static\n- Restricted by AppArmor/SELinux, runs as www-data"]
+    AppLogic["Application Logic / Database"]
+
+    User -- "HTTP/HTTPS Requests" --> NetPerimeter
+    NetPerimeter --> WAF
+    WAF -- "Sanitized Request" --> Proxy
+    Proxy -- "Internal Routing" --> WebServer
+    WebServer --> AppLogic
 ```
 
 ---

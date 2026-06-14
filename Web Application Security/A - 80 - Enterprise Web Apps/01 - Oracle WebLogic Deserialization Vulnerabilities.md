@@ -46,30 +46,21 @@ In WebLogic's case, it shipped with the highly vulnerable Apache Commons Collect
 
 Below is an ASCII representation of the exploitation process for a classic T3 deserialization attack against WebLogic.
 
-```text
-+-----------------+                                  +------------------------------+
-|                 |                                  |   Oracle WebLogic Server     |
-|   Attacker      |       1. T3 Handshake Request    |   (Port 7001 / T3 Protocol)  |
-|                 | -------------------------------> |                              |
-| [ysoserial]     |                                  |  +------------------------+  |
-| [Custom Script] |       2. T3 Handshake Accept     |  | InboundMsgAbbrev       |  |
-|                 | <------------------------------- |  | (T3 Connection Handler)|  |
-|                 |                                  |  +------------------------+  |
-|                 |                                  |              |               |
-|                 | 3. Send Malicious Serialized Obj |              v               |
-|                 | -------------------------------> |  +------------------------+  |
-|                 |   (CommonsCollections Gadget)    |  | ObjectInputStream      |  |
-|                 |                                  |  | .readObject()          |  |
-|                 |                                  |  +------------------------+  |
-|                 |                                  |              |               |
-+-----------------+                                  |              v               |
-         ^                                           |  +------------------------+  |
-         |                                           |  | Gadget Chain Trigger   |  |
-         |            4. Reverse Shell / Command     |  | e.g. InvokerTransformer|  |
-         +-------------------------------------------|  | Runtime.getRuntime().  |  |
-                                                     |  | exec("bash -i >& ...") |  |
-                                                     |  +------------------------+  |
-                                                     +------------------------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker <br/> ysoserial <br/> Custom Script"]
+    WebLogic["Oracle WebLogic Server <br/> (Port 7001 / T3 Protocol)"]
+    Inbound["InboundMsgAbbrev <br/> (T3 Connection Handler)"]
+    OIS["ObjectInputStream <br/> .readObject()"]
+    Trigger["Gadget Chain Trigger <br/> e.g. InvokerTransformer <br/> Runtime.getRuntime(). <br/> exec('bash -i >& ...')"]
+
+    Attacker -- "1. T3 Handshake Request" --> WebLogic
+    WebLogic -- "2. T3 Handshake Accept" --> Attacker
+    WebLogic --- Inbound
+    Inbound --> OIS
+    OIS --> Trigger
+    Attacker -- "3. Send Malicious Serialized Obj <br/> (CommonsCollections Gadget)" --> OIS
+    Trigger -- "4. Reverse Shell / Command" --> Attacker
 ```
 
 ---

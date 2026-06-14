@@ -63,37 +63,24 @@ Procedures describe the specific implementation or the exact command/tool an adv
 - **Sub-Technique:** Spearphishing Attachment
 - **Procedure:** APT28 sent emails containing malicious Microsoft Word documents that utilized macro code to execute a payload.
 
-## 3. Visualizing the Framework (ASCII Diagram)
+## 3. Visualizing the Framework (Mermaid Diagram)
 
 Below is a conceptual architecture of how MITRE ATT&CK elements interrelate during an adversary campaign:
 
-```text
-+-----------------------------------------------------------------------------------+
-|                         ADVERSARY CAMPAIGN (e.g., APT29)                          |
-+-----------------------------------------------------------------------------------+
-                                        |
-                                        V
-+-----------------------------------------------------------------------------------+
-|     TACTIC (The Objective): e.g., TA0008 Lateral Movement                         |
-+-----------------------------------------------------------------------------------+
-                                        |
-                                        V
-+-----------------------------------------------------------------------------------+
-|  TECHNIQUE (The Method): e.g., T1550 Use Alternate Authentication Material        |
-+-----------------------------------------------------------------------------------+
-                                        |
-                                        V
-+-----------------------------------------------------------------------------------+
-|  SUB-TECHNIQUE (Specifics): e.g., T1550.002 Pass the Hash                         |
-+-----------------------------------------------------------------------------------+
-                                        |
-+-----------------------+---------------+---------------+---------------------------+
-|                       |                               |                           |
-V                       V                               V                           V
-+-----------+   +---------------+               +---------------+           +---------------+
-| PROCEDURE |   |    TOOL       |               | DATA SOURCE   |           |  MITIGATION   |
-| (Mimikatz)|   | (CrackMapExec)|               | (Logon Event) |           | (LAPS/Tiering)|
-+-----------+   +---------------+               +---------------+           +---------------+
+```mermaid
+flowchart TD
+    A["ADVERSARY CAMPAIGN (e.g., APT29)"]
+    B["TACTIC (The Objective): e.g., TA0008 Lateral Movement"]
+    C["TECHNIQUE (The Method): e.g., T1550 Use Alternate Authentication Material"]
+    D["SUB-TECHNIQUE (Specifics): e.g., T1550.002 Pass the Hash"]
+    E1["PROCEDURE 1:<br>e.g., CrackMapExec"]
+    E2["PROCEDURE 2:<br>e.g., Mimikatz"]
+    E3["PROCEDURE 3:<br>e.g., Custom Python Script"]
+
+    A --> B --> C --> D
+    D --> E1
+    D --> E2
+    D --> E3
 ```
 
 ## 4. The ATT&CK Matrices

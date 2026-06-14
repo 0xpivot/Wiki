@@ -31,48 +31,23 @@ When an incident occurs on-premises, a forensic investigator can often pull the 
 
 ## 3. Architecture Visualization: The Paradigm Shift
 
-```text
-+---------------------------------------------------------+
-|                ON-PREMISES ARCHITECTURE                 |
-|                                                         |
-|  [Internet]                                             |
-|      |                                                  |
-|  [Firewall / WAF] <--- Network Perimeter                |
-|      |                                                  |
-|   +--+--+       +-------+                               |
-|   | DMZ |-------| Web 1 |                               |
-|   +--+--+       +-------+                               |
-|      |                                                  |
-|  [Internal FW]                                          |
-|      |                                                  |
-|   +--+--+       +-------+     +----------+              |
-|   | LAN |-------| App 1 |-----| Active   |              |
-|   +--+--+       +-------+     | Directory|              |
-|                               +----------+              |
-|                                                         |
-|  Hunting Focus: PCAP, EDR, Windows Event Logs, Sysmon.  |
-+---------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph On-Premises Architecture
+        A[Internet] --> B[Firewall / WAF]
+        B --> C[DMZ Web 1]
+        C --> D[Internal FW]
+        D --> E[LAN App 1]
+        E <--> F[Active Directory]
+    end
 
-                             VS
-
-+---------------------------------------------------------+
-|                  CLOUD ARCHITECTURE                     |
-|                                                         |
-|               [ Cloud Management APIs ]                 |
-|               (AWS/Azure/GCP Endpoints)                 |
-|                           ^                             |
-|                           |                             |
-|  [Internet] -----> [ IAM & Policies ] <--- NEW PERIMETER|
-|                           |                             |
-|      +--------------------+--------------------+        |
-|      |                    |                    |        |
-|  [Serverless]    [Ephemeral Compute]     [Managed DB]   |
-|  (Lambda)        (EC2 Auto-Scaling)      (RDS/SQL)      |
-|                                                         |
-|                                                         |
-|  Hunting Focus: API Logs (CloudTrail), IAM Audits,      |
-|                 VPC Flow Logs, Cloud Native CSPM.       |
-+---------------------------------------------------------+
+    subgraph Cloud Architecture
+        G[Internet] --> H[IAM & Policies <br> NEW PERIMETER]
+        H --> I[Serverless<br>Lambda]
+        H --> J[Ephemeral Compute<br>EC2 Auto-Scaling]
+        H --> K[Managed DB<br>RDS/SQL]
+        L[Cloud Management APIs<br>AWS/Azure/GCP Endpoints] --> H
+    end
 ```
 
 ## 4. Telemetry and Data Sources Comparison

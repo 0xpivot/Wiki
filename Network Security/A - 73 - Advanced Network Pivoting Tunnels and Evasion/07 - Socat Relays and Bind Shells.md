@@ -19,29 +19,14 @@ Because `socat` operates at the transport layer (Layer 4), it does not care abou
 
 ## 3. ASCII Diagram: Socat Relaying Architecture
 
-```text
-      [ Attacker C2 ]
-      Public IP: 203.0.113.5
-      Listening on Port: 443
-             ^
-             | (Encrypted Reverse Shell via OpenSSL)
-             |
-    +----------------------------------+
-    | Compromised Host (Pivot Node)    |
-    | Public IP: 203.0.113.10          |
-    | Internal IP: 192.168.1.50        |
-    |                                  |
-    | [socat relay]:                   |
-    | TCP-LISTEN:8080 <--> SSL:C2:443  |
-    +----------------------------------+
-             ^
-             | (Unencrypted Internal Traffic)
-             |
-      +------+
-      |
- [ Target Internal Database ]
- Internal IP: 192.168.1.100
- Sending Reverse Shell to Pivot:8080
+```mermaid
+flowchart TD
+    Target["Target Internal Database<br/>Internal IP: 192.168.1.100<br/>Sending Reverse Shell to Pivot:8080"]
+    Pivot["Compromised Host (Pivot Node)<br/>Public IP: 203.0.113.10<br/>Internal IP: 192.168.1.50<br/>[socat relay]:<br/>TCP-LISTEN:8080 <--> SSL:C2:443"]
+    Attacker["Attacker C2<br/>Public IP: 203.0.113.5<br/>Listening on Port: 443"]
+
+    Target -->|Unencrypted Internal Traffic| Pivot
+    Pivot -->|Encrypted Reverse Shell via OpenSSL| Attacker
 ```
 
 ## 4. Deep Dive: Socat TCP Relays

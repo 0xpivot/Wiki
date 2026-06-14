@@ -29,29 +29,11 @@ DNP3 is significantly more complex and robust than Modbus. It was designed speci
 
 ## 3. ASCII Diagram: Modbus Command Injection Flow
 
-```text
-     [ Attacker ]
-          |
-          | 1. Gains network access (e.g., via compromised VPN or IT pivot)
-          | 2. Crafts malicious Modbus/TCP packet 
-          |    (Function Code 05: Write Single Coil)
-          v
-   +-------------------+
-   |  Network Switch   | (IT/OT Boundary lacks DPI firewalls)
-   +-------------------+
-          |
-          | 3. Packet routed to TCP Port 502
-          v
-   +-------------------+
-   |   Target PLC      | (Programmable Logic Controller)
-   |   Modbus TCP Svc  |
-   +-------------------+
-          |
-          | 4. PLC processes Function Code 05 without authentication
-          | 5. Alters physical output state
-          v
-   [ Physical Actuator ]
-   (e.g., Critical Cooling Valve shuts down)
+```mermaid
+flowchart TD
+    Attacker["[ Attacker ]"] -->|1. Gains network access<br>2. Crafts malicious Modbus/TCP packet<br>(Function Code 05: Write Single Coil)| Switch["Network Switch<br>(IT/OT Boundary lacks DPI firewalls)"]
+    Switch -->|3. Packet routed to TCP Port 502| PLC["Target PLC<br>(Programmable Logic Controller)<br>Modbus TCP Svc"]
+    PLC -->|4. PLC processes Function Code 05 without auth<br>5. Alters physical output state| Actuator["[ Physical Actuator ]<br>(e.g., Critical Cooling Valve shuts down)"]
 ```
 
 ## 4. Exploitation Techniques

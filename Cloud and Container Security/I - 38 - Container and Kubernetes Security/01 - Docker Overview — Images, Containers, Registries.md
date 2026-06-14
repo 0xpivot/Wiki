@@ -19,30 +19,16 @@ This document serves as an extreme-depth overview of the core Docker components:
 
 Docker operates strictly on a client-server architecture. The Docker client communicates with the Docker daemon (`dockerd`), which does the heavy lifting of building, running, monitoring, and distributing your Docker containers.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                                 HOST OPERATING SYSTEM                             |
-|                                                                                   |
-|  +-------------------+       +-------------------------------------------------+  |
-|  |   Docker Client   |       |                  Docker Host                    |  |
-|  |                   |       |                                                 |  |
-|  |  [ docker run ] --|-------|--> [ Docker Daemon (dockerd) ]                  |  |
-|  |  [ docker pull ]  | REST  |         |             |                         |  |
-|  |  [ docker build]  | API   |         v             v                         |  |
-|  |  [ docker exec ]  |       |    +---------+   +---------+                    |  |
-|  +-------------------+       |    | Image 1 |   | Cont. A |                    |  |
-|                              |    +---------+   +---------+                    |  |
-|                              |    | Image 2 |   | Cont. B |                    |  |
-|                              |    +---------+   +---------+                    |  |
-|                              +-------------------------------------------------+  |
-|                                                      ^                            |
-+------------------------------------------------------|----------------------------+
-                                                       | (HTTPS API)
-                                                       v
-                                     +-----------------------------------+
-                                     |         Docker Registry           |
-                                     |  (Docker Hub, AWS ECR, Harbor)    |
-                                     +-----------------------------------+
+```mermaid
+graph TD
+    subgraph HOST OPERATING SYSTEM
+        A[Docker Client <br/> docker run <br/> docker pull <br/> docker build <br/> docker exec] -- REST API --> B[Docker Host <br/> Docker Daemon dockerd]
+        B --> C[Image 1]
+        B --> D[Cont. A]
+        B --> E[Image 2]
+        B --> F[Cont. B]
+    end
+    B <-->|HTTPS API| G[Docker Registry <br/> Docker Hub, AWS ECR, Harbor]
 ```
 
 ### The Docker Daemon (`dockerd`)

@@ -28,18 +28,13 @@ If the attacker successfully retrieves the credentials, they will typically load
 
 ## ASCII Diagram: SSRF Metadata Exfiltration
 
-```text
-+-------------------+       (1) Malicious Request     +-----------------------+
-| Attacker          | ------------------------------> | Vulnerable Web App    |
-| (Public Internet) |       (Target: 169.254.169.254) | (EC2 / VM)            |
-+-------------------+                                 +-----------------------+
-        ^                                                     |
-        | (3) Returns Temp Creds                              | (2) Fetch Metadata
-        |                                                     v
-+-------------------+                                 +-----------------------+
-| Attacker CLI      | <------------------------------ | IMDS / Metadata Svc   |
-| (Uses Stolen Keys)|      (AWS, Azure, GCP)          | (169.254.169.254)     |
-+-------------------+                                 +-----------------------+
+```mermaid
+flowchart TD
+    A[Attacker<br>Public Internet] -->|1 Malicious Request<br>Target: 169.254.169.254| B[Vulnerable Web App<br>EC2 / VM]
+    B -->|2 Fetch Metadata| C[IMDS / Metadata Svc<br>169.254.169.254]
+    C -->|3 Returns Temp Creds| A
+    A --> D[Attacker CLI<br>Uses Stolen Keys]
+    D --> E[AWS, Azure, GCP APIs]
 ```
 
 ## Real-World Attack Scenario

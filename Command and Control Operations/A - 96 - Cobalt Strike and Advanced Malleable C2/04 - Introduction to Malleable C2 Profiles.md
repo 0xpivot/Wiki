@@ -35,36 +35,16 @@ set useragent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ..."
 
 ## ASCII Architecture Diagram: The Malleable Compilation Pipeline
 
-```text
-+-----------------------+
-|  Malleable C2 Profile |
-|  (my_profile.profile) |
-+-----------+-----------+
-            |
-            v
-+-----------+-----------+        +----------------------------------+
-|      Team Server      |        |           c2lint utility         |
-|    Compilation Engine | <===== |  (Validates syntax, checks for   |
-|                       |        |   OPSEC failures, calculates     |
-+-----------+-----------+        |   memory footprint)              |
-            |                    +----------------------------------+
-            |
-            v
-+---------------------------------------------------+
-|               Generated Artifact                  |
-|                                                   |
-|  [ Memory / PE Headers ]                          |
-|  - MZ Stomped, Obfuscated Imports                 |
-|  - Specific RWX/RX Allocation states              |
-|                                                   |
-|  [ Network C2 Configuration ]                     |
-|  - HTTP GET/POST formats, Headers                 |
-|  - Encoding rules (Base64, Masking)               |
-|                                                   |
-|  [ Post-Exploitation Directives ]                 |
-|  - spawnto (e.g., svchost.exe -> w32tm.exe)       |
-|  - amsi_disable true                              |
-+---------------------------------------------------+
+```mermaid
+flowchart TD
+    Prof["Malleable C2 Profile<br>(my_profile.profile)"]
+    Engine["Team Server<br>Compilation Engine"]
+    Lint["c2lint utility<br>(Validates syntax, checks for<br>OPSEC failures, calculates<br>memory footprint)"]
+    Art["Generated Artifact<br><br>Memory / PE Headers:<br>- MZ Stomped, Obfuscated Imports<br>- Specific RWX/RX Allocation states<br><br>Network C2 Configuration:<br>- HTTP GET/POST formats, Headers<br>- Encoding rules (Base64, Masking)<br><br>Post-Exploitation Directives:<br>- spawnto (e.g., svchost.exe -> w32tm.exe)<br>- amsi_disable true"]
+    
+    Prof --> Engine
+    Lint =====> Engine
+    Engine --> Art
 ```
 
 ---

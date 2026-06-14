@@ -69,36 +69,24 @@ When selecting `spawnto` targets, operators must avoid "Living off the Land" bin
 
 ## Custom ASCII Diagram
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        Advanced Process Injection Flow                            |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [ Attacking Process (Beacon) ]                                                   |
-|         |                                                                         |
-|         | 1. Allocate Memory (NtMapViewOfSection)                                 |
-|         |    - Avoid VirtualAllocEx                                               |
-|         |    - Permissions: PAGE_READWRITE (No RWX)                               |
-|         |                                                                         |
-|         v                                                                         |
-|  [ Target Process (e.g., explorer.exe) ]                                          |
-|         |                                                                         |
-|         | 2. Write Payload                                                        |
-|         |    - Copy Beacon shellcode into mapped section                          |
-|         |                                                                         |
-|         | 3. Change Permissions                                                   |
-|         |    - VirtualProtect(PAGE_EXECUTE_READ)                                  |
-|         |                                                                         |
-|         | 4. Execution (Early Bird APC)                                           |
-|         |    - Suspend target thread                                              |
-|         |    - NtQueueApcThread(SuspendedThread, PayloadAddress)                  |
-|         |    - ResumeThread                                                       |
-|         |                                                                         |
-|         v                                                                         |
-|  [ Execution Context ]                                                            |
-|    Thread wakes up, processes APC queue, and executes the hidden payload          |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Flow["Advanced Process Injection Flow"]
+        P1["Attacking Process (Beacon)"]
+        
+        A1["1. Allocate Memory (NtMapViewOfSection)<br>- Avoid VirtualAllocEx<br>- Permissions: PAGE_READWRITE (No RWX)"]
+        
+        P2["Target Process (e.g., explorer.exe)"]
+        A2["2. Write Payload<br>- Copy Beacon shellcode into mapped section"]
+        A3["3. Change Permissions<br>- VirtualProtect(PAGE_EXECUTE_READ)"]
+        A4["4. Execution (Early Bird APC)<br>- Suspend target thread<br>- NtQueueApcThread(SuspendedThread, PayloadAddress)<br>- ResumeThread"]
+        
+        P3["Execution Context<br>Thread wakes up, processes APC queue, and executes the hidden payload"]
+        
+        P1 --> A1
+        A1 --> P2
+        P2 --> A2 --> A3 --> A4 --> P3
+    end
 ```
 
 ## Real-World Attack Scenario

@@ -51,25 +51,21 @@ Procedures are the highly specific actions, command-line arguments, or tools use
 
 ### ASCII Diagram: The ATT&CK Structure
 
-```text
-+-------------------------------------------------------------+
-|                     MITRE ATT&CK MATRIX                     |
-+-------------------------------------------------------------+
-| TACTIC: Initial Access  | TACTIC: Execution                 |
-| (Objective: Get In)     | (Objective: Run Code)             |
-+-------------------------+-----------------------------------+
-| TECHNIQUE: Phishing     | TECHNIQUE: Command/Script Interp. |
-| (ID: T1566)             | (ID: T1059)                       |
-|                         |                                   |
-|   +-> SUB-TECHNIQUE:    |   +-> SUB-TECHNIQUE:              |
-|       Attachment        |       PowerShell                  |
-|       (ID: T1566.001)   |       (ID: T1059.001)             |
-|                         |                                   |
-|       * PROCEDURE:      |       * PROCEDURE:                |
-|         APT29 sends     |         FIN7 runs base64          |
-|         macro-enabled   |         encoded script via        |
-|         Word doc.       |         powershell.exe -enc       |
-+-------------------------+-----------------------------------+
+```mermaid
+flowchart TD
+    subgraph InitialAccess["TACTIC: Initial Access (Objective: Get In)"]
+        T1["TECHNIQUE: Phishing (ID: T1566)"]
+        S1["SUB-TECHNIQUE: Attachment (ID: T1566.001)"]
+        P1["PROCEDURE: APT29 sends macro-enabled Word doc."]
+        T1 --> S1 --> P1
+    end
+
+    subgraph Execution["TACTIC: Execution (Objective: Run Code)"]
+        T2["TECHNIQUE: Command/Script Interp. (ID: T1059)"]
+        S2["SUB-TECHNIQUE: PowerShell (ID: T1059.001)"]
+        P2["PROCEDURE: FIN7 runs base64 encoded script via powershell.exe -enc"]
+        T2 --> S2 --> P2
+    end
 ```
 
 ## 3. Beyond TTPs: Mitigations and Data Sources

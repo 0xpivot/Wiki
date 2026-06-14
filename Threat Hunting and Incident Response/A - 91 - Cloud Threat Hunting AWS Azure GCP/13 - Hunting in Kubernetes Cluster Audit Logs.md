@@ -13,22 +13,13 @@ Kubernetes audit logs provide a chronological, highly detailed record of calls m
 
 ## Kubernetes Architecture and Attack Surface
 
-```text
-+----------------------+      +-----------------------+      +-------------------------+
-|  User / kubectl      | ---> | Kube-API Server       | ---> | Etcd (Key-Value Store)  |
-|  (External Admin)    |      | (Authentication,      |      | Holds all cluster state |
-+----------------------+      |  Authorization,       |      +-------------------------+
-                              |  Admission Control,   |
-+----------------------+      |  Audit Logging)       | ---> +-------------------------+
-|  Pod / Service Acct  | ---> |                       |      | Kubelet (Node Agent)    |
-|  (Internal Workload) |      | Enforces Audit Policy | ---> | Creates/Deletes Pods    |
-+----------------------+      +-----------------------+      +-------------------------+
-                                        |
-                                        v
-                              +-----------------------+
-                              | Log Aggregator (SIEM) |
-                              | (Splunk, Elastic, KQL)|
-                              +-----------------------+
+```mermaid
+flowchart TD
+    A[User / kubectl<br>External Admin] --> B[Kube-API Server<br>Authentication,<br>Authorization,<br>Admission Control,<br>Audit Logging<br>Enforces Audit Policy]
+    C[Pod / Service Acct<br>Internal Workload] --> B
+    B --> D[Etcd Key-Value Store<br>Holds all cluster state]
+    B --> E[Kubelet Node Agent<br>Creates/Deletes Pods]
+    B --> F[Log Aggregator SIEM<br>Splunk, Elastic, KQL]
 ```
 
 ## Understanding Kubernetes Audit Log Stages

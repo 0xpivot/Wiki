@@ -44,35 +44,19 @@ However, if source maps are inadvertently deployed to the production environment
 
 ## 3. Attack Architecture & Flow
 
-```text
-  +-------------------+                                  +-------------------+
-  |   Developer PC    |                                  |   Target Server   |
-  | (React / Webpack) |                                  |  (Hosts static JS)|
-  +---------+---------+                                  +---------+---------+
-            | 1. Hardcodes API Key in .env                         ^
-            v                                                      |
-  +---------+---------+                                            |
-  |   Build Process   |                                            |
-  |  (npm run build)  | ===========================================+
-  +---------+---------+   2. Deploys bundled main.js to Server
-            
-                                                                   |
-  +---------+---------+                                            |
-  |  Attacker Browser | <==========================================+
-  |   (DevTools F12)  |   3. Client Requests App (Downloads JS)
-  +---------+---------+
-            | 4. Inspects main.js via Source tab
-            | 5. Greps for "AIzaSy" or "AKIA"
-            | 6. Extracts Key
-            v
-  +---------+---------+
-  | Third-Party API   |
-  | (AWS/Stripe/etc)  |
-  +-------------------+
-            ^
-            | 7. Attacker bypasses target server entirely 
-            |    and sends requests directly to the API
-            |    using the stolen credentials.
+```mermaid
+flowchart TD
+    Dev["Developer PC\n(React / Webpack)"]
+    Build["Build Process\n(npm run build)"]
+    Server["Target Server\n(Hosts static JS)"]
+    Attacker["Attacker Browser\n(DevTools F12)"]
+    API["Third-Party API\n(AWS/Stripe/etc)"]
+
+    Dev -- "1. Hardcodes API Key in .env" --> Build
+    Build -- "2. Deploys bundled main.js to Server" --> Server
+    Server -- "3. Client Requests App (Downloads JS)" --> Attacker
+    Attacker -- "4. Inspects main.js via Source tab\n5. Greps for 'AIzaSy' or 'AKIA'\n6. Extracts Key" --> API
+    API -- "7. Attacker bypasses target server entirely\nand sends requests directly to the API\nusing the stolen credentials." --> Attacker
 ```
 
 ## 4. Discovery and Exploitation Methodologies

@@ -58,35 +58,21 @@ For the attack to work against modern clients, the MitM attacker must trick the 
 
 ### ASCII Diagram of the Logjam Downgrade Attack
 
-```text
-+----------------+                +-----------------+                +----------------+
-|     Client     |                | Attacker (MitM) |                |     Server     |
-+-------+--------+                +--------+--------+                +-------+--------+
-        |                                  |                                 |
-        | 1. ClientHello (Strong DHE)      |                                 |
-        |--------------------------------->| 2. ClientHello modified         |
-        |                                  |    (Forces DHE_EXPORT)          |
-        |                                  |-------------------------------->|
-        |                                  |                                 |
-        |                                  | 3. ServerHello (DHE_EXPORT)     |
-        |                                  |    Server sends 512-bit prime   |
-        |                                  |<--------------------------------|
-        | 4. ServerHello forwarded         |                                 |
-        |<---------------------------------|                                 |
-        |                                  | 5. Attacker computes Discrete   |
-        |                                  |    Logarithm of 512-bit key in  |
-        |                                  |    real-time (NFS precomputed)  |
-        |                                  |                                 |
-        | 6. Client Computes Master Secret |                                 |
-        |    using 512-bit DH key          |                                 |
-        |                                  | 7. Attacker derives Master Sec. |
-        |                                  |                                 |
-        | 8. Client Finished (Encrypted)   |                                 |
-        |--------------------------------->| 9. Attacker decrypts, modifies, |
-        |                                  |    and re-encrypts hashes       |
-        |                                  |-------------------------------->|
-        |                                  |                                 |
-+-------+--------+                +--------+--------+                +-------+--------+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant A as Attacker (MitM)
+    participant S as Server
+    
+    C->>A: 1. ClientHello (Strong DHE)
+    A->>S: 2. ClientHello modified (Forces DHE_EXPORT)
+    S->>A: 3. ServerHello (DHE_EXPORT)<br>Server sends 512-bit prime
+    A->>C: 4. ServerHello forwarded
+    Note over A: 5. Attacker computes Discrete<br>Logarithm of 512-bit key in<br>real-time (NFS precomputed)
+    Note over C: 6. Client Computes Master Secret<br>using 512-bit DH key
+    Note over A: 7. Attacker derives Master Sec.
+    C->>A: 8. Client Finished (Encrypted)
+    A->>S: 9. Attacker decrypts, modifies,<br>and re-encrypts hashes
 ```
 
 ## Mitigation and Remediation

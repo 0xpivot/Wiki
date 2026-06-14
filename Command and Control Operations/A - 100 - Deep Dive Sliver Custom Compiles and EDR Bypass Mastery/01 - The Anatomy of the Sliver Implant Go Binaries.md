@@ -88,31 +88,16 @@ func (s *Sliver) handleCommand(req *sliverpb.Envelope) error {
 
 ## ASCII Diagram: The Anatomy of a Go Binary
 
-```text
-+---------------------------------------------------+
-|               OS Header (PE / ELF)                |
-+---------------------------------------------------+
-| .text (Executable Code)                           |
-|  - runtime.main                                   |
-|  - main.main                                      |
-|  - Sliver specific functions (Transport, Tasks)   |
-|  - Imported packages (crypto, net, fmt, etc.)     |
-+---------------------------------------------------+
-| .rodata (Read-Only Data)                          |
-|  - String constants ("sliver", user-agents, etc.) |
-|  - Type metadata (for reflection)                 |
-|  - gopclntab (Function names & line numbers)      |
-+---------------------------------------------------+
-| .data (Initialized Data)                          |
-|  - Global variables                               |
-|  - moduledata structure                           |
-+---------------------------------------------------+
-| .bss (Uninitialized Data)                         |
-|  - Zero-initialized variables                     |
-+---------------------------------------------------+
-| .symtab / .strtab / .debug_* (Optional/Strippable)|
-|  - DWARF debugging information                    |
-+---------------------------------------------------+
+```mermaid
+flowchart TD
+    OS["OS Header (PE / ELF)"]
+    TEXT[".text (Executable Code)<br>- runtime.main<br>- main.main<br>- Sliver specific functions (Transport, Tasks)<br>- Imported packages (crypto, net, fmt, etc.)"]
+    RODATA[".rodata (Read-Only Data)<br>- String constants ('sliver', user-agents, etc.)<br>- Type metadata (for reflection)<br>- gopclntab (Function names & line numbers)"]
+    DATA[".data (Initialized Data)<br>- Global variables<br>- moduledata structure"]
+    BSS[".bss (Uninitialized Data)<br>- Zero-initialized variables"]
+    SYMTAB[".symtab / .strtab / .debug_* (Optional/Strippable)<br>- DWARF debugging information"]
+    
+    OS --- TEXT --- RODATA --- DATA --- BSS --- SYMTAB
 ```
 
 ## 5. Identifying Sliver Analytically

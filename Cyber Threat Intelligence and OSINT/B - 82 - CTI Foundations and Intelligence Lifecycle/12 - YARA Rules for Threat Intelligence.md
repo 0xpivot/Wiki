@@ -87,31 +87,18 @@ To write robust, false-positive resistant rules, analysts must leverage advanced
 
 ### ASCII Diagram: YARA Execution Flow
 
-```text
-+------------------+       +-------------------+       +-----------------------+
-|                  |       |                   |       |                       |
-| Target File /    |       | YARA Engine       |       | PE / ELF / Math       |
-| Process Memory   | =====>| (Parses Rules,    | <===> | Modules (Optional     |
-| (Raw Bytes)      |       | Scans Memory)     |       | deep inspection)      |
-|                  |       |                   |       |                       |
-+------------------+       +-------------------+       +-----------------------+
-                                 |   ^
-                                 |   |
-                                 v   |
-                           +-------------------+
-                           |                   |
-                           | YARA Rule Files   |
-                           | (.yar / .yara)    |
-                           |                   |
-                           +-------------------+
-                                 |
-                                 | Result (Match / No Match)
-                                 v
-                           +-------------------+
-                           | SIEM / SOAR /     |
-                           | EDR Agent /       |
-                           | CLI Output        |
-                           +-------------------+
+```mermaid
+flowchart TD
+    Target["Target File / Process Memory<br/>(Raw Bytes)"]
+    Engine["YARA Engine<br/>(Parses Rules, Scans Memory)"]
+    Modules["PE / ELF / Math Modules<br/>(Optional deep inspection)"]
+    Rules["YARA Rule Files<br/>(.yar / .yara)"]
+    Output["SIEM / SOAR / EDR Agent / CLI Output"]
+
+    Target ==> Engine
+    Engine <==> Modules
+    Rules <--> Engine
+    Engine -->|Result Match / No Match| Output
 ```
 
 ### Using Modules

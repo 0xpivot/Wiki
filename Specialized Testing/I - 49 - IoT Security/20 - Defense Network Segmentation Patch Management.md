@@ -24,30 +24,20 @@ The core philosophy of IoT defense is **Assume Breach**. If a smart TV, an IP ca
 
 ## 3. Architecture Diagram: Secure IoT Network
 
-```text
-                                [ Internet ]
-                                     |
-+-------------------------------------------------------------------------+
-|                          Next-Gen Firewall (NGFW)                       |
-|           (Performs DPI, Intrusion Prevention, and TLS Decryption)      |
-+-------------------------------------------------------------------------+
-         |                 |                    |                 |
- [ IT VLAN (VLAN 10) ]     |                    |                 |
-  (Laptops, Servers)       |                    |                 |
-                           v                    |                 v
-                 [ ICS/OT DMZ (VLAN 20) ]       |        [ Guest Wi-Fi (VLAN 40) ]
-                  (Jump Hosts, Historians)      |         (Client Isolation ON)
-                           |                    v
-                   [ OT VLAN (VLAN 30) ]   [ IoT VLAN (VLAN 50) ]
-                    (PLCs, HMIs, RTUs)      |
-                                            |--> [ Micro-Segment A: IP Cameras ]
-                                            |      (Only talks to NVR Server)
-                                            |
-                                            |--> [ Micro-Segment B: Smart TVs ]
-                                            |      (Only outbound Internet)
-                                            |
-                                            |--> [ Micro-Segment C: Medical ]
-                                                   (Only talks to PACS/EHR)
+```mermaid
+flowchart TD
+    Internet["[ Internet ]"] --> NGFW["Next-Gen Firewall (NGFW)<br>(Performs DPI, IPS, TLS Decryption)"]
+
+    NGFW --> IT["IT VLAN (VLAN 10)<br>(Laptops, Servers)"]
+    NGFW --> OTDMZ["ICS/OT DMZ (VLAN 20)<br>(Jump Hosts, Historians)"]
+    NGFW --> IoT["IoT VLAN (VLAN 50)"]
+    NGFW --> Guest["Guest Wi-Fi (VLAN 40)<br>(Client Isolation ON)"]
+
+    OTDMZ --> OT["OT VLAN (VLAN 30)<br>(PLCs, HMIs, RTUs)"]
+
+    IoT --> Cam["Micro-Segment A: IP Cameras<br>(Only talks to NVR Server)"]
+    IoT --> TV["Micro-Segment B: Smart TVs<br>(Only outbound Internet)"]
+    IoT --> Med["Micro-Segment C: Medical<br>(Only talks to PACS/EHR)"]
 ```
 
 ### Implementing 802.1X and NAC

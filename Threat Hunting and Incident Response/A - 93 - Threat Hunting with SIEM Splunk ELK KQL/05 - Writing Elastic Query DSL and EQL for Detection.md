@@ -95,25 +95,11 @@ The true power of EQL is the `sequence` command.
 
 ## 4. ASCII Architecture: EQL State Machine
 
-```text
-+-------------------------------------------------------------------+
-|                   EQL SEQUENCE STATE MACHINE                      |
-+-------------------------------------------------------------------+
-|                                                                   |
-| [Event A] User downloads executable (event.category: file)        |
-|    |                                                              |
-|    v  (Time window constraints: maxspan=5m)                       |
-|                                                                   |
-| [Event B] Executable runs via cmd.exe (event.category: process)   |
-|    |                                                              |
-|    v  (Correlation constraint: sequence by host.name)             |
-|                                                                   |
-| [Event C] Process creates network connection to rare IP           |
-|           (event.category: network)                               |
-|                                                                   |
-+-------------------------------------------------------------------+
-| MATCH: SEQUENCE TRIGGERED -> ALERT GENERATED                      |
-+-------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    A[Event A User downloads executable event.category: file] -->|Time window constraints: maxspan=5m| B[Event B Executable runs via cmd.exe event.category: process]
+    B -->|Correlation constraint: sequence by host.name| C[Event C Process creates network connection to rare IP event.category: network]
+    C --> D[MATCH: SEQUENCE TRIGGERED -> ALERT GENERATED]
 ```
 
 ## 5. Real-World Attack Scenario

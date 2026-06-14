@@ -23,35 +23,32 @@ The WSTG outlines a rigorous, repeatable methodology that spans the entire testi
 
 The following ASCII diagram maps out the core phases of the WSTG testing methodology, moving from external reconnaissance to deep internal application logic testing.
 
-```text
-+-----------------------------------------------------------------------------+
-|                     OWASP WSTG Testing Lifecycle Phases                     |
-|                                                                             |
-|  [Phase 1: Information Gathering] -----> [Phase 2: Configuration Mgmt]      |
-|           (Recon, OSINT)                           (TLS, Cloud, WAF)        |
-|                  |                                         |                |
-|                  v                                         v                |
-|  [Phase 4: Authentication] <------------ [Phase 3: Identity Management]     |
-|       (Brute Force, Bypass)                   (Roles, Registration)         |
-|                  |                                                          |
-|                  v                                                          |
-|  [Phase 5: Authorization] -------------> [Phase 6: Session Management]      |
-|          (BOLA, IDOR)                          (Cookies, Fixation)          |
-|                                                            |                |
-|                  +-----------------------------------------+                |
-|                  v                                                          |
-|  [Phase 7: Input Validation] ----------> [Phase 8: Error Handling]          |
-|      (XSS, SQLi, SSRF, XXE)                    (Stack traces, Leaks)        |
-|                  |                                         |                |
-|                  v                                         v                |
-|  [Phase 10: Business Logic] <----------- [Phase 9: Cryptography]            |
-|       (Race Conditions, Abuse)               (Weak Ciphers, Storage)        |
-|                  |                                                          |
-|                  v                                                          |
-|  [Phase 11: Client-Side] --------------> [Phase 12: API Testing]            |
-|       (DOM XSS, Clickjacking)                (GraphQL, REST, CORS)          |
-|                                                                             |
-+-----------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    P1["Phase 1: Information Gathering<br>(Recon, OSINT)"]
+    P2["Phase 2: Configuration Mgmt<br>(TLS, Cloud, WAF)"]
+    P3["Phase 3: Identity Management<br>(Roles, Registration)"]
+    P4["Phase 4: Authentication<br>(Brute Force, Bypass)"]
+    P5["Phase 5: Authorization<br>(BOLA, IDOR)"]
+    P6["Phase 6: Session Management<br>(Cookies, Fixation)"]
+    P7["Phase 7: Input Validation<br>(XSS, SQLi, SSRF, XXE)"]
+    P8["Phase 8: Error Handling<br>(Stack traces, Leaks)"]
+    P9["Phase 9: Cryptography<br>(Weak Ciphers, Storage)"]
+    P10["Phase 10: Business Logic<br>(Race Conditions, Abuse)"]
+    P11["Phase 11: Client-Side<br>(DOM XSS, Clickjacking)"]
+    P12["Phase 12: API Testing<br>(GraphQL, REST, CORS)"]
+
+    P1 --> P2
+    P2 --> P3
+    P3 --> P4
+    P4 --> P5
+    P5 --> P6
+    P6 --> P7
+    P7 --> P8
+    P8 --> P9
+    P9 --> P10
+    P10 --> P11
+    P11 --> P12
 ```
 
 ---

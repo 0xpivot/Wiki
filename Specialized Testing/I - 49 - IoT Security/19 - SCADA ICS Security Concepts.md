@@ -28,35 +28,27 @@ The Purdue Enterprise Reference Architecture (PERA) is the foundational model fo
 
 ## 3. Attack Surface Diagram
 
-```text
-       [Enterprise IT Network] (Levels 4 & 5)
-                 |
-========[ Corporate Firewall ]===================================
-                 |
-       [Industrial DMZ (IDMZ)] (Level 3.5) -- (Jump Servers / Historian Replicas)
-                 |
-========[ OT Edge Firewall ]=====================================
-                 |
-       [Supervisory Control] (Level 2 & 3)
-         +---------------+    +-----------------+    +---------------+
-         |   SCADA HMI   |    | Eng. Workstation|    | OT Historian  |
-         | (Monitors GUI)|    | (Programs PLCs) |    | (Data Logger) |
-         +---------------+    +-----------------+    +---------------+
-                 |                    |                      |
--------------------------------------------------------------------------
-                 |                    |
-       [Local Controllers] (Level 1)
-         +---------------+    +-----------------+
-         |     PLC 1     |    |      RTU 1      |
-         | (Modbus/DNP3) |    | (Remote Comm)   |
-         +---------------+    +-----------------+
-                 |                    |
-=========================================================================
-                 |                    |
-       [Physical Process] (Level 0)
-         +---------------+    +-----------------+
-         | Actuator Valve|    | Temp Sensor     |
-         +---------------+    +-----------------+
+```mermaid
+flowchart TD
+    IT["Enterprise IT Network (Levels 4 & 5)"] --> CorpFW["[ Corporate Firewall ]"]
+    CorpFW --> IDMZ["Industrial DMZ (IDMZ) (Level 3.5)<br>Jump Servers / Historian Replicas"]
+    IDMZ --> OTFW["[ OT Edge Firewall ]"]
+
+    OTFW --> Bus1{"Level 2/3 Network"}
+    
+    Bus1 --> HMI["SCADA HMI"]
+    Bus1 --> EWS["Eng. Workstation"]
+    Bus1 --> Hist["OT Historian"]
+
+    HMI --> Bus2{"Level 1 Network"}
+    EWS --> Bus2
+    Hist --> Bus2
+
+    Bus2 --> PLC["PLC 1<br>(Modbus/DNP3)"]
+    Bus2 --> RTU["RTU 1<br>(Remote Comm)"]
+
+    PLC --> Valve["Actuator Valve (Level 0)"]
+    RTU --> Temp["Temp Sensor (Level 0)"]
 ```
 
 ## 4. Insecure-by-Design Protocols

@@ -20,43 +20,17 @@ Understanding RDP lateral movement is not just about popping a GUI shell; it is 
 
 ## Architectural ASCII Diagram: RDP Session Hijacking
 
-```text
-+-------------------------------------------------------------------------------------------------+
-|                                                                                                 |
-|   +-------------------+                                                                         |
-|   |   Attacker Node   |                                                                         |
-|   |   (Compromised)   |                                                                         |
-|   +---------+---------+                                                                         |
-|             |                                                                                   |
-|             | 1. Compromises Local Admin credentials or Hash                                    |
-|             v                                                                                   |
-|   +-------------------+                                                                         |
-|   |  Target Windows   |                                                                         |
-|   |  Server/Client    |                                                                         |
-|   +---------+---------+                                                                         |
-|             |                                                                                   |
-|             | 2. Establishes initial RDP connection (xfreerdp /v:Target /u:Admin /p:Pass)       |
-|             |                                                                                   |
-|   +---------v---------+                                                                         |
-|   |   Session 1 (ID)  | <--- Attacker's active session (Admin)                                  |
-|   +-------------------+                                                                         |
-|                                                                                                 |
-|   +-------------------+                                                                         |
-|   |   Session 2 (ID)  | <--- Domain Admin's disconnected/active session                         |
-|   +---------+---------+                                                                         |
-|             |                                                                                   |
-|             | 3. Attacker elevates to SYSTEM (e.g., via PsExec -s cmd.exe)                      |
-|             | 4. Attacker runs: tscon.exe 2 /dest:1                                             |
-|             v                                                                                   |
-|   +------------------------------------------------------------------------+                    |
-|   |                                                                        |                    |
-|   |  [+] RDP Session Hijack Successful!                                    |                    |
-|   |  Attacker is now interacting with the Domain Admin's graphical desktop |                    |
-|   |  without needing the Domain Admin's password!                          |                    |
-|   |                                                                        |                    |
-|   +------------------------------------------------------------------------+                    |
-|                                                                                                 |
-+-------------------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    A["Attacker Node<br>(Compromised)"]
+    B["Target Windows<br>Server/Client"]
+    C["Session 1 (ID)<br><--- Attacker's active session (Admin)"]
+    D["Session 2 (ID)<br><--- Domain Admin's disconnected/active session"]
+    E["[+] RDP Session Hijack Successful!<br>Attacker is now interacting with the Domain Admin's graphical desktop<br>without needing the Domain Admin's password!"]
+
+    A -->|"1. Compromises Local Admin credentials or Hash"| B
+    B -->|"2. Establishes initial RDP connection (xfreerdp /v:Target /u:Admin /p:Pass)"| C
+    D -->|"3. Attacker elevates to SYSTEM (e.g., via PsExec -s cmd.exe)<br>4. Attacker runs: tscon.exe 2 /dest:1"| E
 ```
 
 ---

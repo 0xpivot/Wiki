@@ -19,20 +19,18 @@ The model is visualized as a diamond, with four interconnected core nodes repres
 
 ### ASCII Diagram: The Diamond Model
 
-```text
-                     [ ADVERSARY ]
-                     /           \
-                    /             \
-                   /               \
-                  /                 \
-                 /                   \
- [ INFRASTRUCTURE ]-----------------[ CAPABILITY ]
-                 \                   /
-                  \                 /
-                   \               /
-                    \             /
-                     \           /
-                      [ VICTIM ]
+```mermaid
+flowchart TD
+    A["[ ADVERSARY ]"]
+    I["[ INFRASTRUCTURE ]"]
+    C["[ CAPABILITY ]"]
+    V["[ VICTIM ]"]
+
+    A --- I
+    A --- C
+    I --- C
+    I --- V
+    C --- V
 ```
 
 ### 2.1. Adversary (Who)

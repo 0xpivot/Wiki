@@ -30,21 +30,24 @@ Extracting the firmware allows a security researcher to transition from "black-b
 
 ## ASCII Diagram: Firmware Extraction Methodologies
 
-```text
-                                  [FIRMWARE EXTRACTION STRATEGIES]
-                                                 |
-         +-----------------------+---------------+---------------+-----------------------+
-         |                       |                               |                       |
-[1. OSINT / WEB]          [2. NETWORK]                 [3. LOGICAL HARDWARE]    [4. PHYSICAL HARDWARE]
-         |                       |                               |                       |
-  - Vendor Support        - Man-in-the-Middle (MITM)      - UART Debug Shell      - SPI / I2C Flash Dump
-    Website                 OTA Updates                   - JTAG / SWD Memory     - NAND Flash Dump
-  - Open Source Repos     - Sniffing Unencrypted HTTP       Readout               - EMMC Readout
-  - Misconfigured S3      - Spoofing Update Servers       - Bootloader (U-Boot)   - Desoldering (Chip-off)
-    Buckets                 to capture payloads             Environment vars        & programming beds
-         |                       |                               |                       |
-         v                       v                               v                       v
-    [EASIEST]               [MODERATE]                       [HARD]              [VERY HARD / DESTRUCTIVE]
+```mermaid
+flowchart TD
+    Root[FIRMWARE EXTRACTION STRATEGIES]
+    
+    Root --> OSINT[1. OSINT / WEB]
+    Root --> Net[2. NETWORK]
+    Root --> Logical[3. LOGICAL HARDWARE]
+    Root --> Physical[4. PHYSICAL HARDWARE]
+    
+    OSINT --> O_Desc["- Vendor Support Website<br>- Open Source Repos<br>- Misconfigured S3 Buckets"]
+    Net --> N_Desc["- MITM OTA Updates<br>- Sniffing Unencrypted HTTP<br>- Spoofing Update Servers"]
+    Logical --> L_Desc["- UART Debug Shell<br>- JTAG / SWD Memory Readout<br>- Bootloader (U-Boot) Env vars"]
+    Physical --> P_Desc["- SPI / I2C Flash Dump<br>- NAND Flash Dump<br>- EMMC Readout<br>- Desoldering (Chip-off)"]
+    
+    O_Desc --> EASIEST[EASIEST]
+    N_Desc --> MODERATE[MODERATE]
+    L_Desc --> HARD[HARD]
+    P_Desc --> VERY_HARD[VERY HARD / DESTRUCTIVE]
 ```
 
 ---

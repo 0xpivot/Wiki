@@ -17,40 +17,18 @@ Furthermore, HTTP Request Smuggling allows attackers to exploit **XSS in HTTP He
 Think of it like a megaphone. Normally, to execute XSS, you have to hand the victim a specific script to read. With smuggling, you sneak into the broadcast room, splice your script into the PA system, and the very next person who walks into the building hears your script blaring from the speakers.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    DELIVERING XSS VIA SMUGGLING
-================================================================================
+```mermaid
+flowchart TD
+    Vuln["The Pre-Existing Vulnerability <br/> The target has a Reflected XSS flaw in the User-Agent header: <br/> GET / HTTP/1.1 <br/> User-Agent: &lt;script&gt;alert(1)&lt;/script&gt; <br/> (Response: 'Welcome! Your browser is: &lt;script&gt;alert(1)&lt;/script&gt;')"]
+    Attacker["The Smuggling Exploit <br/> Attacker sends a CL.TE payload containing the XSS in the header: <br/> POST / HTTP/1.1 <br/> Transfer-Encoding: chunked <br/> <br/> 0 <br/> GET / HTTP/1.1 <br/> User-Agent: &lt;script&gt;alert(1)&lt;/script&gt; <br/> X-Ignore: X"]
+    Victim["The Victim Connection <br/> Victim sends: GET /home HTTP/1.1"]
+    Back["The Back-End Processing <br/> Back-End concatenates the Victim's request to the Smuggled Request. <br/> Back-End processes: GET / <br/> Back-End reads the attacker's User-Agent header. <br/> Back-End generates the Response containing the XSS payload."]
+    Result["Result <br/> The Front-End hands the XSS response to the Victim. <br/> The Victim's browser executes the JavaScript!"]
 
-[The Pre-Existing Vulnerability]
-The target has a Reflected XSS flaw in the User-Agent header:
-GET / HTTP/1.1
-User-Agent: <script>alert(1)</script>
-(Response: "Welcome! Your browser is: <script>alert(1)</script>")
-
-[The Smuggling Exploit]
-Attacker sends a CL.TE payload containing the XSS in the header:
-POST / HTTP/1.1
-Transfer-Encoding: chunked
-
-0
-GET / HTTP/1.1                       <-- SMUGGLED REQUEST
-User-Agent: <script>alert(1)</script>  <-- Malicious Header!
-X-Ignore: X
-
-[The Victim Connection]
-Victim sends: GET /home HTTP/1.1
-
-[The Back-End Processing]
-Back-End concatenates the Victim's request to the Smuggled Request.
-Back-End processes: GET /
-Back-End reads the attacker's User-Agent header.
-Back-End generates the Response containing the XSS payload.
-
-[Result]
-The Front-End hands the XSS response to the Victim.
-The Victim's browser executes the JavaScript!
-================================================================================
+    Vuln -.-> Attacker
+    Attacker --> Back
+    Victim --> Back
+    Back --> Result
 ```
 
 ## How to Find It

@@ -24,33 +24,21 @@ BloodHound shifted the paradigm of AD security from "finding misconfigurations" 
 
 ## 2. Visual Architecture: Nodes, Edges, and Attack Paths
 
-```ascii
-+---------------------------------------------------------------------------------+
-|                         THE BLOODHound GRAPH CONCEPT                            |
-|                                                                                 |
-|  [Node: User]                [Edge: Relationship]               [Node: Group]   |
-|                                                                                 |
-|  (Bob) ---------------------- [MemberOf] ---------------------> (IT Support)    |
-|                                                                       |         |
-|                                                                       |         |
-|                                                                 [AdminTo]       |
-|                                                                       |         |
-|                                                                       V         |
-|  (Domain Admins) <----------- [ForceChangePassword] ----------- (SQLServer_01)  |
-|         ^                                                             |         |
-|         |                                                             |         |
-|     [MemberOf] <------------- [HasSession] <--------------------------+         |
-|         |                                                                       |
-|  (Alice)                                                                        |
-|                                                                                 |
-|---------------------------------------------------------------------------------|
-| ATTACK PATH RESOLUTION:                                                         |
-| 1. Compromise Bob.                                                              |
-| 2. Bob is in IT Support, granting Local Admin on SQLServer_01.                  |
-| 3. Alice (Domain Admin) has a live session on SQLServer_01.                     |
-| 4. Dump LSASS on SQLServer_01 to steal Alice's credentials.                     |
-| 5. Become Domain Admin.                                                         |
-+---------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Graph["THE BLOODHound GRAPH CONCEPT"]
+        Bob("(Bob) [Node: User]")
+        Alice("(Alice) [Node: User]")
+        ITSupport("(IT Support) [Node: Group]")
+        DomainAdmins("(Domain Admins) [Node: Group]")
+        SQLServer("(SQLServer_01) [Node: Computer]")
+        
+        Bob -- "[MemberOf]" --> ITSupport
+        ITSupport -- "[AdminTo]" --> SQLServer
+        Alice -- "[HasSession]" --> SQLServer
+        Alice -- "[MemberOf]" --> DomainAdmins
+        SQLServer -- "[ForceChangePassword]" --> DomainAdmins
+    end
 ```
 
 ---

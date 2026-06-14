@@ -24,30 +24,11 @@ If Port 2375 is open, anyone can send API requests to create containers, pull im
 
 ### Attack Architecture Diagram
 
-```text
-                                           +-----------------------------------+
-                                           |          TARGET HOST (Root)       |
-                                           |                                   |
-+-------------------+                      |   +---------------------------+   |
-|     ATTACKER      |  TCP Port 2375       |   | Docker Daemon (dockerd)   |   |
-|                   |  (Unauthenticated)   |   |                           |   |
-| [Docker Client]   |--------------------->|   |  REST API Listener        |   |
-|                   |  HTTP POST           |   +---------------------------+   |
-| docker -H target \|  1. "Create Cont."   |         |                         |
-| run -v /:/mnt ... |--------------------->|         v                         |
-+-------------------+                      |   +---------------------------+   |
-                                           |   |   Malicious Container     |   |
-                                           |   |                           |   |
-                                           |   |  /mnt/etc/passwd          |   |
-                                           |   |  /mnt/root/.ssh/keys      |   |
-                                           |   +---------------------------+   |
-                                           |         |             |           |
-                                           |         v             v           |
-                                           |   +---------------------------+   |
-                                           |   |   Host Root Filesystem    |   |
-                                           |   |   (/)                     |   |
-                                           |   +---------------------------+   |
-                                           +-----------------------------------+
+```mermaid
+graph TD
+    A[ATTACKER <br/> Docker Client <br/> docker -H target \ <br/> run -v /:/mnt ...] -- TCP Port 2375 <br/> Unauthenticated <br/> HTTP POST <br/> 1. Create Cont. --> B[TARGET HOST Root <br/> Docker Daemon dockerd <br/> REST API Listener]
+    B --> C[Malicious Container <br/> /mnt/etc/passwd <br/> /mnt/root/.ssh/keys]
+    C --> D[Host Root Filesystem <br/> /]
 ```
 
 ## Exploitation Walkthrough

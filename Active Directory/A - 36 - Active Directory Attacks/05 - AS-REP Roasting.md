@@ -92,33 +92,17 @@ john --format=krb5asrep --wordlist=rockyou.txt hashes.txt
 
 ## 6. ASCII Workflow Diagram
 
-```text
-========================================================================
-                      AS-REP ROASTING ATTACK FLOW
-========================================================================
-
-    [ Attacker (Unauthenticated/Any User) ]       [ Domain Controller ]
-                 |                                             |
-                 | --- 1. AS-REQ for "vulnerable_user" ------> |
-                 |   (No encrypted timestamp provided)         |
-                 |                                             |
-                 | <--- 2. AS-REP containing Encrypted Data -- |
-                 |   (DC skips auth check due to UAC flag)     |
-                 |                                             |
-   +-------------+-------------+                               |
-   | AS-REP Message            |                               |
-   | Encrypted with:           |                               |
-   | NTLM Hash of target user  |                               |
-   +-------------+-------------+                               |
-                 |
-                 v
-   [ Offline Cracking Rig ]
-                 |
-                 | ---> Dictionary Attack on AS-REP Data
-                 | ---> Yields Plaintext Password!
-                 v
-     [ Account Takeover ]
-========================================================================
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker (Unauthenticated/Any User)
+    participant DC as Domain Controller
+    
+    Attacker->>DC: 1. AS-REQ for "vulnerable_user" (No encrypted timestamp provided)
+    DC-->>Attacker: 2. AS-REP containing Encrypted Data (DC skips auth check due to UAC flag)
+    Note over Attacker: AS-REP Message<br>Encrypted with: NTLM Hash of target user
+    
+    Note over Attacker: Offline Cracking Rig<br>---> Dictionary Attack on AS-REP Data<br>---> Yields Plaintext Password!
+    Note over Attacker: Account Takeover
 ```
 
 ## 7. OPSEC, Detection, and Mitigation

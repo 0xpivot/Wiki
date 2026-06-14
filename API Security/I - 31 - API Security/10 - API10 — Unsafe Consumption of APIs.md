@@ -25,32 +25,18 @@ If the data received from either method is directly inserted into a database, re
 
 ### Visualizing Unsafe API Consumption
 
-```ascii
-                                [ Threat Actor ]
-                                       |
-                   (1) Injects payload into vulnerable 3rd-Party system
-                   (e.g., puts an XSS/SQLi payload in their user profile)
-                                       |
-                                       v
-                     +-----------------------------------+
-                     |      Third-Party API Service      |
-                     |  (e.g., CRM, Payment Provider)    |
-                     +-----------------------------------+
-                                       |
-                    (2) Consuming API fetches data, assuming
-                        it is clean and safe to use.
-                                       v
-    +-----------------------------------------------------------------------+
-    |                         Your Backend API                              |
-    |                                                                       |
-    |  [ Data Parser ] -> blindly extracts payload                          |
-    |                                                                       |
-    |  (3) Blindly executes payload during processing:                      |
-    |   |                                                                   |
-    |   +-> Executes SQL Injection against internal DB                      |
-    |   +-> Stores XSS payload to be served to local admins                 |
-    |   +-> Follows malicious redirect causing SSRF                         |
-    +-----------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    TA["Threat Actor"]
+    TP["Third-Party API Service\n(e.g., CRM, Payment Provider)"]
+    API["Your Backend API"]
+    DP["Data Parser\n(blindly extracts payload)"]
+    Exec["Blindly executes payload during processing:\n- Executes SQL Injection against internal DB\n- Stores XSS payload to be served to local admins\n- Follows malicious redirect causing SSRF"]
+
+    TA -- "1. Injects payload into vulnerable 3rd-Party system" --> TP
+    TP -- "2. Consuming API fetches data, assuming it is clean and safe to use." --> API
+    API --> DP
+    DP --> Exec
 ```
 
 ## 3. Real-World Exploitation Scenarios

@@ -122,26 +122,24 @@ tags:
 
 ## Visualizing The Pyramid of Pain
 
-```ascii
-======================================================================
-                     THE PYRAMID OF PAIN (David Bianco)
-======================================================================
-                              / \
-                             /   \
-                            /     \          <--- Indicators of Attack (IoA)
-                           / TTPs  \         (Tough: Adversary must change behavior)
-                          /---------\
-                         /   Tools   \       (Challenging: Must rewrite code)
-                        /-------------\
-                       / Host Artifacts\     <--- Transition Zone
-                      /-----------------\    (Annoying: Must change tool config)
-                     /   Domain Names    \
-                    /---------------------\  <--- Indicators of Compromise (IoC)
-                   /     IP Addresses      \ (Easy: Spin up new proxy/VPN)
-                  /-------------------------\
-                 /        Hash Values        \ (Trivial: Recompile malware)
-                /-----------------------------\
-======================================================================
+```mermaid
+flowchart TD
+    subgraph IoA["Indicators of Attack (IoA)"]
+        TTPs["TTPs<br/>(Tough: Adversary must change behavior)"]
+        Tools["Tools<br/>(Challenging: Must rewrite code)"]
+    end
+    
+    subgraph Transition["Transition Zone"]
+        Host["Host Artifacts<br/>(Annoying: Must change tool config)"]
+    end
+
+    subgraph IoC["Indicators of Compromise (IoC)"]
+        Domains["Domain Names"]
+        IPs["IP Addresses<br/>(Easy: Spin up new proxy/VPN)"]
+        Hashes["Hash Values<br/>(Trivial: Recompile malware)"]
+    end
+
+    TTPs --- Tools --- Host --- Domains --- IPs --- Hashes
 ```
 
 ## Real-World Attack Scenario: Fileless Malware

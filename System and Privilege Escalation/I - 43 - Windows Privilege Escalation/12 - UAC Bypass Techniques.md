@@ -52,37 +52,17 @@ More advanced bypasses involve instantiating elevated COM objects directly. The 
 
 ## ASCII Diagram: Registry-Based UAC Bypass (`fodhelper.exe`)
 
-```text
-+-----------------------+
-| Attacker Shell        |
-| Context: Admin User   |
-| Integrity: Medium     |
-+-----------------------+
-          |
-          | 1. Write Payload Path to HKCU Registry
-          |    (HKCU\Software\Classes\ms-settings\Shell\Open\command)
-          |--------------------------------------------------------> +----------------+
-          |                                                          |  Registry      |
-          | 2. Execute fodhelper.exe                                 |  (HKCU)        |
-          |----------------------------------+                       +----------------+
-                                             |
-                                             v
-                                  +-----------------------+
-                                  | fodhelper.exe         |
-                                  | Auto-Elevates!        |
-                                  | Integrity: High       |
-                                  +-----------------------+
-                                             |
-                                             | 3. Reads Registry Key for Execution Path
-                                             |<----------------------------------------
-                                             |
-                                             | 4. Executes Payload
-                                             v
-                                  +-----------------------+
-                                  | Malicious Payload     |
-                                  | (cmd.exe / shell)     |
-                                  | Integrity: High       |
-                                  +-----------------------+
+```mermaid
+sequenceDiagram
+    participant AS as Attacker Shell\nContext: Admin User\nIntegrity: Medium
+    participant REG as Registry\n(HKCU)
+    participant FH as fodhelper.exe\nAuto-Elevates!\nIntegrity: High
+    participant MP as Malicious Payload\n(cmd.exe / shell)\nIntegrity: High
+
+    AS->>REG: 1. Write Payload Path to HKCU Registry\n(HKCU\\Software\\Classes\\ms-settings\\Shell\\Open\\command)
+    AS->>FH: 2. Execute fodhelper.exe
+    FH->>REG: 3. Reads Registry Key for Execution Path
+    FH->>MP: 4. Executes Payload
 ```
 
 ## Tooling and Automation: UACMe

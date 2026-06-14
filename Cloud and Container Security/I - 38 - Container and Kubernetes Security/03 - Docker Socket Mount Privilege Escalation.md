@@ -23,36 +23,14 @@ If a container has this socket mounted via a volume bind (`-v /var/run/docker.so
 
 ### Attack Architecture Diagram
 
-```text
-+-------------------------------------------------------------------------------+
-|                               HOST OPERATING SYSTEM                           |
-|                                                                               |
-|  +---------------------------+             +-------------------------------+  |
-|  |     COMPROMISED CONT.     |             |    DOCKER DAEMON (Root)       |  |
-|  |                           |             |                               |  |
-|  |  (Attacker gets shell)    |             |  Listens on:                  |  |
-|  |                           |             |  /var/run/docker.sock         |  |
-|  |  $ docker run -v /:/host  |======(2)======>                             |  |
-|  |                           |   Unix      |                               |  |
-|  +---------------------------+   Socket    +-------------------------------+  |
-|               |                    |                      |                   |
-|              (1) Mount: -v /var/run/docker.sock:/var/run/docker.sock          |
-|               |                    |                      |                   |
-|               v                    v                      v                   |
-|  +-------------------------------------------------------------------------+  |
-|  |                              Unix Socket                                |  |
-|  |                        /var/run/docker.sock                             |  |
-|  +-------------------------------------------------------------------------+  |
-|                                                                               |
-|                                       (3) Daemon creates new container        |
-|                                       v                                       |
-|  +-------------------------------------------------------------------------+  |
-|  |                         MALICIOUS NEW CONTAINER                         |  |
-|  |                         - Mounts Host Root (/) to /hostfs               |  |
-|  |                         - Chroots into /hostfs                          |  |
-|  |                         - Attacker achieves Root RCE on Host            |  |
-|  +-------------------------------------------------------------------------+  |
-+-------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph HOST OPERATING SYSTEM
+        A[COMPROMISED CONT. <br/> Attacker gets shell <br/> $ docker run -v /:/host] -- 2 --> B[Unix Socket <br/> /var/run/docker.sock]
+        A -- 1 Mount: -v /var/run/docker.sock:/var/run/docker.sock --> B
+        C[DOCKER DAEMON Root <br/> Listens on: <br/> /var/run/docker.sock] --> B
+        B -- 3 Daemon creates new container --> D[MALICIOUS NEW CONTAINER <br/> - Mounts Host Root / to /hostfs <br/> - Chroots into /hostfs <br/> - Attacker achieves Root RCE on Host]
+    end
 ```
 
 ## Exploitation Walkthrough

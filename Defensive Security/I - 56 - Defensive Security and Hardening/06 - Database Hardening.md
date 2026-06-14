@@ -23,45 +23,33 @@ Before diving into hardening, we must understand the diverse and evolving threat
 
 Below is an ASCII diagram illustrating a hardened database architecture.
 
-```text
-+---------------------------------------------------------------------------------------+
-|                                    Enterprise Network                                 |
-|                                                                                       |
-|   +-------------------+       +-----------------------+       +-------------------+   |
-|   |    Web Server     |       |   Application Server  |       |   Bastion Host    |   |
-|   | (DMZ, Web Facing) | ----> |   (Internal VLAN)     | <---- | (Admin Access)    |   |
-|   +-------------------+       +-----------+-----------+       +-------------------+   |
-|                                           |                                           |
-|                                           | Port 3306/5432 (TLS only)                 |
-|                                           v                                           |
-|   +-------------------------------------------------------------------------------+   |
-|   |                        Strict Firewall / WAF / DB Proxy                       |   |
-|   +---------------------------------------+---------------------------------------+   |
-|                                           |                                           |
-|                                           v                                           |
-|   +-------------------------------------------------------------------------------+   |
-|   |                        Database Subnet (Isolated VLAN)                        |   |
-|   |                                                                               |   |
-|   |   +-----------------------------------------------------------------------+   |   |
-|   |   |                      Database Management System (DBMS)                |   |   |
-|   |   |                                                                       |   |   |
-|   |   |  +--------------------+  +--------------------+  +-----------------+  |   |   |
-|   |   |  |   Authentication   |  |   Authorization    |  |  Encryption Engine|  |   |   |
-|   |   |  | (IAM, AD, MFA)     |  | (RBAC, Least Priv) |  | (TDE, TLS 1.3)    |  |   |   |
-|   |   |  +--------------------+  +--------------------+  +-----------------+  |   |   |
-|   |   |                                                                       |   |   |
-|   |   |  +-----------------------------------------------------------------+  |   |   |
-|   |   |  |                         Audit & Logging                         |  |   |   |
-|   |   |  |                   (Syslog, Guardium, Splunk)                    |  |   |   |
-|   |   |  +-----------------------------------------------------------------+  |   |   |
-|   |   +-----------------------------------+-----------------------------------+   |   |
-|   |                                       |                                       |   |
-|   |   +-----------------------------------+-----------------------------------+   |   |
-|   |   |                            Encrypted Storage                          |   |   |
-|   |   |                           (SAN / Local Disk)                          |   |   |
-|   |   +-----------------------------------------------------------------------+   |   |
-|   +-------------------------------------------------------------------------------+   |
-+---------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Enterprise["Enterprise Network"]
+        direction TB
+        subgraph TopLayer[" "]
+            direction LR
+            Web["Web Server\n(DMZ, Web Facing)"] --> App["Application Server\n(Internal VLAN)"]
+            Bastion["Bastion Host\n(Admin Access)"] --> App
+        end
+
+        App -- "Port 3306/5432 (TLS only)" --> Firewall["Strict Firewall / WAF / DB Proxy"]
+
+        Firewall --> DBSubnet
+
+        subgraph DBSubnet["Database Subnet (Isolated VLAN)"]
+            direction TB
+            subgraph DBMS["Database Management System (DBMS)"]
+                direction LR
+                AuthN["Authentication\n(IAM, AD, MFA)"]
+                AuthZ["Authorization\n(RBAC, Least Priv)"]
+                Encrypt["Encryption Engine\n(TDE, TLS 1.3)"]
+                Audit["Audit & Logging\n(Syslog, Guardium, Splunk)"]
+            end
+            Storage["Encrypted Storage\n(SAN / Local Disk)"]
+            DBMS --> Storage
+        end
+    end
 ```
 
 ## Core Principles of Database Hardening

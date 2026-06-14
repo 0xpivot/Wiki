@@ -46,41 +46,16 @@ A single, consumer-grade GPU (like an NVIDIA RTX 4090) can calculate over **100 
 
 ## 4. Architectural Diagram: Hardware-Accelerated Cracking
 
-```ascii
-+-------------------------------------------------------------------+
-|                  Offline Password Cracking Attack                 |
-+-------------------------------------------------------------------+
-      
-  [ Stolen Database ]
-          |
-          v
-  +-----------------+       +------------------------------------+
-  |  MD5/SHA1 Hash  |       |     Attacker's Dictionary / Rules  |
-  | (e.g., 5d414...)|       |     (rockyou.txt + Best64.rule)    |
-  +-----------------+       +------------------------------------+
-          |                                  |
-          |                                  v
-          |                     +--------------------------+
-          |                     | Candidate Password Gen   |
-          |                     | (e.g., "P@ssw0rd123")    |
-          |                     +--------------------------+
-          |                                  |
-          |                                  v
-          |      =================================================
-          |      |                GPU CLUSTER                    |
-          |      |  [ ALU ] [ ALU ] [ ALU ] [ ALU ] [ ALU ]      |
-          |      |  (Calculates >100B MD5 hashes per second)     |
-          |      =================================================
-          |                                  |
-          |                                  v
-          |                         +----------------+
-          +-----------------------> | Hash Validator |
-                                    +----------------+
-                                             |
-                                +------------+------------+
-                                |                         |
-                                v                         v
-                        [ NO MATCH ]                  [ MATCH! ] --> Plaintext Recovered!
+```mermaid
+flowchart TD
+    DB[Stolen Database] --> Hash["MD5/SHA1 Hash\n(e.g., 5d414...)"]
+    Dict["Attacker's Dictionary / Rules\n(rockyou.txt + Best64.rule)"] --> Gen["Candidate Password Gen\n(e.g., P@ssw0rd123)"]
+    Gen --> GPU["GPU CLUSTER\n[ ALU ] [ ALU ] [ ALU ]\n(Calculates >100B MD5 hashes per second)"]
+    GPU --> Validator[Hash Validator]
+    Hash --> Validator
+    Validator --> NoMatch[NO MATCH]
+    Validator --> Match["MATCH!"]
+    Match --> Plaintext[Plaintext Recovered!]
 ```
 
 ## 5. Exploitation and Cracking Mechanics

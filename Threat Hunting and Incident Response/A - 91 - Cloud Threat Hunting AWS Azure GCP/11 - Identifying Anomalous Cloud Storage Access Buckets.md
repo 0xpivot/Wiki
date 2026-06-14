@@ -26,19 +26,15 @@ A critical distinction in cloud storage hunting is the separation of logging pla
 
 ## Anatomy of an Attack on Cloud Storage
 
-```text
-+-----------------------+      +-------------------------+      +---------------------------+
-|  Compromised          |      |  Cloud Control          |      |  Cloud Storage            |
-|  Identity / API Key   | ===> |  Plane (IAM/Policy)     | ===> |  Bucket (Data Plane)      |
-|  (Anomalous Location) |      |  Disable Logging / PAB  |      |  Target: PII & Secrets    |
-+-----------------------+      +-------------------------+      +---------------------------+
-         |                                  |                                 |
-         | (1) Steal & Assume Creds         | (2) Modify BucketPolicy         | (3) Bulk List / Get
-         v                                  v                                 v
-+-----------------------+      +-------------------------+      +---------------------------+
-|  Threat Actor         |      |  CloudTrail /           |      |  S3 Access Logs /         |
-|  Infrastructure (C2)  | <=== |  Management Audit Logs  | <=== |  Data Events (High Vol)   |
-+-----------------------+      +-------------------------+      +---------------------------+
+```mermaid
+flowchart TD
+    A[Compromised<br>Identity / API Key<br>Anomalous Location] ==> B[Cloud Control<br>Plane IAM/Policy<br>Disable Logging / PAB]
+    B ==> C[Cloud Storage<br>Bucket Data Plane<br>Target: PII & Secrets]
+    A -->|1 Steal & Assume Creds| D[Threat Actor<br>Infrastructure C2]
+    B -->|2 Modify BucketPolicy| E[CloudTrail /<br>Management Audit Logs]
+    C -->|3 Bulk List / Get| F[S3 Access Logs /<br>Data Events High Vol]
+    E ==> D
+    F ==> E
 ```
 
 ## Threat Hunting Methodologies

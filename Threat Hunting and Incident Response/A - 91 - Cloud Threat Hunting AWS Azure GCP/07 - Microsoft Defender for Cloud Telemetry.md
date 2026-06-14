@@ -30,20 +30,11 @@ This telemetry is natively stored in the Azure Resource Graph (for postural data
 
 ## ASCII Diagram: MDC Telemetry Pipeline
 
-```text
-+-------------------+       +-----------------------+       +-------------------+
-| Azure Subscriptions| ---> | Defender for Cloud    | --->  | Microsoft Sentinel|
-| GCP Projects      |       | (CSPM & CWPP)         |       | (SIEM / SOAR)     |
-| AWS Accounts      | --->  | - Telemetry Gathering | --->  | - KQL Queries     |
-| (via Azure Arc)   |       | - Alerts Generation   |       | - Automation      |
-+-------------------+       +-----------------------+       +-------------------+
-                                      |
-                                      v
-                            +-----------------------+
-                            | Log Analytics Wksp    |
-                            | (SecurityAlert logs)  |
-                            | (SecurityIncident)    |
-                            +-----------------------+
+```mermaid
+flowchart LR
+    A[Azure Subscriptions<br>GCP Projects<br>AWS Accounts via Azure Arc] --> B[Defender for Cloud CSPM & CWPP<br>- Telemetry Gathering<br>- Alerts Generation]
+    B --> C[Microsoft Sentinel SIEM / SOAR<br>- KQL Queries<br>- Automation]
+    B --> D[Log Analytics Wksp<br>SecurityAlert logs<br>SecurityIncident]
 ```
 
 ## Alert vs Telemetry Logging

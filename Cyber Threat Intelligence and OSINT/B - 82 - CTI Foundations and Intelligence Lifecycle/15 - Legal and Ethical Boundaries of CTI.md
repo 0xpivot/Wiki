@@ -43,22 +43,21 @@ The most critical legal boundary in CTI is the distinction between passive and a
 
 ### ASCII Diagram: The Continuum of CTI Risk
 
-```text
-+-------------------------------------------------------------------------+
-|                      CTI OPERATIONAL RISK CONTINUUM                     |
-+-----------------------+------------------------+------------------------+
-|   PASSIVE (SAFE)      | SEMI-PASSIVE (CAUTION) |   ACTIVE (ILLEGAL)     |
-+-----------------------+------------------------+------------------------+
-| - Shodan Queries      | - Port scanning a C2   | - Logging into a C2    |
-| - WHOIS / PDNS        |   IP address.          |   dashboard.           |
-| - Reading OSINT       | - Downloading a        | - Exploiting an        |
-| - Analyzing malware   |   phishing kit ZIP     |   attacker's server.   |
-|   locally.            |   from an open dir.    | - Deleting stolen      |
-|                       | - Forum sockpuppets.   |   data.                |
-|                       |                        | - DoS attacks.         |
-+-----------------------+------------------------+------------------------+
-|        100% LEGAL     |    REQUIRES OPSEC      |   CRIMINAL PROSECUTION |
-+-----------------------+------------------------+------------------------+
+```mermaid
+flowchart LR
+    subgraph Passive["PASSIVE (SAFE) - 100% LEGAL"]
+        P1["- Shodan Queries<br/>- WHOIS / PDNS<br/>- Reading OSINT<br/>- Analyzing malware locally."]
+    end
+
+    subgraph SemiPassive["SEMI-PASSIVE (CAUTION) - REQUIRES OPSEC"]
+        SP1["- Port scanning a C2 IP address.<br/>- Downloading a phishing kit ZIP from an open dir.<br/>- Forum sockpuppets."]
+    end
+
+    subgraph Active["ACTIVE (ILLEGAL) - CRIMINAL PROSECUTION"]
+        A1["- Logging into a C2 dashboard.<br/>- Exploiting an attacker's server.<br/>- Deleting stolen data.<br/>- DoS attacks."]
+    end
+
+    Passive --> SemiPassive --> Active
 ```
 
 ## Handling Stolen Data and PII

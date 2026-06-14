@@ -15,42 +15,29 @@ Traditional Antivirus (AV) relies primarily on signature-based detection. It sca
 
 Modern EDR solutions share a common architectural pattern, designed to balance endpoint performance with cloud-scale analytics.
 
-```text
-+---------------------------------------------------------------------------------------------------+
-|                                       Cloud Platform (SaaS)                                       |
-|                                                                                                   |
-|  +------------------+   +------------------+   +------------------+   +-----------------------+   |
-|  |   Threat Intel   |   |   Data Lake /    |   | Behavioral AI &  |   | Security Analyst Console|   |
-|  |   (Global Feeds) |-->|   Telemetry DB   |<--| Machine Learning |<--| (Triage, Hunting,     |   |
-|  +------------------+   +--------+---------+   +------------------+   |  Response Actions)    |   |
-|                                  ^                                    +-----------------------+   |
-|                                  | (Continuous Telemetry Stream)                                  |
-+----------------------------------|----------------------------------------------------------------+
-                                   |
-                                   | (Encrypted TLS Connection)
-                                   |
-+---------------------------------------------------------------------------------------------------+
-|                                       Corporate Endpoint                                          |
-|                                                                                                   |
-|  +---------------------------------------------------------------------------------------------+  |
-|  |                                      EDR Agent                                              |  |
-|  |                                                                                             |  |
-|  |  +------------------+ +------------------+ +------------------+ +------------------------+  |  |
-|  |  | NGAV Engine      | | Local AI Model   | | Telemetry Buffer | | Response Engine        |  |  |
-|  |  | (Signatures/ML)  | | (Offline Detect) | | (Processes, Net) | | (Kill, Isolate, Block) |  |  |
-|  |  +---------+--------+ +---------+--------+ +---------+--------+ +-----------+------------+  |  |
-|  +------------|--------------------|--------------------|----------------------|---------------+  |
-|               |                    |                    |                      |                  |
-|               v                    v                    v                      v                  |
-|  +---------------------------------------------------------------------------------------------+  |
-|  |                                   Operating System (Kernel)                                 |  |
-|  |                                                                                             |  |
-|  | - File System Filter Drivers (e.g., FltMgr)                                                 |  |
-|  | - Network Drivers (e.g., WFP - Windows Filtering Platform)                                  |  |
-|  | - Kernel Callbacks (e.g., PsSetCreateProcessNotifyRoutine)                                  |  |
-|  | - Userland API Hooking (Injecting DLLs into running processes like ntdll.dll)               |  |
-|  +---------------------------------------------------------------------------------------------+  |
-+---------------------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Cloud["Cloud Platform (SaaS)"]
+        direction LR
+        TI["Threat Intel\n(Global Feeds)"] --> DB["Data Lake /\nTelemetry DB"]
+        DB <--> ML["Behavioral AI &\nMachine Learning"]
+        ML <--> Console["Security Analyst Console\n(Triage, Hunting,\nResponse Actions)"]
+    end
+
+    Cloud <-->|"Continuous Telemetry Stream\n(Encrypted TLS Connection)"| Endpoint
+
+    subgraph Endpoint["Corporate Endpoint"]
+        direction TB
+        subgraph Agent["EDR Agent"]
+            direction LR
+            NGAV["NGAV Engine\n(Signatures/ML)"]
+            AI["Local AI Model\n(Offline Detect)"]
+            Buffer["Telemetry Buffer\n(Processes, Net)"]
+            Resp["Response Engine\n(Kill, Isolate, Block)"]
+        end
+        
+        Agent <--> OS["Operating System (Kernel)\n- File System Filter Drivers (e.g., FltMgr)\n- Network Drivers (e.g., WFP - Windows Filtering Platform)\n- Kernel Callbacks (e.g., PsSetCreateProcessNotifyRoutine)\n- Userland API Hooking (Injecting DLLs into running processes like ntdll.dll)"]
+    end
 ```
 
 ### Core EDR Components

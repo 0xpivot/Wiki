@@ -21,32 +21,16 @@ An ICMP Tunneling client reads a local TCP socket, chunks the TCP data, and stuf
 
 ## 3. ASCII Diagram: PingTunnel Architecture
 
-```text
-      [ Target Application ] (e.g., SSH, RDP)
-      IP: 10.0.0.5 Port: 22
-             ^
-             | (Unencrypted TCP)
-             |
-    +----------------------------------+
-    | Compromised Host (Client)        |
-    | Running: ptunnel -p <Server_IP>  |
-    +----------------------------------+
-             |
-             |  [ FW blocks TCP outbound ]
-             |  [ FW allows ICMP outbound ]
-             |
-             |  (TCP wrapped in ICMP Type 8 / Type 0)
-             v
-    +----------------------------------+
-    | Attacker C2 (Server)             |
-    | Running: ptunnel                 |
-    | Receives ICMP, unwraps to TCP    |
-    +----------------------------------+
-             |
-             | (Unencrypted TCP)
-             v
-      [ Attacker Local Console ]
-      Listening on Localport (e.g. 8000)
+```mermaid
+flowchart TD
+    Console["Attacker Local Console<br/>Listening on Localport (e.g. 8000)"]
+    Server["Attacker C2 (Server)<br/>Running: ptunnel<br/>Receives ICMP, unwraps to TCP"]
+    Client["Compromised Host (Client)<br/>Running: ptunnel -p Server_IP"]
+    Target["Target Application (e.g., SSH, RDP)<br/>IP: 10.0.0.5 Port: 22"]
+
+    Console <-->|Unencrypted TCP| Server
+    Server <-->|FW blocks TCP outbound<br/>FW allows ICMP outbound<br/>TCP wrapped in ICMP Type 8 / Type 0| Client
+    Client <-->|Unencrypted TCP| Target
 ```
 
 ## 4. Deep Dive: Setting up PingTunnel (ptunnel)

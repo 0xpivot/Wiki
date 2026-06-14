@@ -27,28 +27,18 @@ The core issue driving API8 is the friction between rapid deployment and secure 
 
 ### Visualizing the Attack Surface
 
-```ascii
-    [ The Attack Surface of API Misconfigurations ]
+```mermaid
+flowchart TD
+    Cloud["Cloud Environment\n(Misconfiguration: Open Management Ports, Default IAM Roles, Public S3/Blob Storage)"]
+    WAF["Load Balancer / WAF\n(Misconfiguration: Weak TLS configs, Bypasses via X-Forwarded-For spoofing)"]
+    GW["API Gateway\n(Misconfiguration: Permissive CORS, Lack of Rate Limiting, Missing Auth on /internal)"]
+    App["Application Server\n(Misconfiguration: Verbose Stack Traces, Enabled Debug/Swagger endpoints)"]
+    DB["Database / Cache\n(Misconfiguration: Default DB credentials, Unencrypted at rest, Open ports to 0.0.0.0)"]
 
-       +-----------------------+   Misconfiguration: Open Management Ports (SSH/RDP)
-       |   Cloud Environment   |   Default IAM Roles, Public S3/Blob Storage
-       +-----------------------+
-                   |
-       +-----------------------+   Misconfiguration: Weak TLS configs,
-       |  Load Balancer / WAF  |   Bypasses via X-Forwarded-For spoofing
-       +-----------------------+
-                   |
-       +-----------------------+   Misconfiguration: Permissive CORS,
-       |     API Gateway       |   Lack of Rate Limiting, Missing Auth on /internal
-       +-----------------------+
-                   |
-       +-----------------------+   Misconfiguration: Verbose Stack Traces,
-       |  Application Server   |   Enabled Debug/Swagger endpoints (/actuator/env)
-       +-----------------------+
-                   |
-       +-----------------------+   Misconfiguration: Default DB credentials,
-       |    Database / Cache   |   Unencrypted at rest, Open ports to 0.0.0.0
-       +-----------------------+
+    Cloud --> WAF
+    WAF --> GW
+    GW --> App
+    App --> DB
 ```
 
 ## 3. Real-World Exploitation Scenarios

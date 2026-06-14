@@ -13,26 +13,28 @@ The OWASP Web Security Testing Guide (WSTG) is the premier, comprehensive cybers
 The WSTG encompasses the entire testing lifecycle, from initial reconnaissance to deep business logic exploitation.
 
 ## ASCII Architecture Diagram of the Testing Lifecycle
-```text
-+-------------------------------------------------------------------------+
-|                  WSTG Penetration Testing Lifecycle                     |
-+-------------------------------------------------------------------------+
-|                                                                         |
-|  [ 1. Recon & Info Gathering ] -----> [ 2. Configuration & Deployment ] |
-|  (WSTG-INFO)                          (WSTG-CONF)                       |
-|           |                                       |                     |
-|           v                                       v                     |
-|  [ 3. Identity & Auth Testing ] ----> [ 4. Session Management Testing ] |
-|  (WSTG-IDNT, WSTG-ATHN, WSTG-ATHZ)    (WSTG-SESS)                       |
-|           |                                       |                     |
-|           v                                       v                     |
-|  [ 5. Input Validation Testing ] ---> [ 6. Business Logic Testing ]     |
-|  (WSTG-INPV)                          (WSTG-BUSL)                       |
-|           |                                       |                     |
-|           v                                       v                     |
-|  [ 7. Client-Side Testing ]           [ 8. Error/Crypto/Routing ]       |
-|  (WSTG-CLNT)                          (WSTG-ERRH, WSTG-CRYP)            |
-+-------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph WSTG ["WSTG Penetration Testing Lifecycle"]
+        S1["1. Recon & Info Gathering<br>(WSTG-INFO)"]
+        S2["2. Configuration & Deployment<br>(WSTG-CONF)"]
+        S3["3. Identity & Auth Testing<br>(WSTG-IDNT, WSTG-ATHN, WSTG-ATHZ)"]
+        S4["4. Session Management Testing<br>(WSTG-SESS)"]
+        S5["5. Input Validation Testing<br>(WSTG-INPV)"]
+        S6["6. Business Logic Testing<br>(WSTG-BUSL)"]
+        S7["7. Client-Side Testing<br>(WSTG-CLNT)"]
+        S8["8. Error/Crypto/Routing<br>(WSTG-ERRH, WSTG-CRYP)"]
+
+        S1 --> S2
+        S1 --> S3
+        S2 --> S4
+        S3 --> S4
+        S3 --> S5
+        S4 --> S6
+        S5 --> S6
+        S5 --> S7
+        S6 --> S8
+    end
 ```
 
 ## Deep Dive into the WSTG Categories

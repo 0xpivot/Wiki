@@ -14,19 +14,15 @@ Written entirely in Golang, Chisel compiles statically into a single binary, mak
 
 ## 2. ASCII Architecture Diagram
 
-```text
-=============================================================================================
-[Attacker C2 / Local Machine]                        [Compromised Target (Chisel Client)]
-       192.168.1.10                                           10.10.10.50
-            |                                                      |
-            |<==== HTTP/WebSocket Upgrades (Port 80/443) ========= |
-            |      (Reverse Connection Bypasses NAT/Firewall)      |
-            |                                                      |
- [SOCKS5 Proxy (Port 1080)] <--- Multiplexed inside WebSocket ---> [Internal Routing]
-            |             (Using Yamux / SSH multiplexing)         |
-      (Proxychains)                                         [Internal Subnets]
-                                                            10.10.20.0/24
-=============================================================================================
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker C2 / Local Machine<br/>192.168.1.10
+    participant Client as Compromised Target (Chisel Client)<br/>10.10.10.50
+
+    Client->>Attacker: HTTP/WebSocket Upgrades (Port 80/443)<br/>(Reverse Connection Bypasses NAT/Firewall)
+    Note over Attacker, Client: Multiplexed inside WebSocket<br/>(Using Yamux / SSH multiplexing)
+    Note left of Attacker: SOCKS5 Proxy (Port 1080)<br/>(Proxychains)
+    Note right of Client: Internal Routing<br/>[Internal Subnets]<br/>10.10.20.0/24
 ```
 
 ## 3. Architecture and Core Mechanics

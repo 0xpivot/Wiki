@@ -23,34 +23,22 @@ CGO alters this paradigm. When CGO is invoked, the execution flow crosses a comp
 
 ### Technical ASCII Diagram: The CGO Boundary
 
-```text
-================================================================================
-                      THE CGO EXECUTION BOUNDARY
-================================================================================
-
-[ GO RUNTIME ]                                        [ NATIVE C/C++ CODE ]
-                                                              |
-+-------------------+                                 +-------------------+
-| Go Function Call  |                                 | C Function (e.g., |
-| (e.g., C.Invoke() |                                 | Direct Syscall)   |
-+---------+---------+                                 +---------+---------+
-          |                                                     ^
-          | 1. Call to cgo_bridge                               |
-          v                                                     |
-+-------------------+                                           |
-| runtime.cgocall   | ------------------------------------------+
-| (Prepares C Stack)|     2. Crosses boundary, executes C code
-+---------+---------+                                           |
-          ^                                                     |
-          | 4. Returns to Go Routine                            |
-          |                                                     |
-+-------------------+                                           |
-| cgo_bridge return | <-----------------------------------------+
-| (Restores Stack)  |     3. Execution finishes, returns result
-+-------------------+
-
-* Note: This boundary transition is expensive and leaves distinct artifacts.
-================================================================================
+```mermaid
+flowchart TD
+    subgraph Go["GO RUNTIME"]
+        Call["Go Function Call<br>(e.g., C.Invoke()"]
+        Cgocall["runtime.cgocall<br>(Prepares C Stack)"]
+        Return["cgo_bridge return<br>(Restores Stack)"]
+    end
+    
+    subgraph Native["NATIVE C/C++ CODE"]
+        C_Func["C Function (e.g.,<br>Direct Syscall)"]
+    end
+    
+    Call -- "1. Call to cgo_bridge" --> Cgocall
+    Cgocall -- "2. Crosses boundary, executes C code" --> C_Func
+    C_Func -- "3. Execution finishes, returns result" --> Return
+    Return -- "4. Returns to Go Routine" --> Call
 ```
 
 ## Conceptual Abuse: Native API and Syscall Wrappers

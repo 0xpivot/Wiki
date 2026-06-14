@@ -44,34 +44,26 @@ This reduces search execution times from minutes to mere seconds.
 
 ## 3. ASCII Architecture: Dashboard Data Flow
 
-```text
-+-----------------------------------------------------------------------------------+
-|                           SPLUNK HUNTING DASHBOARD                                |
-|                                                                                   |
-|  +------------------+  +------------------+  +------------------+                 |
-|  | Input Tokens     |  | Time Picker      |  | Global Filters   |                 |
-|  | (User, IP, Hash) |  | (-7d to now)     |  | (Index, Sourcetype)|                 |
-|  +------------------+  +------------------+  +------------------+                 |
-+-----------------------------------------------------------------------------------+
-           |                      |                       |
-           v                      v                       v
-+-----------------------------------------------------------------------------------+
-|                               BASE SEARCH (CIM Compliant)                         |
-| | tstats `security_content_summariesonly` count from datamodel=Endpoint ...       |
-+-----------------------------------------------------------------------------------+
-           |                      |                       |
-           v                      v                       v
-+----------------------+ +----------------------+ +----------------------+
-| PANEL 1: Auth Spikes | | PANEL 2: Rare Procs  | | PANEL 3: Data Exfil  |
-| (Post-Processing)    | | (Post-Processing)    | | (Post-Processing)    |
-| | stats count by user| | | rare process_name  | | | timechart sum(bytes|
-+----------------------+ +----------------------+ +----------------------+
-           ^                      ^                       ^
-           |                      |                       |
-+-----------------------------------------------------------------------------------+
-|                        SPLUNK INDEXERS & DATA MODELS                              |
-|  [ Sysmon Data ]    [ Active Directory ]    [ Firewall Logs ]   [ Proxy Logs ]    |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph SPLUNK HUNTING DASHBOARD
+        A1[Input Tokens User, IP, Hash]
+        A2[Time Picker -7d to now]
+        A3[Global Filters Index, Sourcetype]
+    end
+    A1 --> B
+    A2 --> B
+    A3 --> B
+    B[BASE SEARCH CIM Compliant<br>tstats security_content_summariesonly count from datamodel=Endpoint]
+    B --> C1[PANEL 1: Auth Spikes<br>stats count by user]
+    B --> C2[PANEL 2: Rare Procs<br>rare process_name]
+    B --> C3[PANEL 3: Data Exfil<br>timechart sum bytes]
+    subgraph SPLUNK INDEXERS & DATA MODELS
+        D[Sysmon Data / Active Directory / Firewall Logs / Proxy Logs]
+    end
+    D --> C1
+    D --> C2
+    D --> C3
 ```
 
 ## 4. Essential Dashboard Panels

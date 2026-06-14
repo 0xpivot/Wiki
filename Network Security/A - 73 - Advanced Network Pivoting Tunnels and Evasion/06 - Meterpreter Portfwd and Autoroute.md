@@ -23,26 +23,18 @@ Mastering these tools is essential for advanced persistent threat (APT) emulatio
 
 ## 3. ASCII Diagram: The Pivot Architecture
 
-```text
-      [ Attacker (MSF Console) ]
-      Local IP: 203.0.113.5
-      MSF Route Table: 192.168.1.0/24 -> Session 1
-             |
-             | (Encrypted Meterpreter C2 Session over port 443)
-             v
-    +----------------------------------+
-    | Compromised Host (The Pivot)     |
-    | Public IP: 203.0.113.10          |
-    | Internal IP: 192.168.1.50        |
-    +----------------------------------+
-             |
-             | (Unencrypted Internal Traffic)
-             |
-      +------+------+------+------+
-      |             |             |
- [ Target A ]  [ Target B ]  [ Target C ]
- 192.168.1.10  192.168.1.11  192.168.1.12
-  (Web App)     (SQL DB)      (Domain Ctrl)
+```mermaid
+flowchart TD
+    Attacker["Attacker (MSF Console)<br/>Local IP: 203.0.113.5<br/>MSF Route Table: 192.168.1.0/24 -> Session 1"]
+    Pivot["Compromised Host (The Pivot)<br/>Public IP: 203.0.113.10<br/>Internal IP: 192.168.1.50"]
+    TargetA["Target A<br/>192.168.1.10<br/>(Web App)"]
+    TargetB["Target B<br/>192.168.1.11<br/>(SQL DB)"]
+    TargetC["Target C<br/>192.168.1.12<br/>(Domain Ctrl)"]
+
+    Attacker -->|Encrypted Meterpreter C2 Session over port 443| Pivot
+    Pivot -->|Unencrypted Internal Traffic| TargetA
+    Pivot -->|Unencrypted Internal Traffic| TargetB
+    Pivot -->|Unencrypted Internal Traffic| TargetC
 ```
 
 ## 4. Deep Dive: The Autoroute Module

@@ -47,25 +47,27 @@ In this example, the entire host filesystem `/` is mounted into the container at
 
 ## Visualizing the HostPath Escape
 
-```ascii
-      +------------------------------------------------------+
-      |   Kubernetes Worker Node (Host OS)                   |
-      |                                                      |
-      |   /etc    /var    /bin    /root   /run               |
-      |    |       |       |       |       |                 |
-      +----|-------|-------|-------|-------|-----------------+
-           |       |       |       |       |
-           |       |       |       |       | (Bind Mount via HostPath: / )
-           v       v       v       v       v
-      +------------------------------------------------------+
-      |   Pod Container Namespace                            |
-      |                                                      |
-      |   /host_root/etc                                     |
-      |   /host_root/var     [ Attacker Access ]             |
-      |   /host_root/bin                                     |
-      |   /host_root/root                                    |
-      |                                                      |
-      +------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Kubernetes Worker Node Host OS
+        A[ /etc ]
+        B[ /var ]
+        C[ /bin ]
+        D[ /root ]
+        E[ /run ]
+    end
+    
+    subgraph Pod Container Namespace
+        F[ /host_root/etc ]
+        G[ /host_root/var <br/> Attacker Access ]
+        H[ /host_root/bin ]
+        I[ /host_root/root ]
+    end
+    
+    A -->|Bind Mount via HostPath: /| F
+    B -->|Bind Mount via HostPath: /| G
+    C -->|Bind Mount via HostPath: /| H
+    D -->|Bind Mount via HostPath: /| I
 ```
 
 ## Exploitation Vectors

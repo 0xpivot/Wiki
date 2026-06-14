@@ -87,36 +87,16 @@ Because of the policy, the MSI executes invisibly and spawns the reverse shell r
 
 ## ASCII Diagram: AlwaysInstallElevated Attack Flow
 
-```text
-+-----------------------+
-| Attacker Shell        |
-| Context: Standard User|
-+-----------------------+
-          |
-          | 1. Query Registry: HKLM & HKCU AlwaysInstallElevated == 1
-          | 2. Upload malicious setup.msi to C:\Temp\
-          | 3. Execute: msiexec /quiet /qn /i setup.msi
-          v
-+-----------------------+
-| Windows Installer     |
-| Service (msiserver)   |
-+-----------------------+
-          |
-          | 4. Policy check: AlwaysInstallElevated is TRUE
-          | 5. Elevates installation context to SYSTEM
-          v
-+-----------------------+
-| MSI Execution Context |
-| Context: SYSTEM       |
-+-----------------------+
-          |
-          | 6. Extracts and executes embedded payload
-          v
-+-----------------------+
-| Reverse Shell         |
-| Context: SYSTEM       |
-| Integrity: System     |
-+-----------------------+
+```mermaid
+flowchart TD
+    AS["Attacker Shell\nContext: Standard User"]
+    WIS["Windows Installer Service (msiserver)"]
+    MEC["MSI Execution Context\nContext: SYSTEM"]
+    RS["Reverse Shell\nContext: SYSTEM\nIntegrity: System"]
+    
+    AS -->|"1. Query Registry: HKLM & HKCU AlwaysInstallElevated == 1\n2. Upload malicious setup.msi to C:\\Temp\\\n3. Execute: msiexec /quiet /qn /i setup.msi"| WIS
+    WIS -->|"4. Policy check: AlwaysInstallElevated is TRUE\n5. Elevates installation context to SYSTEM"| MEC
+    MEC -->|"6. Extracts and executes embedded payload"| RS
 ```
 
 ## Advanced Vectors: Image File Execution Options (IFEO)

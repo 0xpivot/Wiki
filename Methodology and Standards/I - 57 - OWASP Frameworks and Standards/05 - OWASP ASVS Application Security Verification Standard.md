@@ -13,30 +13,14 @@ The OWASP Application Security Verification Standard (ASVS) provides a basis for
 While the OWASP Top 10 focuses on the most critical risks (what *not* to do), and the WSTG focuses on testing methodologies (how to *find* the bugs), the ASVS acts as a highly granular blueprint of security requirements (what you *must* do). It is widely used for creating Secure Software Development Lifecycles (SSDLC), guiding code reviews, and setting contractual security requirements during software procurement.
 
 ## ASCII Architecture Diagram of ASVS Levels
-```text
-  +-----------------------------------------------------------------------+
-  |                   OWASP ASVS Verification Levels                      |
-  +-----------------------------------------------------------------------+
-  |                                                                       |
-  |  [ Level 3: Advanced ]                                                |
-  |  For critical applications (Military, Health, Financial).             |
-  |  Requires deep architecture review and intense manual testing.        |
-  |                                                                       |
-  |      ^                                                                |
-  |      |  (Inherits L1 + L2)                                            |
-  |                                                                       |
-  |  [ Level 2: Standard ] <--- Recommended Baseline for Most Apps        |
-  |  For applications processing B2B data, PII, or general commerce.      |
-  |  Requires manual pentesting and automated scanning.                   |
-  |                                                                       |
-  |      ^                                                                |
-  |      |  (Inherits L1)                                                 |
-  |                                                                       |
-  |  [ Level 1: Opportunistic / First Steps ]                             |
-  |  For low-risk apps. Covers the bare minimum (OWASP Top 10).           |
-  |  Mostly verifiable via automated DAST/SAST tools.                     |
-  |                                                                       |
-  +-----------------------------------------------------------------------+
+```mermaid
+flowchart BT
+    L1["Level 1: Opportunistic / First Steps<br>For low-risk apps. Covers the bare minimum (OWASP Top 10).<br>Mostly verifiable via automated DAST/SAST tools."]
+    L2["Level 2: Standard<br>For applications processing B2B data, PII, or general commerce.<br>Requires manual pentesting and automated scanning."]
+    L3["Level 3: Advanced<br>For critical applications (Military, Health, Financial).<br>Requires deep architecture review and intense manual testing."]
+
+    L1 -- "Inherits L1" --> L2
+    L2 -- "Inherits L1 + L2" --> L3
 ```
 
 ## The ASVS Verification Levels

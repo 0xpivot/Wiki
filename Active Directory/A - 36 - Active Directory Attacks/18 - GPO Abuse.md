@@ -20,37 +20,23 @@ To successfully modify a GPO, an attacker must have write permissions to *both* 
 
 ## 2. ASCII Diagram of Attack Flow
 
-```text
-    [ Attacker Workstation ]                                      [ Active Directory / SYSVOL ]
-              |                                                                |
-              | 1. Enumerate GPO Permissions (BloodHound)                      |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 2. Identify 'GenericAll' on GPO "Workstation_Baseline"         |
-              |<---------------------------------------------------------------|
-              |                                                                |
-              | 3. Execute SharpGPOAbuse                                       |
-              |    (Inject Scheduled Task payload)                             |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 4. Updates GPC version attribute in AD                         |
-              | 5. Writes malicious Scheduled Task XML to SYSVOL GPT           |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 6. Wait for GPO Refresh (approx. 90 minutes)                   |
-              |                                                                |
-     ====================================================================================
-              |                                                                |
-    [ Target Workstation (Victim) ]                                            |
-              |                                                                |
-              | 7. gpupdate / background refresh occurs                        |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 8. Downloads modified GPO from SYSVOL                          |
-              |<---------------------------------------------------------------|
-              |                                                                |
-              | 9. Applies Scheduled Task -> Executes Reverse Shell as SYSTEM  |
-              |---------------------------------------------------------------> [ Attacker C2 ]
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker Workstation
+    participant AD as Active Directory / SYSVOL
+    participant Target as Target Workstation (Victim)
+    participant C2 as Attacker C2
+    
+    Attacker->>AD: 1. Enumerate GPO Permissions (BloodHound)
+    AD-->>Attacker: 2. Identify 'GenericAll' on GPO "Workstation_Baseline"
+    Attacker->>AD: 3. Execute SharpGPOAbuse (Inject Scheduled Task payload)
+    Note over AD: 4. Updates GPC version attribute in AD
+    Attacker->>AD: 5. Writes malicious Scheduled Task XML to SYSVOL GPT
+    Note over Attacker: 6. Wait for GPO Refresh (approx. 90 minutes)
+    
+    Target->>AD: 7. gpupdate / background refresh occurs
+    AD-->>Target: 8. Downloads modified GPO from SYSVOL
+    Target->>C2: 9. Applies Scheduled Task -> Executes Reverse Shell as SYSTEM
 ```
 
 ## 3. Attack Mechanics

@@ -58,39 +58,19 @@ Addressing high entropy requires structural changes.
 
 ## Architecture Diagram: Heuristic Scanning Process
 
-```ascii
-=============================================================================
-                       STATIC HEURISTIC ANALYSIS PIPELINE
-=============================================================================
-
-[ File Dropped to Disk ]
-      |
-      v
-+---------------------------------------------------+
-|               PE Structural Parser                |
-| (Analyzes headers, sections, IAT, metadata)       |
-+---------------------------------------------------+
-      |
-      |-- (Checks IAT for suspicious combinations)
-      |-- (Measures entropy of individual sections)
-      |-- (Extracts strings and metadata)
-      |
-      v
-+---------------------------------------------------+
-|               Machine Learning Model / Rule Engine|
-| (Evaluates extracted features against baselines)  |
-+---------------------------------------------------+
-      |
-      |-- IF (Entropy > 7.0) AND (IAT contains Injection APIs) -> SCORE += 50
-      |-- IF (Signature is invalid) -> SCORE += 20
-      |
-      v
-[ Risk Score Calculation ]
-      |
-      |-- IF Score > Threshold: [ QUARANTINE ]
-      |-- IF Score < Threshold: [ ALLOW EXECUTION ]
-
-=============================================================================
+```mermaid
+flowchart TD
+    File["File Dropped to Disk"]
+    Parser["PE Structural Parser<br>(Analyzes headers, sections, IAT, metadata)"]
+    Analysis["Checks IAT for suspicious combinations<br>Measures entropy of individual sections<br>Extracts strings and metadata"]
+    ML["Machine Learning Model / Rule Engine<br>(Evaluates extracted features against baselines)"]
+    Rules["IF (Entropy > 7.0) AND (IAT contains Injection APIs) -> SCORE += 50<br>IF (Signature is invalid) -> SCORE += 20"]
+    Calc["Risk Score Calculation"]
+    Result["IF Score > Threshold: QUARANTINE<br>IF Score < Threshold: ALLOW EXECUTION"]
+    
+    File --> Parser
+    Parser --> Analysis --> ML
+    ML --> Rules --> Calc --> Result
 ```
 
 ## Defensive Advancements: Emulation and Sandboxing

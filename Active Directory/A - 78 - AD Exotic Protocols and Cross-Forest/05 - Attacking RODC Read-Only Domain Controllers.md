@@ -139,6 +139,16 @@ Many organizations treat RODCs as "set and forget" appliances that require less 
 
 ---
 
+
+## Real-World Attack Scenario
+## Real-World Attack Scenario
+
+During the lateral movement phase of the engagement, the red team compromised a Read-Only Domain Controller (RODC) located in a physically remote branch office (`RODC-BR01.corp.local`). By exploiting a misconfigured local administrator group delegation, the team gained `NT AUTHORITY\SYSTEM` privileges on the RODC. Although an RODC contains a limited subset of the Active Directory database, the team proceeded to analyze the Password Replication Policy (PRP) to determine which accounts had their credentials actively cached on the server.
+
+By querying the `msDS-RevealedUsers` attribute on the RODC computer object via PowerView, the team discovered a critical misconfiguration: the `Helpdesk_Admins` group, which possessed full Domain Admin privileges in the primary forest, had been inadvertently placed in the Allowed list instead of the Denied list. The team subsequently performed a DCSync attack localized to the RODC, extracting the cached NT hash for a highly privileged helpdesk account that had recently authenticated to the branch office.
+
+Instead of immediately using the extracted hash, which might trigger anomalous authentication alerts, the team opted to extract the RODC's specific `krbtgt_XXXXX` hash from the local NTDS.DIT. Using this secondary krbtgt, they forged an RODC-specific Golden Ticket. Because the helpdesk account's password was explicitly cached via the PRP, the primary writeable Domain Controller validated the scoped Golden Ticket, allowing the team to pivot from the restricted branch network into the Tier 0 central data center undetected.
+
 ## Chaining Opportunities
 * **DCSync and Local Extraction:** Extracting the limited NTDS.DIT from the RODC. [[05 - DCSync and LSA Extraction]]
 * **Golden Tickets:** Forging scoped Golden Tickets using the RODC's secondary krbtgt account. [[04 - Kerberos Golden and Silver Tickets]]

@@ -157,39 +157,26 @@ if __name__ == "__main__":
 
 ## Visualizing the STIX/TAXII Ecosystem
 
-```ascii
-========================================================================================
-                      STIX AND TAXII ARCHITECTURE FLOW
-========================================================================================
+```mermaid
+flowchart TD
+    subgraph Producer["INTELLIGENCE PRODUCER (e.g., CISA, ThreatConnect, MISP)"]
+        A["Threat Analysts discover new C2 infrastructure."]
+        B["STIX 2.1 Bundle<br/>[Indicator] ---> [Malware]"]
+        A -->|1. Encapsulate into STIX JSON| B
+    end
 
-  [INTELLIGENCE PRODUCER]                         [INTELLIGENCE CONSUMER (SOC)]
-  (e.g., CISA, ThreatConnect, MISP)               (e.g., Corporate SIEM, Firewall)
+    subgraph Server["TAXII 2.1 SERVER"]
+        C["Collections:<br/>- High Fidel<br/>- Ransomware"]
+    end
 
-         +-------------------+                          +-------------------+
-         |                   |                          |                   |
-         |  Threat Analysts  |                          |  SOAR Platform /  |
-         |  discover new C2  |                          |  SIEM Engine      |
-         |  infrastructure.  |                          |                   |
-         +---------+---------+                          +---------+---------+
-                   |                                              ^
-                   | 1. Encapsulate into STIX JSON                | 4. Parse STIX JSON
-                   v                                              |    Extract indicators
-         +-------------------+                          +-------------------+
-         |                   |                          |                   |
-         |  STIX 2.1 Bundle  |                          |  TAXII Client     |
-         |  [Indicator] ---> |                          |  (Polling script) |
-         |  [Malware]        |                          |                   |
-         +---------+---------+                          +---------+---------+
-                   |                                              ^
-                   | 2. Push via HTTPS REST API                   | 3. GET /collections/
-                   v                                              |
-========================================================================================
-                             [ TAXII 2.1 SERVER ]
-                        +----------------------------+
-                        | + Collection: "High Fidel" |
-                        | + Collection: "Ransomware" |
-                        +----------------------------+
-========================================================================================
+    subgraph Consumer["INTELLIGENCE CONSUMER (SOC) (e.g., Corporate SIEM, Firewall)"]
+        D["TAXII Client<br/>(Polling script)"]
+        E["SOAR Platform / SIEM Engine"]
+        D -->|4. Parse STIX JSON Extract indicators| E
+    end
+
+    B -->|2. Push via HTTPS REST API| C
+    C -->|3. GET /collections/| D
 ```
 
 ## Real-World Attack Scenario: Automated Zero-Day Mitigation

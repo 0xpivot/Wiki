@@ -105,31 +105,18 @@ LKMs hiding network connections often hook `tcp4_seq_show` in the `/proc/net/tcp
 
 ## 5. Architectural Diagram: Process Hiding via DKOM
 
-```text
-NORMAL PROCESS LIST                  COMPROMISED PROCESS LIST (DKOM)
-
-+-------------+                      +-------------+
-| task_struct |                      | task_struct |
-| PID: 100    |                      | PID: 100    |
-| (init)      |                      | (init)      |
-+-------------+                      +-------------+
-   |       ^                            |       ^
-   v       |                            v       |
-+-------------+                      +-------------+
-| task_struct | <----+     HOOK      | task_struct | 
-| PID: 101    |      |    BYPASS     | PID: 102    | <--- Links skip 101
-| (malware)   | -----+-------------> | (ssh)       |
-+-------------+      |               +-------------+
-   |       ^         |
-   v       |         |
-+-------------+      |
-| task_struct | <----+
-| PID: 102    |
-| (ssh)       |
-+-------------+
-
-Memory Scan (psscan) detects PID 101 because the physical memory bytes 
-for the task_struct still exist, even if the pointers are severed.
+```mermaid
+flowchart LR
+    subgraph Normal Process List
+        A1[task_struct PID: 100 init] <==> B1[task_struct PID: 101 malware]
+        B1 <==> C1[task_struct PID: 102 ssh]
+    end
+    subgraph Compromised Process List DKOM
+        A2[task_struct PID: 100 init] <==>|HOOK BYPASS / Links skip 101| C2[task_struct PID: 102 ssh]
+    end
+    subgraph Memory Scan
+        B2[task_struct PID: 101 malware<br>Physical memory bytes still exist]
+    end
 ```
 
 ## 6. Real-World Attack Scenario

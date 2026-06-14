@@ -23,28 +23,29 @@ Normally, when a standard user double-clicks an `.msi` file, the installation ru
 
 If `AlwaysInstallElevated` is enabled, the Windows Installer service skips the UAC prompt and forcefully executes the installation process under the `NT AUTHORITY\SYSTEM` context, regardless of who initiated the installation.
 
-```text
-+--------------------------------------------------------------------------+
-|                 ALWAYSINSTALLELEVATED EXECUTION FLOW                     |
-+--------------------------------------------------------------------------+
-|
-|  [ Standard User ]
-|          |
-|          +--> Runs: msiexec /i malicious_payload.msi
-|
-|  [ Windows Installer Service (msiexec.exe) ]
-|          |
-|          +--> Checks Registry Policies
-|                 HKLM\...\AlwaysInstallElevated == 1? [YES]
-|                 HKCU\...\AlwaysInstallElevated == 1? [YES]
-|          |
-|          +--> Bypasses UAC / Context Check
-|          |
-|          +--> Executes Custom Actions in MSI as NT AUTHORITY\SYSTEM
-|          |
-|  [ SYSTEM Shell Granted to Attacker ]
-|
-+--------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Flow[ALWAYSINSTALLELEVATED EXECUTION FLOW]
+        SU["[ Standard User ]"]
+        RUN["Runs: msiexec /i malicious_payload.msi"]
+        
+        SU --> RUN
+        
+        WIS["[ Windows Installer Service (msiexec.exe) ]"]
+        
+        RUN --> WIS
+        
+        CHK["Checks Registry Policies\nHKLM\\...\\AlwaysInstallElevated == 1? [YES]\nHKCU\\...\\AlwaysInstallElevated == 1? [YES]"]
+        BYP["Bypasses UAC / Context Check"]
+        EXEC["Executes Custom Actions in MSI as NT AUTHORITY\\SYSTEM"]
+        
+        WIS --> CHK
+        CHK --> BYP
+        BYP --> EXEC
+        
+        SYS["[ SYSTEM Shell Granted to Attacker ]"]
+        EXEC --> SYS
+    end
 ```
 
 ## Enumeration and Identification

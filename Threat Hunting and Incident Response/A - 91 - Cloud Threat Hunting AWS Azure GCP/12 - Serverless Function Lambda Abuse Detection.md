@@ -21,29 +21,15 @@ Threat hunting in serverless environments is notoriously difficult. You cannot d
 
 ## Serverless Attack Flow Architecture
 
-```text
-+-----------------------+       +-------------------------+       +-----------------------------+
-| Threat Actor Payload  |       | API Gateway / S3 Event  |       | AWS Lambda MicroVM          |
-| (e.g., Command Inject)| ====> | (Passes event payload)  | ====> | (Executes vulnerable code)  |
-+-----------------------+       +-------------------------+       +-----------------------------+
-                                                                               |
-       +-----------------------------------------------------------------------+
-       |
-       v
-+-----------------------+       +-------------------------+       +-----------------------------+
-| Lambda reads internal |       | Extracts AWS_ACCESS_    |       | Exfiltrates via outbound    |
-| Environment Variables | ====> | KEY_ID, SECRET_KEY &    | ====> | HTTP to attacker C2         |
-| via `env` or `printenv`       | SESSION_TOKEN           |       | (Bypassing SG if public)    |
-+-----------------------+       +-------------------------+       +-----------------------------+
-                                                                               |
-       +-----------------------------------------------------------------------+
-       |
-       v
-+-----------------------+       +-------------------------+
-| Attacker configures   |       | Accesses S3, DynamoDB,  |
-| stolen creds via      | ====> | or provisions EC2 APIs  |
-| local CLI globally    |       | using the Lambda's role |
-+-----------------------+       +-------------------------+
+```mermaid
+flowchart TD
+    A[Threat Actor Payload<br>e.g., Command Inject] ==> B[API Gateway / S3 Event<br>Passes event payload]
+    B ==> C[AWS Lambda MicroVM<br>Executes vulnerable code]
+    C --> D[Lambda reads internal<br>Environment Variables<br>via env or printenv]
+    D ==> E[Extracts AWS_ACCESS_<br>KEY_ID, SECRET_KEY &<br>SESSION_TOKEN]
+    E ==> F[Exfiltrates via outbound<br>HTTP to attacker C2<br>Bypassing SG if public]
+    F --> G[Attacker configures<br>stolen creds via<br>local CLI globally]
+    G ==> H[Accesses S3, DynamoDB,<br>or provisions EC2 APIs<br>using the Lambda's role]
 ```
 
 ## Threat Hunting Methodologies

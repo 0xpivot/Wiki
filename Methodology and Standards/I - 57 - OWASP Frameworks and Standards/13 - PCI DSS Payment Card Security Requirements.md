@@ -19,34 +19,36 @@ Failure to comply with PCI DSS can result in massive fines (often hundreds of th
 
 Understanding the boundary of the CDE is the most important concept in PCI DSS.
 
-```text
-       PCI DSS Network Segmentation and CDE Architecture
-+-------------------------------------------------------------------+
-|                           Corporate Network                       |
-|   +----------------+      +----------------+      +-----------+   |
-|   |  HR Systems    |      |  Dev/QA Env    |      | Marketing |   |
-|   +----------------+      +----------------+      +-----------+   |
-|           |                       |                     |         |
-+-----------|-----------------------|---------------------|---------+
-            |                       |                     |
-      [ STRICT FIREWALL RULES / NO DIRECT ACCESS TO CDE ]
-            |                       |                     |
-+===========|=======================|=====================|=========+
-|      +----v-----------------------v----+        CARDHOLDER DATA   |
-|      |        Jump Host / Bastion      |          ENVIRONMENT     |
-|      |        (Strict MFA Enforced)    |             (CDE)        |
-|      +---------------------------------+                          |
-|             |                   |                                 |
-|      +------v------+     +------v------+       [ IN SCOPE ]       |
-|      | Payment App |     | Database    |                          |
-|      | Web Server  |---->| (CHD / SAD) |                          |
-|      +-------------+     +-------------+                          |
-|             |                   |                                 |
-+=============|===================|=================================+
-              |                   |
-        +-----v-----+       +-----v-----+
-        | Processor / Acquirer Gateway  |
-        +-------------------------------+
+```mermaid
+flowchart TD
+    subgraph Corporate ["Corporate Network"]
+        direction LR
+        HR["HR Systems"]
+        DEV["Dev/QA Env"]
+        MKT["Marketing"]
+        HR --- DEV --- MKT
+    end
+
+    FW["STRICT FIREWALL RULES / NO DIRECT ACCESS TO CDE"]
+
+    Corporate --> FW
+
+    subgraph CDE ["CARDHOLDER DATA ENVIRONMENT (CDE) - IN SCOPE"]
+        JUMP["Jump Host / Bastion<br>(Strict MFA Enforced)"]
+        APP["Payment App<br>Web Server"]
+        DB["Database<br>(CHD / SAD)"]
+
+        JUMP --> APP
+        JUMP --> DB
+        APP --> DB
+    end
+
+    FW --> JUMP
+
+    GW["Processor / Acquirer Gateway"]
+
+    APP --> GW
+    DB --> GW
 ```
 
 ## Applicability and Scoping

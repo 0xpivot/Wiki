@@ -43,15 +43,16 @@ Attackers create hundreds or thousands of API Gateway endpoints and cycle their 
 
 #### Architecture of API Gateway Rotation
 
-```text
-+-------------------+      +-----------------------+      +-----------------------+      +-----------------+
-| Attacker Machine  | ---> | Custom Python Script  | ---> | AWS API Gateway Pool  | ---> | Target WAF/App  |
-| (Single Source IP)|      | (Rotates endpoints)   |      | (Dynamic Amazon IPs)  |      | (Rate Limiters) |
-+-------------------+      +-----------------------+      +-----------------------+      +-----------------+
-                                                              |               |
-                                                              v               v
-                                                      [ IP: 3.12.44.55 ]   [ IP: 54.11.22.1 ]
-                                                      [ IP: 18.22.33.4 ]   [ IP: 3.88.99.11 ]
+```mermaid
+flowchart LR
+    Attacker["Attacker Machine <br/> (Single Source IP)"]
+    Script["Custom Python Script <br/> (Rotates endpoints)"]
+    AWS["AWS API Gateway Pool <br/> (Dynamic Amazon IPs) <br/> IP: 3.12.44.55 <br/> IP: 18.22.33.4 <br/> IP: 54.11.22.1 <br/> IP: 3.88.99.11"]
+    Target["Target WAF/App <br/> (Rate Limiters)"]
+
+    Attacker --> Script
+    Script --> AWS
+    AWS --> Target
 ```
 
 ### 3. Header-Based IP Spoofing

@@ -23,42 +23,20 @@ Modern web frameworks (like Spring, Rails, Node/Express, and Django) offer mecha
 
 ## 3. Architectural Context
 
-```text
-========================================================================================
-                      BOPLA ATTACK ARCHITECTURE DIAGRAM
-========================================================================================
+```mermaid
+flowchart TD
+    A["Attacker"]
+    V1["Vector 1: Mass Assignment (Writing)\nRequest: PUT /api/profile\nPayload: {'username': 'hacker', 'role': 'admin'}"]
+    API["API Framework\n(Auto-binding ORM)"]
+    DB["Database\n(User becomes Admin.)"]
+    V2["Vector 2: Excessive Data Exposure (Reading)\nResponse: 200 OK\nPayload: {'username': 'hacker', 'role': 'admin', 'pwd_hash': 'xyz...'}"]
+    A2["Attacker\n(Views hidden fields in Burp Suite)"]
 
-                          [ Attacker ]
-                               |
-  +-------------------------------------------------------------------------+
-  | Vector 1: Mass Assignment (Writing)                                     |
-  | Request:  PUT /api/profile                                              |
-  | Payload:  {"username": "hacker", "role": "admin"}                       |
-  +-------------------------------------------------------------------------+
-                               |
-                               V
-                     +-------------------+
-                     |   API Framework   |
-                     | (Auto-binding ORM)|
-                     +-------------------+
-                               |  -> Overwrites `username` (Allowed)
-                               |  -> Overwrites `role` (BOPLA FLAW!)
-                               V
-                     +-------------------+
-                     |     Database      | -> User becomes Admin.
-                     +-------------------+
-                               |
-  +-------------------------------------------------------------------------+
-  | Vector 2: Excessive Data Exposure (Reading)                             |
-  | Response: 200 OK                                                        |
-  | Payload:  {"username": "hacker", "role": "admin", "pwd_hash": "xyz..."} |
-  +-------------------------------------------------------------------------+
-                               |
-                               V
-                          [ Attacker ]
-                  (Views hidden fields in Burp Suite)
-
-========================================================================================
+    A --> V1
+    V1 --> API
+    API -- "Overwrites `username` (Allowed)\nOverwrites `role` (BOPLA FLAW!)" --> DB
+    DB --> V2
+    V2 --> A2
 ```
 
 ## 4. Attack Vectors and Threat Modeling

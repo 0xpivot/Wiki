@@ -21,25 +21,28 @@ The transition from the 2017 to 2021 Top 10 introduced massive structural change
 - **Insecure Deserialization** was merged into **A08:2021 Software and Data Integrity Failures**.
 
 ## ASCII Architecture Diagram
-```text
-+-----------------------------------------------------------------------------------+
-|                            OWASP Top 10 2021 Attack Surface                       |
-+-----------------------------------------------------------------------------------+
-|  [ A04: Insecure Design ] -------> [ A08: Software & Data Integrity Failures ]    |
-|             |                                       |                             |
-|             v                                       v                             |
-|  [ A05: Security Misconfig ] ----> [ A06: Vulnerable & Outdated Components ]      |
-+-----------------------------------------------------------------------------------+
-|                               Application Layer                                   |
-|   +-------------------+  +-------------------+  +-------------------+             |
-|   | A01: Broken       |  | A02: Crypto       |  | A03: Injection    |             |
-|   | Access Control    |  | Failures          |  |                   |             |
-|   +-------------------+  +-------------------+  +-------------------+             |
-|   +-------------------+  +-------------------+  +-------------------+             |
-|   | A07: Auth         |  | A10: SSRF         |  | A09: Logging &    |             |
-|   | Failures          |  |                   |  | Monitoring        |             |
-|   +-------------------+  +-------------------+  +-------------------+             |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Attack_Surface ["OWASP Top 10 2021 Attack Surface"]
+        A04["A04: Insecure Design"]
+        A08["A08: Software & Data Integrity Failures"]
+        A05["A05: Security Misconfig"]
+        A06["A06: Vulnerable & Outdated Components"]
+
+        A04 --> A08
+        A04 --> A05
+        A08 --> A06
+        A05 --> A06
+    end
+
+    subgraph App_Layer ["Application Layer"]
+        A01["A01: Broken Access Control"]
+        A02["A02: Crypto Failures"]
+        A03["A03: Injection"]
+        A07["A07: Auth Failures"]
+        A10["A10: SSRF"]
+        A09["A09: Logging & Monitoring"]
+    end
 ```
 
 ## Deep Dive into the Top 10

@@ -30,35 +30,20 @@ An IPS is **active**. It acts as an automated control mechanism.
 
 ## Architectural Placement Diagram
 
-```text
-========================================================================================
-                          Network Placement: IDS vs IPS
-========================================================================================
-
-                             [ INTERNET ]
-                                  |
-                                  v
-                          +---------------+
-                          | Edge Firewall |
-                          +-------+-------+
-                                  |
-               INLINE IPS         |         PASSIVE IDS (SPAN / Mirror Port)
-            +--------------+      |      +--------------------------------+
-Traffic --->|   Network    |------+----->| Switch (Mirroring port traffic)|
- passes     |     IPS      |             +--------+-----------------------+
- through    +------+-------+                      | (Copied Traffic Only via TAP)
-                   |                              v
-                   v                       +--------------+ 
-            +--------------+               |   Network    | ---> Sends Alert to SIEM
-            | Core Switch  |               |     IDS      |      Cannot block attack.
-            +------+-------+               +--------------+
-                   |
-        +----------+----------+
-        |                     |
-  +-----------+         +-----------+
-  | Web Server|         | DB Server |
-  +-----------+         +-----------+
-========================================================================================
+```mermaid
+flowchart TD
+    Internet["[ INTERNET ]"] --> EdgeFW["Edge Firewall"]
+    
+    EdgeFW --> IPS["INLINE IPS\nNetwork IPS\n(Traffic passes through)"]
+    
+    IPS --> CoreSW["Core Switch"]
+    
+    CoreSW --> WebServer["Web Server"]
+    CoreSW --> DBServer["DB Server"]
+    
+    IPS -. "Copied Traffic via SPAN/TAP" .-> Mirr["Switch (Mirroring port traffic)"]
+    Mirr --> IDS["PASSIVE IDS\nNetwork IDS\n(Cannot block attack)"]
+    IDS --> SIEM["Sends Alert to SIEM"]
 ```
 
 ## Detection Methodologies

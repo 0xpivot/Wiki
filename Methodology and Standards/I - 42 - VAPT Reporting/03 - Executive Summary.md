@@ -37,30 +37,17 @@ To write a highly effective Executive Summary, you must deeply understand your t
 
 A world-class Executive Summary is strictly concise—typically 1 to 3 pages long—and follows a carefully structured, high-impact narrative flow.
 
-```text
-+---------------------------------------------------------------------------------+
-|                         Executive Summary Architecture Diagram                  |
-+---------------------------------------------------------------------------------+
-|                                                                                 |
-|  [ 1. Engagement Overview ]                                                     |
-|      Brief statement of Who, What, When, and the primary objective.             |
-|                                                                                 |
-|  [ 2. High-Level Security Posture (The "Bottom Line") ]                         |
-|      The definitive verdict. Is the network secure? Weak? Critical?             |
-|                                                                                 |
-|  [ 3. Visual Risk Summary ]                                                     |
-|      Pie charts, bar graphs, and severity distribution. Humans process          |
-|      visuals faster than text.                                                  |
-|                                                                                 |
-|  [ 4. Key Business Risks ]                                                      |
-|      Translating technical flaws (e.g., SQLi) into business impacts             |
-|      (e.g., Massive PII Data Theft & GDPR Fines).                               |
-|                                                                                 |
-|  [ 5. Strategic Recommendations & Roadmap ]                                     |
-|      High-level guidance on fixing systemic issues (e.g., "Implement MFA",      |
-|      "Adopt Zero Trust", "Conduct Developer Training").                         |
-|                                                                                 |
-+---------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph "Executive Summary Architecture"
+        S1["1. Engagement Overview<br>Brief statement of Who, What, When, and the primary objective."]
+        S2["2. High-Level Security Posture (The Bottom Line)<br>The definitive verdict. Is the network secure? Weak? Critical?"]
+        S3["3. Visual Risk Summary<br>Pie charts, bar graphs, and severity distribution. Humans process visuals faster than text."]
+        S4["4. Key Business Risks<br>Translating technical flaws into business impacts."]
+        S5["5. Strategic Recommendations & Roadmap<br>High-level guidance on fixing systemic issues."]
+        
+        S1 --> S2 --> S3 --> S4 --> S5
+    end
 ```
 
 ### 3.1 Engagement Overview

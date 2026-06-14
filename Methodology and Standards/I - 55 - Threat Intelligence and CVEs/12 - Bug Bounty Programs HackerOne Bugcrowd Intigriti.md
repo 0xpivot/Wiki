@@ -39,38 +39,26 @@ The ecosystem is dominated by several major platforms, each offering different f
 
 The core engine of any BBP is the triage process. Triagers act as intermediaries between the researcher and the organization's internal security team, filtering the signal from the noise.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        BUG BOUNTY SUBMISSION & TRIAGE FLOW                        |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  +--------------+                                                                 |
-|  |  Researcher  |                                                                 |
-|  +------+-------+                                                                 |
-|         | 1. Submit Report via Platform                                           |
-|         v                                                                         |
-|  +--------------+   2. Platform Triage                                            |
-|  |  Platform    |---+ (Validate PoC, Scope, Duplicates, VRT/CVSS)                 |
-|  |  Triager     |   |                                                             |
-|  +------+-------+<--+                                                             |
-|         | 3. Triaged & Forwarded                                                  |
-|         v                                                                         |
-|  +--------------+   4. Internal Validation                                        |
-|  | Organization |---+ (Confirm Risk, Assess Business Impact, Prioritize)          |
-|  |  Sec Team    |   |                                                             |
-|  +------+-------+<--+                                                             |
-|         | 5. Accepted & Reward Assigned                                           |
-|         v                                                                         |
-|  +--------------+                                                                 |
-|  | Payout & Fix |--> Patch Deployed --> Re-testing Requested --> Resolved         |
-|  +--------------+                                                                 |
-|                                                                                   |
-|  Edge Cases and Terminations:                                                     |
-|  - N/A (Not Applicable): Feature, not a bug, or accepted business risk.           |
-|  - OOS (Out of Scope): Valid bug, but on an asset not covered by the policy.      |
-|  - Duplicate: Valid bug, but previously reported by another researcher.           |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    R["Researcher"]
+    PT["Platform Triager"]
+    ORG["Organization Sec Team"]
+    PAY["Payout & Fix"]
+
+    R -- "1. Submit Report via Platform" --> PT
+    PT -- "2. Platform Triage<br>(Validate PoC, Scope, Duplicates, VRT/CVSS)" --> PT
+    PT -- "3. Triaged & Forwarded" --> ORG
+    ORG -- "4. Internal Validation<br>(Confirm Risk, Assess Business Impact, Prioritize)" --> ORG
+    ORG -- "5. Accepted & Reward Assigned" --> PAY
+    PAY -- "Patch Deployed --> Re-testing Requested --> Resolved" --> PAY
+
+    subgraph Edge_Cases ["Edge Cases and Terminations"]
+    direction TB
+    N[N/A: Feature, not a bug, or accepted business risk]
+    O[OOS: Valid bug, but on an asset not covered by the policy]
+    D[Duplicate: Valid bug, but previously reported by another researcher]
+    end
 ```
 
 ### The Triage Workflow

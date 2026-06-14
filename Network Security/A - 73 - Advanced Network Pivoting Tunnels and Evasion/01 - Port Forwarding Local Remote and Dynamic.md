@@ -22,24 +22,24 @@ These channels can carry terminal sessions, X11 forwarding, and most importantly
 
 ## 3. ASCII Architecture Diagram
 
-```text
-===================================================================================================
-[Attacker Network]                      [DMZ / Firewall Boundary]                [Internal Network]
-===================================================================================================
-  [Attacker Machine]                      [Compromised Pivot]                    [Isolated Target]
-    IP: 1.1.1.1                               IP: 2.2.2.2                           IP: 10.0.0.5
-         |                                         |                                     |
-         |                                         |                                     |
-         |==== 1. Local Forwarding (-L) ==========>| (Listens on 2.2.2.2:80)             |
-         |  (Binds 127.0.0.1:8080 on Attacker)     |==== Forwards to 10.0.0.5:80 =======>|
-         |                                         |                                     |
-         |<=== 2. Remote Forwarding (-R) ==========|                                     |
-         |  (Binds 0.0.0.0:4444 on Attacker)       |                                     |
-         |                                         |<=== Forwards internal traffic =====>|
-         |                                         |                                     |
-         |==== 3. Dynamic Forwarding (-D) ========>|                                     |
-         |  (Binds SOCKS proxy on Attacker)        |==== Routes traffic dynamically ====/|
-===================================================================================================
+```mermaid
+sequenceDiagram
+    box Attacker Network
+    participant Attacker as Attacker Machine<br/>IP: 1.1.1.1
+    end
+    box DMZ / Firewall Boundary
+    participant Pivot as Compromised Pivot<br/>IP: 2.2.2.2
+    end
+    box Internal Network
+    participant Target as Isolated Target<br/>IP: 10.0.0.5
+    end
+
+    Attacker->>Pivot: 1. Local Forwarding (-L)<br/>(Binds 127.0.0.1:8080 on Attacker)
+    Pivot->>Target: (Listens on 2.2.2.2:80)<br/>Forwards to 10.0.0.5:80
+    Pivot->>Attacker: 2. Remote Forwarding (-R)<br/>(Binds 0.0.0.0:4444 on Attacker)
+    Target->>Pivot: Forwards internal traffic
+    Attacker->>Pivot: 3. Dynamic Forwarding (-D)<br/>(Binds SOCKS proxy on Attacker)
+    Pivot->>Target: Routes traffic dynamically
 ```
 
 ## 4. Local Port Forwarding (-L)

@@ -40,34 +40,23 @@ The attack typically relies on two distinct phases:
 
 ## 4. ASCII Architecture Diagram
 
-```text
-+-------------------------------------------------------------------------+
-|                           NTLM Relay Attack Flow                        |
-+-------------------------------------------------------------------------+
-
-  [ Victim Client ]            [ Attacker (MitM) ]            [ Target Server ]
-  (e.g., Domain Admin)         (Running ntlmrelayx)           (e.g., File Server)
-       |                               |                               |
-       |  1. Type 1 (Negotiate)        |                               |
-       |------------------------------>|                               |
-       |                               |  2. Type 1 (Negotiate)        |
-       |                               |------------------------------>|
-       |                               |                               |
-       |                               |  3. Type 2 (Challenge: X)     |
-       |                               |<------------------------------|
-       |  4. Type 2 (Challenge: X)     |                               |
-       |<------------------------------|                               |
-       |                               |                               |
-       |  5. Type 3 (Auth: Hash(X))    |                               |
-       |------------------------------>|                               |
-       |                               |  6. Type 3 (Auth: Hash(X))    |
-       |                               |------------------------------>|
-       |                               |                               |
-       |                               |  7. Authenticated Session!    |
-       |                               |<=============================>|
-       |                               |  Executes commands, dumps     |
-                                          SAM, or creates accounts as  
-                                          the Victim user.
+```mermaid
+sequenceDiagram
+    participant Victim as Victim Client (e.g., Domain Admin)
+    participant Attacker as Attacker (MitM) (Running ntlmrelayx)
+    participant Target as Target Server (e.g., File Server)
+    
+    Victim->>Attacker: 1. Type 1 (Negotiate)
+    Attacker->>Target: 2. Type 1 (Negotiate)
+    
+    Target-->>Attacker: 3. Type 2 (Challenge: X)
+    Attacker-->>Victim: 4. Type 2 (Challenge: X)
+    
+    Victim->>Attacker: 5. Type 3 (Auth: Hash(X))
+    Attacker->>Target: 6. Type 3 (Auth: Hash(X))
+    
+    Target-->>Attacker: 7. Authenticated Session!
+    Note over Attacker,Target: Executes commands, dumps SAM, or creates accounts as the Victim user.
 ```
 
 ## 5. Prerequisites and Required Tools

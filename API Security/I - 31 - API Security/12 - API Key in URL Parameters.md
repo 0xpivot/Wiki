@@ -32,35 +32,28 @@ Unlike the HTTP body or custom headers, which are transient and explicitly ignor
 
 ## 3. Attack Architecture & Flow
 
-```text
-      [User / Client]
-             |
-             | 1. GET /api/data?api_key=SECRET_123
-             v
-      [Load Balancer / CDN]  --- 2. Logs URL: /api/data?api_key=SECRET_123
-             |
-             | 3. Forwards Request
-             v
-        [Web Server]   --------- 4. Writes to /var/log/nginx/access.log:
-             |                      "GET /api/data?api_key=SECRET_123 HTTP/1.1"
-             | 5. Internal Routing
-             v
-   [Application Backend] ------- 6. Application Error Tracker (e.g., Sentry)
-                                    Logs URL including API Key during exceptions
-                                    
-  =============================================================================
-  
-      [Attacker Exploitation]
-             |
-             | 7. Attacker gains low-privilege access, finds LFI, or 
-             |    compromises a third-party analytics dashboard.
-             v
-      [Log Aggregator]
-             |
-             | 8. Attacker executes search: 
-             |    grep -Eo 'api_key=[^& ]+' access.log
-             v
-      [Stolen Credentials] ----> 9. Direct, unauthorized API access
+```mermaid
+flowchart TD
+    subgraph Flow ["Request Flow"]
+        Client["User / Client"]
+        LB["Load Balancer / CDN\nLogs URL: /api/data?api_key=SECRET_123"]
+        Web["Web Server\nWrites to /var/log/nginx/access.log"]
+        App["Application Backend\nApplication Error Tracker (e.g., Sentry)\nLogs URL including API Key during exceptions"]
+
+        Client -- "1. GET /api/data?api_key=SECRET_123" --> LB
+        LB -- "3. Forwards Request" --> Web
+        Web -- "5. Internal Routing" --> App
+    end
+
+    subgraph Exploitation ["Attacker Exploitation"]
+        Attacker["Attacker Exploitation"]
+        Logs["Log Aggregator"]
+        Creds["Stolen Credentials"]
+
+        Attacker -- "7. Attacker gains low-privilege access, finds LFI, or\ncompromises a third-party analytics dashboard." --> Logs
+        Logs -- "8. Attacker executes search:\ngrep -Eo 'api_key=[^& ]+' access.log" --> Creds
+        Creds -- "9. Direct, unauthorized API access" --> API_Access[ ]
+    end
 ```
 
 ## 4. Deep Dive: Exploitation Methodologies

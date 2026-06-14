@@ -25,29 +25,19 @@ Most vulnerable applications use an architecture involving **Function Calling** 
 
 ## Attack Architecture and Flow
 
-```text
-+---------------+      1. Malicious Prompt / Jailbreak      +------------------+
-|               |------------------------------------------>|                  |
-|   Attacker    |                                           |  Web App / API   |
-|               |<------------------------------------------|  Gateway         |
-+---------------+      6. Exfiltrated Data / PII            +------------------+
-                                                              |    ^
-                               2. Forwards malicious prompt   |    | 5. Returns Data
-                                                              v    |
-                                                    +------------------+
-                                                    |                  |
-                                                    |       LLM        |
-                                                    |  (OpenAI, etc.)  |
-                                                    |                  |
-                                                    +------------------+
-                                                       |   ^
-                    3. LLM decides to call API tool    |   | 4. Backend Executes
-                    based on tricked instructions      v   |    API Call
-                                                    +------------------+
-                                                    |                  |
-                                                    | Backend Services |
-                                                    | / Database       |
-                                                    +------------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker"]
+    WebApp["Web App / API Gateway"]
+    LLM["LLM\n(OpenAI, etc.)"]
+    Backend["Backend Services / Database"]
+
+    Attacker -- "1. Malicious Prompt / Jailbreak" --> WebApp
+    WebApp -- "2. Forwards malicious prompt" --> LLM
+    LLM -- "3. LLM decides to call API tool\nbased on tricked instructions" --> Backend
+    Backend -- "4. Backend Executes API Call" --> LLM
+    LLM -- "5. Returns Data" --> WebApp
+    WebApp -- "6. Exfiltrated Data / PII" --> Attacker
 ```
 
 ## Primary Attack Vectors

@@ -101,33 +101,20 @@ If `DefaultPassword` is populated, the attacker immediately gains the plaintext 
 
 ## ASCII Diagram: DPAPI and Credential Extraction
 
-```text
-+-----------------------+
-| User Logon            |
-| (Password Entered)    |
-+-----------------------+
-          |
-          v
-+-----------------------+       +-----------------------+
-| Local Security        |       | Master Key File       |
-| Authority (LSASS)     | ----> | (%APPDATA%\...\       |
-| Derives DPAPI Key     |       | Protect\...\)         |
-+-----------------------+       +-----------------------+
-          |                               |
-          | (Decrypts)                    | (Encrypts)
-          v                               v
-+-----------------------+       +-----------------------+
-| Vault Data (Encrypted)|       | Credential Manager    |
-| (Web/Network Creds)   |       | (cmdkey /list)        |
-+-----------------------+       +-----------------------+
-          ^
-          |
-+-----------------------+
-| Attacker Tooling      |
-| (Mimikatz vault::cred)|
-| Requires SYSTEM to    |
-| interact with LSASS   |
-+-----------------------+
+```mermaid
+flowchart TD
+    UL["User Logon\n(Password Entered)"]
+    LSA["Local Security\nAuthority (LSASS)\nDerives DPAPI Key"]
+    MKF["Master Key File\n(%APPDATA%\\...\\\nProtect\\...\\)"]
+    VD["Vault Data (Encrypted)\n(Web/Network Creds)"]
+    CM["Credential Manager\n(cmdkey /list)"]
+    AT["Attacker Tooling\n(Mimikatz vault::cred)\nRequires SYSTEM to\ninteract with LSASS"]
+    
+    UL --> LSA
+    LSA --> MKF
+    LSA -->|Decrypts| VD
+    MKF -->|Encrypts| CM
+    AT --> VD
 ```
 
 ## Other Notable Credential Locations

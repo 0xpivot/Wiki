@@ -25,38 +25,16 @@ The essence of an HPP bypass is tricking the WAF into inspecting benign data whi
 
 ### 2.1 Execution Flow Diagram
 
-```text
-+-------------------------------------------------------------+
-|                        ATTACKER                             |
-|  Request: GET /search?q=safe&q=<script>alert(1)</script>    |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                      WAF / FILTER                           |
-| 1. Parses Query String: q=safe & q=<script>alert(1)</script>|
-| 2. WAF Parsing Logic: "Extract the FIRST parameter value"   |
-|    Extracted Value: q = "safe"                              |
-| 3. Evaluates against Rule: /<script>/i                      |
-| 4. Match: FALSE (Because "safe" is benign)                  |
-| 5. Decision: ALLOW (Forwards raw request to backend)        |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                   BACKEND APPLICATION                       |
-| 1. Receives raw request.                                    |
-| 2. App Parsing Logic (e.g., PHP): "Extract the LAST value"  |
-|    Extracted Value: q = "<script>alert(1)</script>"         |
-| 3. Processes malicious payload.                             |
-| 4. Reflects payload in HTML response.                       |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                    PAYLOAD EXECUTION                        |
-| Browser executes XSS payload.                               |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["ATTACKER <br/> Request: GET /search?q=safe&q=&lt;script&gt;alert(1)&lt;/script&gt;"]
+    WAF["WAF / FILTER <br/> 1. Parses Query String: q=safe & q=&lt;script&gt;alert(1)&lt;/script&gt; <br/> 2. WAF Parsing Logic: 'Extract the FIRST parameter value' <br/> Extracted Value: q = 'safe' <br/> 3. Evaluates against Rule: /&lt;script&gt;/i <br/> 4. Match: FALSE (Because 'safe' is benign) <br/> 5. Decision: ALLOW (Forwards raw request to backend)"]
+    Backend["BACKEND APPLICATION <br/> 1. Receives raw request. <br/> 2. App Parsing Logic (e.g., PHP): 'Extract the LAST value' <br/> Extracted Value: q = '&lt;script&gt;alert(1)&lt;/script&gt;' <br/> 3. Processes malicious payload. <br/> 4. Reflects payload in HTML response."]
+    Execution["PAYLOAD EXECUTION <br/> Browser executes XSS payload."]
+
+    Attacker --> WAF
+    WAF --> Backend
+    Backend --> Execution
 ```
 
 ---

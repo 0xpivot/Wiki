@@ -15,30 +15,18 @@ Because the smuggled request is embedded *inside the body* of the carrier reques
 Think of it like a VIP club. The bouncer at the front door (Front-End) checks IDs. If you try to walk into the VIP room, he stops you. However, you ask to go to the bathroom. The bouncer checks your ID, says "Okay," and lets you in. Once inside, you crawl through the air vents into the VIP room. The bartender inside the VIP room (Back-End) assumes that because you are inside the club, the bouncer must have vetted you for VIP access, so they serve you.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    BYPASSING FRONT-END SECURITY CONTROLS
-================================================================================
+```mermaid
+flowchart TD
+    Policy["The Security Policy <br/> Front-End WAF Rule: Block any request to `/admin/*` unless IP = 10.0.0.1."]
+    Attacker["Attacker sends a normal request to the WAF <br/> Attacker sends: POST /home HTTP/1.1 <br/> (Attacker hides a GET /admin request inside the body)."]
+    Front["Front-End Inspection <br/> WAF checks URL: `/home`. <br/> WAF says: 'This is not /admin. Allowed!' <br/> (Forwards request to Back-End)."]
+    Back["Back-End Execution <br/> Back-End unpacks the chunked body. <br/> Finds the smuggled request: GET /admin <br/> Back-End says: 'The WAF let this through, so the IP must be 10.0.0.1. Allowed!'"]
+    Result["Result: Attacker accesses the /admin panel!"]
 
-[The Security Policy]
-Front-End WAF Rule: Block any request to `/admin/*` unless IP = 10.0.0.1.
-
-[Attacker sends a normal request to the WAF]
-Attacker sends: POST /home HTTP/1.1
-(Attacker hides a GET /admin request inside the body).
-
-[Front-End Inspection]
-WAF checks URL: `/home`.
-WAF says: "This is not /admin. Allowed!"
-(Forwards request to Back-End).
-
-[Back-End Execution]
-Back-End unpacks the chunked body.
-Finds the smuggled request: GET /admin
-Back-End says: "The WAF let this through, so the IP must be 10.0.0.1. Allowed!"
-
-[Result: Attacker accesses the /admin panel!]
-================================================================================
+    Policy -.-> Attacker
+    Attacker --> Front
+    Front --> Back
+    Back --> Result
 ```
 
 ## How to Find It

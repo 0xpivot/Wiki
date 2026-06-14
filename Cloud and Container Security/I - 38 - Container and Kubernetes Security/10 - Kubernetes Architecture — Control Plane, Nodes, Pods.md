@@ -14,43 +14,20 @@ Kubernetes architecture follows a classic client-server model, divided into two 
 
 ## The Architectural Blueprint
 
-```text
-+-----------------------------------------------------------------------+
-|                       KUBERNETES CONTROL PLANE                        |
-|                                                                       |
-|   +----------------+      +-------------------+      +------------+   |
-|   | Cloud Control  |      |   kube-scheduler  |      | Controller |   |
-|   |    Manager     |      |                   |      |  Manager   |   |
-|   +-------+--------+      +---------+---------+      +------+-----+   |
-|           |                         |                       |         |
-|           v                         v                       v         |
-|   +---------------------------------------------------------------+   |
-|   |                    kube-apiserver                             |   |
-|   |             (The Central Communication Hub)                   |   |
-|   +-------------------------------+-------------------------------+   |
-|                                   |                                   |
-|                                   v                                   |
-|   +---------------------------------------------------------------+   |
-|   |                        etcd (Key-Value Store)                 |   |
-|   |               (The Source of Truth & Cluster State)           |   |
-|   +---------------------------------------------------------------+   |
-+-----------------------------------^-----------------------------------+
-                                    | TLS / gRPC / HTTPS
-+-----------------------------------------------------------------------+
-|                            WORKER NODE 1                              |
-|                                   |                                   |
-|   +-------------------------------+-------------------------------+   |
-|   |                            kubelet                            |   |
-|   |               (The Node Agent / Process Manager)              |   |
-|   +-------+-----------------------+-----------------------+-------+   |
-|           |                       |                       |           |
-|           v                       v                       v           |
-|   +---------------+       +---------------+       +---------------+   |
-|   |  Container    |       |  kube-proxy   |       |   Pod (App)   |   |
-|   |  Runtime      |       |  (Networking) |       | [Container]   |   |
-|   | (containerd)  |       |               |       | [Container]   |   |
-|   +---------------+       +---------------+       +---------------+   |
-+-----------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph KUBERNETES CONTROL PLANE
+        A[Cloud Control Manager] --> B[kube-apiserver <br/> The Central Communication Hub]
+        C[kube-scheduler] --> B
+        D[Controller Manager] --> B
+        B --> E[etcd Key-Value Store <br/> The Source of Truth & Cluster State]
+    end
+    B <-->|TLS / gRPC / HTTPS| F[kubelet <br/> The Node Agent / Process Manager]
+    subgraph WORKER NODE 1
+        F --> G[Container Runtime containerd]
+        F --> H[kube-proxy Networking]
+        F --> I[Pod App <br/> Container <br/> Container]
+    end
 ```
 
 ## Deep Dive: The Control Plane

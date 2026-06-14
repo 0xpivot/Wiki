@@ -23,42 +23,18 @@ The attacker crafts a payload where the front-end thinks it's forwarding 1 reque
 Think of it like a shipping container. The front-end is the harbor master who checks the manifest (Content-Length) and says "Okay, 1 container." The backend is the warehouse worker who unloads it by looking at the specific boxes inside (Transfer-Encoding). If the attacker puts a false bottom in the container, the harbor master sees 1 container and lets it through. The warehouse worker unpacks it, finds the false bottom, and realizes there's a hidden, second, highly dangerous package inside that the harbor master never saw.
 
 ## ASCII Diagram
-```text
-================================================================================
-                        THE MECHANICS OF SMUGGLING
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["Attacker's Malicious HTTP Request <br/> POST / HTTP/1.1 <br/> Host: vulnerable.com <br/> Content-Length: 13 <br/> Transfer-Encoding: chunked <br/> <br/> 0 <br/> SMUGGLED"]
+    Front["Front-End Server (Parses Content-Length: 13) <br/> 'I see 13 bytes in the body. I will forward exactly 13 bytes.' <br/> (Forwards: '0\r\n\r\nSMUGGLED')"]
+    Back["Back-End Server (Parses Transfer-Encoding: chunked) <br/> 'I see chunked encoding. I read 0. That means the request is OVER!' <br/> 'Wait, what is this SMUGGLED text left over in the TCP buffer? I'll leave it there and prepend it to the next request that comes in.'"]
+    Next["Next Legitimate User sends their request over the same connection <br/> GET /profile HTTP/1.1 <br/> Host: vulnerable.com"]
+    Combine["Back-End Server combines them! <br/> SMUGGLEDGET /profile HTTP/1.1 <br/> Host: vulnerable.com <br/> <br/> Result: The Back-End throws an error because 'SMUGGLEDGET' is not a valid HTTP method. The legitimate user receives the error!"]
 
-[Attacker's Malicious HTTP Request]
-POST / HTTP/1.1
-Host: vulnerable.com
-Content-Length: 13
-Transfer-Encoding: chunked
-
-0
-SMUGGLED
-
-[Front-End Server (Parses Content-Length: 13)]
-"I see 13 bytes in the body. I will forward exactly 13 bytes."
-(Forwards: "0\r\n\r\nSMUGGLED")
-       │
-       ▼
-[Back-End Server (Parses Transfer-Encoding: chunked)]
-"I see chunked encoding. I read '0'. That means the request is OVER!"
-"Wait, what is this 'SMUGGLED' text left over in the TCP buffer? I'll 
-leave it there and prepend it to the next request that comes in."
-       │
-[Next Legitimate User sends their request over the same connection]
-GET /profile HTTP/1.1
-Host: vulnerable.com
-       │
-       ▼
-[Back-End Server combines them!]
-SMUGGLEDGET /profile HTTP/1.1
-Host: vulnerable.com
-
-[Result: The Back-End throws an error because "SMUGGLEDGET" is not a 
-valid HTTP method. The legitimate user receives the error!]
-================================================================================
+    Attacker --> Front
+    Front --> Back
+    Back --> Combine
+    Next --> Combine
 ```
 
 ## How to Find It

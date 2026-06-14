@@ -56,40 +56,23 @@ A robust web delivery infrastructure relies on redirectors. A redirector is an i
 
 ## Custom ASCII Diagram
 
-```text
-+-----------------------------------------------------------------------------------+
-|                            Advanced Web Delivery Architecture                     |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [ Phishing Target ]                                                              |
-|         | 1. Clicks link: https://cdn.legit-update.com/download/patch.hta         |
-|         v                                                                         |
-|  [ Nginx Redirector (VPS) ] <---- Valid SSL Certificate (Let's Encrypt)           |
-|         |                                                                         |
-|         |-- a. Inspect IP: Is it a known Sandbox IP? (No)                         |
-|         |-- b. Inspect User-Agent: Is it an automated scanner? (No)               |
-|         |-- c. Inspect URI: Matches /download/patch.hta? (Yes)                    |
-|         |                                                                         |
-|         |-- 2. Proxy request to hidden backend over VPN/Stunnel                   |
-|         v                                                                         |
-|  [ Hidden Team Server (Cobalt Strike) ]                                           |
-|         |                                                                         |
-|         |-- 3. Generates customized HTA payload using Resource Kit                |
-|         |      (Includes AMSI bypass, obfuscated VBScript)                        |
-|         |                                                                         |
-|         v                                                                         |
-|  [ Nginx Redirector ] ----> Returns stealthy payload to Target                    |
-|                                                                                   |
-|-----------------------------------------------------------------------------------|
-|                                                                                   |
-|  [ Blue Team / Scanner (e.g., Shodan) ]                                           |
-|         | 1. Scans: https://cdn.legit-update.com/                                 |
-|         v                                                                         |
-|  [ Nginx Redirector ]                                                             |
-|         |-- a. Inspect Request: No specific URI, User-Agent is scanner            |
-|         |-- 2. Action: Redirect to https://www.google.com or return 404           |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph TargetFlow["Target Flow"]
+        T_Target["Phishing Target<br>1. Clicks link: https://cdn.legit-update.com/download/patch.hta"]
+        T_Redir["Nginx Redirector (VPS) | Valid SSL Certificate (Let's Encrypt)<br>- a. Inspect IP: Is it a known Sandbox IP? (No)<br>- b. Inspect User-Agent: Is it an automated scanner? (No)<br>- c. Inspect URI: Matches /download/patch.hta? (Yes)<br>- 2. Proxy request to hidden backend over VPN/Stunnel"]
+        T_TS["Hidden Team Server (Cobalt Strike)<br>3. Generates customized HTA payload using Resource Kit<br>(Includes AMSI bypass, obfuscated VBScript)"]
+        T_Return["Nginx Redirector -> Returns stealthy payload to Target"]
+        
+        T_Target --> T_Redir --> T_TS --> T_Return
+    end
+    
+    subgraph ScannerFlow["Scanner Flow"]
+        S_Scan["Blue Team / Scanner (e.g., Shodan)<br>1. Scans: https://cdn.legit-update.com/"]
+        S_Redir["Nginx Redirector<br>- a. Inspect Request: No specific URI, User-Agent is scanner<br>- 2. Action: Redirect to https://www.google.com or return 404"]
+        
+        S_Scan --> S_Redir
+    end
 ```
 
 ## Real-World Attack Scenario

@@ -35,54 +35,17 @@ For example, to hide a malicious process from the Task Manager:
 7. The rootkit returns the tampered list back to user mode.
 8. Task Manager displays the list, entirely unaware that a process has been hidden.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                                SSDT Hooking Architecture                          |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  Ring 3 (User Mode)                                                               |
-|  +--------------------+                                                           |
-|  | Task Manager       |                                                           |
-|  | (API Call)         |                                                           |
-|  +---------+----------+                                                           |
-|            | 1. Calls NtQuerySystemInformation                                    |
-|            v                                                                      |
-|  +--------------------+                                                           |
-|  | ntdll.dll          |                                                           |
-|  | (Syscall Wrapper)  |                                                           |
-|  +---------+----------+                                                           |
-|            | 2. syscall instruction                                               |
-|  ==========|====================================================================  |
-|            |                                                                      |
-|  Ring 0 (Kernel Mode)                                                             |
-|            v                                                                      |
-|  +--------------------+       3. Looks up Index                                   |
-|  | System Service     |-----------------------+                                   |
-|  | Dispatcher         |                       |                                   |
-|  +--------------------+                       v                                   |
-|                                     +--------------------+                        |
-|                                     |        SSDT        |                        |
-|                                     +--------------------+                        |
-|                                     | [0] NtCreateFile   |                        |
-|                                     | [1] NtOpenFile     |                        |
-|                                     | ...                |                        |
-|                                     | [X] Malicious_Func | <--- HOOKED!           |
-|                                     | ...                | (Points to Rootkit.sys)|
-|                                     +---------+----------+                        |
-|                                               |                                   |
-|                                               | 4. Execution Redirected           |
-|                                               v                                   |
-|                                     +--------------------+                        |
-|                                     | Rootkit.sys        |                        |
-|                                     | (Filters output)   |                        |
-|                                     +---------+----------+                        |
-|                                               | 5. Calls original                 |
-|                                               v                                   |
-|                                     +--------------------+                        |
-|                                     | ntoskrnl.exe       |                        |
-|                                     | (Original Func)    |                        |
-|                                     +--------------------+                        |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Ring 3 User Mode
+        A[Task Manager API Call] -->|1 Calls NtQuerySystemInformation| B[ntdll.dll Syscall Wrapper]
+    end
+    B -->|2 syscall instruction| C[System Service Dispatcher]
+    subgraph Ring 0 Kernel Mode
+        C -->|3 Looks up Index| D[SSDT<br>0 NtCreateFile<br>1 NtOpenFile<br>X Malicious_Func HOOKED!]
+        D -->|4 Execution Redirected| E[Rootkit.sys Filters output]
+        E -->|5 Calls original| F[ntoskrnl.exe Original Func]
+    end
 ```
 
 ## Detection Strategies in Memory Forensics

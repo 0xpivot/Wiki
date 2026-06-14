@@ -14,28 +14,17 @@ To lock down a cluster, security engineers must implement overlapping layers of 
 
 ## Core Defensive Architecture Diagram
 
-```text
-+----------------------------------------------------------------------------------------+
-|                               Kubernetes Defense-in-Depth                              |
-|                                                                                        |
-|  1. API AuthZ Layer                     2. Admission Layer                             |
-|  +---------------------+               +-----------------------+                       |
-|  |   RBAC Hardening    |  API Request  | Pod Security Admission|                       |
-|  | - Least Privilege   | ============> | (PSA)                 |                       |
-|  | - No cluster-admin  |               | - Enforces Baseline/  |                       |
-|  | - Audit logging     |               |   Restricted profiles |                       |
-|  +---------------------+               +-----------+-----------+                       |
-|                                                    | (Pod scheduled)                   |
-|                                                    v                                   |
-|                                        +-----------------------+                       |
-|                                        |     Worker Node       |                       |
-|  3. Network Layer                      | +-------------------+ |                       |
-|  +---------------------+               | |       Pod         | |   4. Runtime Layer    |
-|  |  Network Policies   | <============ | |                   | | <------------------+  |
-|  | - Default Deny      |  Controls I/O | | Seccomp / AppArmor| |  (e.g., Falco,     |  |
-|  | - Microsegmentation |               | +-------------------+ |   Tetragon eBPF)   |  |
-|  +---------------------+               +-----------------------+                       |
-+----------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Kubernetes Defense-in-Depth
+        A[1. API AuthZ Layer <br/> RBAC Hardening <br/> - Least Privilege <br/> - No cluster-admin <br/> - Audit logging] -- API Request --> B[2. Admission Layer <br/> Pod Security Admission PSA <br/> - Enforces Baseline/Restricted profiles]
+        B -- Pod scheduled --> C[Worker Node]
+        C --> D[3. Network Layer <br/> Network Policies <br/> - Default Deny <br/> - Microsegmentation]
+        D -- Controls I/O --> E[Pod]
+        C --> E
+        E --> F[Seccomp / AppArmor]
+        F -- 4. Runtime Layer <br/> e.g., Falco, Tetragon eBPF --> G[Runtime Layer]
+    end
 ```
 
 ## 1. Pod Security Admission (PSA)

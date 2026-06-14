@@ -44,28 +44,29 @@ Malware often modifies the PEB directly (e.g., altering the `ImageBaseAddress` o
 ## Walking the ActiveProcessLinks
 Volatility's `windows.pslist` plugin works by reading the `PsActiveProcessHead` symbol and jumping from `FLINK` to `FLINK` through physical memory.
 
-```text
-=============================================================================
-                  ASCII Diagram: EPROCESS Doubly Linked List
-=============================================================================
-
-       PsActiveProcessHead
-               |
-               v
-  +--------------------------+          +--------------------------+
-  |       EPROCESS 1         |          |       EPROCESS 2         |
-  |       (System)           |          |       (smss.exe)         |
-  |--------------------------|          |--------------------------|
-  | PID: 4                   |          | PID: 348                 |
-  |--------------------------|          |--------------------------|
-  | ActiveProcessLinks       |          | ActiveProcessLinks       |
-  |   FLINK ----------------------------> FLINK -----------------------> ...
-  |   BLINK <---------------------------- BLINK <----------------------- ...
-  |--------------------------|          |--------------------------|
-  | Token (SYSTEM)           |          | Token (SYSTEM)           |
-  | VadRoot                  |          | VadRoot                  |
-  +--------------------------+          +--------------------------+
-=============================================================================
+```mermaid
+flowchart LR
+    HEAD[PsActiveProcessHead] --> F1
+    subgraph EPROCESS 1
+        direction TB
+        P1[System PID: 4]
+        F1[FLINK]
+        B1[BLINK]
+        T1[Token SYSTEM]
+        V1[VadRoot]
+    end
+    subgraph EPROCESS 2
+        direction TB
+        P2[smss.exe PID: 348]
+        F2[FLINK]
+        B2[BLINK]
+        T2[Token SYSTEM]
+        V2[VadRoot]
+    end
+    F1 -->|next| F2
+    B2 -->|prev| B1
+    F2 -->|next| DOTS[...]
+    DOTS -->|prev| B2
 ```
 
 ## DKOM (Direct Kernel Object Manipulation) Principles

@@ -52,38 +52,16 @@ The most significant upgrade to a custom Artifact Kit is the integration of Dire
 
 ## Custom ASCII Diagram
 
-```text
-+-----------------------------------------------------------------------------------+
-|                            Artifact Kit Obfuscation Pipeline                      |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [ Cobalt Strike Client ]                                                         |
-|         | 1. Request payload generation (e.g., Windows Executable)                |
-|         v                                                                         |
-|  [ Team Server ]                                                                  |
-|         | 2. Generate raw Beacon Shellcode                                        |
-|         | 3. Pass Shellcode to customized Artifact Kit (.cna script)              |
-|         v                                                                         |
-|  [ Artifact Kit Engine ]                                                          |
-|         |                                                                         |
-|         |-- a. Encrypt Shellcode (e.g., AES-256)                                  |
-|         |-- b. Inject into C Template (e.g., bypass-pipe.c)                       |
-|         |-- c. Add Anti-Sandbox logic (Check System Uptime > 2 hours)             |
-|         |-- d. Implement Direct Syscalls (Bypass NTDLL hooks)                     |
-|         |                                                                         |
-|         v                                                                         |
-|  [ MinGW Compiler ]                                                               |
-|         | 4. Compile to executable (.exe / .dll)                                  |
-|         v                                                                         |
-|  [ Obfuscated Artifact ] (Delivered to Target)                                    |
-|         |                                                                         |
-|         |--> Target Execution Flow:                                               |
-|              1. Anti-Sandbox Check (Passes)                                       |
-|              2. Syscall: NtAllocateVirtualMemory (Bypasses EDR Hook)              |
-|              3. Decrypt Shellcode into Memory                                     |
-|              4. Syscall: NtCreateThreadEx (Executes Payload)                      |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Client["Cobalt Strike Client"]
+    Req["1. Request payload generation (e.g., Windows Executable)"]
+    TS["Team Server<br>2. Generate raw Beacon Shellcode<br>3. Pass Shellcode to customized Artifact Kit (.cna script)"]
+    Art["Artifact Kit Engine<br>- a. Encrypt Shellcode (e.g., AES-256)<br>- b. Inject into C Template (e.g., bypass-pipe.c)<br>- c. Add Anti-Sandbox logic (Check System Uptime > 2 hours)<br>- d. Implement Direct Syscalls (Bypass NTDLL hooks)"]
+    Comp["MinGW Compiler<br>4. Compile to executable (.exe / .dll)"]
+    Obf["Obfuscated Artifact (Delivered to Target)<br>Target Execution Flow:<br>1. Anti-Sandbox Check (Passes)<br>2. Syscall: NtAllocateVirtualMemory (Bypasses EDR Hook)<br>3. Decrypt Shellcode into Memory<br>4. Syscall: NtCreateThreadEx (Executes Payload)"]
+    
+    Client --> Req --> TS --> Art --> Comp --> Obf
 ```
 
 ## Real-World Attack Scenario

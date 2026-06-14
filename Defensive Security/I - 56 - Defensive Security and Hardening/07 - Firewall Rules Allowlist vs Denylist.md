@@ -20,41 +20,27 @@ A denylist is the opposite. The default stance is "allow all." Traffic is permit
 
 ## Architectural Diagram
 
-```text
-========================================================================================
-                          Firewall Rule Processing Logic
-========================================================================================
+```mermaid
+flowchart TD
+    subgraph Allowlist["ALLOWLIST APPROACH (Default Deny)"]
+        direction TB
+        A_In["Incoming Packet"] --> A_R1["Rule 1: Allow TCP 443\nfrom 192.168.1.0/24"]
+        A_R1 -- "Match? Yes" --> A_P1["[ PERMIT ]"]
+        A_R1 -- "Match? No" --> A_R2["Rule 2: Allow UDP 53\nfrom Trusted_DNS_Grp"]
+        A_R2 -- "Match? Yes" --> A_P2["[ PERMIT ]"]
+        A_R2 -- "Match? No" --> A_Def["DEFAULT DENY ALL\n(Implicit Rule)"]
+        A_Def --> A_Drop["[ DROP ]"]
+    end
 
-      ALLOWLIST APPROACH (Default Deny)             DENYLIST APPROACH (Default Allow)
-      ---------------------------------             ---------------------------------
-              Incoming Packet                                Incoming Packet
-                     |                                              |
-                     v                                              v
-      +-----------------------------+               +-----------------------------+
-      |  Rule 1: Allow TCP 443      |               |  Rule 1: Block IP 10.x.x.x  |
-      |  from 192.168.1.0/24        |               |                             |
-      +-------------+---------------+               +-------------+---------------+
-                    |                                             |
-            Match?--+--Yes--> [ PERMIT ]                  Match?--+--Yes--> [ DROP ]
-                    | No                                          | No
-                    v                                             v
-      +-----------------------------+               +-----------------------------+
-      |  Rule 2: Allow UDP 53       |               |  Rule 2: Block Port 23      |
-      |  from Trusted_DNS_Grp       |               |  (Telnet) globally          |
-      +-------------+---------------+               +-------------+---------------+
-                    |                                             |
-            Match?--+--Yes--> [ PERMIT ]                  Match?--+--Yes--> [ DROP ]
-                    | No                                          | No
-                    v                                             v
-      +-----------------------------+               +-----------------------------+
-      |      DEFAULT DENY ALL       |               |      DEFAULT ALLOW ALL      |
-      |      (Implicit Rule)        |               |      (Implicit Rule)        |
-      +-------------+---------------+               +-------------+---------------+
-                    |                                             |
-                    v                                             v
-                 [ DROP ]                                     [ PERMIT ]
-
-========================================================================================
+    subgraph Denylist["DENYLIST APPROACH (Default Allow)"]
+        direction TB
+        D_In["Incoming Packet"] --> D_R1["Rule 1: Block IP 10.x.x.x"]
+        D_R1 -- "Match? Yes" --> D_D1["[ DROP ]"]
+        D_R1 -- "Match? No" --> D_R2["Rule 2: Block Port 23\n(Telnet) globally"]
+        D_R2 -- "Match? Yes" --> D_D2["[ DROP ]"]
+        D_R2 -- "Match? No" --> D_Def["DEFAULT ALLOW ALL\n(Implicit Rule)"]
+        D_Def --> D_P["[ PERMIT ]"]
+    end
 ```
 
 ## Deep Dive: Allowlisting

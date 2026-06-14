@@ -77,34 +77,24 @@ By correlating high-entropy strings or sequences of words found in the standardi
 
 ## 4. Architectural Diagram: Memory Carving Flow
 
-```text
-+-------------------------------------------------------------+
-|                     PHYSICAL RAM DUMP                       |
-|                                                             |
-|  +-------------------+               +-------------------+  |
-|  | Process: chrome.exe               | Process: electrum |  |
-|  | PID: 9021         |               | PID: 4055         |  |
-|  |                   |               |                   |  |
-|  | [Heap Segment]    |               | [Secure Heap]     |  |
-|  | "session_id=..."  | <--- Regex -- | "apple banana..." |  |
-|  |                   |               | (BIP39 Seed)      |  |
-|  | [SQLite Page]     |               |                   |  |
-|  | "SQLite format 3" | <--- Magic -- | [Stack Segment]   |  |
-|  |                   |      Header   | 0x1A2B3C...       |  |
-|  +-------------------+               +-------------------+  |
-+-------------------------------------------------------------+
-           |                                  |
-           v                                  v
-+------------------------+         +--------------------------+
-|  Volatility yarascan   |         |   Entropy Analysis &     |
-|  String Extraction     |         |   BIP39 Dictionary Match |
-+------------------------+         +--------------------------+
-           |                                  |
-           v                                  v
-+------------------------+         +--------------------------+
-|  Session Hijacking     |         |  Wallet Compromise /     |
-|  Account Takeover      |         |  Fund Recovery           |
-+------------------------+         +--------------------------+
+```mermaid
+flowchart TD
+    subgraph PHYSICAL RAM DUMP
+        subgraph Process: chrome.exe PID: 9021
+            A[Heap Segment session_id=...]
+            B[SQLite Page SQLite format 3]
+        end
+        subgraph Process: electrum PID: 4055
+            C[Secure Heap apple banana... BIP39 Seed]
+            D[Stack Segment 0x1A2B3C...]
+        end
+    end
+    A -->|Regex| E[Volatility yarascan String Extraction]
+    B -->|Magic Header| E
+    C --> F[Entropy Analysis & BIP39 Dictionary Match]
+    D --> F
+    E --> G[Session Hijacking Account Takeover]
+    F --> H[Wallet Compromise / Fund Recovery]
 ```
 
 ## 5. Entropy Analysis and Key Discovery

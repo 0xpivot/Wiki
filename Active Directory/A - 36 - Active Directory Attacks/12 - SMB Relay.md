@@ -33,36 +33,26 @@ The standard operational flow for an SMB Relay attack:
 
 ## 4. ASCII Architecture Diagram
 
-```text
-+-------------------------------------------------------------------------+
-|                              SMB Relay Flow                             |
-+-------------------------------------------------------------------------+
-
-  [ Victim Desktop ]           [ Attacker Machine ]            [ Target File Server ]
-  (User: IT_Admin)             (IP: 10.0.0.50)                 (IP: 10.0.0.100)
-       |                               |                               |
-       |  LLMNR Request: "PRINTSRV"    |                               |
-       |------------------------------>|                               |
-       |  Poisoned Reply: 10.0.0.50    |                               |
-       |<------------------------------|                               |
-       |                               |                               |
-       |  SMB Connect (NTLM Type 1)    |                               |
-       |------------------------------>|  SMB Connect (NTLM Type 1)    |
-       |                               |------------------------------>|
-       |                               |                               |
-       |                               |  SMB Challenge (NTLM Type 2)  |
-       |  SMB Challenge (NTLM Type 2)  |<------------------------------|
-       |<------------------------------|                               |
-       |                               |                               |
-       |  SMB Response (NTLM Type 3)   |                               |
-       |------------------------------>|  SMB Response (NTLM Type 3)   |
-       |                               |------------------------------>|
-       |                               |                               |
-       |                               |  Authentication Success       |
-       |                               |<=============================>|
-       |                               |  Attacker uses Psexec over    |
-                                          the relayed SMB session to   
-                                          dump SAM or execute payload.
+```mermaid
+sequenceDiagram
+    participant Victim as Victim Desktop (User: IT_Admin)
+    participant Attacker as Attacker Machine (IP: 10.0.0.50)
+    participant Target as Target File Server (IP: 10.0.0.100)
+    
+    Victim->>Attacker: LLMNR Request: "PRINTSRV"
+    Attacker-->>Victim: Poisoned Reply: 10.0.0.50
+    
+    Victim->>Attacker: SMB Connect (NTLM Type 1)
+    Attacker->>Target: SMB Connect (NTLM Type 1)
+    
+    Target-->>Attacker: SMB Challenge (NTLM Type 2)
+    Attacker-->>Victim: SMB Challenge (NTLM Type 2)
+    
+    Victim->>Attacker: SMB Response (NTLM Type 3)
+    Attacker->>Target: SMB Response (NTLM Type 3)
+    
+    Target-->>Attacker: Authentication Success
+    Note over Attacker,Target: Attacker uses Psexec over the relayed SMB session to dump SAM or execute payload.
 ```
 
 ## 5. Prerequisites and Required Tools

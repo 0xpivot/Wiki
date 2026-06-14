@@ -33,27 +33,30 @@ The IoMT ecosystem is divided into three primary tiers: Implantable/Wearable, Ca
 
 ## 4. Attack Surface Diagram
 
-```text
-                                +-------------------------------------------+
-                                |      Hospital Information System (HIS)    |
-                                |   +----------+             +----------+   |
-                                |   |   EHR    |             |  PACS    |   |
-                                |   +----------+             +----------+   |
-                                +-------------------------------------------+
-                                          ^                       ^
-                                          | HL7 / FHIR            | DICOM
-                                          v                       v
-+-----------------------+       +-------------------------------------------+
-|   Implantable Device  |       |         Point-of-Care Equipment           |
-|  (e.g., Pacemaker)    |       |   +----------------+   +----------------+ |
-|                       | MICS /|   | Infusion Pump  |   |   MRI Machine  | |
-| +-------------------+ | BLE   |   | (Embedded OS)  |   | (Legacy WinXP) | |
-| | Proprietary Logic | | <---> |   +----------------+   +----------------+ |
-| +-------------------+ |       |           ^                     ^         |
-+-----------------------+       +-----------|---------------------|---------+
-                                            |                     |
-   [Attacker with SDR /             [Attacker on LAN via          |
-    Proximity Device]                Compromised Workstation]-----+
+```mermaid
+flowchart TD
+    subgraph HIS["Hospital Information System (HIS)"]
+        EHR["EHR"]
+        PACS["PACS"]
+    end
+
+    subgraph POC["Point-of-Care Equipment"]
+        Pump["Infusion Pump<br>(Embedded OS)"]
+        MRI["MRI Machine<br>(Legacy WinXP)"]
+    end
+
+    subgraph Implant["Implantable Device<br>(e.g., Pacemaker)"]
+        Logic["Proprietary Logic"]
+    end
+
+    EHR <-->|HL7 / FHIR| POC
+    PACS <-->|DICOM| POC
+
+    Logic <-->|MICS / BLE| Pump
+
+    AttackerRF["Attacker with SDR / Proximity Device"] -.-> Logic
+    AttackerLAN["Attacker on LAN via Compromised Workstation"] -.-> Pump
+    AttackerLAN -.-> MRI
 ```
 
 ## 5. Medical-Specific Protocols and Flaws

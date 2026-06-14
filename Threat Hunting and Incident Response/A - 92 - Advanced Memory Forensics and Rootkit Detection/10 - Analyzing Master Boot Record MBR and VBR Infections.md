@@ -34,42 +34,21 @@ The malware replaces the original MBR code. When the BIOS hands over control, th
 **VBR Infection:**
 Some malware targets the VBR instead of the MBR to bypass simple MBR integrity checks. The logic is similar: the malicious VBR executes, hooks necessary interrupts, and then passes control back to the legitimate VBR or `bootmgr`.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                            Bootkit Infection Architecture                         |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  Legitimate Boot Flow:                                                            |
-|  [BIOS] ---> [Original MBR] ---> [Original VBR] ---> [Bootmgr] ---> [Windows OS]  |
-|                                                                                   |
-|                                                                                   |
-|  Infected Boot Flow (MBR Bootkit):                                                |
-|                                                                                   |
-|  [BIOS]                                                                           |
-|    |                                                                              |
-|    v                                                                              |
-|  +--------------------+                                                           |
-|  | Malicious MBR      | 1. BIOS executes Bootkit at Sector 0                      |
-|  | (Sector 0)         | 2. Bootkit hooks INT 13h (Disk I/O)                       |
-|  +---------+----------+ 3. Bootkit loads its payload into high memory             |
-|            |                                                                      |
-|            v                                                                      |
-|  +--------------------+                                                           |
-|  | Original MBR       | 4. Bootkit jumps to the backed-up Original MBR            |
-|  | (Moved to Sec 7)   |                                                           |
-|  +---------+----------+                                                           |
-|            |                                                                      |
-|            v                                                                      |
-|  +--------------------+                                                           |
-|  | Original VBR       |                                                           |
-|  +---------+----------+                                                           |
-|            |                                                                      |
-|            v                                                                      |
-|  [ Windows Bootmgr ]    <-- Bootkit (via hooked INT 13h) watches as Windows loads.|
-|                             When ntoskrnl.exe is loaded, the Bootkit patches it   |
-|                             in memory to disable PatchGuard and inject its Ring 0 |
-|                             rootkit payload.                                      |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Legitimate Boot Flow
+        A1[BIOS] --> B1[Original MBR]
+        B1 --> C1[Original VBR]
+        C1 --> D1[Bootmgr]
+        D1 --> E1[Windows OS]
+    end
+    subgraph Infected Boot Flow MBR Bootkit
+        A2[BIOS] --> B2[Malicious MBR Sector 0<br>1 BIOS executes Bootkit at Sector 0<br>2 Bootkit hooks INT 13h Disk I/O<br>3 Bootkit loads its payload into high memory]
+        B2 -->|4 Bootkit jumps to the backed-up Original MBR| C2[Original MBR Moved to Sec 7]
+        C2 --> D2[Original VBR]
+        D2 --> E2[Windows Bootmgr]
+        E2 -.->|Bootkit via hooked INT 13h watches as Windows loads.<br>When ntoskrnl.exe is loaded, the Bootkit patches it in memory to disable PatchGuard and inject its Ring 0 rootkit payload| B2
+    end
 ```
 
 ## Forensic Analysis and Detection Techniques

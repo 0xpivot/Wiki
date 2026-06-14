@@ -55,25 +55,18 @@ Record the exact commands, tools, or payloads used. This provides the actionable
 
 ## 4. Visualizing the Mapping Process (ASCII Diagram)
 
-```text
-+-----------------------+      +-----------------------+      +-----------------------+
-|  RAW VULNERABILITY    |      |  ATTACKER BEHAVIOR    |      |  MITRE ATT&CK MAPPING |
-|                       |      |                       |      |                       |
-| e.g., Unauthenticated | ===> | Attacker executes a   | ===> | Tactic: Execution     |
-| RCE via Deserializ-   |      | reverse shell payload |      | Technique: T1059.004  |
-| ation (CVE-2021-44228)|      | using bash to connect |      | (Command and          |
-|                       |      | back to C2 server.    |      | Scripting Interpreter:|
-|                       |      |                       |      | Unix Shell)           |
-+-----------------------+      +-----------------------+      +-----------------------+
-                                        ||
-                                        \/
-+-----------------------+      +-----------------------+      +-----------------------+
-|  VULNERABILITY FIX    |      |  DEFENSIVE POSTURE    |      |  THREAT INTELLIGENCE  |
-|                       |      |                       |      |                       |
-| Apply Apache Log4j    | <=== | Build SIEM rule for   | <=== | Check if APT35 uses   |
-| security patch to     |      | outbound connections  |      | T1059.004 in recent   |
-| latest version.       |      | from java.exe to WAN. |      | threat campaigns.     |
-+-----------------------+      +-----------------------+      +-----------------------+
+```mermaid
+flowchart LR
+    RAW["RAW VULNERABILITY<br>e.g., Unauthenticated<br>RCE via Deserialization<br>(CVE-2021-44228)"]
+    ATTACK["ATTACKER BEHAVIOR<br>Attacker executes a<br>reverse shell payload<br>using bash to connect<br>back to C2 server."]
+    MITRE["MITRE ATT&CK MAPPING<br>Tactic: Execution<br>Technique: T1059.004<br>(Command and Scripting<br>Interpreter: Unix Shell)"]
+
+    FIX["VULNERABILITY FIX<br>Apply Apache Log4j<br>security patch to<br>latest version."]
+    DEF["DEFENSIVE POSTURE<br>Build SIEM rule for<br>outbound connections<br>from java.exe to WAN."]
+    THREAT["THREAT INTELLIGENCE<br>Check if APT35 uses<br>T1059.004 in recent<br>threat campaigns."]
+
+    RAW ==> ATTACK ==> MITRE
+    MITRE ==> THREAT ==> DEF ==> FIX
 ```
 
 ## 5. Case Studies in Mapping Findings

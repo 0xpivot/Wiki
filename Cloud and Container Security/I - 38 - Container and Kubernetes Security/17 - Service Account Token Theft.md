@@ -52,32 +52,16 @@ The `sub` (subject) field defines the identity K8s uses to evaluate RBAC permiss
 
 ## Visualizing the Attack Path
 
-```ascii
-   [ Internet ]
-        |
-        | (1) Exploit RCE / LFI in Web App
-        v
- +---------------------------------------------------------+
- |  Kubernetes Worker Node                                 |
- |                                                         |
- |  +---------------------------------------------------+  |
- |  |  Vulnerable Pod                                   |  |
- |  |                                                   |  |
- |  |  [ Web Application ]                              |  |
- |  |        |                                          |  |
- |  |        | (2) Attacker reads /var/run/secrets/...  |  |
- |  |        v                                          |  |
- |  |  [ token | ca.crt | namespace ] <-----------------+  | (Mounted via Kubelet)
- |  +---------------------------------------------------+  |
- |           |                                             |
- |           | (3) Attacker makes REST call using Token    |
- +-----------|---------------------------------------------+
-             |
-             v
-   +--------------------+       (4) K8s evaluates RBAC:
-   |  Kube API Server   | <---- If SA is bound to 'cluster-admin',
-   |  (Port 6443)       |       attacker takes over the cluster.
-   +--------------------+
+```mermaid
+graph TD
+    A[Internet] -- 1 Exploit RCE / LFI in Web App --> B[Web Application]
+    subgraph Kubernetes Worker Node
+        subgraph Vulnerable Pod
+            B -- 2 Attacker reads /var/run/secrets/... --> C[token | ca.crt | namespace <br/> Mounted via Kubelet]
+        end
+        C -- 3 Attacker makes REST call using Token --> D[Kube API Server <br/> Port 6443]
+    end
+    D -- 4 K8s evaluates RBAC: <br/> If SA is bound to 'cluster-admin', <br/> attacker takes over the cluster. --> D
 ```
 
 ## Exploitation Methodology

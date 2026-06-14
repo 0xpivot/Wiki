@@ -25,39 +25,16 @@ The bypass operates on the principle of **Dynamic Reassembly**. The WAF analyzes
 
 ### 2.1 Execution Flow Diagram
 
-```text
-+-------------------------------------------------------------+
-|                        ATTACKER                             |
-|  Payload: EXEC('SE' + 'LECT * FROM users')                  |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                      WAF / FILTER                           |
-| 1. Receives HTTP Request.                                   |
-| 2. Evaluates against Rule: /SELECT/i                        |
-| 3. Regex Match Execution:                                   |
-|    String contains 'SE' and 'LECT'.                         |
-|    Does not contain continuous 'SELECT'.                    |
-| 4. Match: FALSE                                             |
-| 5. Decision: ALLOW (Traffic Forwarded)                      |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                   BACKEND DATABASE ENGINE                   |
-| 1. Processes dynamic SQL function: EXEC()                   |
-| 2. Evaluates internal expression: 'SE' + 'LECT * FROM users'|
-| 3. String concatenation occurs natively.                    |
-| 4. Final constructed string: "SELECT * FROM users"          |
-| 5. Executes the final string.                               |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                    PAYLOAD EXECUTION                        |
-| Target tables exfiltrated successfully.                     |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["ATTACKER <br/> Payload: EXEC('SE' + 'LECT * FROM users')"]
+    WAF["WAF / FILTER <br/> 1. Receives HTTP Request. <br/> 2. Evaluates against Rule: /SELECT/i <br/> 3. Regex Match Execution: <br/> String contains 'SE' and 'LECT'. <br/> Does not contain continuous 'SELECT'. <br/> 4. Match: FALSE <br/> 5. Decision: ALLOW (Traffic Forwarded)"]
+    Backend["BACKEND DATABASE ENGINE <br/> 1. Processes dynamic SQL function: EXEC() <br/> 2. Evaluates internal expression: 'SE' + 'LECT * FROM users' <br/> 3. String concatenation occurs natively. <br/> 4. Final constructed string: 'SELECT * FROM users' <br/> 5. Executes the final string."]
+    Execution["PAYLOAD EXECUTION <br/> Target tables exfiltrated successfully."]
+
+    Attacker --> WAF
+    WAF --> Backend
+    Backend --> Execution
 ```
 
 ---

@@ -50,30 +50,19 @@ Struts vulnerabilities are typically labeled by their advisory number (e.g., S2-
 
 Below is an ASCII diagram visualizing the evaluation flow of a malicious OGNL payload in Struts 2.
 
-```text
-+-----------------+                                  +------------------------------+
-|                 |                                  |   Apache Struts 2 App        |
-|   Attacker      |       1. HTTP Request            |   (Tomcat / Java Backend)    |
-|                 | -------------------------------> |                              |
-| [Payload in     | Content-Type: %{...OGNL...}      |  +------------------------+  |
-|  Header/URL]    |                                  |  | Jakarta/Struts Parser  |  |
-|                 |                                  |  | (Throws Exception)     |  |
-|                 |                                  |  +------------------------+  |
-|                 |                                  |              |               |
-+-----------------+                                  |              v               |
-         ^                                           |  +------------------------+  |
-         |                                           |  | Error Handler / Interc |  |
-         |            2. Shell Execution /           |  | Evaluates Error String |  |
-         +-------------------------------------------|  | containing OGNL Payload|  |
-                      Output Returned                |  +------------------------+  |
-                      in HTTP Response               |              |               |
-                                                     |              v               |
-                                                     |  +------------------------+  |
-                                                     |  | OGNL Engine            |  |
-                                                     |  | executes Java Mathods  |  |
-                                                     |  | java.lang.Runtime.exec |  |
-                                                     |  +------------------------+  |
-                                                     +------------------------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker <br/> Payload in Header/URL"]
+    Struts["Apache Struts 2 App <br/> (Tomcat / Java Backend)"]
+    Parser["Jakarta/Struts Parser <br/> (Throws Exception)"]
+    ErrorHandler["Error Handler / Interc <br/> Evaluates Error String <br/> containing OGNL Payload"]
+    OGNLEngine["OGNL Engine <br/> executes Java Mathods <br/> java.lang.Runtime.exec"]
+
+    Attacker -- "1. HTTP Request <br/> Content-Type: %{...OGNL...}" --> Struts
+    Struts --- Parser
+    Parser --> ErrorHandler
+    ErrorHandler --> OGNLEngine
+    ErrorHandler -- "2. Shell Execution / <br/> Output Returned <br/> in HTTP Response" --> Attacker
 ```
 
 ---

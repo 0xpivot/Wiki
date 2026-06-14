@@ -38,26 +38,15 @@ Process Hollowing (often called RunPE) is a classic defense evasion technique us
 5. **Context Alteration:** It uses `SetThreadContext` to change the instruction pointer (EAX/RCX) of the primary thread to point to the Entry Point of the malicious payload.
 6. **Execution:** Finally, it calls `ResumeThread`. The OS believes it is executing `svchost.exe`, but it is actually executing the malicious payload.
 
-```text
-=============================================================================
-                  ASCII Diagram: Process Hollowing Architecture
-=============================================================================
-
-  Attacker Process                     Target Process (Suspended)
-  +--------------+                     +---------------------------+
-  |              | --CreateProcess-->  | svchost.exe (Original)    |
-  |              |                     +---------------------------+
-  |              | --NtUnmapViewOf-->  | [ EMPTY MEMORY SPACE ]    |
-  |              |    Section          +---------------------------+
-  |              |                     | Allocated RWX Region      |
-  |              | --WriteProcess-->   | +-----------------------+ |
-  |              |    Memory           | | Malicious Payload.exe | |
-  |              |                     | +-----------------------+ |
-  |              |                     +---------------------------+
-  |              | --SetThreadCtx-->   | Change Entry Point (EIP)  |
-  +--------------+ --ResumeThread-->   +---------------------------+
-                                          (Executes Malware)
-=============================================================================
+```mermaid
+flowchart LR
+    A[Attacker Process] -->|1 CreateProcess| B[Target Process Suspended<br>svchost.exe Original]
+    A -->|2 NtUnmapViewOfSection| C[EMPTY MEMORY SPACE]
+    A -->|3 VirtualAllocEx / WriteProcessMemory| D[Allocated RWX Region<br>Malicious Payload.exe]
+    A -->|4 SetThreadCtx / ResumeThread| E[Change Entry Point EIP<br>Executes Malware]
+    B --> C
+    C --> D
+    D --> E
 ```
 
 ## Injection Techniques

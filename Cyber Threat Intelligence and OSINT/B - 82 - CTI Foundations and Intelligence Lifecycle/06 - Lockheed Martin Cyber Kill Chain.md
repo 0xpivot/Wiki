@@ -112,35 +112,50 @@ The framework divides a cyberattack into seven distinct, sequential phases. Unde
 
 ## Visualizing the Cyber Kill Chain Architecture
 
-```ascii
-=========================================================================================
-                          THE LOCKHEED MARTIN CYBER KILL CHAIN
-=========================================================================================
-      PHASE                 ADVERSARY ACTION                     DEFENDER ACTION
------------------------------------------------------------------------------------------
+```mermaid
+flowchart TD
+    subgraph KillChain["THE LOCKHEED MARTIN CYBER KILL CHAIN"]
+        P1["[1] RECONNAISSANCE"]
+        A1["Open Source Intel, Scanning"]
+        D1["Threat Intel, OPSEC, WAF"]
+        P1 --> A1 --> D1
 
- [1] RECONNAISSANCE   --> Open Source Intel, Scanning     --> Threat Intel, OPSEC, WAF
-         |
-         v
- [2] WEAPONIZATION    --> Coupling Exploit + Payload      --> Proactive Threat Hunting
-         |
-         v
- [3] DELIVERY         --> Phishing, Watering Hole, USB    --> Email Gateways, Proxy, DNS
-         |
-         v
- [4] EXPLOITATION     --> Triggering Vulnerability        --> Patching, EDR, HIPS, AV
-         |
-         v
- [5] INSTALLATION     --> Persistence (Registry, Tasks)   --> FIM, EDR, Least Privilege
-         |
-         v
- [6] COMMAND & CTRL   --> Hands-on-keyboard (Beaconing)   --> Network Seg, DPI, Threat Intel
-         |
-         v
- [7] ACTIONS ON OBJ   --> Exfil, Ransomware, Pivot        --> DLP, UEBA, Zero Trust
-=========================================================================================
-                GOAL: Break the chain at the earliest possible stage.
-=========================================================================================
+        P2["[2] WEAPONIZATION"]
+        A2["Coupling Exploit + Payload"]
+        D2["Proactive Threat Hunting"]
+        P1 --> P2
+        P2 --> A2 --> D2
+
+        P3["[3] DELIVERY"]
+        A3["Phishing, Watering Hole, USB"]
+        D3["Email Gateways, Proxy, DNS"]
+        P2 --> P3
+        P3 --> A3 --> D3
+
+        P4["[4] EXPLOITATION"]
+        A4["Triggering Vulnerability"]
+        D4["Patching, EDR, HIPS, AV"]
+        P3 --> P4
+        P4 --> A4 --> D4
+
+        P5["[5] INSTALLATION"]
+        A5["Persistence (Registry, Tasks)"]
+        D5["FIM, EDR, Least Privilege"]
+        P4 --> P5
+        P5 --> A5 --> D5
+
+        P6["[6] COMMAND & CTRL"]
+        A6["Hands-on-keyboard (Beaconing)"]
+        D6["Network Seg, DPI, Threat Intel"]
+        P5 --> P6
+        P6 --> A6 --> D6
+
+        P7["[7] ACTIONS ON OBJ"]
+        A7["Exfil, Ransomware, Pivot"]
+        D7["DLP, UEBA, Zero Trust"]
+        P6 --> P7
+        P7 --> A7 --> D7
+    end
 ```
 
 ## The Unified Kill Chain: An Evolution

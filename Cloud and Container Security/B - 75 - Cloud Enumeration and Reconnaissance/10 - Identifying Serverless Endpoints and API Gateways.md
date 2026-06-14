@@ -27,28 +27,19 @@ From a black-box perspective, attackers primarily focus on **HTTP-triggered** se
 ## 3. Serverless Architecture Diagram
 The following ASCII diagram shows how an attacker interfaces with a serverless environment compared to internal, unexposed event triggers.
 
-```text
-+--------------------------------------------------------------------------+
-|                        CLOUD SERVERLESS ENVIRONMENT                      |
-|                                                                          |
-|                           [Public Attack Surface]                        |
-|                                                                          |
-|  +----------------+      +-------------------+       +----------------+  |
-|  |                | HTTP |                   | Proxy |                |  |
-|  | Attacker (Web) |=====>|   API Gateway     |======>| AWS Lambda /   |  |
-|  |                |      | (e.g., AWS APIGW) |       | Azure Function |  |
-|  +----------------+      +-------------------+       +----------------+  |
-|                                                              |           |
-|                                                              | AWS IAM   |
-|                                                              v           |
-|                           [Internal Event Triggers]  +----------------+  |
-|  +----------------+      +-------------------+       |                |  |
-|  |                | File |                   | Event | Cloud Database |  |
-|  | Legitimate User|=====>| Cloud Storage (S3)|======>| (DynamoDB)     |  |
-|  |                |      |                   |       |                |  |
-|  +----------------+      +-------------------+       +----------------+  |
-|                                                                          |
-+--------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph CLOUD SERVERLESS ENVIRONMENT
+        subgraph Public Attack Surface
+            A[Attacker Web] == HTTP ==> B[API Gateway e.g., AWS APIGW]
+            B == Proxy ==> C[AWS Lambda / Azure Function]
+        end
+        subgraph Internal Event Triggers
+            D[Legitimate User] == File ==> E[Cloud Storage S3]
+            E == Event ==> F[Cloud Database DynamoDB]
+        end
+        C -->|AWS IAM| F
+    end
 ```
 
 ## 4. Identifying Cloud Provider Footprints

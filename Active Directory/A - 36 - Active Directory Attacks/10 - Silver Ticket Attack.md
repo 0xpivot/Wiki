@@ -32,38 +32,17 @@ The attack sequence follows these phases:
 
 ## 4. ASCII Architecture Diagram
 
-```text
-+-------------------------------------------------------------------------+
-|                        Silver Ticket Attack Flow                        |
-+-------------------------------------------------------------------------+
-
-  [ Attacker Machine ]                                  [ Target Server ]
-  
-  +-----------------------+                             +-------------------+
-  | 1. Obtain Server Hash |                             |   SERVER01        |
-  |    (e.g., via SAM dump|                             |   (Target)        |
-  |     or Kerberoasting) |                             +---------+---------+
-  +-----------+-----------+                                       |
-              |                                                   |
-              v                                                   |
-  +-----------------------+                                       |
-  | 2. Offline Forgery    |                                       |
-  |    - Create TGS       |                                       |
-  |    - Insert Admin PAC |                                       |
-  |    - Sign w/ Svr Hash |                                       |
-  +-----------+-----------+                                       |
-              |                                                   |
-              | 3. Inject TGS (PtT)                               |
-              v                                                   |
-  +-----------------------+                                       |
-  | 4. AP-REQ             | 5. Direct Authentication              |
-  |    (Present forged    |-------------------------------------->|
-  |     TGS to target)    |    (KDC IS COMPLETELY BYPASSED)       |
-  +-----------------------+                                       |
-                                                                  v
-                                                        Server decrypts TGS
-                                                        Trusts forged PAC
-                                                        Grants Admin Access
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker Machine
+    participant Target as Target Server (SERVER01)
+    
+    Note over Attacker: 1. Obtain Server Hash<br>(e.g. via SAM dump or Kerberoasting)
+    Note over Attacker: 2. Offline Forgery<br>- Create TGS<br>- Insert Admin PAC<br>- Sign w/ Svr Hash
+    Note over Attacker: 3. Inject TGS (PtT)
+    
+    Attacker->>Target: 4. AP-REQ (Present forged TGS to target) - Direct Authentication
+    Note over Target: Server decrypts TGS<br>Trusts forged PAC<br>Grants Admin Access
 ```
 
 ## 5. Prerequisites and Required Tools

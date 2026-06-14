@@ -60,34 +60,13 @@ This is critical for OPSEC, as it prevents leaking local filesystem structures.
 
 ## ASCII Diagram: The Stripping Process
 
-```text
-+-------------------------------------------------+
-|               Raw Go Compilation                |
-|             (go build main.go)                  |
-+-------------------------------------------------+
-| .text (Executable Code)                         |
-| .data / .rodata                                 |
-| .gopclntab (Line numbers & function names)      | <--- Core Go Requirement
-| .symtab (Symbol Table)                          | <--- Leaks Variables
-| .debug_info (DWARF Debugging)                   | <--- Leaks Logic/Types
-| BuildID: XXXXX/YYYYY/ZZZZZ/WWWWW                | <--- Leaks Campaign Correlation
-| Local Paths: /users/bob/desktop/...             | <--- Leaks Operator OPSEC
-+-------------------------------------------------+
-                          |
-    Applying: -trimpath -ldflags="-s -w" -buildid=""
-                          |
-                          v
-+-------------------------------------------------+
-|             Stripped Go Executable              |
-+-------------------------------------------------+
-| .text (Executable Code)                         |
-| .data / .rodata                                 |
-| .gopclntab (Line numbers & function names)      | <--- Still Present!
-| [STRIPPED] .symtab                              |
-| [STRIPPED] .debug_info                          |
-| [STRIPPED] BuildID                              |
-| [TRIMMED] Local Paths                           |
-+-------------------------------------------------+
+```mermaid
+flowchart TD
+    Raw["Raw Go Compilation<br>(go build main.go)<br>---<br>.text (Executable Code)<br>.data / .rodata<br>.gopclntab (Line numbers & function names) <-- Core Go Requirement<br>.symtab (Symbol Table) <-- Leaks Variables<br>.debug_info (DWARF Debugging) <-- Leaks Logic/Types<br>BuildID: XXXXX/YYYYY/ZZZZZ/WWWWW <-- Leaks Campaign Correlation<br>Local Paths: /users/bob/desktop/... <-- Leaks Operator OPSEC"]
+    Flags["Applying: -trimpath -ldflags='-s -w' -buildid=''"]
+    Stripped["Stripped Go Executable<br>---<br>.text (Executable Code)<br>.data / .rodata<br>.gopclntab (Line numbers & function names) <-- Still Present!<br>[STRIPPED] .symtab<br>[STRIPPED] .debug_info<br>[STRIPPED] BuildID<br>[TRIMMED] Local Paths"]
+    
+    Raw --> Flags --> Stripped
 ```
 
 ## 4. The Un-strippable Artifact: `gopclntab`

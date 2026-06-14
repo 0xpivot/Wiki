@@ -41,39 +41,32 @@ Once the shellcode is in memory, the loader must redirect execution flow to it.
 
 ## Architecture Diagram: Remote Process Injection
 
-```ascii
-=========================================================================
-                      REMOTE PROCESS INJECTION FLOW
-=========================================================================
-
-[ Loader Process ]                                  [ Target Process ]
-(e.g., update.exe)                                  (e.g., notepad.exe)
-
- 1. Obtain Payload
-    (Decrypt embedded
-     Sliver shellcode)
-        |
-        v
- 2. OpenTargetProcess()  ------------------------>  [ HANDLE Acquired ]
-        |
-        v
- 3. VirtualAllocEx()     ------------------------>  [ Allocated Memory ]
-    (Request PAGE_RW)                               | (Status: RW  )   |
-        |                                           |                  |
-        v                                           |                  |
- 4. WriteProcessMemory() ------------------------>  [ Shellcode Copied ]
-    (Write payload)                                 | (Status: RW  )   |
-        |                                           |                  |
-        v                                           |                  |
- 5. VirtualProtectEx()   ------------------------>  [ Perms Changed    ]
-    (Change to PAGE_RX)                             | (Status: R-X )   |
-        |                                           |                  |
-        v                                           |                  |
- 6. CreateRemoteThread() ------------------------>  [ Execution Starts ]
-    (Start address points                           | (Sliver Beacon   |
-     to allocated memory)                           |  Active)         |
-
-=========================================================================
+```mermaid
+flowchart TD
+    subgraph Loader["Loader Process (e.g., update.exe)"]
+        L1["1. Obtain Payload<br>(Decrypt embedded Sliver shellcode)"]
+        L2["2. OpenTargetProcess()"]
+        L3["3. VirtualAllocEx()<br>(Request PAGE_RW)"]
+        L4["4. WriteProcessMemory()<br>(Write payload)"]
+        L5["5. VirtualProtectEx()<br>(Change to PAGE_RX)"]
+        L6["6. CreateRemoteThread()<br>(Start address points to allocated memory)"]
+        
+        L1 --> L2 --> L3 --> L4 --> L5 --> L6
+    end
+    
+    subgraph Target["Target Process (e.g., notepad.exe)"]
+        T2["[ HANDLE Acquired ]"]
+        T3["[ Allocated Memory ]<br>(Status: RW)"]
+        T4["[ Shellcode Copied ]<br>(Status: RW)"]
+        T5["[ Perms Changed ]<br>(Status: R-X)"]
+        T6["[ Execution Starts ]<br>(Sliver Beacon Active)"]
+    end
+    
+    L2 --> T2
+    L3 --> T3
+    L4 --> T4
+    L5 --> T5
+    L6 --> T6
 ```
 
 ## Defensive Telemetry and Analysis

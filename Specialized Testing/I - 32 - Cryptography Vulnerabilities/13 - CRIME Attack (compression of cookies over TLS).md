@@ -65,33 +65,18 @@ The attacker wants to steal this cookie to hijack the session.
 
 ### ASCII Diagram of the CRIME Attack
 
-```text
-+-------------------+                                      +-------------------+
-|     Attacker      |                                      |      Server       |
-| (Malicious JS)    |                                      |  (TLS Enabled)    |
-+---------+---------+                                      +---------+---------+
-          |                                                          |
-          | 1. Forces victim browser to send request                 |
-          |    Path: /?guess=session=A                               |
-          |--------------------------------------------------------->|
-          |                                                          |
-          | 2. Browser compresses headers (DEFLATE)                  |
-          |    [Cookie: session=XYZ...] + [Path: /?guess=session=A]  |
-          |    If guess 'A' is wrong, size = N bytes                 |
-          |                                                          |
-          | 3. Forces victim browser to send request                 |
-          |    Path: /?guess=session=X                               |
-          |--------------------------------------------------------->|
-          |                                                          |
-          | 4. Browser compresses headers (DEFLATE)                  |
-          |    'session=X' matches part of the cookie.               |
-          |    Compression is more efficient! Size = N-1 bytes       |
-          |                                                          |
-          | 5. Attacker observes network traffic size (Man-in-Middle)|
-          |<---------------------------------------------------------|
-          |    Identifies correct character by smaller payload size  |
-          |                                                          |
-+---------+---------+                                      +---------+---------+
+```mermaid
+sequenceDiagram
+    participant A as Attacker<br>(Malicious JS)
+    participant S as Server<br>(TLS Enabled)
+    
+    A->>S: 1. Forces browser request: Path: /?guess=session=A
+    Note over A,S: 2. Browser compresses headers (DEFLATE)<br>If 'A' is wrong, size = N bytes
+    
+    A->>S: 3. Forces browser request: Path: /?guess=session=X
+    Note over A,S: 4. Browser compresses headers<br>'session=X' matches part of cookie.<br>More efficient! Size = N-1 bytes
+    
+    S-->>A: 5. Attacker observes network traffic size (MitM)<br>Identifies correct character by smaller payload size
 ```
 
 ## Advanced Considerations and Constraints

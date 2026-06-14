@@ -34,39 +34,22 @@ The attack lifecycle generally follows these phases:
 
 ## 4. ASCII Architecture Diagram
 
-```text
-+-------------------------------------------------------------------------+
-|                        Pass the Ticket (PtT) Flow                       |
-+-------------------------------------------------------------------------+
+```mermaid
+sequenceDiagram
+    participant AttackerSession as Attacker Session (Elevated Privs)
+    participant LSASS as LSASS.exe
+    participant DC as Domain Controller (KDC)
+    participant Target as Target Server
 
-  [ Compromised Workstation ]                           [ Target Infrastructure ]
-  
-  +-----------------------+
-  |  Attacker Session     |                             +-------------------+
-  |  (Elevated Privs)     |                             | Domain Controller |
-  +-----------+-----------+                             | (KDC)             |
-              |                                         +---------+---------+
-              | 1. Extract TGT/TGS from LSASS memory              |
-              v                                                   |
-  +-----------------------+                                       |
-  |      LSASS.exe        |                                       |
-  | (Caches TGTs/TGSs)    |                                       |
-  +-----------+-----------+                                       |
-              |                                                   |
-              | 2. Inject chosen Ticket into current session      |
-              |    (e.g., Domain Admin TGT)                       |
-              v                                                   |
-  +-----------------------+                                       |
-  |   Attacker Session    | 3. TGS-REQ (Using injected TGT)       |
-  |   (Holding Ticket)    |-------------------------------------->|
-  +-----------+-----------+                                       |
-              |           |<--------------------------------------|
-              |           | 4. TGS-REP (Returns Service Ticket)   |
-              |                                                   |
-              | 5. AP-REQ (Present Service Ticket to Target)      |
-              |---------------------------------------------------+---> [ Target Server ]
-                                                                        (e.g., File Share,
-                                                                         Exchange, etc.)
+    Note over AttackerSession: 1. Extract TGT/TGS from LSASS memory
+    AttackerSession->>LSASS: Read Memory
+    LSASS-->>AttackerSession: Cached Tickets
+    Note over AttackerSession: 2. Inject chosen Ticket into current session (e.g. Domain Admin TGT)
+    
+    AttackerSession->>DC: 3. TGS-REQ (Using injected TGT)
+    DC-->>AttackerSession: 4. TGS-REP (Returns Service Ticket)
+    
+    AttackerSession->>Target: 5. AP-REQ (Present Service Ticket to Target)
 ```
 
 ## 5. Prerequisites and Required Tools

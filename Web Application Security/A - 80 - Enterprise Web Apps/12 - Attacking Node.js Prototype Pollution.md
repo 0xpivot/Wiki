@@ -29,27 +29,17 @@ If an attacker can control a key during an assignment operation (e.g., `obj[key]
 
 Below is an ASCII representation of how Prototype Pollution corrupts the runtime environment:
 
-```text
-+-----------------------+      +-----------------------------------------+
-| Attacker              |      | Node.js Application Environment         |
-+-----------------------+      +-----------------------------------------+
-|                       |      |                                         |
-| 1. Send JSON payload  |      |   Object.prototype                      |
-|    with __proto__     |      |   +---------------------------------+   |
-| --------------------->|      |   | toString: function()            |   |
-|                       |      |   | hasOwnProperty: function()      |   |
-| 2. App uses vulnerable|      |   | *POLLUTED_PROP*: "malicious"    |<--+
-|    merge() function   |      |   +---------------------------------+   |
-|                       |      |            ^                            |
-| 3. __proto__ is parsed|      |            | (Inherits from)            |
-|    and merged into    |      |            |                            |
-|    Object.prototype   |      |   Normal Object (e.g., config)          |
-|                       |      |   +---------------------------------+   |
-|                       |      |   | host: "localhost"               |   |
-|                       |      |   | port: 8080                      |   |
-|                       |      |   | // Accessing config.POLLUTED    |   |
-|                       |      |   | // returns "malicious"!         |   |
-+-----------------------+      +-----------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker"]
+    Env["Node.js Application Environment"]
+    ObjProto["Object.prototype <br/> toString: function() <br/> hasOwnProperty: function() <br/> *POLLUTED_PROP*: 'malicious'"]
+    NormalObj["Normal Object (e.g., config) <br/> host: 'localhost' <br/> port: 8080 <br/> // Accessing config.POLLUTED <br/> // returns 'malicious'!"]
+
+    Attacker -- "1. Send JSON payload <br/> with __proto__" --> Env
+    Attacker -. "2. App uses vulnerable <br/> merge() function" .-> Env
+    Attacker -. "3. __proto__ is parsed <br/> and merged into <br/> Object.prototype" .-> ObjProto
+    NormalObj -- "(Inherits from)" --> ObjProto
 ```
 
 ## 4. How the Vulnerability Occurs

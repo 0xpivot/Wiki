@@ -36,40 +36,20 @@ These tools work by:
 4. Extracting the encrypted credentials and the decryption key from LSASS memory.
 5. Decrypting the credentials to reveal plaintext passwords, hashes, or Kerberos tickets.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        LSASS Memory Credential Extraction                         |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  Physical Memory (Dump.raw)                                                       |
-|                                                                                   |
-|  +-----------------------------------------------------------------------------+  |
-|  | lsass.exe (Process Memory)                                                  |  |
-|  |                                                                             |  |
-|  |  +------------------+     +------------------+     +------------------+     |  |
-|  |  | wdigest.dll      |     | msv1_0.dll       |     | kerberos.dll     |     |  |
-|  |  | (Plaintext)      |     | (NTLM Hashes)    |     | (TGTs/Tickets)   |     |  |
-|  |  +------------------+     +------------------+     +------------------+     |  |
-|  |           |                        |                        |               |  |
-|  |           v                        v                        v               |  |
-|  |  [ Encrypted Data ]       [ Encrypted Data ]       [ Encrypted Data ]       |  |
-|  |                                                                             |  |
-|  |  +-----------------------------------------------------------------------+  |  |
-|  |  | LSASS Decryption Key (Found in LsaInitializeProtectedMemory)          |  |  |
-|  |  +-----------------------------------------------------------------------+  |  |
-|  |           |                        |                        |               |  |
-|  +-----------|------------------------|------------------------|---------------+  |
-|              |                        |                        |                  |
-|              v                        v                        v                  |
-|  +-----------------------------------------------------------------------------+  |
-|  | Memory Forensic Tool (e.g., Volatility / Mimikatz offline)                  |  |
-|  |                                                                             |  |
-|  |  -> Locates LSASS Key                                                       |  |
-|  |  -> Decrypts WDigest    -> "Password123!"                                   |  |
-|  |  -> Decrypts MSV1_0     -> [NTLM Hash]                                      |  |
-|  |  -> Decrypts Kerberos   -> [Base64 TGT .kirbi]                              |  |
-|  +-----------------------------------------------------------------------------+  |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Physical Memory Dump.raw
+        subgraph lsass.exe Process Memory
+            A[wdigest.dll Plaintext] --> B1[Encrypted Data]
+            C[msv1_0.dll NTLM Hashes] --> B2[Encrypted Data]
+            D[kerberos.dll TGTs/Tickets] --> B3[Encrypted Data]
+            E[LSASS Decryption Key Found in LsaInitializeProtectedMemory]
+        end
+        B1 --> F[Memory Forensic Tool e.g., Volatility / Mimikatz offline<br>-> Locates LSASS Key<br>-> Decrypts WDigest -> Password123!<br>-> Decrypts MSV1_0 -> NTLM Hash<br>-> Decrypts Kerberos -> Base64 TGT .kirbi]
+        B2 --> F
+        B3 --> F
+        E --> F
+    end
 ```
 
 ## Advanced Memory Artifacts in LSASS

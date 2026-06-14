@@ -15,37 +15,30 @@ When deploying servers at scale, administrators use automated deployment tools a
 
 ## The Architecture of Misplaced Credentials
 
-```text
-+-------------------------------------------------------------------------+
-|                          Windows Environment                            |
-|                                                                         |
-|  +--------------------+  +--------------------+  +--------------------+ |
-|  | Unattended Installs|  | App Configurations |  | Administrator      | |
-|  | (Panther, Sysprep) |  | (IIS, Tomcat, DBs) |  | Desktop / Scripts  | |
-|  +---------+----------+  +---------+----------+  +---------+----------+ |
-|            |                       |                       |            |
-|            |                       |                       |            |
-|            v                       v                       v            |
-|  +--------------------+  +--------------------+  +--------------------+ |
-|  | unattend.xml       |  | web.config         |  | backup.bat         | |
-|  | sysprep.inf        |  | database.yml       |  | passwords.txt      | |
-|  +---------+----------+  +---------+----------+  +---------+----------+ |
-|            |                       |                       |            |
-+------------|-----------------------|-----------------------|------------+
-             |                       |                       |
-             +-----------------------+-----------------------+
-                                     |
-                                     v
-                          +--------------------+
-                          |  Attacker Access   |
-                          | (Low Priv User)    |
-                          +---------+----------+
-                                     |
-                                     v
-                          +--------------------+
-                          | Privilege Escalate |
-                          | to SYSTEM / Admin  |
-                          +--------------------+
+```mermaid
+flowchart TD
+    subgraph WE[Windows Environment]
+        UI["Unattended Installs\n(Panther, Sysprep)"]
+        AC["App Configurations\n(IIS, Tomcat, DBs)"]
+        AD["Administrator\nDesktop / Scripts"]
+        
+        UX["unattend.xml\nsysprep.inf"]
+        WC["web.config\ndatabase.yml"]
+        BB["backup.bat\npasswords.txt"]
+        
+        UI --> UX
+        AC --> WC
+        AD --> BB
+    end
+    
+    AA["Attacker Access\n(Low Priv User)"]
+    PE["Privilege Escalate\nto SYSTEM / Admin"]
+    
+    UX --> AA
+    WC --> AA
+    BB --> AA
+    
+    AA --> PE
 ```
 
 ## Deep Dive: Where to Look

@@ -86,32 +86,16 @@ GitLeaks iterates through every commit in the repository's history, analyzing fi
 
 ## Advanced Attack Architecture Diagram
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        The Credential Leakage Lifecycle                           |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [ Developer ]                                                                    |
-|        |                                                                          |
-|        | 1. Hardcodes AWS_SECRET_ACCESS_KEY in .env file                          |
-|        v                                                                          |
-|  [ Local Git Repo ] -- 2. Commits and Pushes to GitHub --> [ GitHub Repository ]  |
-|                                                                    |              |
-|                                                                    | 3. Public or |
-|                                                                    | Compromised  |
-|                                                                    v              |
-|  +---------------------------+                         [ Attacker Recon Node ]    |
-|  | Target Cloud Environment  | <--- 6. Authentication --   - TruffleHog           |
-|  |                           |                             - GitLeaks             |
-|  | - AWS IAM                 |                             - GitHub Dorks         |
-|  | - S3 Buckets              |                                     ^              |
-|  | - EC2 Instances           |                                     |              |
-|  | - RDS Databases           | <--- 7. Data Exfiltration           |              |
-|  +---------------------------+      & Privilege Escalation         |              |
-|                                                                    |              |
-|                                5. Attacker Extracts Active Keys ---+              |
-|                                   (e.g., AKIA...)                                 |
-+-----------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph The Credential Leakage Lifecycle
+        A[Developer] -- 1. Hardcodes AWS_SECRET_ACCESS_KEY in .env file --> B[Local Git Repo]
+        B -- 2. Commits and Pushes to GitHub --> C[GitHub Repository]
+        C -- 3. Public or Compromised --> D[Attacker Recon Node <br/> - TruffleHog <br/> - GitLeaks <br/> - GitHub Dorks]
+        D -- 5. Attacker Extracts Active Keys e.g., AKIA... --> E[Target Cloud Environment <br/> - AWS IAM <br/> - S3 Buckets <br/> - EC2 Instances <br/> - RDS Databases]
+        D -- 6. Authentication --> E
+        E -- 7. Data Exfiltration & Privilege Escalation --> D
+    end
 ```
 
 ## Exploiting the Recovered Keys

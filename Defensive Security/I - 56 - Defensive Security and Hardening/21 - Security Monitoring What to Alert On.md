@@ -20,29 +20,58 @@ To combat this, alert engineering must focus on:
 
 ## The ASCII Architecture: Alert Pipeline
 
-```text
-+-------------------+      +-------------------+      +-------------------+
-|   Data Sources    |      | Ingestion & Parse |      | Enrichment Layer  |
-| - EDR / XDR       | ===> | - Logstash / Cribl| ===> | - Threat Intel    |
-| - Firewalls / IDS |      | - Normalization   |      | - Asset Value     |
-| - Active Directory|      | - CIM Mapping     |      | - Identity Info   |
-+-------------------+      +-------------------+      +-------------------+
-                                                              |
-                                                              v
-+-------------------+      +-------------------+      +-------------------+
-| SOAR Automation   | <=== |  Alerting Engine  | <=== | SIEM / Data Lake  |
-| - Auto-Triage     |      | - Thresholds      |      | - Rule Execution  |
-| - Playbooks       |      | - ML Anomalies    |      | - Risk Scoring    |
-| - Ticket Creation |      | - Correlation     |      | - Aggregation     |
-+-------------------+      +-------------------+      +-------------------+
-        |
-        v
-+-------------------+
-|    SOC Analyst    |
-| - Investigation   |
-| - Threat Hunting  |
-| - Remediation     |
-+-------------------+
+```mermaid
+flowchart LR
+    subgraph DataSources["Data Sources"]
+        direction TB
+        DS1["- EDR / XDR"]
+        DS2["- Firewalls / IDS"]
+        DS3["- Active Directory"]
+    end
+
+    subgraph Ingest["Ingestion & Parse"]
+        direction TB
+        I1["- Logstash / Cribl"]
+        I2["- Normalization"]
+        I3["- CIM Mapping"]
+    end
+
+    subgraph Enrichment["Enrichment Layer"]
+        direction TB
+        E1["- Threat Intel"]
+        E2["- Asset Value"]
+        E3["- Identity Info"]
+    end
+
+    subgraph SIEM["SIEM / Data Lake"]
+        direction TB
+        S1["- Rule Execution"]
+        S2["- Risk Scoring"]
+        S3["- Aggregation"]
+    end
+
+    subgraph AlertingEngine["Alerting Engine"]
+        direction TB
+        AE1["- Thresholds"]
+        AE2["- ML Anomalies"]
+        AE3["- Correlation"]
+    end
+
+    subgraph SOAR["SOAR Automation"]
+        direction TB
+        SO1["- Auto-Triage"]
+        SO2["- Playbooks"]
+        SO3["- Ticket Creation"]
+    end
+
+    SOC["SOC Analyst\n- Investigation\n- Threat Hunting\n- Remediation"]
+
+    DataSources ==> Ingest
+    Ingest ==> Enrichment
+    Enrichment --> SIEM
+    SIEM ==> AlertingEngine
+    AlertingEngine ==> SOAR
+    SOAR --> SOC
 ```
 
 ## What to Alert On: Endpoint Layer (EDR/XDR)

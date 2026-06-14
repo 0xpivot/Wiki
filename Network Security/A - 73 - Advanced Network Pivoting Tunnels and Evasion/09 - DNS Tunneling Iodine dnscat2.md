@@ -22,31 +22,16 @@ DNS Tunneling relies on specific DNS record types to maximize the amount of payl
 
 ## 3. ASCII Diagram: DNS Recursion Evasion
 
-```text
-      [ Compromised Host ]
-      IP: 10.0.0.5 (No Internet Access)
-             |
-             |  Query: TXT base64_data.evil.com
-             v
-    +----------------------------------+
-    | Corporate Internal DNS Resolver  |
-    | IP: 10.0.0.2                     |
-    +----------------------------------+
-             |
-             |  [ FW allows outbound DNS on UDP 53 ]
-             |  Recursion: "Where is evil.com?"
-             v
-    +----------------------------------+
-    | Root / TLD DNS Servers (.com)    |
-    | "evil.com is managed by NS1..."  |
-    +----------------------------------+
-             |
-             v
-    +----------------------------------+
-    | Attacker C2 (Authoritative NS)   |
-    | IP: 203.0.113.5 (ns1.evil.com)   |
-    | Running: iodine or dnscat2       |
-    +----------------------------------+
+```mermaid
+flowchart TD
+    Host["Compromised Host<br/>IP: 10.0.0.5 (No Internet Access)"]
+    Resolver["Corporate Internal DNS Resolver<br/>IP: 10.0.0.2"]
+    TLD["Root / TLD DNS Servers (.com)<br/>'evil.com is managed by NS1...'"]
+    Attacker["Attacker C2 (Authoritative NS)<br/>IP: 203.0.113.5 (ns1.evil.com)<br/>Running: iodine or dnscat2"]
+
+    Host -->|Query: TXT base64_data.evil.com| Resolver
+    Resolver -->|"FW allows outbound DNS on UDP 53<br/>Recursion: 'Where is evil.com?'"| TLD
+    TLD --> Attacker
 ```
 
 ## 4. Deep Dive: Iodine (IP over DNS)

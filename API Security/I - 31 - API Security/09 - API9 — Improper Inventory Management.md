@@ -26,28 +26,25 @@ Improper inventory isn't just about internal endpoints. It also includes failing
 
 ### Visualizing the Inventory Blind Spot
 
-```ascii
-    [ Attack Surface of Poor Inventory Management ]
+```mermaid
+flowchart TD
+    PI["Public Internet"]
+    subgraph Infrastructure ["Attack Surface of Poor Inventory Management"]
+        WAF["WAF / API Gateway\n(Secured, Monitored)"]
+        V3["POST /api/v3/users\n(Strict Auth, Rate Limited, Audited)"]
+        
+        subgraph BlindSpot ["The 'Blind Spot' Bypass"]
+            V1["POST /api/v1/users\n(Zombie) BOLA vuln, unpatched!"]
+            Beta["GET /beta/admin_debug\n(Shadow) No Auth! Developer test."]
+            QA["qa-api.target.com\n(Staging) Connected to Prod DB!"]
+        end
+    end
 
-    Public Internet
-          |
-    +-----+---------------------------------------------------------------+
-    |                                                                     |
-    |  [ WAF / API Gateway ] (Secured, Monitored)                         |
-    |         |                                                           |
-    |         v                                                           |
-    |  [ POST /api/v3/users ] -> Strict Auth, Rate Limited, Audited       |
-    |                                                                     |
-    |---------------------------------------------------------------------|
-    |                                                                     |
-    |                  [ The "Blind Spot" Bypass ]                        |
-    |                                                                     |
-    |  --> [ POST /api/v1/users ] -> (Zombie) BOLA vuln, unpatched!       |
-    |                                                                     |
-    |  --> [ GET /beta/admin_debug ] -> (Shadow) No Auth! Developer test. |
-    |                                                                     |
-    |  --> [ qa-api.target.com ] -> (Staging) Connected to Prod DB!       |
-    +---------------------------------------------------------------------+
+    PI --> WAF
+    WAF --> V3
+    PI -.-> V1
+    PI -.-> Beta
+    PI -.-> QA
 ```
 
 ## 3. Real-World Exploitation Scenarios

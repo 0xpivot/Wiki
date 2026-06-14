@@ -31,28 +31,25 @@ Devices connect directly to the home Wi-Fi network and establish persistent WebS
 
 ## 3. Attack Surface Diagram
 
-```text
-                               +-----------------------------+
-                               |    Vendor Cloud Backend     |
-                               | (MQTT, REST API, WebSockets)|
-                               +-----------------------------+
-                                       ^            ^
-                                       |            | WAN / TLS (Often vulnerable to MITM)
-                                       |            |
-+-------------------+          +---------------+    |      +------------------+
-|                   |   BLE    |               |    |      |                  |
-|  Mobile App (iOS/ | <------> |  Smart Hub /  | <---------+  Wi-Fi IoT Device|
-|  Android)         |   Wi-Fi  |  Gateway      |           | (e.g., Smart TV) |
-|                   |          |               |           |                  |
-+-------------------+          +---------------+           +------------------+
-         |                             |
-         |                             | Zigbee / Z-Wave / Thread
-         |                             v
-         |                     +------------------+        +------------------+
-         |      Cloud API      |                  |  Mesh  |                  |
-         +-------------------> |   Smart Lock     | <----> |   Smart Bulb     |
-                               | (Actuator Node)  |        |  (Router Node)   |
-                               +------------------+        +------------------+
+```mermaid
+flowchart TD
+    Cloud["Vendor Cloud Backend<br>(MQTT, REST API, WebSockets)"]
+
+    App["Mobile App (iOS/Android)"]
+    Hub["Smart Hub / Gateway"]
+    WiFiDevice["Wi-Fi IoT Device<br>(e.g., Smart TV)"]
+
+    Lock["Smart Lock<br>(Actuator Node)"]
+    Bulb["Smart Bulb<br>(Router Node)"]
+
+    App <-->|BLE / Wi-Fi| Hub
+    App -->|Cloud API| Cloud
+    
+    Hub -->|WAN / TLS| Cloud
+    WiFiDevice -->|WAN / TLS| Cloud
+    
+    Hub -->|Zigbee / Z-Wave / Thread| Lock
+    Lock <-->|Mesh| Bulb
 ```
 
 ## 4. Wireless RF Protocol Exploitation

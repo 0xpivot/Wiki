@@ -19,23 +19,13 @@ The hierarchy of intelligence reflects a transition from high-level, long-term b
 
 ### ASCII Diagram: The Intelligence Pyramid
 
-```text
-                  +-------------------+
-                  |   STRATEGIC CTI   | -> Audience: C-Suite, Board
-                  | (Why? Who? Trends)|    Lifespan: Years/Months
-                  +-------------------+
-                 /                     \
-                /    OPERATIONAL CTI    \ -> Audience: Threat Hunters, IR
-               / (How? Campaigns, TTPs)  \   Lifespan: Months/Weeks
-              +---------------------------+
-             /                             \
-            /         TACTICAL CTI          \ -> Audience: SOC Analysts, Architects
-           /  (Where? Network/Host Artifacts)\   Lifespan: Weeks/Days
-          +-----------------------------------+
-         /                                     \
-        /           TECHNICAL CTI               \ -> Audience: Firewalls, EDR, SIEM
-       /   (What? Hashes, IPs, Domains, URLs)    \   Lifespan: Days/Hours/Minutes
-      +-------------------------------------------+
+```mermaid
+flowchart TD
+    A["STRATEGIC CTI<br/>(Why? Who? Trends)<br/>Audience: C-Suite, Board<br/>Lifespan: Years/Months"]
+    B["OPERATIONAL CTI<br/>(How? Campaigns, TTPs)<br/>Audience: Threat Hunters, IR<br/>Lifespan: Months/Weeks"]
+    C["TACTICAL CTI<br/>(Where? Network/Host Artifacts)<br/>Audience: SOC Analysts, Architects<br/>Lifespan: Weeks/Days"]
+    D["TECHNICAL CTI<br/>(What? Hashes, IPs, Domains, URLs)<br/>Audience: Firewalls, EDR, SIEM<br/>Lifespan: Days/Hours/Minutes"]
+    A --- B --- C --- D
 ```
 
 ## 3. Strategic Intelligence

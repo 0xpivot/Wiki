@@ -35,20 +35,18 @@ A SOAP message is an XML document containing the following elements:
 
 ## Architecture and Attack Flow
 
-```text
-+----------------+       1. Malicious XML / XXE Payload       +----------------+
-|                |------------------------------------------->|                |
-|    Attacker    |                                            |    XML Parser  |
-|                |<-------------------------------------------|    (Backend)   |
-+----------------+       2. Local File / SSRF Data returned   +----------------+
-        |                                                             |
-        | 3. WSDL Manipulation                                        | 4. Backend Processing
-        v                                                             v
-+----------------+                                            +----------------+
-|                |       5. Forged SOAP Envelope              |                |
-| SOAP UI / Burp |------------------------------------------->|  SOAP Service  |
-|                |                                            |  (Logic Layer) |
-+----------------+                                            +----------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker"]
+    Parser["XML Parser\n(Backend)"]
+    Tools["SOAP UI / Burp"]
+    Service["SOAP Service\n(Logic Layer)"]
+
+    Attacker -- "1. Malicious XML / XXE Payload" --> Parser
+    Parser -- "2. Local File / SSRF Data returned" --> Attacker
+    Attacker -- "3. WSDL Manipulation" --> Tools
+    Parser -- "4. Backend Processing" --> Service
+    Tools -- "5. Forged SOAP Envelope" --> Service
 ```
 
 ## Key Attack Vectors

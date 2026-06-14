@@ -18,35 +18,37 @@ It bridges the gap between theoretical vulnerability descriptions (like the OWAS
 
 The following ASCII diagram illustrates how key cheat sheets map to different layers of an application's architecture.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                           Application Security Architecture                       |
-|                                                                                   |
-|  [ Client / Browser ]                                                             |
-|   |-- DOM XSS Prevention Cheat Sheet                                              |
-|   |-- HTML5 Security Cheat Sheet                                                  |
-|   |-- Clickjacking Defense Cheat Sheet                                            |
-|                                                                                   |
-|  [ Network / Transport ]                                                          |
-|   |-- Transport Layer Protection Cheat Sheet (TLS, HSTS)                          |
-|   |-- CORS Origin Cheat Sheet                                                     |
-|                                                                                   |
-|  [ Web / API Gateway ]                                                            |
-|   |-- API Security Cheat Sheet                                                    |
-|   |-- Authentication Cheat Sheet                                                  |
-|   |-- Session Management Cheat Sheet                                              |
-|                                                                                   |
-|  [ Application Logic Layer ]                                                      |
-|   |-- Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet                    |
-|   |-- Cross-Site Scripting (XSS) Prevention Cheat Sheet                           |
-|   |-- Input Validation Cheat Sheet                                                |
-|   |-- Deserialization Cheat Sheet                                                 |
-|                                                                                   |
-|  [ Data Access / Storage Layer ]                                                  |
-|   |-- SQL Injection Prevention Cheat Sheet                                        |
-|   |-- Cryptographic Storage Cheat Sheet                                           |
-|   |-- Password Storage Cheat Sheet                                                |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Client_Browser ["Client / Browser"]
+        C1["DOM XSS Prevention Cheat Sheet"]
+        C2["HTML5 Security Cheat Sheet"]
+        C3["Clickjacking Defense Cheat Sheet"]
+    end
+    
+    subgraph Network_Transport ["Network / Transport"]
+        N1["Transport Layer Protection Cheat Sheet (TLS, HSTS)"]
+        N2["CORS Origin Cheat Sheet"]
+    end
+
+    subgraph Web_API_Gateway ["Web / API Gateway"]
+        W1["API Security Cheat Sheet"]
+        W2["Authentication Cheat Sheet"]
+        W3["Session Management Cheat Sheet"]
+    end
+
+    subgraph Application_Logic_Layer ["Application Logic Layer"]
+        A1["Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet"]
+        A2["Cross-Site Scripting (XSS) Prevention Cheat Sheet"]
+        A3["Input Validation Cheat Sheet"]
+        A4["Deserialization Cheat Sheet"]
+    end
+
+    subgraph Data_Access_Storage_Layer ["Data Access / Storage Layer"]
+        D1["SQL Injection Prevention Cheat Sheet"]
+        D2["Cryptographic Storage Cheat Sheet"]
+        D3["Password Storage Cheat Sheet"]
+    end
 ```
 
 ---

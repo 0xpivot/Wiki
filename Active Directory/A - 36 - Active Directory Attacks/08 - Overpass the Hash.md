@@ -38,41 +38,18 @@ The Overpass the Hash attack sequence:
 
 ## 4. ASCII Architecture Diagram
 
-```text
-+-------------------------------------------------------------------------+
-|                  Overpass the Hash / Pass the Key Flow                  |
-+-------------------------------------------------------------------------+
-
-  [ Compromised Workstation ]                           [ Domain Controller ]
-  
-  +-----------------------+
-  |  1. Extract NTLM Hash |                             +-------------------+
-  |     or AES Key        |                             |        KDC        |
-  +-----------+-----------+                             |                   |
-              |                                         +---------+---------+
-              v                                                   |
-  +-----------------------+                                       |
-  | 2. Encrypt Timestamp  |                                       |
-  |    using Hash/Key     |                                       |
-  +-----------+-----------+                                       |
-              |                                                   |
-              | 3. Send AS-REQ (RC4 or AES Auth Data)             |
-              |-------------------------------------------------->|
-              |                                                   |
-              |                                                   | 4. Validate Timestamp
-              |                                                   |    Generate TGT
-              |                                                   |
-              | 5. Receive AS-REP (Contains valid TGT)            |
-              |<--------------------------------------------------|
-              v
-  +-----------------------+
-  | 6. Inject TGT into    | 
-  |    LSASS via PtT      | 
-  +-----------+-----------+
-              |
-              | 7. Standard Kerberos lateral movement 
-              |    (TGS-REQ / AP-REQ) ---> To Target Servers
-              v
+```mermaid
+sequenceDiagram
+    participant Workstation as Compromised Workstation
+    participant DC as Domain Controller (KDC)
+    
+    Note over Workstation: 1. Extract NTLM Hash or AES Key
+    Note over Workstation: 2. Encrypt Timestamp using Hash/Key
+    Workstation->>DC: 3. Send AS-REQ (RC4 or AES Auth Data)
+    Note over DC: 4. Validate Timestamp, Generate TGT
+    DC-->>Workstation: 5. Receive AS-REP (Contains valid TGT)
+    Note over Workstation: 6. Inject TGT into LSASS via PtT
+    Note over Workstation: 7. Standard Kerberos lateral movement<br>(TGS-REQ / AP-REQ) ---> To Target Servers
 ```
 
 ## 5. Prerequisites and Required Tools

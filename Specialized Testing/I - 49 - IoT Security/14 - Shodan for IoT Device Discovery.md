@@ -25,25 +25,11 @@ Shodan's backend parses these banners to extract:
 
 ## 3. ASCII Diagram: Shodan Reconnaissance Flow
 
-```text
-[ Attacker / Security Researcher ]
-          |
-          | 1. Search Query: `org:"Target Corp" port:502`
-          | 2. API Request via Python/CLI
-          v
-   +-----------------------+
-   |    Shodan Backend     | (Stores continuously indexed banner data)
-   +-----------------------+
-          |
-          | 3. Returns historical & real-time metadata, IPs, CVEs
-          v
-   [ Target Infrastructure ] (Passive Discovery - No direct interaction)
-   - 192.0.2.10: Exposed Modbus PLC
-   - 192.0.2.15: Unpatched VPN Gateway
-   - 192.0.2.20: IP Camera (Default Creds)
-          |
-          v
-   [ Active Exploitation ] <-- Attacker now targets specific vulnerable IPs
+```mermaid
+flowchart TD
+    User["Attacker / Security Researcher"] -->|1. Search Query: `org:Target Corp port:502`<br>2. API Request via Python/CLI| Shodan["Shodan Backend<br>(Stores continuously indexed banner data)"]
+    Shodan -->|3. Returns historical & real-time metadata, IPs, CVEs| Target["Target Infrastructure<br>(Passive Discovery - No direct interaction)<br>- 192.0.2.10: Exposed Modbus PLC<br>- 192.0.2.15: Unpatched VPN Gateway<br>- 192.0.2.20: IP Camera (Default Creds)"]
+    Target --> Active["Active Exploitation<br>Attacker now targets specific vulnerable IPs"]
 ```
 
 ## 4. Advanced Query Syntax and Filtering

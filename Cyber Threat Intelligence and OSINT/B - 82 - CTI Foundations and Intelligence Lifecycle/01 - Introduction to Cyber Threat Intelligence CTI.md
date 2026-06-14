@@ -23,24 +23,10 @@ To understand CTI, one must first grasp the continuum that transforms noise into
 
 ### ASCII Diagram: The Continuum Diagram
 
-```text
-+-------------------------------------------------------------+
-|                     INTELLIGENCE                            |
-|       (Actionable, Contextual, Predictive, Analyzed)        |
-|               ^                                             |
-|               | (Analysis, Peer Review, Production)         |
-|               |                                             |
-|               +-----------------------------+               |
-|               |        INFORMATION          |               |
-|               |  (Structured, Categorized)  |               |
-|               |             ^               |               |
-|               |             | (Processing, Normalization)   |
-|               |             |                               |
-|               |     +-----------------+     |               |
-|               |     |      DATA       |     |               |
-|               |     |  (Raw, Unsorted)|     |               |
-|               |     +-----------------+     |               |
-+---------------+-----------------------------+---------------+
+```mermaid
+flowchart BT
+    A["DATA<br/>(Raw, Unsorted)"] -->|Processing, Normalization| B["INFORMATION<br/>(Structured, Categorized)"]
+    B -->|Analysis, Peer Review, Production| C["INTELLIGENCE<br/>(Actionable, Contextual, Predictive, Analyzed)"]
 ```
 
 ## 3. The Core Tenets of CTI

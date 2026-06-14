@@ -43,25 +43,13 @@ spec:
 
 ## Visualizing the Container Escape
 
-```ascii
-   +-------------------------------------------------------------+
-   |  Kubernetes Worker Node (Host OS)                           |
-   |                                                             |
-   |  +-----------------------+       +-----------------------+  |
-   |  | Normal Pod            |       | Privileged Pod        |  |
-   |  | - Restricted Caps     |       | - ALL Capabilities    |  |
-   |  | - Filtered Syscalls   |       | - Unfiltered Syscalls |  |
-   |  | - Isolated Devices    |       | - Access to Host /dev |  |
-   |  |                       |       |                       |  |
-   |  |   [ Application ]     |       |   [ Attacker Shell ]  |  |
-   |  +-----------------------+       +----------+------------+  |
-   |                                             |               |
-   |       Mounting Host Filesystem <------------+               |
-   |       (e.g. /dev/sda1)                                      |
-   |                                                             |
-   |       [ Host Kernel ] <-------------------------------------+
-   |       (Full Syscall Access)                                 |
-   +-------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Kubernetes Worker Node Host OS
+        A[Normal Pod <br/> - Restricted Caps <br/> - Filtered Syscalls <br/> - Isolated Devices <br/> Application]
+        B[Privileged Pod <br/> - ALL Capabilities <br/> - Unfiltered Syscalls <br/> - Access to Host /dev <br/> Attacker Shell]
+        B -->|Mounting Host Filesystem e.g. /dev/sda1| C[Host Kernel <br/> Full Syscall Access]
+    end
 ```
 
 ## Exploitation: Breaking Out of a Privileged Pod

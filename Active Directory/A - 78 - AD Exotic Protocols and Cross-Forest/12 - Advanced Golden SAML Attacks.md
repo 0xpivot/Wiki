@@ -116,6 +116,16 @@ If the AD FS server is configured to federate with multiple different cloud tena
 3. **Cloud-Native Authentication:** Migrate away from federated authentication. Transition to Managed Authentication using Password Hash Sync (PHS) or Pass-Through Authentication (PTA) coupled with cloud-native Entra ID Conditional Access.
 4. **Rotate Certificates:** If AD FS is compromised, the Token Signing Certificates must be forcefully rolled over, and the old certificates explicitly untrusted in the cloud tenant.
 
+
+## Real-World Attack Scenario
+## Real-World Attack Scenario
+
+During the engagement, the red team identified an on-premises Active Directory Federation Services (AD FS) infrastructure used to bridge identities into the client's Microsoft 365 environment. Having previously secured Domain Admin credentials, the team targeted the AD FS server to perform a Golden SAML attack, aiming to bypass cloud Conditional Access policies and Multi-Factor Authentication (MFA). Using the compromised privileges, the team executed `Mimikatz` locally on the AD FS server to target the Windows Internal Database (WID) via the named pipe `\\.\pipe\MICROSOFT##WID\tsql\query`. This allowed the extraction of the encrypted Token Signing and Token Decryption certificates directly from the backend database.
+
+Simultaneously, the team performed an LDAP query against the domain to retrieve the Distributed Key Manager (DKM) master key stored in the `CN=ADFS,CN=Microsoft,CN=Program Data,DC=domain,DC=com` container. By applying the extracted DKM master key, the encrypted certificates were successfully decrypted and exported as `.pfx` files. With the AD FS Token Signing private key fully compromised, the team possessed the cryptographic material necessary to forge trusted authentication assertions offline without needing to interact with the on-premises AD FS server again.
+
+To execute the final phase of the attack, the team utilized `shimit`, an open-source SAML forging tool, to generate a malicious SAMLResponse. The payload was crafted to impersonate a known Global Administrator account by supplying the user's ImmutableID and injecting custom claims, including `urn:microsoft:adfs:mfa`, which falsely asserted that MFA had already been satisfied on-premises. Upon intercepting a legitimate login request to Microsoft Online via Burp Suite, the team replaced the standard SAML body with the forged Base64-encoded assertion. Entra ID validated the perfectly signed token, honored the spoofed MFA claims, and issued standard session cookies (`ESTSAUTH`), granting the red team full, unfettered Global Administrator access to the cloud environment.
+
 ## Chaining Opportunities
 - A Golden SAML attack is the ultimate pivot mechanism, bridging on-premises [[15 - Tier 0 Compromise and Domain Dominance]] into complete cloud tenant takeover.
 - Initial compromise of the AD FS server can sometimes be achieved via [[13 - Delegated Authentication Bypass]] targeting the AD FS service accounts.

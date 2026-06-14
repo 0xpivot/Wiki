@@ -23,33 +23,20 @@ If the container process runs as `root` (which is the default behavior in Docker
 
 ### Attack Architecture Diagram
 
-```text
-+----------------------------------------------------------------------------+
-|                             HOST OPERATING SYSTEM                          |
-|                                                                            |
-|   +--------------------------------------------------------------------+   |
-|   |                      VULNERABLE CONTAINER                          |   |
-|   |                                                                    |   |
-|   |  Attacker gains RCE                                                |   |
-|   |        |                                                           |   |
-|   |        v                                                           |   |
-|   |  [ Bash Shell ]                                                    |   |
-|   |        |                                                           |   |
-|   |        +-----> Writes payload to /mnt/host/etc/crontab             |   |
-|   |        +-----> Appends key to /mnt/host/root/.ssh/authorized_keys  |   |
-|   |        +-----> Edits hash in /mnt/host/etc/shadow                  |   |
-|   +--------------------------------------------------------------------+   |
-|                                     |                                      |
-|   Bind Mount (-v /:/mnt/host)       |  (Direct File I/O bypassing MNT)     |
-|                                     v                                      |
-|   +--------------------------------------------------------------------+   |
-|   |                      HOST ROOT FILESYSTEM (/)                      |   |
-|   |                                                                    |   |
-|   |   /etc/crontab  <-- Payload executes on host as root via cron      |   |
-|   |   /root/.ssh/   <-- Attacker SSH logs into host                    |   |
-|   |   /etc/shadow   <-- Attacker modifies root password                |   |
-|   +--------------------------------------------------------------------+   |
-+----------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph HOST OPERATING SYSTEM
+        subgraph VULNERABLE CONTAINER
+            A[Attacker gains RCE] --> B[Bash Shell]
+            B -- Writes payload to /mnt/host/etc/crontab --> C[Host file access]
+            B -- Appends key to /mnt/host/root/.ssh/authorized_keys --> C
+            B -- Edits hash in /mnt/host/etc/shadow --> C
+        end
+        C -- Bind Mount -v /:/mnt/host <br/> Direct File I/O bypassing MNT --> D[HOST ROOT FILESYSTEM /]
+        D -- /etc/crontab <-- Payload executes on host as root via cron --> D
+        D -- /root/.ssh/ <-- Attacker SSH logs into host --> D
+        D -- /etc/shadow <-- Attacker modifies root password --> D
+    end
 ```
 
 ## Exploitation Walkthroughs

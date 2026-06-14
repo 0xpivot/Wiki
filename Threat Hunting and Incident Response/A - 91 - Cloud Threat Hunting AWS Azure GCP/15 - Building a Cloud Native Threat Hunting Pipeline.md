@@ -21,22 +21,13 @@ A "Cloud Native" Threat Hunting Pipeline intentionally diverges from traditional
 
 ## Architecture Diagram: The Cloud Native Pipeline
 
-```text
-+-----------------------+      +-----------------------+      +---------------------------+
-|  Raw Log Sources      |      |  Ingestion / Routing  |      |  Enrichment (Lambda/Fn)   |
-|  - CloudTrail         |      |  (EventBridge /       |      |  - Normalize to OCSF      |
-|  - VPC Flow Logs      | ===> |   Kafka / Kinesis     | ===> |  - Add GeoIP & ASN Info   |
-|  - K8s Audit Logs     |      |   Data Firehose)      |      |  - Append IAM Context     |
-|  - DNS Query Logs     |      |                       |      |  - Threat Intel Match     |
-+-----------------------+      +-----------------------+      +---------------------------+
-                                                                            |
-                                                                            v
-+-----------------------+      +-----------------------+      +---------------------------+
-|  Analysts / Hunters   |      |  Analytics Engine     |      |  Security Data Lake (S3)  |
-|  Run SQL/KQL/SPL      | <=== |  (Athena / Presto /   | <=== |  Format: Apache Parquet   |
-|  Jupyter Notebooks    |      |   Azure Sentinel)     |      |  Partitioned: Year/Mo/Day |
-|  Machine Learning UBA |      |                       |      |  Lifecycle: Glacier tier  |
-+-----------------------+      +-----------------------+      +---------------------------+
+```mermaid
+flowchart TD
+    A[Raw Log Sources<br>- CloudTrail<br>- VPC Flow Logs<br>- K8s Audit Logs<br>- DNS Query Logs] ==> B[Ingestion / Routing<br>EventBridge / Kafka / Kinesis Data Firehose]
+    B ==> C[Enrichment Lambda/Fn<br>- Normalize to OCSF<br>- Add GeoIP & ASN Info<br>- Append IAM Context<br>- Threat Intel Match]
+    C --> D[Security Data Lake S3<br>Format: Apache Parquet<br>Partitioned: Year/Mo/Day<br>Lifecycle: Glacier tier]
+    D ==> E[Analytics Engine<br>Athena / Presto / Azure Sentinel]
+    E ==> F[Analysts / Hunters<br>Run SQL/KQL/SPL<br>Jupyter Notebooks<br>Machine Learning UBA]
 ```
 
 ## Designing the Pipeline

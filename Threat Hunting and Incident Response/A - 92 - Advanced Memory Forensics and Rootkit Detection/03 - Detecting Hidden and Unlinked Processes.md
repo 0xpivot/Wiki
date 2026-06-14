@@ -44,32 +44,20 @@ Since a process must have executing threads to be malicious, scanning for `ETHRE
 ### 4. Handle Scanning (`windows.handles`)
 Every process interacts with system resources (Files, Mutexes, Registry keys) via Handles. The kernel maintains a Handle Table. By scanning memory for handle tables (`_HANDLE_TABLE`), analysts can identify rogue handle tables that do not correspond to any known, linked process in the `ActiveProcessLinks`.
 
-```text
-=============================================================================
-                  ASCII Diagram: DKOM Unlinking Process
-=============================================================================
-
-Normal State (Visible to Task Manager):
-
-[ Process A ] <===========> [ Process B ] <===========> [ Process C ]
-   PID: 100                 PID: 666 (Malware)             PID: 200
-  FLINK ->                  FLINK ->                       FLINK ->
-  <- BLINK                  <- BLINK                       <- BLINK
-
------------------------------------------------------------------------------
-DKOM Unlinked State (Hidden):
-
-[ Process A ] ========================================> [ Process C ]
-   PID: 100         +-------------------------------+      PID: 200
-  FLINK -----------/                                 \---> FLINK ->
-  <- BLINK <---------------------------------------------- BLINK
-                    |                               |
-                    |         [ Process B ]         |
-                    |         PID: 666 (Hidden)     |
-                    |        FLINK -> (Points to C) |
-                    |        <- BLINK (Points to A) |
-                    +-------------------------------+
-=============================================================================
+```mermaid
+flowchart LR
+    subgraph Normal State Visible to Task Manager
+        A[Process A PID: 100] <==> B[Process B PID: 666 Malware]
+        B <==> C[Process C PID: 200]
+    end
+    subgraph DKOM Unlinked State Hidden
+        A2[Process A PID: 100]
+        B2[Process B PID: 666 Hidden]
+        C2[Process C PID: 200]
+        A2 == FLINK / BLINK ==> C2
+        B2 -. FLINK Points to C .-> C2
+        B2 -. BLINK Points to A .-> A2
+    end
 ```
 
 ## Real-World Attack Scenario

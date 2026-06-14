@@ -34,18 +34,14 @@ When the shell receives the string `/b?n/c?t /?tc/?asswd`, it searches the local
 
 ## ASCII Diagram: Wildcard Bypass Mechanism
 
-```text
-+-------------+                                   +-------------+                                    +-----------------+
-|             |  HTTP GET /ping?ip=               |             |  WAF Rule:                         |                 |
-|   Attacker  |  127.0.0.1; /b?n/c?t /?tc/p??swd  |     WAF     |  Block "cat", "etc", "passwd"      | Backend Server  |
-|             | --------------------------------> |             | ---------------------------------> | (Linux Shell)   |
-+-------------+                                   +-------------+                                    +-----------------+
-       |                                                 |                                                    |
-       |  Crafts payload using '?' and '*'               |  Inspects payload:                             | OS Shell processes input
-       |  to avoid blacklisted words.                    |  Sees "/b?n/c?t" - No match.                   | Resolves /b?n/c?t -> /bin/cat
-       |                                                 |  Sees "/?tc/p??swd" - No match.                | Resolves /?tc/p??swd -> /etc/passwd
-       |                                                 |  Permits request.                              | Executes: cat /etc/passwd
-       |                                                 |                                                    |
+```mermaid
+flowchart LR
+    Attacker["Attacker <br/> HTTP GET /ping?ip= <br/> 127.0.0.1; /b?n/c?t /?tc/p??swd"]
+    WAF["WAF <br/> WAF Rule: <br/> Block 'cat', 'etc', 'passwd'"]
+    Backend["Backend Server <br/> (Linux Shell) <br/> OS Shell processes input <br/> Resolves /b?n/c?t -> /bin/cat <br/> Resolves /?tc/p??swd -> /etc/passwd <br/> Executes: cat /etc/passwd"]
+
+    Attacker --> WAF
+    WAF -- "Inspects payload: <br/> Sees '/b?n/c?t' - No match. <br/> Sees '/?tc/p??swd' - No match. <br/> Permits request." --> Backend
 ```
 
 ## Exploitation Scenarios and Mechanics

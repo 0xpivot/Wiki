@@ -37,29 +37,25 @@ Windows uses SSPs to implement various authentication protocols. When a user log
 
 ## 3. Visual Architecture: LSASS Memory Extraction
 
-```ascii
-+-------------------------------------------------------------------------+
-|                          Compromised Windows Host                       |
-|                                                                         |
-|  +--------------------+         [SeDebugPrivilege]                      |
-|  |   Mimikatz.exe     | ------------------------------------+           |
-|  |                    |                                     |           |
-|  | > sekurlsa::logon..|                                     V           |
-|  +--------------------+                           +------------------+  |
-|           |                                       |    LSASS.EXE     |  |
-|           | (Memory Read / API Hook)              |  (Memory Space)  |  |
-|           +-------------------------------------> |                  |  |
-|                                                   |  [ WDigest SSP ] |  |
-|  +--------------------------------+               |    - Plaintext   |  |
-|  |        ATTACKER OUTPUT         |               |                  |  |
-|  |                                | <------------ |  [ MSV1_0 SSP  ] |  |
-|  | Username: Administrator        |   (Extracts   |    - NTLM Hash   |  |
-|  | Domain:   CORP                 |    Secrets)   |                  |  |
-|  | NTLM:     31d6cfe0d16ae931...  |               |  [ Kerberos SSP] |  |
-|  | Ticket:   [TGT] krbtgt/CORP... |               |    - TGT / TGS   |  |
-|  +--------------------------------+               |                  |  |
-|                                                   +------------------+  |
-+-------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Host["Compromised Windows Host"]
+        Mimikatz["Mimikatz.exe<br>> sekurlsa::logonpasswords"]
+        LSASS["LSASS.EXE<br>(Memory Space)"]
+        
+        WDigest["WDigest SSP<br>- Plaintext"]
+        MSV["MSV1_0 SSP<br>- NTLM Hash"]
+        Kerberos["Kerberos SSP<br>- TGT / TGS"]
+        
+        LSASS --- WDigest
+        LSASS --- MSV
+        LSASS --- Kerberos
+        
+        Mimikatz -- "[SeDebugPrivilege]<br>(Memory Read / API Hook)" --> LSASS
+        
+        Output["ATTACKER OUTPUT<br><br>Username: Administrator<br>Domain: CORP<br>NTLM: 31d6cfe0d16ae931...<br>Ticket: [TGT] krbtgt/CORP..."]
+        LSASS -- "(Extracts Secrets)" --> Output
+    end
 ```
 
 ---

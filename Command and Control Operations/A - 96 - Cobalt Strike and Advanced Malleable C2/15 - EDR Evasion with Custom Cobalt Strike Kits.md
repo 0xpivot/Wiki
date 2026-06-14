@@ -30,27 +30,24 @@ The Sleepmask Kit is a piece of code that executes right before the Beacon goes 
 
 ## 4. Architecture Diagram: Sleep Obfuscation Mechanism
 
-```text
-       [ ACTIVE STATE ]                      [ SLEEP STATE ]
-+----------------------------+        +----------------------------+
-| Beacon Executable Code     |        | 01001011 11010010 10101100 |
-| (Cleartext, RWX/RX Memory) |        | (Encrypted, RW/NA Memory)  |
-|                            |        |                            |
-| 1. Connects to C2          |        |                            |
-| 2. Executes commands       |        | (EDR Scanner sees garbage) |
-+----------------------------+        +----------------------------+
-              |                                     ^
-              v                                     |
-    +-------------------+                 +-------------------+
-    | Sleepmask Trigger |                 |   Wake Trigger    |
-    | - Encrypts Memory |                 | - Decrypts Memory |
-    | - Alters Prot.    |                 | - Restores Prot.  |
-    +-------------------+                 +-------------------+
-              |                                     ^
-              v                                     |
-+------------------------------------------------------------------+
-|      Windows API (Timer Queues / ROP Chains / NtDelayExecution)  |
-+------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Active["ACTIVE STATE"]
+        A_B["Beacon Executable Code<br>(Cleartext, RWX/RX Memory)<br>1. Connects to C2<br>2. Executes commands"]
+        A_T["Sleepmask Trigger<br>- Encrypts Memory<br>- Alters Prot."]
+        A_B --> A_T
+    end
+    
+    subgraph Sleep["SLEEP STATE"]
+        S_B["01001011 11010010 10101100<br>(Encrypted, RW/NA Memory)<br>(EDR Scanner sees garbage)"]
+        S_T["Wake Trigger<br>- Decrypts Memory<br>- Restores Prot."]
+        S_T --> S_B
+    end
+    
+    API["Windows API (Timer Queues / ROP Chains / NtDelayExecution)"]
+    
+    A_T --> API
+    API --> S_T
 ```
 
 ## 5. User-Defined Reflective Loader (UDRL)

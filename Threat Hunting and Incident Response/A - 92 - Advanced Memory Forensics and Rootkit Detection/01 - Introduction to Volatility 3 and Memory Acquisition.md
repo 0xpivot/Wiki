@@ -59,29 +59,21 @@ When you run a plugin like `windows.pslist`, Volatility operates on the virtual 
 ## Deep Dive into Page Tables and Virtual Memory Translation
 Understanding how Volatility (and the CPU) translates a virtual address to a physical address is paramount. Modern 64-bit architectures (x86_64) use a 4-level paging structure (often expanding to 5-level).
 
-```text
-=============================================================================
-                  ASCII Diagram: 4-Level Paging Translation (x86_64)
-=============================================================================
-
-+-------+      +--------+      +--------+      +--------+      +--------+
-|  CR3  | ---> |  PML4  | ---> |  PDPT  | ---> |   PD   | ---> |   PT   |
-+-------+      +--------+      +--------+      +--------+      +--------+
-Register        Page Map        Page Dir        Page           Page
-(Physical)      Level 4         Pointer         Directory      Table
-                Table           Table
-
-Virtual Address Breakdown (64-bit):
-[63      48][47      39][38      30][29      21][20      12][11       0]
- Sign Extend   PML4 idx     PDPT idx     PD idx       PT idx     Offset
-
-1. CR3 points to the physical address of the PML4 base.
-2. The top 9 bits of the VA index into the PML4 to find the PDPT.
-3. The next 9 bits index the PDPT to find the PD.
-4. The next 9 bits index the PD to find the PT.
-5. The next 9 bits index the PT to find the Physical Page Frame.
-6. The lowest 12 bits define the byte offset within that physical page.
-=============================================================================
+```mermaid
+flowchart TD
+    subgraph 4-Level Paging Translation x86_64
+        CR3[CR3<br>Register Physical] --> PML4[PML4<br>Page Map Level 4 Table]
+        PML4 --> PDPT[PDPT<br>Page Dir Pointer Table]
+        PDPT --> PD[PD<br>Page Directory]
+        PD --> PT[PT<br>Page Table]
+    end
+    subgraph Virtual Address Breakdown 64-bit
+        A[63..48 Sign Extend] --> B[47..39 PML4 idx]
+        B --> C[38..30 PDPT idx]
+        C --> D[29..21 PD idx]
+        D --> E[20..12 PT idx]
+        E --> F[11..0 Offset]
+    end
 ```
 
 Volatility replicates this exact CPU behavior in software via its Translation Layer, allowing it to accurately reconstruct the virtual memory space of any specific process simply by locating the process's specific CR3 (Directory Table Base - DTB) value.

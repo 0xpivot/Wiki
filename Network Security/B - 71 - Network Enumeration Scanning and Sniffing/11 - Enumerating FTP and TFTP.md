@@ -49,38 +49,27 @@ TFTP is heavily utilized in:
 
 ## ASCII Diagram: FTP vs TFTP Architecture
 
-```text
-+-------------------------------------------------------------------------+
-|                       FTP ACTIVE MODE FLOW                              |
-+-------------------------------------------------------------------------+
-|                                                                         |
-|   +---------------+                                 +---------------+   |
-|   |               | ----(1) Connect to Port 21----> |               |   |
-|   |  FTP Client   | <---(2) 220 Welcome Banner----- |  FTP Server   |   |
-|   |               | ----(3) PORT x,x,x,x,p1,p2----> |               |   |
-|   |  (NAT/FW)     | <---(4) 200 PORT command OK---- |  (Port 21)    |   |
-|   |               |                                 |               |   |
-|   |  Listening    | <---(5) Server connects from--- |  (Port 20)    |   |
-|   |  on Port Z    |         Port 20 to Port Z       |               |   |
-|   +---------------+                                 +---------------+   |
-|                                                                         |
-+-------------------------------------------------------------------------+
+```mermaid
+sequenceDiagram
+    box FTP ACTIVE MODE FLOW
+    participant FClient as FTP Client<br/>(NAT/FW)<br/>Listening on Port Z
+    participant FServer as FTP Server<br/>(Port 21 & Port 20)
+    end
+    FClient->>FServer: (1) Connect to Port 21
+    FServer-->>FClient: (2) 220 Welcome Banner
+    FClient->>FServer: (3) PORT x,x,x,x,p1,p2
+    FServer-->>FClient: (4) 200 PORT command OK
+    FServer->>FClient: (5) Server connects from Port 20 to Port Z
 
-+-------------------------------------------------------------------------+
-|                          TFTP UDP FLOW                                  |
-+-------------------------------------------------------------------------+
-|                                                                         |
-|   +---------------+                                 +---------------+   |
-|   |               | --(1) RRQ (Read Request) file-> |               |   |
-|   |  TFTP Client  |         (Dest Port 69)          |  TFTP Server  |   |
-|   |               | <---(2) DATA Block 1 ---------- |               |   |
-|   | (Random Port) |         (Src Port Random)       |  (Port 69)    |   |
-|   |               | --(3) ACK Block 1 ------------> |               |   |
-|   |               | <---(4) DATA Block 2 ---------- |               |   |
-|   |               | --(5) ACK Block 2 ------------> |               |   |
-|   +---------------+                                 +---------------+   |
-|                                                                         |
-+-------------------------------------------------------------------------+
+    box TFTP UDP FLOW
+    participant TClient as TFTP Client<br/>(Random Port)
+    participant TServer as TFTP Server<br/>(Port 69)
+    end
+    TClient->>TServer: (1) RRQ (Read Request) file<br/>(Dest Port 69)
+    TServer-->>TClient: (2) DATA Block 1<br/>(Src Port Random)
+    TClient->>TServer: (3) ACK Block 1
+    TServer-->>TClient: (4) DATA Block 2
+    TClient->>TServer: (5) ACK Block 2
 ```
 
 ---

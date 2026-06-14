@@ -34,37 +34,34 @@ Therefore, a complete local credential extraction requires stealing all three hi
 
 ## 3. Visual Architecture: Extraction and Decryption Flow
 
-```ascii
-+-----------------------------------------------------------------------------------+
-|                            COMPROMISED WINDOWS HOST                               |
-|                                                                                   |
-|  +-----------------------+                                                        |
-|  | C:\Windows\System32\  |  <--- Locked by Kernel                                 |
-|  | config\               |                                                        |
-|  |                       |                                                        |
-|  | - SAM                 |  -- (Bypass Lock via Reg Save or VSS) --+              |
-|  | - SYSTEM              |  -- (Bypass Lock via Reg Save or VSS) --+              |
-|  | - SECURITY            |  -- (Bypass Lock via Reg Save or VSS) --+              |
-|  +-----------------------+                                         |              |
-|                                                                    |              |
-+--------------------------------------------------------------------|--------------+
-                                                                     V
-+-----------------------------------------------------------------------------------+
-|                            ATTACKER MACHINE / OFFLINE PARSING                     |
-|                                                                                   |
-|  +-----------------+          +------------------+         +------------------+   |
-|  |  SYSTEM Hive    | =======> | Extract BootKey  | =======>|                  |   |
-|  +-----------------+          +------------------+         |                  |   |
-|                                                            |    secretsdump   |   |
-|  +-----------------+          +------------------+         |    (Impacket)    |   |
-|  |  SAM Hive       | =======> | Extract Encrypted| =======>|                  |   |
-|  +-----------------+          | NTLM Hashes      |         |                  |   |
-|                               +------------------+         +--------+---------+   |
-|                                                                     |             |
-|                                                                     V             |
-|                                                    [ Administrator:500:aad3b... ] |
-|                                                    [ User1:1001:aad3b...        ] |
-+-----------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph WindowsHost["COMPROMISED WINDOWS HOST"]
+        LockedHives["C:\\Windows\\System32\\config\\<br><br>- SAM<br>- SYSTEM<br>- SECURITY<br><br>(Locked by Kernel)"]
+    end
+    
+    subgraph AttackerMachine["ATTACKER MACHINE / OFFLINE PARSING"]
+        SystemHive["SYSTEM Hive"]
+        SamHive["SAM Hive"]
+        
+        ExtractBootKey["Extract BootKey"]
+        ExtractHashes["Extract Encrypted<br>NTLM Hashes"]
+        
+        SecretsDump["secretsdump<br>(Impacket)"]
+        
+        Output["[ Administrator:500:aad3b... ]<br>[ User1:1001:aad3b... ]"]
+        
+        SystemHive ==> ExtractBootKey
+        SamHive ==> ExtractHashes
+        
+        ExtractBootKey ==> SecretsDump
+        ExtractHashes ==> SecretsDump
+        
+        SecretsDump ==> Output
+    end
+    
+    LockedHives -- "(Bypass Lock via Reg Save or VSS)" --> SystemHive
+    LockedHives -- "(Bypass Lock via Reg Save or VSS)" --> SamHive
 ```
 
 ---

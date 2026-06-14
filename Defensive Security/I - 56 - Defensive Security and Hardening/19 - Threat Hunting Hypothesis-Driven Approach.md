@@ -25,29 +25,17 @@ Threat hunting is not randomly digging through logs looking for "bad stuff." It 
 
 A successful threat hunt follows a structured lifecycle to ensure hunts are focused, measurable, and produce actionable results.
 
-```text
-               +---------------------------------------------------+
-               |                                                   |
-               v                                                   |
-+------------------------------+                     +-------------+----------------+
-| 1. Hypothesis Generation     |                     | 4. Enrichment & Automation   |
-|                              |                     |                              |
-| - Threat Intelligence (CTI)  |                     | - Create new SIEM rules      |
-| - MITRE ATT&CK Framework     |                     | - Develop custom EDR scripts |
-| - Situational Awareness      |                     | - Update Threat Intel Feeds  |
-| - Crown Jewel Analysis       |                     | - Improve logging visibility |
-+--------------+---------------+                     +-------------+----------------+
-               |                                                   ^
-               |                                                   |
-               v                                                   |
-+------------------------------+                     +-------------+----------------+
-| 2. Hunt Execution            |                     | 3. Discovery & Triage        |
-|                              |                     |                              |
-| - Query SIEM / Data Lake     |                     | - Analyze returned data      |
-| - Run EDR Live Queries       |                     | - Identify false positives   |
-| - Data Stacking / Clustering |-------------------->| - Confirm malicious activity |
-| - Statistical Analysis       |                     | - Initiate Incident Response |
-+------------------------------+                     +------------------------------+
+```mermaid
+flowchart TD
+    H1["1. Hypothesis Generation\n- Threat Intelligence (CTI)\n- MITRE ATT&CK Framework\n- Situational Awareness\n- Crown Jewel Analysis"]
+    H2["2. Hunt Execution\n- Query SIEM / Data Lake\n- Run EDR Live Queries\n- Data Stacking / Clustering\n- Statistical Analysis"]
+    H3["3. Discovery & Triage\n- Analyze returned data\n- Identify false positives\n- Confirm malicious activity\n- Initiate Incident Response"]
+    H4["4. Enrichment & Automation\n- Create new SIEM rules\n- Develop custom EDR scripts\n- Update Threat Intel Feeds\n- Improve logging visibility"]
+    
+    H1 --> H2
+    H2 --> H3
+    H3 --> H4
+    H4 --> H1
 ```
 
 ### 1. Hypothesis Generation

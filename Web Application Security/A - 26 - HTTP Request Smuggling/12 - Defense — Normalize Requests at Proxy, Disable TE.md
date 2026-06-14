@@ -38,46 +38,18 @@ If you are under active attack and cannot patch the proxies, you can disable TCP
 - **The Warning:** This will drastically increase CPU overhead and latency, as a new TCP handshake (and potentially TLS handshake) must be established between the proxy and the backend for every single user request. This is a temporary band-aid, not a permanent solution.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    DEFENSE: THE NORMALIZING PROXY
-================================================================================
+```mermaid
+flowchart TD
+    Attacker1["Attacker sends ambiguous CL.TE Payload <br/> POST / HTTP/1.1 <br/> Content-Length: 4 <br/> Transfer-Encoding: chunked\r\n"]
+    Front1["The Normalizing Front-End (e.g., strict HAProxy config) <br/> 1. Reads headers. <br/> 2. Detects `Transfer-Encoding` with illegal `\r\n` obfuscation. <br/> 3. Detects presence of both CL and TE. <br/> 4. ACTION: Drops connection. Returns 400 Bad Request."]
+    
+    Attacker2["Attacker sends standard TE payload <br/> POST / HTTP/1.1 <br/> Transfer-Encoding: chunked <br/> <br/> 5 <br/> hello <br/> 0"]
+    Front2["The Normalizing Front-End <br/> 1. Reads headers. Valid chunked request. <br/> 2. Buffers the entire body into memory ('hello'). <br/> 3. Strips `Transfer-Encoding`. <br/> 4. Calculates length of 'hello' (5 bytes). <br/> 5. Adds `Content-Length: 5`. <br/> 6. Forwards clean, unambiguous request to Back-End."]
+    Back2["Back-End Receives <br/> POST / HTTP/1.1 <br/> Content-Length: 5 <br/> <br/> hello <br/> <br/> Result: Smuggling is mathematically impossible!"]
 
-[Attacker sends ambiguous CL.TE Payload]
-POST / HTTP/1.1
-Content-Length: 4
-Transfer-Encoding: chunked\r\n
-
-[The Normalizing Front-End (e.g., strict HAProxy config)]
-1. Reads headers.
-2. Detects `Transfer-Encoding` with illegal `\r\n` obfuscation.
-3. Detects presence of both CL and TE.
-4. ACTION: Drops connection. Returns 400 Bad Request.
-
-[Attacker sends standard TE payload]
-POST / HTTP/1.1
-Transfer-Encoding: chunked
-
-5
-hello
-0
-
-[The Normalizing Front-End]
-1. Reads headers. Valid chunked request.
-2. Buffers the entire body into memory ("hello").
-3. Strips `Transfer-Encoding`.
-4. Calculates length of "hello" (5 bytes).
-5. Adds `Content-Length: 5`.
-6. Forwards clean, unambiguous request to Back-End.
-
-[Back-End Receives]
-POST / HTTP/1.1
-Content-Length: 5
-
-hello
-
-[Result: Smuggling is mathematically impossible!]
-================================================================================
+    Attacker1 --> Front1
+    Attacker2 --> Front2
+    Front2 --> Back2
 ```
 
 ## Developer Checklist

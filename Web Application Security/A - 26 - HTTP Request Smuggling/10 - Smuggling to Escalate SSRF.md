@@ -17,35 +17,14 @@ However, what if the application has a reverse proxy (Front-End) that is vulnera
 Think of it like a mailroom. You send a large envelope addressed to "Public Relations Dept." The mailroom (Front-End) routes it there. When the PR employee opens the envelope, they find a smaller letter inside that says "Deliver immediately to Top Secret HR Dept." Because the letter is already inside the building, the internal mail system delivers it, bypassing the external security checks.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    ESCALATING SSRF VIA SMUGGLING
-================================================================================
+```mermaid
+flowchart TD
+    Network["Network Architecture <br/> - Front-End WAF (Public IP) <br/> - Back-End Web Server (10.0.0.5) <br/> - Internal Admin Server (10.0.0.99) - Blocked from external access!"]
+    Attacker["1. Attacker sends CL.TE Payload <br/> POST / HTTP/1.1 <br/> Host: public-web.com <br/> Transfer-Encoding: chunked <br/> <br/> 0 <br/> <br/> GET /delete_all HTTP/1.1 <br/> Host: 10.0.0.99 <br/> X-Ignore: X"]
+    Back["2. Back-End Execution <br/> Back-End Web Server (10.0.0.5) parses the chunked payload. <br/> It extracts the smuggled request: `GET /delete_all HTTP/1.1\r\nHost: 10.0.0.99`. <br/> The Back-End Web Server executes the request! Because it is on the same internal network, it successfully hits the internal admin server. <br/> <br/> Result: Full SSRF achieved via Smuggling."]
 
-[Network Architecture]
-- Front-End WAF (Public IP)
-- Back-End Web Server (10.0.0.5)
-- Internal Admin Server (10.0.0.99) - Blocked from external access!
-
-[1. Attacker sends CL.TE Payload]
-POST / HTTP/1.1
-Host: public-web.com               <-- Front-End routes to 10.0.0.5
-Transfer-Encoding: chunked
-
-0
-
-GET /delete_all HTTP/1.1           <-- SMUGGLED REQUEST
-Host: 10.0.0.99                    <-- Targets internal server!
-X-Ignore: X
-
-[2. Back-End Execution]
-Back-End Web Server (10.0.0.5) parses the chunked payload.
-It extracts the smuggled request: `GET /delete_all HTTP/1.1\r\nHost: 10.0.0.99`.
-The Back-End Web Server executes the request! Because it is on the same internal 
-network, it successfully hits the internal admin server.
-
-[Result: Full SSRF achieved via Smuggling.]
-================================================================================
+    Network -.-> Attacker
+    Attacker --> Back
 ```
 
 ## How to Find It

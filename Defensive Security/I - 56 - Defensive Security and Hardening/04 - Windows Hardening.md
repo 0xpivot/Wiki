@@ -19,37 +19,24 @@ For VAPT professionals, Active Directory is the ultimate playground. Misconfigur
 
 ## Architectural ASCII Diagram: Windows Attack Surface Reduction
 
-```text
-       +-------------------------------------------------------------+
-       |                                                             |
-       |                GROUP POLICY / ACTIVE DIRECTORY              |
-       |              (Centralized Enforced Configurations)          |
-       |                                                             |
-       |    +---------------------------------------------------+    |
-       |    |                                                   |    |
-       |    |         NETWORK SEC & PROTOCOL HARDENING          |    |
-       |    |  (Defender Firewall, Disable SMBv1, NTLM Restrict)|    |
-       |    |                                                   |    |
-       |    |    +-----------------------------------------+    |    |
-       |    |    |                                         |    |    |
-       |    |    |       ACCESS & IDENTITY (LAPS)          |    |    |
-       |    |    |   (Unique Local Admin Passwords, MFA)   |    |    |
-       |    |    |                                         |    |    |
-       |    |    |    +-------------------------------+    |    |    |
-       |    |    |    |                               |    |    |    |
-       |    |    |    |    APP CONTROL & A.S.R.       |    |    |    |
-       |    |    |    | (WDAC, AppLocker, ASR Rules)  |    |    |    |
-       |    |    |    |                               |    |    |    |
-       |    |    |    |    +---------------------+    |    |    |    |
-       |    |    |    |    |                     |    |    |    |    |
-       |    |    |    |    |   VIRTUALIZATION    |    |    |    |    |
-       |    |    |    |    |   BASED SECURITY    |    |    |    |    |
-       |    |    |    |    | (Credential Guard)  |    |    |    |    |
-       |    |    |    |    +---------------------+    |    |    |    |
-       |    |    |    +-------------------------------+    |    |    |
-       |    |    +-----------------------------------------+    |    |
-       |    +---------------------------------------------------+    |
-       +-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph L1["GROUP POLICY / ACTIVE DIRECTORY\n(Centralized Enforced Configurations)"]
+        direction TB
+        subgraph L2["NETWORK SEC & PROTOCOL HARDENING\n(Defender Firewall, Disable SMBv1, NTLM Restrict)"]
+            direction TB
+            subgraph L3["ACCESS & IDENTITY (LAPS)\n(Unique Local Admin Passwords, MFA)"]
+                direction TB
+                subgraph L4["APP CONTROL & A.S.R.\n(WDAC, AppLocker, ASR Rules)"]
+                    direction TB
+                    subgraph L5["VIRTUALIZATION BASED SECURITY\n(Credential Guard)"]
+                        direction TB
+                        Core["Windows OS Core"]
+                    end
+                end
+            end
+        end
+    end
 ```
 
 ---

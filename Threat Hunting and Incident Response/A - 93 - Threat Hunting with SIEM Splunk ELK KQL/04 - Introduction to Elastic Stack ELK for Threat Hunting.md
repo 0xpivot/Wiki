@@ -34,23 +34,27 @@ Adhering to ECS is mandatory for building effective, platform-agnostic threat hu
 
 ## 3. ASCII Architecture: ELK Data Flow
 
-```text
-+-------------------+       +---------------+      +----------------+
-|  DATA SOURCES     |       |   INGESTION   |      |    STORAGE     |
-|                   |       |               |      |                |
-|  [Winlogbeat] ----+-----> |  [Logstash]   | ---> | [Elasticsearch]|
-|  [Filebeat]   ----+       | (Parse/Enrich)|      | (Data Nodes)   |
-|  [Packetbeat] ----+       +---------------+      +----------------+
-|  (Endpoints)      |       (Grok/Filters)                 |
-+-------------------+                                      |
-                                                           v
-                                                  +----------------+
-                                                  |  VISUALIZATION |
-                                                  |                |
-                                                  |    [Kibana]    |
-                                                  | (Dashboards &  |
-                                                  |  Discover UI)  |
-                                                  +----------------+
+```mermaid
+flowchart TD
+    subgraph DATA SOURCES Endpoints
+        A1[Winlogbeat]
+        A2[Filebeat]
+        A3[Packetbeat]
+    end
+    subgraph INGESTION
+        B[Logstash Parse/Enrich Grok/Filters]
+    end
+    A1 --> B
+    A2 --> B
+    A3 --> B
+    subgraph STORAGE
+        C[Elasticsearch Data Nodes]
+    end
+    B --> C
+    subgraph VISUALIZATION
+        D[Kibana Dashboards & Discover UI]
+    end
+    C --> D
 ```
 
 ## 4. Understanding Indices, Shards, and Replicas

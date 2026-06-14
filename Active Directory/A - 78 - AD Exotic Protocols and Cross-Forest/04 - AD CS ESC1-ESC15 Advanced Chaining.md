@@ -151,6 +151,16 @@ During a penetration test, the organization had completely secured their Certifi
 
 ---
 
+
+## Real-World Attack Scenario
+## Real-World Attack Scenario
+
+During the internal penetration testing phase, the assessment team identified an Active Directory Certificate Services (AD CS) instance running on `CA01.corp.local`. Initial enumeration using Certipy revealed multiple misconfigured certificate templates. While the standard ESC1 vectors had been patched, the team identified a vulnerable web enrollment endpoint (`http://ca01.corp.local/certsrv`) that lacked Extended Protection for Authentication (EPA) and HTTPS enforcement, leaving it susceptible to an ESC8 NTLM relay attack.
+
+To execute the attack, the team first positioned a rogue responder on the network and used Coercer to force the primary Domain Controller (`DC01.corp.local`) to authenticate to the attacker-controlled IP address over MS-RPC. The incoming NTLM authentication was immediately relayed using `ntlmrelayx.py` to the vulnerable HTTP web enrollment endpoint. The relay successfully requested a machine certificate for the coerced Domain Controller using the standard `DomainControllers` template.
+
+With the forged Domain Controller certificate in hand, the team utilized PKINIT to request a Kerberos Ticket Granting Ticket (TGT) on behalf of `DC01$`. This authentication yielded the NT hash of the Domain Controller, effectively granting the team DCSync privileges. The team then executed `secretsdump.py` to extract the `krbtgt` hash, successfully forging a Golden Ticket and achieving full Domain Admin compromise without directly exploiting any Active Directory ACL misconfigurations.
+
 ## Chaining Opportunities
 * **NTLM Coercion:** Using PetitPotam, DFSCoerce, or ShadowCoerce to feed ESC8. [[15 - NTLM Coercion Techniques]]
 * **DCSync:** The final objective after obtaining a DA certificate. [[05 - DCSync and LSA Extraction]]

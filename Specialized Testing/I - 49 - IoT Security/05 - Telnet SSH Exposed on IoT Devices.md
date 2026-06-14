@@ -27,34 +27,16 @@ An exposed Telnet or SSH service provides an attacker with a direct, network-bas
 
 ## ASCII Diagram: Network Authentication Attack Vector
 
-```text
-       [ATTACKER] (Internet or Local LAN)
-           |
-           |  1. Port Scan (Nmap, Masscan, Shodan)
-           v
-  +-------------------+
-  |   HOME ROUTER     | --- (Optional: UPnP exposure or direct LAN access)
-  +-------------------+
-           |
-           |  2. Connects to Port 23 (Telnet) or Port 22 (SSH)
-           v
-+-------------------------------------------------------------+
-|                     TARGET IOT DEVICE                       |
-|                                                             |
-|  [Network Daemon]                                           |
-|  - dropbear SSH                                             |
-|  - BusyBox telnetd                                          |
-|         |                                                   |
-|         v                                                   |
-|  [Authentication Layer]                                     |
-|  - 3. Brute-force / Dictionary Attack                       |
-|  - Check against /etc/passwd or /etc/shadow                 |
-|         |                                                   |
-|         v                                                   |
-|  [Operating System (BusyBox / Embedded Linux)]              |
-|  - 4. Access Granted -> /bin/sh or /bin/ash spawned.        |
-|  - 5. Post-Exploitation (Privesc, Pivot, Malware DL)        |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["[ATTACKER] (Internet or Local LAN)"] -->|1. Port Scan Nmap, Masscan, Shodan| Router["[HOME ROUTER]<br>Optional: UPnP exposure or direct LAN access"]
+    Router -->|2. Connects to Port 23 Telnet or Port 22 SSH| Daemon
+    
+    subgraph TargetIoT[TARGET IOT DEVICE]
+        direction TB
+        Daemon["[Network Daemon]<br>- dropbear SSH<br>- BusyBox telnetd"] -->|3. Brute-force / Dictionary Attack| Auth["[Authentication Layer]<br>Check against /etc/passwd or /etc/shadow"]
+        Auth -->|4. Access Granted -> /bin/sh or /bin/ash spawned| OS["[Operating System (BusyBox / Embedded Linux)]<br>5. Post-Exploitation (Privesc, Pivot, Malware DL)"]
+    end
 ```
 
 ---

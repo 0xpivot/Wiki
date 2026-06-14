@@ -36,33 +36,16 @@ Using the `jump winrm` command, operators can utilize Windows Remote Management 
 
 ## 4. Architecture Diagram: Complex P2P C2 Topology
 
-```text
-                   [ C2 Infrastructure / Team Server ]
-                                  ^
-                                  | (HTTPS - Port 443)
-                                  v
-+-------------------------------------------------------------------+
-|  [ Perimeter Server - Parent Beacon ] (10.0.1.5)                  |
-|    - Egress to Internet                                           |
-|    - Listens on Named Pipe: \\.\pipe\status_78                    |
-+-------------------------------------------------------------------+
-                                  ^
-                                  | (SMB - Port 445 / Named Pipe)
-                                  v
-+-------------------------------------------------------------------+
-|  [ Internal Workstation 1 - Child Beacon ] (10.0.2.10)            |
-|    - No direct Internet access                                    |
-|    - Links to Parent Beacon                                       |
-|    - Listens on TCP: 4444                                         |
-+-------------------------------------------------------------------+
-                                  ^
-                                  | (Raw TCP - Port 4444)
-                                  v
-+-------------------------------------------------------------------+
-|  [ Secure Database Server - Grandchild Beacon ] (10.0.3.50)       |
-|    - Highly segmented network (VLAN blocked from DMZ)             |
-|    - Connects to Workstation 1 via TCP                            |
-+-------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    TS["C2 Infrastructure / Team Server"]
+    P["Perimeter Server - Parent Beacon (10.0.1.5)<br>- Egress to Internet<br>- Listens on Named Pipe: \\.\pipe\status_78"]
+    C["Internal Workstation 1 - Child Beacon (10.0.2.10)<br>- No direct Internet access<br>- Links to Parent Beacon<br>- Listens on TCP: 4444"]
+    G["Secure Database Server - Grandchild Beacon (10.0.3.50)<br>- Highly segmented network (VLAN blocked from DMZ)<br>- Connects to Workstation 1 via TCP"]
+    
+    P <--"HTTPS - Port 443"--> TS
+    C <--"SMB - Port 445 / Named Pipe"--> P
+    G <--"Raw TCP - Port 4444"--> C
 ```
 
 ## 5. Token Manipulation and Authentication

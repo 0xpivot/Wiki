@@ -80,43 +80,24 @@ Once the first byte is discovered, the attacker shifts the alignment by one byte
 
 ## 4. Visualizing the BEAST Attack
 
-```text
-==========================================================================================
-                     THE BEAST ATTACK FLOW
-==========================================================================================
-
-[ VICTIM BROWSER ]                                           [ ATTACKER (Sniffing + JS Injection) ]
-  (Running Malicious JS)                                                   |
-        |                                                                  |
-        | --- 1. JS forces request: GET /... Cookie: secret=ABCD ---->     |
-        |                                                                  |
-        |   (Encrypted with TLS 1.0 CBC)                                   |
-        |   Block 1: [ GET /aaaa... Cookie:  ]                             |
-        |   Block 2: [ secret=A              ] <- Target Block (15 known + 1 unknown 'A')
-        |                                                                  |
-        | --- 2. Observe Ciphertext on wire -----------------------------> |
-        |                                                                  |
-        |                                                                  |
-        | <--- 3. Attacker analyzes target block ciphertext C2             |
-        | <--- 4. Attacker observes last block C_last (This is IV_next)    |
-        |                                                                  |
-        |                                                                  |
-        | --- 5. JS forces NEW request with calculated Guesses ----------> |
-        |        (Attacker calculates: P_guess XOR IV_next XOR IV_old)     |
-        |                                                                  |
-        |        Guess 'a': [ ... ] => Ciphertext C_guess_a                |
-        |        Guess 'b': [ ... ] => Ciphertext C_guess_b                |
-        |        Guess 'A': [ ... ] => Ciphertext C_guess_A                |
-        |                                                                  |
-        | --- 6. Observe Ciphertexts ------------------------------------> |
-        |                                                                  |
-        |                                                                  |
-        | <--- 7. Attacker compares:                                       |
-        |         Does C_guess_A == C2 ? YES!                              |
-        |         The unknown byte is 'A'.                                 |
-        |                                                                  |
-        | <--- 8. Shift boundary, repeat for next byte ('B', then 'C'...)  |
-==========================================================================================
+```mermaid
+sequenceDiagram
+    participant V as VICTIM BROWSER<br>(Running Malicious JS)
+    participant A as ATTACKER<br>(Sniffing + JS Injection)
+    
+    V->>A: 1. JS forces request: GET /... Cookie: secret=ABCD
+    Note over V: (Encrypted with TLS 1.0 CBC)<br>Block 1: [ GET /aaaa... Cookie:  ]<br>Block 2: [ secret=A ] <- Target Block
+    
+    V->>A: 2. Observe Ciphertext on wire
+    A-->>V: 3. Attacker analyzes target block ciphertext C2
+    A-->>V: 4. Attacker observes last block C_last (This is IV_next)
+    
+    V->>A: 5. JS forces NEW request with calculated Guesses<br>(P_guess XOR IV_next XOR IV_old)
+    Note over V: Guess 'a' => C_guess_a<br>Guess 'b' => C_guess_b<br>Guess 'A' => C_guess_A
+    V->>A: 6. Observe Ciphertexts
+    
+    A-->>V: 7. Attacker compares:<br>Does C_guess_A == C2 ? YES!<br>Unknown byte is 'A'.
+    A-->>V: 8. Shift boundary, repeat for next byte
 ```
 
 ## 5. Exploitation Prerequisites and Real-World Challenges

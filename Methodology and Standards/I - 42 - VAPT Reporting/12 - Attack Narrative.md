@@ -31,26 +31,29 @@ A well-written narrative turns dry technical data into a compelling argument for
 
 ## ASCII Diagram: The Attack Chain
 
-```text
-+-------------------+       +-------------------+       +-------------------+
-| Phase 1:          |       | Phase 2:          |       | Phase 3:          |
-| Initial Access    +------>+ Privilege Escal.  +------>+ Data Exfiltration |
-| (External)        |       | (Internal)        |       | (Impact)          |
-+-------------------+       +-------------------+       +-------------------+
-        |                           |                           |
-        v                           v                           v
-+-------------------+       +-------------------+       +-------------------+
-| Phishing Email    |       | Local Privilege   |       | Accessing PII DB  |
-| with Malicious    |       | Escalation via    |       | and tunneling out |
-| Attachment        |       | Sudo Misconfig    |       | via DNS           |
-+-------------------+       +-------------------+       +-------------------+
-        |                           |                           |
-        v                           v                           v
-+-------------------+       +-------------------+       +-------------------+
-| User Executes     |       | Root Access       |       | 10,000 Customer   |
-| Payload, C2       |       | Attained on       |       | Records Stolen    |
-| Session Started   |       | Workstation       |       |                   |
-+-------------------+       +-------------------+       +-------------------+
+```mermaid
+flowchart TD
+    P1["Phase 1:<br>Initial Access<br>(External)"]
+    P2["Phase 2:<br>Privilege Escal.<br>(Internal)"]
+    P3["Phase 3:<br>Data Exfiltration<br>(Impact)"]
+
+    P1 --> P2 --> P3
+
+    A["Phishing Email<br>with Malicious<br>Attachment"]
+    B["Local Privilege<br>Escalation via<br>Sudo Misconfig"]
+    C["Accessing PII DB<br>and tunneling out<br>via DNS"]
+
+    P1 --> A
+    P2 --> B
+    P3 --> C
+
+    D["User Executes<br>Payload, C2<br>Session Started"]
+    E["Root Access<br>Attained on<br>Workstation"]
+    F["10,000 Customer<br>Records Stolen"]
+
+    A --> D
+    B --> E
+    C --> F
 ```
 
 ## Step-by-Step Construction

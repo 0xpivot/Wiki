@@ -58,21 +58,22 @@ Imagine an application `C:\Program Files\SecureApp\admin_tool.exe` (running as A
 
 Because `C:\Python27` is listed *before* `C:\Program Files\SomeApp\` in the PATH, the search order checks `C:\Python27` first. 
 
-```text
-+--------------------------------------------------------------------------+
-|                  PATH DLL SEARCH ORDER ABUSE FLOW                        |
-+--------------------------------------------------------------------------+
-|  Target App calls: LoadLibrary("libssl.dll")                             |
-|                                                                          |
-|  [ PATH Environment Variable Sequence ]                                  |
-|                                                                          |
-|  1. C:\Windows\System32\libssl.dll       -> [NOT FOUND]                  |
-|                                                                          |
-|  2. C:\Python27\libssl.dll               -> [FOUND!] <-- ATTACKER PAYLOAD|
-|       (Standard Users have Write Access)                                 |
-|                                                                          |
-|  3. C:\Program Files\SomeApp\libssl.dll  -> [IGNORED] <-- LEGITIMATE DLL |
-+--------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Flow[PATH DLL SEARCH ORDER ABUSE FLOW]
+        TA["Target App calls: LoadLibrary('libssl.dll')"]
+        
+        SEQ["[ PATH Environment Variable Sequence ]"]
+        TA --> SEQ
+        
+        S1["1. C:\\Windows\\System32\\libssl.dll -> [NOT FOUND]"]
+        S2["2. C:\\Python27\\libssl.dll -> [FOUND!] <-- ATTACKER PAYLOAD\n(Standard Users have Write Access)"]
+        S3["3. C:\\Program Files\\SomeApp\\libssl.dll -> [IGNORED] <-- LEGITIMATE DLL"]
+        
+        SEQ --> S1
+        S1 --> S2
+        S2 --> S3
+    end
 ```
 
 ## Enumeration and Identification

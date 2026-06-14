@@ -89,38 +89,18 @@ When a penetration tester encounters a system:
 
 ## Visualizing the Vulnerability Ecosystem
 
-```text
-+-------------------------------------------------------------------------+
-|                      The Vulnerability Data Triad                       |
-+-------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    CPE["[CPE] Common Platform Enumeration<br>Identifies the AFFECTED ASSET<br>(e.g., cpe:2.3:a:vendor:product:1.0)"]
+    CWE["[CWE] Common Weakness Enum.<br>Identifies the ROOT CAUSE<br>(e.g., CWE-89: SQL Injection)"]
+    CVE["[CVE] Common Vuln. & Exposures<br>The unique IDENTIFIER<br>(e.g., CVE-2023-12345)"]
+    CVSS["[CVSS] Common Vuln. Scoring Sys.<br>The SEVERITY SCORE (0.0 to 10.0)<br>(e.g., Base Score: 9.8 CRITICAL)"]
+    EPSS["[EPSS] Exploit Prediction Score<br>The LIKELIHOOD of EXPLOITATION"]
 
-  [CPE] Common Platform Enumeration           [CWE] Common Weakness Enum.
-  Identifies the AFFECTED ASSET               Identifies the ROOT CAUSE
-  (e.g., cpe:2.3:a:vendor:product:1.0)        (e.g., CWE-89: SQL Injection)
-             \                                       /
-              \                                     /
-               v                                   v
-             +---------------------------------------+
-             |    [CVE] Common Vuln. & Exposures     |
-             |    The unique IDENTIFIER              |
-             |    (e.g., CVE-2023-12345)             |
-             +---------------------------------------+
-                               |
-                               |  Determines
-                               v
-             +---------------------------------------+
-             |    [CVSS] Common Vuln. Scoring Sys.   |
-             |    The SEVERITY SCORE (0.0 to 10.0)   |
-             |    (e.g., Base Score: 9.8 CRITICAL)   |
-             +---------------------------------------+
-                               |
-                               |  Complemented by
-                               v
-             +---------------------------------------+
-             |    [EPSS] Exploit Prediction Score    |
-             |    The PROBABILITY of exploitation    |
-             |    (e.g., 85% probability in 30 days) |
-             +---------------------------------------+
+    CPE --> CVE
+    CWE --> CVE
+    CVE --> CVSS
+    CVSS --> EPSS
 ```
 
 ## How Vulnerability Scanners Use This Data

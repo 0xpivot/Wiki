@@ -86,27 +86,17 @@ GetUserSPNs.py corp.local/username:password -dc-ip 192.168.1.10
 
 ## 5. ASCII Diagram of SPN Resolution
 
-```text
-========================================================================
-                   SPN RESOLUTION IN KERBEROS
-========================================================================
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker / Client
+    participant DC as Domain Controller
 
-[ Attacker / Client ]                                   [ Domain Controller ]
-         |                                                       |
-         | --- 1. LDAP Query: "Find objects with SPNs" --------> |
-         |                                                       |
-         | <--- 2. Returns SPNs (e.g., MSSQLSvc/sql01:1433) ---- |
-         |                                                       |
-         | --- 3. TGS-REQ: "I want to access MSSQLSvc/sql01" --> |
-         |        (Client asks for a Service Ticket)             |
-         |                                                       |
-         | <--- 4. TGS-REP: Service Ticket returned ------------ |
-         |        (Ticket is encrypted with the Service          |
-         |         Account's NTLM hash)                          |
-         |                                                       |
- [ Offline Crack ]                                               |
- (Attacker attempts to extract plaintext password)               |
-========================================================================
+    Attacker->>DC: 1. LDAP Query: "Find objects with SPNs"
+    DC-->>Attacker: 2. Returns SPNs (e.g., MSSQLSvc/sql01:1433)
+    Attacker->>DC: 3. TGS-REQ: "I want to access MSSQLSvc/sql01" (Client asks for a Service Ticket)
+    DC-->>Attacker: 4. TGS-REP: Service Ticket returned (Ticket is encrypted with the Service Account's NTLM hash)
+    
+    Note over Attacker: Offline Crack<br>(Attacker attempts to extract plaintext password)
 ```
 
 ## 6. Analyzing SPN Scanning Output

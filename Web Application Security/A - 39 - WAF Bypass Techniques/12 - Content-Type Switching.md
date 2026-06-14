@@ -37,18 +37,14 @@ The vulnerability arises because backend frameworks (like Spring Boot, Express.j
 
 ## ASCII Diagram: Content-Type Switching Architecture
 
-```text
-+-------------+                                   +-------------+                                    +-----------------+
-|             |  POST /api/login                  |             |   Request forwarded                |                 |
-|   Attacker  | --------------------------------> |     WAF     | ---------------------------------> | Backend Server  |
-|             |  Content-Type: text/plain         |             |   Uninspected body                 |                 |
-+-------------+  Body: {"user":"admin'--"}        +-------------+                                    +-----------------+
-       |                                                 |                                                    |
-       |                                                 | WAF checks Content-Type                            | Application ignores header
-       |                                                 | "text/plain" is considered safe.                   | Sniffs body -> starts with '{'
-       |                                                 | Skips JSON parsing.                                | Parses as JSON
-       |                                                 | Passes request to backend.                         | Executes SQLi
-       |                                                 |                                                    |
+```mermaid
+flowchart LR
+    Attacker["Attacker <br/> POST /api/login <br/> Content-Type: text/plain <br/> Body: {'user':'admin'--'}"]
+    WAF["WAF <br/> WAF checks Content-Type <br/> 'text/plain' is considered safe. <br/> Skips JSON parsing. <br/> Passes request to backend."]
+    Backend["Backend Server <br/> Application ignores header <br/> Sniffs body -> starts with '{' <br/> Parses as JSON <br/> Executes SQLi"]
+
+    Attacker --> WAF
+    WAF -- "Request forwarded <br/> Uninspected body" --> Backend
 ```
 
 ## Exploitation Scenarios

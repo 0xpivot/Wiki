@@ -22,19 +22,17 @@ The fundamental weakness of ECB mode is its lack of diffusion. Because each bloc
 
 ### ASCII Diagram: ECB Mode Encryption
 
-```text
-Plaintext:
-[ Block 1 (16 bytes) ]  [ Block 2 (16 bytes) ]  [ Block 3 (16 bytes) ]
-          |                       |                       |
-          v                       v                       v
-    +-----------+           +-----------+           +-----------+
-    | Block     |           | Block     |           | Block     |
-    | Cipher    |<---Key--->| Cipher    |<---Key--->| Cipher    |
-    | Encrypt   |           | Encrypt   |           | Encrypt   |
-    +-----------+           +-----------+           +-----------+
-          |                       |                       |
-          v                       v                       v
-[Ciphertext Block 1 ]   [Ciphertext Block 2 ]   [Ciphertext Block 3 ]
+```mermaid
+flowchart TD
+    P1["Plaintext:\n[ Block 1 (16 bytes) ]"] --> C1[Block Cipher Encrypt]
+    P2["Plaintext:\n[ Block 2 (16 bytes) ]"] --> C2[Block Cipher Encrypt]
+    P3["Plaintext:\n[ Block 3 (16 bytes) ]"] --> C3[Block Cipher Encrypt]
+    Key[Key] --> C1
+    Key --> C2
+    Key --> C3
+    C1 --> CT1["[Ciphertext Block 1 ]"]
+    C2 --> CT2["[Ciphertext Block 2 ]"]
+    C3 --> CT3["[Ciphertext Block 3 ]"]
 ```
 
 As visualized above, there is no chaining mechanism (like an Initialization Vector or feedback loop). If `Block 1` is identical to `Block 3`, then `Ciphertext Block 1` will be mathematically identical to `Ciphertext Block 3`. This simple property gives rise to extremely powerful cryptographic attacks when user input is concatenated with sensitive data and encrypted.

@@ -42,19 +42,12 @@ Let's break down these parameters for the threat hunter:
 
 ## ASCII Diagram: Illicit Consent Grant Flow
 
-```text
-+----------------+          (1) Phishing Link            +-------------------+
-|    Attacker    | ------------------------------------> |   Victim (User)   |
-| (Malicious App)|                                       |                   |
-+----------------+                                       +-------------------+
-        ^                                                         |
-        | (4) App accesses APIs                                   | (2) Clicks link, authenticates
-        |     using user's token                                  |     and reviews consent prompt
-        |                                                         v
-+----------------+          (3) Grants Consent           +-------------------+
-| Microsoft Graph| <------------------------------------ |   Entra ID        |
-| / O365 APIs    |         (Token issued to App)         |  (Authorization)  |
-+----------------+                                       +-------------------+
+```mermaid
+flowchart TD
+    A[Attacker<br>Malicious App] -->|1 Phishing Link| B[Victim User]
+    B -->|2 Clicks link, authenticates and reviews consent prompt| C[Entra ID<br>Authorization]
+    C -->|3 Grants Consent Token issued to App| D[Microsoft Graph / O365 APIs]
+    D -->|4 App accesses APIs using user's token| A
 ```
 
 ## Deep Dive: Azure AD App Permissions

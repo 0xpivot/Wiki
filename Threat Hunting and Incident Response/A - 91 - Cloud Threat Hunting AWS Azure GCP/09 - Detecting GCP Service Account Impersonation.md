@@ -30,18 +30,10 @@ This returns a token valid for up to 1 hour (default). The attacker then attache
 
 ## ASCII Diagram: Impersonation Attack Flow
 
-```text
-+-------------------+      (1) Assume SA Identity     +-----------------------+
-| Compromised User  | ------------------------------> | Target Service Account|
-| (Low Privilege)   |      (generateAccessToken)      | (High Privilege)      |
-+-------------------+                                 +-----------------------+
-                                                              |
-                                                              | (2) Use SA Token
-                                                              v
-                                                      +-----------------------+
-                                                      | Google Cloud APIs     |
-                                                      | (Compute, IAM, etc.)  |
-                                                      +-----------------------+
+```mermaid
+flowchart TD
+    A[Compromised User<br>Low Privilege] -->|1 Assume SA Identity<br>generateAccessToken| B[Target Service Account<br>High Privilege]
+    B -->|2 Use SA Token| C[Google Cloud APIs<br>Compute, IAM, etc.]
 ```
 
 ## The `ServiceAccountDelegationInfo` Object

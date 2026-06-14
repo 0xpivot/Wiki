@@ -25,41 +25,37 @@ While different security consultancy firms have their own uniquely branded templ
 
 ### 2.1 Visualizing the Report Structure
 
-```text
-+---------------------------------------------------------------------------------+
-|                              VAPT Report Anatomy Diagram                        |
-+---------------------------------------------------------------------------------+
-|                                                                                 |
-|  [ Part 1: High-Level / Business Focus ]                                        |
-|  +-- Cover Page (Branding, Title, Date)                                         |
-|  +-- Document Control & Version History                                         |
-|  +-- Table of Contents                                                          |
-|  +-- Executive Summary                                                          |
-|      +-- Engagement Overview & Scope                                            |
-|      +-- High-Level Risk Posture & Bottom Line                                  |
-|      +-- Visual Risk Summary (Charts/Graphs)                                    |
-|      +-- Strategic Recommendations & Roadmap                                    |
-|                                                                                 |
-|  [ Part 2: Engagement Context & Compliance ]                                    |
-|  +-- Detailed Scope of Work (In-Scope vs Out-of-Scope)                          |
-|  +-- Testing Methodology (OSSTMM, PTES, OWASP, NIST)                            |
-|  +-- Limitations, Constraints, and Assumptions                                  |
-|                                                                                 |
-|  [ Part 3: Deep Technical Details & Remediation ]                               |
-|  +-- Summary of Findings (Matrix/Table Overview)                                |
-|  +-- Detailed Technical Findings (Iterated per vulnerability)                   |
-|      +-- Vulnerability Title, ID, & Severity Rating                             |
-|      +-- Technical Description & Business Impact                                |
-|      +-- Proof of Concept (PoC) & Exact Reproduction Steps                      |
-|      +-- Actionable Remediation & Code Fixes                                    |
-|                                                                                 |
-|  [ Part 4: Appendices ]                                                         |
-|  +-- Attack Narratives / Exploit Kill Chains                                    |
-|  +-- Risk Rating Methodology (CVSS Metrics Explanation)                         |
-|  +-- Tools Used / Open Source Intelligence (OSINT) Gathered                     |
-|  +-- Raw Data Excerpts (Massive IP lists, Nmap dumps)                           |
-|                                                                                 |
-+---------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Root["VAPT Report Anatomy"]
+    Root --> P1["Part 1: High-Level / Business Focus"]
+    P1 --> P1_1["Cover Page (Branding, Title, Date)"]
+    P1 --> P1_2["Document Control & Version History"]
+    P1 --> P1_3["Table of Contents"]
+    P1 --> P1_4["Executive Summary"]
+    P1_4 --> P1_4_1["Engagement Overview & Scope"]
+    P1_4 --> P1_4_2["High-Level Risk Posture & Bottom Line"]
+    P1_4 --> P1_4_3["Visual Risk Summary (Charts/Graphs)"]
+    P1_4 --> P1_4_4["Strategic Recommendations & Roadmap"]
+
+    Root --> P2["Part 2: Engagement Context & Compliance"]
+    P2 --> P2_1["Detailed Scope of Work (In-Scope vs Out-of-Scope)"]
+    P2 --> P2_2["Testing Methodology (OSSTMM, PTES, OWASP, NIST)"]
+    P2 --> P2_3["Limitations, Constraints, and Assumptions"]
+
+    Root --> P3["Part 3: Deep Technical Details & Remediation"]
+    P3 --> P3_1["Summary of Findings (Matrix/Table Overview)"]
+    P3 --> P3_2["Detailed Technical Findings (Iterated per vulnerability)"]
+    P3_2 --> P3_2_1["Vulnerability Title, ID, & Severity Rating"]
+    P3_2 --> P3_2_2["Technical Description & Business Impact"]
+    P3_2 --> P3_2_3["Proof of Concept (PoC) & Exact Reproduction Steps"]
+    P3_2 --> P3_2_4["Actionable Remediation & Code Fixes"]
+
+    Root --> P4["Part 4: Appendices"]
+    P4 --> P4_1["Attack Narratives / Exploit Kill Chains"]
+    P4 --> P4_2["Risk Rating Methodology (CVSS Metrics Explanation)"]
+    P4 --> P4_3["Tools Used / Open Source Intelligence (OSINT) Gathered"]
+    P4 --> P4_4["Raw Data Excerpts (Massive IP lists, Nmap dumps)"]
 ```
 
 ## 3. Section-by-Section Breakdown

@@ -90,36 +90,16 @@ Once physically connected, the software of choice in the Linux environment is `f
 
 ## 5. Architectural Flow of an SPI Dump (ASCII Diagram)
 
-```text
- +---------------------+            +-----------------------+
- | Attacker Laptop     |            | USB-to-SPI Programmer |
- | (Running Linux)     |            | (e.g., CH341A)        |
- |                     |            |                       |
- | $ flashrom -p ...   |---[USB]--->| Translates USB to SPI |
- +---------------------+            +-----------------------+
-                                           |  |  |  |  |  |
-                                       VCC |  |  |  |  |  | GND
-                                           |  |  |  |  |  |
-                                      CS   |  |  |  |  |  |
-                                      MISO |  |  |  |  |  |
-                                      MOSI |  |  |  |  |  |
-                                      SCLK |  |  |  |  |  |
-                                           V  V  V  V  V  V
- +---------------------------------------------------------------+
- | IoT Device PCB (Unpowered by main supply)                     |
- |                                                               |
- |                      +---(SOIC-8 Test Clip)---+               |
- |                      |                        |               |
- |                      v                        v               |
- |                   [ CS ]                   [ VCC]             |
- |                   [ MISO ]                 [ HOLD ]           |
- |  +-------+        [ WP ]                   [ SCLK ]           |
- |  |  SoC  |---X----[ GND ]                  [ MOSI ]           |
- |  +-------+ ^      +---------------------------+               |
- |            |          SPI Flash Memory Chip                   |
- |     (Power contention                         |               |
- |      issue if SoC wakes up)                   |               |
- +-----------------------------------------------+               |
+```mermaid
+flowchart TD
+    Attacker["Attacker Laptop (Running Linux)<br>$ flashrom -p ..."] -->|USB| Programmer["USB-to-SPI Programmer<br>(e.g., CH341A)<br>Translates USB to SPI"]
+
+    Programmer -->|VCC, CS, MISO, MOSI, SCLK, GND| Clip["SOIC-8 Test Clip"]
+
+    subgraph PCB["IoT Device PCB (Unpowered by main supply)"]
+        Clip --> Flash["SPI Flash Memory Chip<br>[CS] [VCC]<br>[MISO] [HOLD]<br>[WP] [SCLK]<br>[GND] [MOSI]"]
+        Flash -.-x|Power contention issue if SoC wakes up| SoC["SoC"]
+    end
 ```
 
 ## 6. Post-Extraction Analysis and Modification

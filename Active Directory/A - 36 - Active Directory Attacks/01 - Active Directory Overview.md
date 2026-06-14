@@ -91,33 +91,39 @@ GPOs are a collection of settings that define what a system will look like and h
 
 ## 7. Architecture ASCII Diagram
 
-```text
-========================================================================
-                      ACTIVE DIRECTORY ARCHITECTURE
-========================================================================
+```mermaid
+graph TD
+    classDef domain fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef org fill:#bbf,stroke:#333,stroke-width:1px;
+    classDef objects fill:#dfd,stroke:#333,stroke-width:1px;
 
-                         [ THE FOREST ]
-                  (Ultimate Security Boundary)
-                               |
-             +-----------------+-----------------+
-             |                                   |
-      [ TREE 1: corp.local ]             [ TREE 2: acme.local ]
-      (Forest Root Domain)                (Separate Namespace)
-             |                                   |
-    +--------+--------+                          |
-    |                 |                          |
-[ Domain:         [ Domain:                  [ Domain:
-  us.corp.local ]   eu.corp.local ]            hq.acme.local ]
-    |                 |
-  [ OUs ]           [ OUs ]
-  - HR              - Sales
-  - IT              - Marketing
-    |                 |
- [ Objects ]       [ Objects ]
- - Users           - Users
- - Computers       - Computers
- - Groups          - Groups
-========================================================================
+    Forest["THE FOREST<br>(Ultimate Security Boundary)"]
+    
+    Tree1["TREE 1: corp.local<br>(Forest Root Domain)"]
+    Tree2["TREE 2: acme.local<br>(Separate Namespace)"]
+    
+    Forest --- Tree1
+    Forest --- Tree2
+    
+    US_Corp["Domain: us.corp.local"]:::domain
+    EU_Corp["Domain: eu.corp.local"]:::domain
+    HQ_Acme["Domain: hq.acme.local"]:::domain
+    
+    Tree1 --- US_Corp
+    Tree1 --- EU_Corp
+    Tree2 --- HQ_Acme
+    
+    OUs_US["OUs<br>- HR<br>- IT"]:::org
+    OUs_EU["OUs<br>- Sales<br>- Marketing"]:::org
+    
+    US_Corp --- OUs_US
+    EU_Corp --- OUs_EU
+    
+    Obj_US["Objects<br>- Users<br>- Computers<br>- Groups"]:::objects
+    Obj_EU["Objects<br>- Users<br>- Computers<br>- Groups"]:::objects
+    
+    OUs_US --- Obj_US
+    OUs_EU --- Obj_EU
 ```
 
 ## 8. Chaining Opportunities

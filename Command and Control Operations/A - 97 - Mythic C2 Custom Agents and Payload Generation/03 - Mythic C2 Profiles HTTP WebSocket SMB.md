@@ -32,39 +32,29 @@ WebSockets provide a persistent, bi-directional communication channel over a sin
 
 ## 3. C2 Profile Architecture and Routing Diagram
 
-```text
-                                  +-----------------------+
-                                  |   Mythic Core Server  |
-                                  |   (RabbitMQ Layer)    |
-                                  +-----------+-----------+
-                                              |
-                                              | AMQP Internal Comms
-                                              v
-+-----------------------------------------------------------------------------------+
-|                            MYTHIC C2 PROFILE CONTAINERS                           |
-|                                                                                   |
-|  +------------------------+  +------------------------+                           |
-|  |     mythic_http        |  |   mythic_websocket     |                           |
-|  |  (Listens on Port 80)  |  |  (Listens on Port 80)  |                           |
-|  +-----------+------------+  +-----------+------------+                           |
-|              |                           |                                        |
-+--------------|---------------------------|----------------------------------------+
-               | HTTPS (Asynchronous)      | WSS (Persistent/Stateful)
-               | (Via Reverse Proxy)       | (Via Reverse Proxy)
-               v                           v
-      +-----------------+         +-----------------+
-      | Target Subnet A |         | Target Subnet B |
-      |  (Compromised)  |         |  (Compromised)  |
-      |   [Agent #1]    |         |   [Agent #2]    |
-      +--------+--------+         +--------+--------+
-               |                           |
-               | SMB Named Pipe (P2P)      | TCP Socket (P2P)
-               v                           v
-      +-----------------+         +-----------------+
-      | Target Subnet C |         | Target Subnet D |
-      | (Isolated VLAN) |         | (Isolated VLAN) |
-      |   [Agent #3]    |         |   [Agent #4]    |
-      +-----------------+         +-----------------+
+```mermaid
+flowchart TD
+    Core["Mythic Core Server<br>(RabbitMQ Layer)"]
+    
+    subgraph Prof["MYTHIC C2 PROFILE CONTAINERS"]
+        HTTP["mythic_http<br>(Listens on Port 80)"]
+        WSS["mythic_websocket<br>(Listens on Port 80)"]
+    end
+    
+    Core -- "AMQP Internal Comms" --> HTTP
+    Core -- "AMQP Internal Comms" --> WSS
+    
+    A1["Target Subnet A (Compromised)<br>[Agent #1]"]
+    A2["Target Subnet B (Compromised)<br>[Agent #2]"]
+    
+    HTTP -- "HTTPS (Asynchronous)<br>(Via Reverse Proxy)" --> A1
+    WSS -- "WSS (Persistent/Stateful)<br>(Via Reverse Proxy)" --> A2
+    
+    A3["Target Subnet C (Isolated VLAN)<br>[Agent #3]"]
+    A4["Target Subnet D (Isolated VLAN)<br>[Agent #4]"]
+    
+    A1 -- "SMB Named Pipe (P2P)" --> A3
+    A2 -- "TCP Socket (P2P)" --> A4
 ```
 
 ## 4. Peer-to-Peer (P2P) Profiles: Internal Lateral Movement

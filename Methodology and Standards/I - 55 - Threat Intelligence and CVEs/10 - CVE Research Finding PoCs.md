@@ -29,29 +29,15 @@ For VAPT professionals, finding a working PoC is often the difference between re
 
 ## 3. The Lifecycle of CVE Research
 
-```text
-+-----------------------------------------------------------------------------------+
-|                       VULNERABILITY RESEARCH LIFECYCLE                            |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  1. ADVISORY RELEASE   => Vendor announces patch, requests CVE ID. Minimal info.  |
-|         |                                                                         |
-|         V                                                                         |
-|  2. PATCH DIFFING      => Researchers compare old binary vs. patched binary to    |
-|                           find what code changed. Root cause is identified.       |
-|         |                                                                         |
-|         V                                                                         |
-|  3. POC DEVELOPMENT    => Researchers write a script to trigger the vulnerable    |
-|                           code path. Often shared on GitHub/Twitter.              |
-|         |                                                                         |
-|         V                                                                         |
-|  4. WEAPONIZATION      => Pentesters/Threat Actors adapt the PoC to bypass EDR,   |
-|                           handle varying offsets, and drop reverse shells.        |
-|         |                                                                         |
-|         V                                                                         |
-|  5. COMMODITIZATION    => Exploit is added to Metasploit, Nuclei templates, and   |
-|                           automated botnets.                                      |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    L1["1. ADVISORY RELEASE<br>Vendor announces patch, requests CVE ID. Minimal info."]
+    L2["2. PATCH DIFFING<br>Researchers compare old binary vs. patched binary to find what code changed. Root cause is identified."]
+    L3["3. POC DEVELOPMENT<br>Researchers write a script to trigger the vulnerable code path. Often shared on GitHub/Twitter."]
+    L4["4. WEAPONIZATION<br>Pentesters/Threat Actors adapt the PoC to bypass EDR, handle varying offsets, and drop reverse shells."]
+    L5["5. COMMODITIZATION<br>Exploit is added to Metasploit, Nuclei templates, and automated botnets."]
+
+    L1 --> L2 --> L3 --> L4 --> L5
 ```
 
 ## 4. Methodology: Where to Find PoCs

@@ -76,29 +76,13 @@ Web servers (Nginx, Apache) must be explicitly configured to enforce strong cryp
 
 ### ASCII Diagram of Secure Architecture
 
-```text
-+---------------------------------------------------------------------------------+
-|                       SECURE CRYPTOGRAPHIC ARCHITECTURE                         |
-+---------------------------------------------------------------------------------+
-|                                                                                 |
-|  +--------------------+       +--------------------+       +-----------------+  |
-|  |   Application      |       |  Key Management    |       |   Storage/DB    |  |
-|  |   Logic Layer      |<----->|  Service (KMS)     |<----->|   Data at Rest  |  |
-|  +---------+----------+       +---------+----------+       +-----------------+  |
-|            |                            |                                       |
-|            v                            v                                       |
-|  +--------------------+       +--------------------+                            |
-|  |  TLS 1.3 Endpoint  |       | Hardware Security  |                            |
-|  |  (Nginx/HAProxy)   |       | Module (HSM)       |                            |
-|  +---------+----------+       +--------------------+                            |
-|            |                                                                    |
-|            | (Perfect Forward Secrecy, AEAD Ciphers, HSTS Enforced)             |
-|            v                                                                    |
-|  +--------------------+                                                         |
-|  |   Public Internet  |                                                         |
-|  +--------------------+                                                         |
-|                                                                                 |
-+---------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    App[Application Logic Layer] <--> KMS[Key Management Service KMS]
+    KMS <--> DB[Storage/DB Data at Rest]
+    App --> TLS[TLS 1.3 Endpoint<br>Nginx/HAProxy]
+    KMS --> HSM[Hardware Security Module HSM]
+    TLS -->|Perfect Forward Secrecy, AEAD Ciphers, HSTS| Inter[Public Internet]
 ```
 
 ## Advanced Operational Security

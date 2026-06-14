@@ -18,43 +18,48 @@ In a "flat" network, all devices (workstations, servers, printers, domain contro
 
 ## Architectural Diagram: Segmented Network
 
-```text
-                                    INTERNET
-                                       |
-                                 +-----+-----+
-                                 | Edge FW   |
-                                 +-----+-----+
-                                       |
-+-----------------------------------------------------------------------------------+
-|                                 DMZ (VLAN 10)                                     |
-|  +--------------+     +--------------+     +--------------+                       |
-|  | Web Server 1 |     | Web Server 2 |     | VPN Gateway  |  (Publicly Accessible)|
-|  +--------------+     +--------------+     +--------------+                       |
-+------------------------------+----------------------------------------------------+
-                               |
-                        +------+------+
-                        | Internal FW | (Strict Access Control Lists Enforced Here)
-                        +------+------+
-                               |
-             +-----------------+-----------------+
-             |                                   |
-+------------+-------------+        +------------+-------------+
-|    Servers (VLAN 20)     |        | Workstations (VLAN 30)   |
-|                          |        |                          |
-|  +-------+  +---------+  |        |  +-------+  +-------+    |
-|  | App   |  | DB      |  |        |  | HR    |  | Dev   |    |
-|  | Server|  | Server  |  |        |  | PC    |  | PC    |    |
-|  +-------+  +---------+  |        |  +-------+  +-------+    |
-+--------------------------+        +--------------------------+
-             |                                   |
-+------------+-------------+        +------------+-------------+
-| Management (VLAN 40)     |        |     IoT (VLAN 50)        |
-|                          |        |                          |
-|  +-------+  +---------+  |        |  +-------+  +-------+    |
-|  | Admin |  | Sec     |  |        |  | Smart |  | IP    |    |
-|  | Jump  |  | Tools   |  |        |  | TV    |  | Cam   |    |
-|  +-------+  +---------+  |        |  +-------+  +-------+    |
-+--------------------------+        +--------------------------+
+```mermaid
+flowchart TD
+    Internet["INTERNET"] --> EdgeFW["Edge FW"]
+    EdgeFW --> DMZ
+    
+    subgraph DMZ["DMZ (VLAN 10)"]
+        direction LR
+        WS1["Web Server 1"]
+        WS2["Web Server 2"]
+        VPN["VPN Gateway\n(Publicly Accessible)"]
+    end
+    
+    DMZ --> InternalFW["Internal FW\n(Strict Access Control Lists Enforced Here)"]
+    
+    InternalFW --> VLANs
+    
+    subgraph VLANs["Internal Segments"]
+        direction TB
+        subgraph Servers["Servers (VLAN 20)"]
+            direction LR
+            AppSrv["App Server"]
+            DBSrv["DB Server"]
+        end
+        
+        subgraph Workstations["Workstations (VLAN 30)"]
+            direction LR
+            HR["HR PC"]
+            Dev["Dev PC"]
+        end
+        
+        subgraph Management["Management (VLAN 40)"]
+            direction LR
+            Jump["Admin Jump"]
+            Sec["Sec Tools"]
+        end
+        
+        subgraph IoT["IoT (VLAN 50)"]
+            direction LR
+            TV["Smart TV"]
+            Cam["IP Cam"]
+        end
+    end
 ```
 
 ## How VLANs Work

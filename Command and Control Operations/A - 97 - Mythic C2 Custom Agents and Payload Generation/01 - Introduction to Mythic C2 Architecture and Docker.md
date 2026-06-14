@@ -37,51 +37,37 @@ The true power of Mythic lies in its infinite extensibility. Agents (Payload Typ
 
 ## 3. Architecture ASCII Diagram
 
-```text
-                               +------------------------+
-                               |  Red Team Operator     |
-                               +-----------+------------+
-                                           | HTTPS (UI/API - Port 7443)
-                                           v
-+-----------------------------------------------------------------------------------+
-|                            MYTHIC C2 INFRASTRUCTURE (DOCKER)                      |
-|                                                                                   |
-|   +-------------------+       +-------------------+       +-------------------+   |
-|   |                   | WSS   |                   |       |                   |   |
-|   |  Mythic React UI  |<----->|  Hasura GraphQL   |<----->|  PostgreSQL DB    |   |
-|   |    (Frontend)     |       |    (API Layer)    |       |   (Data Store)    |   |
-|   |                   |       |                   |       |                   |   |
-|   +---------+---------+       +---------+---------+       +---------+---------+   |
-|             |                           |                           |             |
-|             | HTTPS                     | GraphQL                   | Persistent  |
-|             v                           v                           | Storage     |
-|   +-------------------+       +-------------------+                 |             |
-|   |                   | AMQP  |                   |                 |             |
-|   | Mythic Server Core|<----->|     RabbitMQ      |-----------------+             |
-|   |     (Golang)      |       | (Message Broker)  |                               |
-|   |                   |       |                   |                               |
-|   +---------+---------+       +---------+---------+                               |
-|             |                           |                                         |
-|             | AMQP                      | AMQP                                    |
-|             v                           v                                         |
-|   +-------------------+       +-------------------+                               |
-|   |                   |       |                   |                               |
-|   | C2 Profile Cont.  |       | Payload Type Cont.|                               |
-|   | (e.g., mythic_http|       | (e.g., Apollo)    |                               |
-|   |                   |       |                   |                               |
-|   +---------+---------+       +-------------------+                               |
-|             |                                                                     |
-+-------------|---------------------------------------------------------------------+
-              |
-              | C2 Traffic (e.g., Encrypted HTTP GET/POST on Port 443)
-              v
-      +---------------+
-      | Target Network|
-      | +-----------+ |
-      | | Target PC | |
-      | | [Apollo]  | |
-      | +-----------+ |
-      +---------------+
+```mermaid
+flowchart TD
+    Op["Red Team Operator"]
+    
+    subgraph Infra["MYTHIC C2 INFRASTRUCTURE (DOCKER)"]
+        UI["Mythic React UI<br>(Frontend)"]
+        Hasura["Hasura GraphQL<br>(API Layer)"]
+        DB["PostgreSQL DB<br>(Data Store)"]
+        Server["Mythic Server Core<br>(Golang)"]
+        Rabbit["RabbitMQ<br>(Message Broker)"]
+        C2Prof["C2 Profile Cont.<br>(e.g., mythic_http)"]
+        Payload["Payload Type Cont.<br>(e.g., Apollo)"]
+        
+        UI <--"WSS"--> Hasura
+        Hasura <--"GraphQL"--> DB
+        
+        UI --"HTTPS"--> Server
+        Server <--"AMQP"--> Rabbit
+        Rabbit --"Persistent Storage"--> DB
+        Hasura --"GraphQL"--> Rabbit
+        
+        Server --"AMQP"--> C2Prof
+        Rabbit --"AMQP"--> Payload
+    end
+    
+    subgraph Target["Target Network"]
+        PC["Target PC<br>[Apollo]"]
+    end
+    
+    Op --"HTTPS (UI/API - Port 7443)"--> UI
+    C2Prof --"C2 Traffic (e.g., Encrypted HTTP GET/POST on Port 443)"--> PC
 ```
 
 ## 4. Deep Dive: Container Communication via RabbitMQ

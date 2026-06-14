@@ -63,27 +63,13 @@ Because DMA allows peripheral devices to read physical memory directly, bypassin
 
 ## 5. Architectural Diagram: Anti-Dumping Hooking
 
-```text
-+-------------------+                                  +-------------------+
-| Forensic Tool     |                                  | OS Memory         |
-| (WinPMEM / FTK)   |                                  | Management        |
-+-------------------+                                  +-------------------+
-        |                                                      ^
-        | 1. Read \Device\PhysicalMemory                       |
-        |    (Requesting Malware's Page: 0xBADF00D)            |
-        v                                                      |
-+-------------------+      3. Redirects Read      +-------------------------+
-| Kernel API        | --------------------------> | Benign / Zeroed Page    |
-| MmMapIoSpace      |                             | (Address: 0x0000000)    |
-| [INLINE HOOKED]   | <-------------------------  +-------------------------+
-+-------------------+      4. Returns Zeroed Data
-        ^
-        |
-        | 2. Intercepts Call
-+-------------------+
-| LKM / Rootkit     |
-| (Ring 0 Malware)  |
-+-------------------+
+```mermaid
+flowchart TD
+    A[Forensic Tool WinPMEM / FTK] -->|1 Read Device PhysicalMemory<br>Requesting Malware's Page: 0xBADF00D| B[Kernel API MmMapIoSpace INLINE HOOKED]
+    C[LKM / Rootkit Ring 0 Malware] -->|2 Intercepts Call| B
+    B -->|3 Redirects Read| D[OS Memory Management]
+    D -->|Benign / Zeroed Page Address: 0x0000000| B
+    B -.->|4 Returns Zeroed Data| A
 ```
 
 ## 6. Real-World Attack Scenario

@@ -29,26 +29,28 @@ Understanding why hardcoded credentials exist requires looking at the constraint
 
 ## ASCII Diagram: The Lifecycle of a Hardcoded Secret Leakage
 
-```text
-  [DEVELOPMENT PHASE]               [MANUFACTURING]                [DEPLOYMENT]
-  
-  Developer embeds:                 Firmware flashed               1,000,000 devices
-  - root:admin123          ----->   to all devices in    ----->    shipped globally
-  - AWS_S3_KEY=xyz                  factory. Same keys             with identical
-  - vendor_priv.pem                 on every unit.                 static secrets.
-                                                                        |
-                                                                        |
-                                                                        v
-   +--------------------------------------------------------------------+
-   |                                                                    |
-   v                                                                    v
-[ATTACKER RECONNAISSANCE]                                       [EXPLOITATION & SCALE]
+```mermaid
+flowchart TD
+    subgraph Lifecycle[FIRMWARE LIFECYCLE]
+        direction LR
+        Dev["DEVELOPMENT PHASE<br>Developer embeds:<br>- root:admin123<br>- AWS_S3_KEY=xyz<br>- vendor_priv.pem"] --> Mfg["MANUFACTURING<br>Firmware flashed<br>to all devices in<br>factory. Same keys."]
+        Mfg --> Deploy["DEPLOYMENT<br>1,000,000 devices<br>shipped globally<br>with identical<br>static secrets."]
+    end
 
- 1. Attacker buys ONE device.                                    6. Attacker maps internet (Shodan)
- 2. Extracts firmware via UART/SPI.                                 for device fingerprints.
- 3. Unpacks RootFS with Binwalk.                                 7. Automates botnet script using
- 4. Greps /etc/ for 'root' or 'aws'.                                the extracted root:admin123.
- 5. Recovers global keys.                                        8. Mass exploitation (e.g., Mirai).
+    Deploy --> Split[ ]
+    
+    subgraph Recon[ATTACKER RECONNAISSANCE]
+        direction TB
+        R1["1. Attacker buys ONE device.<br>2. Extracts firmware via UART/SPI.<br>3. Unpacks RootFS with Binwalk.<br>4. Greps /etc/ for 'root' or 'aws'.<br>5. Recovers global keys."]
+    end
+
+    subgraph Exploit[EXPLOITATION & SCALE]
+        direction TB
+        E1["6. Attacker maps internet (Shodan)<br>for device fingerprints.<br>7. Automates botnet script using<br>the extracted root:admin123.<br>8. Mass exploitation (e.g., Mirai)."]
+    end
+
+    Split --> R1
+    Split --> E1
 ```
 
 ---

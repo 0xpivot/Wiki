@@ -16,23 +16,28 @@ Because Kubernetes is API-driven, securing the cluster relies entirely on config
 
 The RBAC system is built on four core API objects:
 
-```text
-+---------------------+       +-----------------------+       +------------------------+
-|     SUBJECTS        |       |       BINDINGS        |       |        ROLES           |
-|  (Who is acting?)   |       | (Connecting the two)  |       |  (What can they do?)   |
-+---------------------+       +-----------------------+       +------------------------+
-|                     |       |                       |       |                        |
-|  1. User Account    +------>+ RoleBinding           +------>+ Role                   |
-|     (Humans/SSO)    |       | (Namespace-scoped)    |       | (Rules in a namespace) |
-|                     |       |                       |       |                        |
-|  2. ServiceAccount  |       |                       |       |                        |
-|     (Pods/Bots)     +------>+ ClusterRoleBinding    +------>+ ClusterRole            |
-|                     |       | (Cluster-wide)        |       | (Rules cluster-wide)   |
-|  3. Group           |       |                       |       |                        |
-+---------------------+       +-----------------------+       +------------------------+
-
-Example: ServiceAccount "web-sa" is bound via "ClusterRoleBinding" to ClusterRole "cluster-admin".
-Result: The "web-sa" ServiceAccount has root-level access to the entire cluster.
+```mermaid
+graph TD
+    subgraph SUBJECTS <br/> Who is acting?
+        A[1. User Account <br/> Humans/SSO]
+        B[2. ServiceAccount <br/> Pods/Bots]
+        C[3. Group]
+    end
+    
+    subgraph BINDINGS <br/> Connecting the two
+        D[RoleBinding <br/> Namespace-scoped]
+        E[ClusterRoleBinding <br/> Cluster-wide]
+    end
+    
+    subgraph ROLES <br/> What can they do?
+        F[Role <br/> Rules in a namespace]
+        G[ClusterRole <br/> Rules cluster-wide]
+    end
+    
+    A --> D
+    D --> F
+    B --> E
+    E --> G
 ```
 
 1.  **Role**: Defines permissions within a specific **namespace** (e.g., "can read secrets in the `frontend` namespace").

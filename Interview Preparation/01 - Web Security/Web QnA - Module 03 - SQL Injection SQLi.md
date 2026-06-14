@@ -112,50 +112,17 @@ This vulnerability resulted in a complete server compromise, allowing lateral mo
 
 ## Custom ASCII Diagram: Boolean Blind Exfiltration Engine
 
-```text
-=============================================================================
-                  BOOLEAN BLIND SQL INJECTION ARCHITECTURE
-=============================================================================
-
- [1. Attacker Script (Python)]
- +---------------------------------------------------------+
- | Payload: id=1 AND SUBSTRING((SELECT pass),1,1) = 'A'    |
- | Action : Send HTTP GET Request to Web Server            |
- +---------------------------------------------------------+
-             |
-             | (HTTP Request)
-             v
- [2. Vulnerable Web Application]
- +---------------------------------------------------------+
- | Parses Request. Unsafe String Concatenation.            |
- | query = "SELECT * FROM items WHERE id=" + user_input    |
- +---------------------------------------------------------+
-             |
-             | (Database Query)
-             v
- [3. Database Engine Execution]
- +---------------------------------------------------------+
- | Evaluates Logic:                                        |
- | Is ID 1? (True) AND Is 1st Char of Pass 'A'? (True)     |
- | Result: Returns Data Row for ID 1.                      |
- +---------------------------------------------------------+
-             |
-             | (Data Row Returned)
-             v
- [4. Web Application Response]
- +---------------------------------------------------------+
- | Normal Page Rendered with Item Details.                 |
- | (If condition was False, empty page would render)       |
- +---------------------------------------------------------+
-             |
-             | (HTTP 200 OK - Normal Length)
-             v
- [5. Attacker Script Inference]
- +---------------------------------------------------------+
- | Response Length == Normal Length?                       |
- | IF YES: The character is 'A'. Move to character 2.      |
- | IF NO : The character is not 'A'. Try 'B'.              |
- +---------------------------------------------------------+
+```mermaid
+graph TD
+    A["1. Attacker Script (Python)<br/>Payload: id=1 AND SUBSTRING((SELECT pass),1,1) = 'A'<br/>Action : Send HTTP GET Request to Web Server"] -->|HTTP Request| B
+    
+    B["2. Vulnerable Web Application<br/>Parses Request. Unsafe String Concatenation.<br/>query = 'SELECT * FROM items WHERE id=' + user_input"] -->|Database Query| C
+    
+    C["3. Database Engine Execution<br/>Evaluates Logic:<br/>Is ID 1? (True) AND Is 1st Char of Pass 'A'? (True)<br/>Result: Returns Data Row for ID 1."] -->|Data Row Returned| D
+    
+    D["4. Web Application Response<br/>Normal Page Rendered with Item Details.<br/>(If condition was False, empty page would render)"] -->|HTTP 200 OK - Normal Length| E
+    
+    E["5. Attacker Script Inference<br/>Response Length == Normal Length?<br/>IF YES: The character is 'A'. Move to character 2.<br/>IF NO : The character is not 'A'. Try 'B'."]
 ```
 
 ---

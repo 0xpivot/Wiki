@@ -88,31 +88,17 @@ void ImpersonateAndExecute() {
 
 ## ASCII Diagram: Token Impersonation Flow
 
-```text
-+---------------------+                            +----------------------+
-| Privileged Process  |                            |   Attacker Process   |
-| (e.g., SYSTEM)      |                            | (e.g., IIS AppPool)  |
-+---------------------+                            +----------------------+
-          |                                                   |
-          | 1. Connects to attacker-controlled Named Pipe     |
-          |-------------------------------------------------->|
-          |                                                   |
-          |                                                   | 2. ImpersonateNamedPipeClient()
-          |                                                   |    (Requires SeImpersonatePrivilege)
-          |                                                   |
-          |                                                   | 3. Thread now runs as SYSTEM
-          |                                                   |    (Impersonation Token)
-          |                                                   |
-          |                                                   | 4. OpenThreadToken()
-          |                                                   |    DuplicateTokenEx() -> Primary Token
-          |                                                   |
-          |                                                   | 5. CreateProcessWithTokenW()
-          |                                                   v
-                                                   +----------------------+
-                                                   |    New Process       |
-                                                   |    (cmd.exe)         |
-                                                   | Context: SYSTEM      |
-                                                   +----------------------+
+```mermaid
+sequenceDiagram
+    participant PP as Privileged Process\n(e.g., SYSTEM)
+    participant AP as Attacker Process\n(e.g., IIS AppPool)
+    participant NP as New Process\n(cmd.exe)\nContext: SYSTEM
+
+    PP->>AP: 1. Connects to attacker-controlled Named Pipe
+    Note over AP: 2. ImpersonateNamedPipeClient()\n(Requires SeImpersonatePrivilege)
+    Note over AP: 3. Thread now runs as SYSTEM\n(Impersonation Token)
+    Note over AP: 4. OpenThreadToken()\nDuplicateTokenEx() -> Primary Token
+    AP->>NP: 5. CreateProcessWithTokenW()
 ```
 
 ## Practical Scenarios & Tooling

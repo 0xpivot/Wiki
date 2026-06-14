@@ -59,38 +59,16 @@ When the admin logs in and clicks the shortcut (or if it runs automatically), th
 
 ## ASCII Diagram: Startup Folder Privilege Escalation
 
-```text
-+-----------------------+
-| Attacker Context      |
-| (Standard User)       |
-+-----------------------+
-          |
-          | 1. Discovers Write access to All Users Startup
-          | 2. Drops payload: C:\ProgramData\...\Startup\evil.exe
-          v
-+-----------------------+
-| All Users Startup Dir |
-| (Waiting State)       |
-| Contains: evil.exe    |
-+-----------------------+
-          ^
-          | 3. Administrator initiates RDP / Local Logon
-          |
-+-----------------------+
-| Administrator Context |
-| (Logon Process)       |
-+-----------------------+
-          |
-          | 4. Windows Explorer processes Startup folders
-          | 5. Executes evil.exe
-          v
-+-----------------------+
-| Payload Execution     |
-| Context: Admin User   |
-| Integrity: Medium     |
-| (Needs UAC bypass for |
-| High Integrity)       |
-+-----------------------+
+```mermaid
+flowchart TD
+    AC["Attacker Context\n(Standard User)"]
+    AUSD["All Users Startup Dir\n(Waiting State)\nContains: evil.exe"]
+    ADMC["Administrator Context\n(Logon Process)"]
+    PE["Payload Execution\nContext: Admin User\nIntegrity: Medium\n(Needs UAC bypass for High Integrity)"]
+    
+    AC -->|"1. Discovers Write access to All Users Startup\n2. Drops payload: C:\\ProgramData\\...\\Startup\\evil.exe"| AUSD
+    ADMC -->|"3. Administrator initiates RDP / Local Logon"| AUSD
+    ADMC -->|"4. Windows Explorer processes Startup folders\n5. Executes evil.exe"| PE
 ```
 
 ## Advanced Vectors: Hidden Startup Locations

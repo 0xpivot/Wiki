@@ -25,40 +25,23 @@ An automated pipeline for a Go-based C2 framework like Sliver typically involves
 
 ### Technical ASCII Diagram: The Build Pipeline
 
-```text
-================================================================================
-                    AUTOMATED C2 BUILD PIPELINE ARCHITECTURE
-================================================================================
-
-[ Git Repository ] ---> Push Event Triggers Pipeline
-      (Custom C2 Fork)
-             |
-             v
-+-------------------------------------------------------------+
-| CI/CD RUNNER (e.g., Dockerized Ubuntu)                      |
-|                                                             |
-|  [ Stage 1: Prep & Patch ]                                  |
-|  - Apply custom CGO bindings patches                        |
-|  - Inject custom Sleep Obfuscation modules                  |
-|             |                                               |
-|             v                                               |
-|  [ Stage 2: Obfuscation ]                                   |
-|  - Run `garble` (Obfuscate Go strings & symbols)            |
-|  - Randomize package names                                  |
-|             |                                               |
-|             v                                               |
-|  [ Stage 3: Compilation ]                                   |
-|  - GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w"
-|             |                                               |
-|             v                                               |
-|  [ Stage 4: Post-Processing ]                               |
-|  - Generate position-independent shellcode (sRDI)           |
-|  - Code Signing (SigThief)                                  |
-+-------------------------------------------------------------+
-             |
-             v
-[ Artifact Staging ] ---> Ready for Deployment via Dropper
-================================================================================
+```mermaid
+flowchart TD
+    Git["Git Repository<br>(Custom C2 Fork)<br>Push Event Triggers Pipeline"]
+    
+    subgraph Runner["CI/CD RUNNER (e.g., Dockerized Ubuntu)"]
+        S1["Stage 1: Prep & Patch<br>- Apply custom CGO bindings patches<br>- Inject custom Sleep Obfuscation modules"]
+        S2["Stage 2: Obfuscation<br>- Run garble (Obfuscate Go strings & symbols)<br>- Randomize package names"]
+        S3["Stage 3: Compilation<br>- GOOS=windows GOARCH=amd64 go build -trimpath -ldflags='-s -w'"]
+        S4["Stage 4: Post-Processing<br>- Generate position-independent shellcode (sRDI)<br>- Code Signing (SigThief)"]
+        
+        S1 --> S2 --> S3 --> S4
+    end
+    
+    Artifact["Artifact Staging<br>Ready for Deployment via Dropper"]
+    
+    Git --> S1
+    S4 --> Artifact
 ```
 
 ## Defensive Engineering: Detecting Build Artifacts

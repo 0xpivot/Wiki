@@ -33,43 +33,21 @@ The lifecycle of a Golden Ticket attack:
 
 ## 4. ASCII Architecture Diagram
 
-```text
-+-------------------------------------------------------------------------+
-|                        Golden Ticket Attack Flow                        |
-+-------------------------------------------------------------------------+
-
-  [ Attacker Machine ]                                  [ Domain Infrastructure ]
-  
-  +-----------------------+                             +-------------------+
-  | 1. Compromise DC      |   DCSync (DRSR)             | Domain Controller |
-  |    (Domain Admin req) |---------------------------->|                   |
-  +-----------+-----------+                             |     krbtgt hash   |
-              |                                         +---------+---------+
-              | 2. Extract krbtgt NTLM/AES key                    |
-              |<--------------------------------------------------|
-              v
-  +-----------------------+
-  | 3. Offline Forgery    |
-  |    - Create TGT       |
-  |    - Insert DA SIDs   |
-  |    - Sign w/ krbtgt   |
-  +-----------+-----------+
-              |
-              | 4. Inject Golden Ticket (PtT)
-              v
-  +-----------------------+                             +-------------------+
-  | 5. TGS-REQ            |                             | Domain Controller |
-  |    (Using Forged TGT) |---------------------------->| (KDC)             |
-  +-----------+-----------+                             +---------+---------+
-              |                                                   |
-              | 6. TGS-REP (KDC trusts the krbtgt signature)      |
-              |<--------------------------------------------------|
-              v
-  +-----------------------+                             +-------------------+
-  | 7. AP-REQ             |                             | Any Domain System |
-  |    (Service Ticket)   |---------------------------->| (e.g., File Share,|
-  +-----------------------+                             |  DC, Exchange)    |
-                                                        +-------------------+
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker Machine
+    participant DC as Domain Controller (KDC)
+    participant Target as Any Domain System
+    
+    Attacker->>DC: 1. Compromise DC (Domain Admin req) - DCSync (DRSR)
+    DC-->>Attacker: 2. Extract krbtgt NTLM/AES key
+    Note over Attacker: 3. Offline Forgery<br>- Create TGT<br>- Insert DA SIDs<br>- Sign w/ krbtgt
+    Note over Attacker: 4. Inject Golden Ticket (PtT)
+    
+    Attacker->>DC: 5. TGS-REQ (Using Forged TGT)
+    DC-->>Attacker: 6. TGS-REP (KDC trusts the krbtgt signature)
+    
+    Attacker->>Target: 7. AP-REQ (Service Ticket)
 ```
 
 ## 5. Prerequisites and Required Tools

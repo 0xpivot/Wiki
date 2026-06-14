@@ -42,29 +42,15 @@ The hypervisor can remap the Guest Physical Address. If an EDR or Memory Dumper 
 
 ## 4. Architectural Diagram: The Blue Pill Transition
 
-```text
-BEFORE INFECTION                     AFTER INFECTION (BLUE PILL)
-
-+-----------------------+           +---------------------------------+
-|                       |           |   Malicious Hypervisor (VMM)    |
-|   Operating System    |           |   [Ring -1 / VMX Root Mode]     |
-|   [Ring 0 / Native]   |           +---------------------------------+
-|                       |                           ^  | (VMExit /
-+-----------------------+                           |  |  VMEntry)
-            |                                       |  v
-            | Native hardware access      +-----------------------+
-            v                             |                       |
-+-----------------------+                 |   Operating System    |
-|                       |                 | [VMX Non-Root Mode]   |
-|   CPU / RAM / Disk    |                 |   (Thinks it's Ring 0)|
-|                       |                 +-----------------------+
-+-----------------------+                           |
-                                                    v
-                                          +-----------------------+
-                                          |                       |
-                                          |   CPU / RAM / Disk    |
-                                          |                       |
-                                          +-----------------------+
+```mermaid
+flowchart TD
+    subgraph BEFORE INFECTION
+        A[Operating System Ring 0 / Native] -->|Native hardware access| B[CPU / RAM / Disk]
+    end
+    subgraph AFTER INFECTION BLUE PILL
+        C[Malicious Hypervisor VMM Ring -1 / VMX Root Mode] <==>|VMExit / VMEntry| D[Operating System VMX Non-Root Mode Thinks it's Ring 0]
+        D --> E[CPU / RAM / Disk]
+    end
 ```
 
 ## 5. Detecting the Undetectable: Timing and Profiling

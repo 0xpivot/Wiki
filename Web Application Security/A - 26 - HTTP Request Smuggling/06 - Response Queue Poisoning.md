@@ -24,31 +24,21 @@ The entire queue is now desynchronized. Victim B receives the response meant for
 Think of it like a drive-thru. You order 1 Burger. The cook mishears and cooks 1 Burger AND 1 Pizza. The cashier hands you the Burger. You drive away. The Pizza sits on the counter. The next car pulls up and orders a Salad. The cashier grabs the first thing on the counter (the Pizza) and hands it to them. The whole line of cars is now receiving the wrong food.
 
 ## ASCII Diagram
-```text
-================================================================================
-                        RESPONSE QUEUE POISONING
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["Attacker sends 1 Request (Carrier + Smuggled)"]
+    Front1["Front-End: Sends 1 stream."]
+    Back1["Back-End : Receives Carrier Request. <br/> Back-End : Receives Smuggled Request (e.g., GET /attacker_profile)."]
+    Back2["Back-End generates 2 Responses <br/> Response A (For Carrier) <br/> Response B (For Smuggled GET /attacker_profile)"]
+    Front2["Front-End receives Response A <br/> Front-End hands Response A back to the Attacker. <br/> *Response B sits in the Front-End queue.*"]
+    Victim["Victim sends 1 legitimate Request <br/> Victim: GET /bank_statement"]
+    Front3["Front-End grabs the next response in the queue <br/> Front-End hands Response B (The Attacker's Profile data) to the Victim! <br/> (The Victim's browser caches the Attacker's profile instead of their bank statement)."]
 
-[Attacker sends 1 Request (Carrier + Smuggled)]
-Front-End: Sends 1 stream.
-Back-End : Receives Carrier Request.
-Back-End : Receives Smuggled Request (e.g., GET /attacker_profile).
-
-[Back-End generates 2 Responses]
-Response A (For Carrier)
-Response B (For Smuggled GET /attacker_profile)
-
-[Front-End receives Response A]
-Front-End hands Response A back to the Attacker.
-*Response B sits in the Front-End queue.*
-
-[Victim sends 1 legitimate Request]
-Victim: GET /bank_statement
-
-[Front-End grabs the next response in the queue]
-Front-End hands Response B (The Attacker's Profile data) to the Victim!
-(The Victim's browser caches the Attacker's profile instead of their bank statement).
-================================================================================
+    Attacker --> Front1
+    Front1 --> Back1
+    Back1 --> Back2
+    Back2 --> Front2
+    Victim --> Front3
 ```
 
 ## How to Find It

@@ -56,33 +56,20 @@ PrintSpoofer is widely considered more reliable and self-contained than Rogue Po
 
 ## ASCII Diagram: PrintSpoofer Execution Flow
 
-```text
-+-------------------+                                  +-----------------------+
-| Attacker Process  |                                  | Print Spooler Service |
-| Context: IIS App  |                                  | Context: SYSTEM       |
-| Priv: SeImperson. |                                  +-----------------------+
-+-------------------+                                             |
-         |                                                        |
-         | 1. CreateNamedPipe("\\.\pipe\evil\pipe\spoolss")       |
-         |--------------------------------------------------      |
-         |                                                 |      |
-         | 2. RpcRemoteFindFirstPrinterChangeNotification()|      |
-         |    (Targeting the created pipe)                 |      |
-         |------------------------------------------------------->|
-         |                                                        |
-         |                                                        | 3. Spooler connects to Pipe
-         |<-------------------------------------------------------|
-         |                                                        |
-         | 4. ImpersonateNamedPipeClient()                        |
-         |                                                        |
-         | 5. DuplicateTokenEx() -> Primary Token                 |
-         |                                                        |
-         | 6. CreateProcessWithTokenW(cmd.exe)                    |
-         v
-+-------------------+
-|   Root Shell      |
-| Context: SYSTEM   |
-+-------------------+
+```mermaid
+sequenceDiagram
+    participant AP as Attacker Process\nContext: IIS App\nPriv: SeImperson.
+    participant PSS as Print Spooler Service\nContext: SYSTEM
+
+    Note over AP: 1. CreateNamedPipe("\\.\\pipe\\evil\\pipe\\spoolss")
+    AP->>PSS: 2. RpcRemoteFindFirstPrinterChangeNotification()\n(Targeting the created pipe)
+    PSS->>AP: 3. Spooler connects to Pipe
+    Note over AP: 4. ImpersonateNamedPipeClient()
+    Note over AP: 5. DuplicateTokenEx() -> Primary Token
+    Note over AP: 6. CreateProcessWithTokenW(cmd.exe)
+    
+    participant RS as Root Shell\nContext: SYSTEM
+    AP->>RS: spawn
 ```
 
 ## Comparative Analysis

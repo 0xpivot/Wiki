@@ -25,26 +25,19 @@ The fundamental concept of the IMDS is that the cloud hypervisor intercepts traf
 ## 3. Metadata Service Architecture Diagram
 The following ASCII diagram illustrates how an attacker abuses an SSRF vulnerability to interact with the IMDS and exfiltrate cloud credentials.
 
-```text
-+-----------------------+              +----------------------------------+
-|   ATTACKER MACHINE    |              |       CLOUD ENVIRONMENT          |
-|                       |              |                                  |
-| 1. Sends malicious    |              |  +----------------------------+  |
-|    HTTP Request       |=== (WAN) ===>|  |  Target VM / Container     |  |
-|    (e.g., SSRF payload|              |  |  (Vulnerable Web App)      |  |
-|    targeting IMDS)    |              |  +----------------------------+  |
-|                       |              |               |                  |
-| 5. Receives Cloud     |              |  2. App processes request,       |
-|    Credentials in     |<== (WAN) ====|     makes internal HTTP call     |
-|    HTTP Response      |              |               |                  |
-+-----------------------+              |               v                  |
-                                       |  +----------------------------+  |
-                                       |  |  Hypervisor / IMDS         |  |
-                                       |  |  IP: 169.254.169.254       |  |
-                                       |  |  (Returns JSON with        |  |
-                                       |  |   IAM Access Tokens)       |  |
-                                       |  +----------------------------+  |
-                                       +----------------------------------+
+```mermaid
+graph TD
+    subgraph ATTACKER MACHINE
+        A[1. Sends malicious HTTP Request <br/> e.g., SSRF payload targeting IMDS]
+        B[5. Receives Cloud Credentials in HTTP Response]
+    end
+    subgraph CLOUD ENVIRONMENT
+        C[Target VM / Container <br/> Vulnerable Web App]
+        D[Hypervisor / IMDS <br/> IP: 169.254.169.254 <br/> Returns JSON with IAM Access Tokens]
+        C -- 2. App processes request, makes internal HTTP call --> D
+    end
+    A == WAN ==> C
+    D == WAN ==> B
 ```
 
 ## 4. AWS Metadata Service (IMDSv1 vs IMDSv2)

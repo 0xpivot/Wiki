@@ -87,33 +87,24 @@ Enumeration is inherently noisy. Defenders using tools like Microsoft Defender f
 
 ## 5. ASCII Workflow Diagram
 
-```text
-========================================================================
-                      AD ENUMERATION WORKFLOW
-========================================================================
+```mermaid
+graph TD
+    CompUser["Compromised User"]
+    Ingestor["Queries via LDAP/RPC/SMB"]
+    DC["Domain Controller"]
+    NTDS["NTDS.dit Database"]
+    OutputFiles["Output JSON / CSV Files"]
+    AttackBox["Exfiltrate to Attack Box"]
+    BloodHound["BloodHound GUI / Neo4j<br>(Analyze Data & Identify Paths)"]
+    Action["Execution: Target Kerberoastable User or Weak ACL"]
 
- [ Compromised User ] --> (1. Execute Ingestor: SharpHound / PowerView)
-          |
-          v
- [ Queries via LDAP/RPC/SMB ] -----------------> [ Domain Controller ]
-                                                        |
-                                                        v
-                                                 [ NTDS.dit Database ]
-                                                        |
- <------------------- [ Returns AD Objects ] -----------+
-          |
-          v
- [ Output JSON / CSV Files ]
-          |
-          v
- [ Exfiltrate to Attack Box ]
-          |
-          v
- [ BloodHound GUI / Neo4j ] --> (2. Analyze Data & Identify Paths)
-          |
-          v
- [ Execution: Target Kerberoastable User or Weak ACL ]
-========================================================================
+    CompUser -- "1. Execute Ingestor: SharpHound / PowerView" --> Ingestor
+    Ingestor --> DC
+    DC --> NTDS
+    NTDS -- "Returns AD Objects" --> OutputFiles
+    OutputFiles --> AttackBox
+    AttackBox --> BloodHound
+    BloodHound --> Action
 ```
 
 ## 6. Real-World Execution Examples

@@ -15,21 +15,23 @@ This guide provides an extreme-depth technical walkthrough of advanced configura
 
 ## ZAP Architecture Diagram
 
-```text
-+-------------------+       +-----------------------+       +-------------------+
-|                   |       |      OWASP ZAP        |       |                   |
-|   Web Browser     | <---> |  [Local Proxy 8080]   | <---> |   Target Web App  |
-|  (Tester / User)  |       |                       |       |   (Web Server)    |
-|                   |       | - Spider / AJAX       |       |                   |
-+-------------------+       | - Passive Scanner     |       +-------------------+
-                            | - Active Scanner      |
-                            | - Fuzzer              |
-                            | - Scripting Engine    |
-+-------------------+       | - API / Headless      |       +-------------------+
-| CI/CD Pipeline    |       +-----------------------+       | Jenkins / Actions |
-| (GitHub Actions,  | ----> | ZAP Daemon / Headless | <---- | Automated Testing |
-|  GitLab CI)       |       |  Automation Scripts   |       | Trigger           |
-+-------------------+       +-----------------------+       +-------------------+
+```mermaid
+flowchart LR
+    subgraph ZAP ["OWASP ZAP"]
+        direction TB
+        PROXY["Local Proxy 8080<br>- Spider / AJAX<br>- Passive Scanner<br>- Active Scanner<br>- Fuzzer<br>- Scripting Engine<br>- API / Headless"]
+        DAEMON["ZAP Daemon / Headless<br>Automation Scripts"]
+    end
+
+    BROWSER["Web Browser<br>(Tester / User)"]
+    APP["Target Web App<br>(Web Server)"]
+    CICD["CI/CD Pipeline<br>(GitHub Actions, GitLab CI)"]
+    AUTO["Jenkins / Actions<br>Automated Testing Trigger"]
+
+    BROWSER <--> PROXY
+    PROXY <--> APP
+    CICD --> DAEMON
+    AUTO --> DAEMON
 ```
 
 ## Core Architecture and Components

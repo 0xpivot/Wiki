@@ -50,42 +50,18 @@ An advanced conceptual technique involves setting a hardware breakpoint on the `
 
 ## Architecture Diagram: AMSI Telemetry Flow
 
-```ascii
-=============================================================================
-                           AMSI INTEGRATION FLOW
-=============================================================================
-
-[ User Script ]
-(e.g., Obfuscated PowerShell)
-      |
-      v
-+-------------------------+
-|   Script Engine         |  (PowerShell.exe)
-|  (De-obfuscates code)   |
-+-----------+-------------+
-            |
-            | Calls AmsiScanBuffer()
-            v
-+-------------------------+
-|      amsi.dll           |  (Loaded in Process Space)
-|  (AMSI Interface)       |
-+-----------+-------------+
-            |
-            | RPC Call
-            v
-+-------------------------+
-|   AMSI Provider Service |  (e.g., Defender Service)
-|  (Analyzes content)     |
-+-----------+-------------+
-            |
-            | Returns Status (Clean/Detected)
-            v
-+-------------------------+
-|   Script Engine         |
-|  (Executes or Blocks)   |
-+-------------------------+
-
-=============================================================================
+```mermaid
+flowchart TD
+    Script["User Script<br>(e.g., Obfuscated PowerShell)"]
+    Eng1["Script Engine<br>(De-obfuscates code) | PowerShell.exe"]
+    AMSI["amsi.dll<br>(AMSI Interface) | Loaded in Process Space"]
+    Prov["AMSI Provider Service<br>(Analyzes content) | e.g., Defender Service"]
+    Eng2["Script Engine<br>(Executes or Blocks)"]
+    
+    Script --> Eng1
+    Eng1 -- "Calls AmsiScanBuffer()" --> AMSI
+    AMSI -- "RPC Call" --> Prov
+    Prov -- "Returns Status (Clean/Detected)" --> Eng2
 ```
 
 ## Defensive Protections against Tampering

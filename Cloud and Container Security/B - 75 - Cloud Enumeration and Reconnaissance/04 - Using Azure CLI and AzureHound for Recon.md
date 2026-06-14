@@ -15,34 +15,19 @@ For a penetration tester, enumerating Azure requires understanding both the infr
 
 ## 2. Architecture and Attack Flow
 
-```text
-+---------------------+        +-------------------------+        +---------------------------+
-|   Attacker / VAPT   |        |   Azure CLI &           |        |   Azure Cloud / Entra ID  |
-|   Professional      |        |   AzureHound            |        |   (Target Tenant)         |
-+---------------------+        +-------------------------+        +---------------------------+
-           |                               |                                |
-           | 1. az login (interactive or   |                                |
-           |    service principal)         |                                |
-           |------------------------------>|                                |
-           |                               |                                |
-           | 2. az account show            |                                |
-           |<------------------------------|                                |
-           |                               |                                |
-           | 3. Enumerate Subscriptions    |                                |
-           |    and Resource Groups        |                                |
-           |--------------------------------------------------------------->|
-           |                               |                                |
-           | 4. Run AzureHound             |                                |
-           |    (Invoke-AzureHound)        |                                |
-           |--------------------------------------------------------------->|
-           |                               |                                |
-           | 5. Extract JSON data files    |                                |
-           |    (users, roles, groups)     |                                |
-           |<---------------------------------------------------------------|
-           |                               |                                |
-           | 6. Import to BloodHound UI    |                                |
-           |    & identify attack paths    |                                |
-           |------------------------------>|                                |
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker / VAPT Professional
+    participant Tools as Azure CLI & AzureHound
+    participant Azure as Azure Cloud / Entra ID (Target Tenant)
+
+    Attacker->>Tools: 1. az login (interactive or service principal)
+    Attacker->>Tools: 2. az account show
+    Tools-->>Attacker: 
+    Attacker->>Azure: 3. Enumerate Subscriptions and Resource Groups
+    Attacker->>Azure: 4. Run AzureHound (Invoke-AzureHound)
+    Azure-->>Attacker: 5. Extract JSON data files (users, roles, groups)
+    Attacker->>Tools: 6. Import to BloodHound UI & identify attack paths
 ```
 
 ## 3. The "How": Detailed Methodology with Azure CLI

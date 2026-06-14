@@ -63,34 +63,22 @@ It uses a Master Password (if configured by the user) to encrypt a master key fi
 
 ## ASCII Diagram: DPAPI and Chromium Extraction Flow
 
-```text
-       [Attacker Execution Context: Standard User]
-                           |
-                           v
-          +----------------------------------+
-          | Read Local State File            |
-          | (Contains DPAPI-encrypted AES key|
-          +----------------------------------+
-                           |
-                           v
-          +----------------------------------+
-          | Invoke DPAPI Unprotect API       | --------> [Windows Cryptography API]
-          +----------------------------------+         (Uses User's Logon Session Key)
-                           |
-                           | (Returns plaintext AES-256 Key)
-                           v
-          +----------------------------------+
-          | Access 'Login Data' SQLite DB    |
-          | Read Encrypted Password Blob     |
-          +----------------------------------+
-                           |
-                           v
-          +----------------------------------+
-          | Decrypt Blob using AES-256 Key   |
-          +----------------------------------+
-                           |
-                           v
-                 [Plaintext Passwords]
+```mermaid
+graph TD
+    A["Attacker Execution Context: Standard User"]
+    B["Read Local State File<br>(Contains DPAPI-encrypted AES key)"]
+    C["Invoke DPAPI Unprotect API"]
+    D["Windows Cryptography API<br>(Uses User's Logon Session Key)"]
+    E["Access 'Login Data' SQLite DB<br>Read Encrypted Password Blob"]
+    F["Decrypt Blob using AES-256 Key"]
+    G["Plaintext Passwords"]
+
+    A --> B
+    B --> C
+    C --> D
+    D -->|Returns plaintext AES-256 Key| E
+    E --> F
+    F --> G
 ```
 
 ## Methodology and Tooling

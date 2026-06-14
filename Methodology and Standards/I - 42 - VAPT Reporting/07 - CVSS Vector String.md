@@ -59,32 +59,19 @@ Let's break down this anatomy in exhaustive detail, parsing each segment from le
 
 The following ASCII diagram illustrates the construction and parsing of a standard CVSS v3.1 vector string, highlighting the strict ordering and delimiters.
 
-```text
-+-----------------------------------------------------------------------------------------+
-|                      ANATOMY OF A CVSS v3.1 VECTOR STRING                               |
-+-----------------------------------------------------------------------------------------+
-|                                                                                         |
-|      Version    Exploitability Metrics        Scope         Impact Metrics              |
-|        |                  |                     |                 |                     |
-|  +-----+----+ +-----------+-----------+      +--+--+ +------------+------------+        |
-|  |          | |                       |      |     | |                         |        |
-|  CVSS:3.1   / AV:N / AC:L / PR:N / UI:N /    S:U   / C:H   / I:H   / A:H                |
-|  |      |     |  |   |  |   |  |   |  |      | |     | |     | |     | |                |
-|  |      |     |  |   |  |   |  |   |  |      | |     | |     | |     | |                |
-|  PREFIX |     |  |   |  |   |  |   |  |      | |     | |     | |     | +--> Avail: High |
-|         |     |  |   |  |   |  |   |  |      | |     | |     | |     |                  |
-|  VERSION+     |  |   |  |   |  |   |  |      | |     | |     | +--> Intg: High          |
-|               |  |   |  |   |  |   |  |      | |     | |     |                          |
-|               |  |   |  |   |  |   |  |      | |     | +--> Conf: High                  |
-|               |  |   |  |   |  |   |  |      | |     |                                  |
-|               |  |   |  |   |  |   |  |      | +--> Scope: Unchanged                    |
-|               |  |   |  |   |  |   |  +--> User Inter: None                             |
-|               |  |   |  |   |  +--> Privs Req: None                                     |
-|               |  |   |  +--> Attk Compl: Low                                            |
-|               |  +--> Attk Vector: Network                                              |
-|               |                                                                         |
-|               +--> Delimiter (Forward Slash)                                            |
-+-----------------------------------------------------------------------------------------+
+```mermaid
+flowchart LR
+    Prefix["CVSS:3.1<br>(PREFIX VERSION)"]
+    AV["AV:N<br>(Attack Vector: Network)"]
+    AC["AC:L<br>(Attk Compl: Low)"]
+    PR["PR:N<br>(Privs Req: None)"]
+    UI["UI:N<br>(User Inter: None)"]
+    S["S:U<br>(Scope: Unchanged)"]
+    C["C:H<br>(Conf: High)"]
+    I["I:H<br>(Intg: High)"]
+    A["A:H<br>(Avail: High)"]
+
+    Prefix --> AV --> AC --> PR --> UI --> S --> C --> I --> A
 ```
 
 ## 4. Why the Vector String is Crucial in VAPT Reporting

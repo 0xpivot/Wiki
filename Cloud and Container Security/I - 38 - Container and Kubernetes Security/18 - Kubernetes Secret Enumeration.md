@@ -21,24 +21,14 @@ When a Pod needs to consume a Secret, Kubernetes provides three primary mechanis
 
 ### The Secret Flow Diagram
 
-```text
-+-----------------------------------------------------------------------------------+
-|                                 Kubernetes Cluster                                |
-|                                                                                   |
-|  +-------------------+        +--------------------+        +------------------+  |
-|  |                   |        |                    |        |                  |  |
-|  |  etcd Datastore   | <====> |   API Server       | <====> |   kubelet        |  |
-|  | (Secrets stored   |        | (RBAC & AuthZ)     |        | (Node Agent)     |  |
-|  |  in plaintext or  |        |                    |        |                  |  |
-|  |  encrypted at     |        +---------+----------+        +--------+---------+  |
-|  |  rest)            |                  |                            |            |
-|  +-------------------+                  v                            v            |
-|                               +--------------------+        +--------+---------+  |
-|                               |  Admin/Attacker    |        |       Pod        |  |
-|                               |  (kubectl get      |        | - Env Vars       |  |
-|                               |   secrets)         |        | - Volume Mounts  |  |
-|                               +--------------------+        +------------------+  |
-+-----------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Kubernetes Cluster
+        A[etcd Datastore <br/> Secrets stored in plaintext or encrypted at rest] <==> B[API Server <br/> RBAC & AuthZ]
+        B <==> C[kubelet <br/> Node Agent]
+        B --> D[Admin/Attacker <br/> kubectl get secrets]
+        C --> E[Pod <br/> - Env Vars <br/> - Volume Mounts]
+    end
 ```
 
 ## Vectors for Secret Enumeration

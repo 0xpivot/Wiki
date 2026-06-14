@@ -64,40 +64,16 @@ Penetration testers often need to tailor the execution to specific constraints, 
 
 ## Abstract Architecture Diagram of ScoutSuite
 
-```text
-+---------------------------------------------------------------------------------------------+
-|                          ScoutSuite Cloud Auditing Architecture                             |
-+---------------------------------------------------------------------------------------------+
-|                                                                                             |
-|  [ Security Auditor ]                                                                       |
-|           |                                                                                 |
-|           | 1. Configures Read-Only Credentials                                             |
-|           v                                                                                 |
-|  +---------------------+                                 +-------------------------------+  |
-|  |   ScoutSuite Core   | ---- 2. Describe/List APIs ---> |     Target Cloud Provider     |  |
-|  |                     |                                 |         (e.g., AWS)           |  |
-|  | - AWS Provider      | <--- 3. JSON Configurations --- | - IAM Policies                |  |
-|  | - Azure Provider    |                                 | - S3 Bucket ACLs              |  |
-|  | - GCP Provider      |                                 | - EC2 Security Groups         |  |
-|  +---------------------+                                 +-------------------------------+  |
-|           |                                                                                 |
-|           | 4. Internal JSON Aggregation                                                    |
-|           v                                                                                 |
-|  +---------------------+                                 +-------------------------------+  |
-|  |   Rules Engine      | <--- 5. Security Ruleset ------ |  CIS Benchmarks               |  |
-|  |                     |                                 |  Custom Security Baselines    |  |
-|  | Evaluates Configs   |                                 |  Best Practices               |  |
-|  +---------------------+                                 +-------------------------------+  |
-|           |                                                                                 |
-|           | 6. Finding Generation                                                           |
-|           v                                                                                 |
-|  +---------------------+                                                                    |
-|  | Interactive HTML    | ---> Categorized Dashboard:                                        |
-|  | Report Generation   |      - Danger (Red)                                                |
-|  +---------------------+      - Warning (Yellow)                                            |
-|                               - Good (Green)                                                |
-|                                                                                             |
-+---------------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph ScoutSuite Cloud Auditing Architecture
+        A[Security Auditor] -- 1. Configures Read-Only Credentials --> B[ScoutSuite Core <br/> - AWS Provider <br/> - Azure Provider <br/> - GCP Provider]
+        B -- 2. Describe/List APIs --> C[Target Cloud Provider e.g., AWS <br/> - IAM Policies <br/> - S3 Bucket ACLs <br/> - EC2 Security Groups]
+        C -- 3. JSON Configurations --> B
+        B -- 4. Internal JSON Aggregation --> D[Rules Engine <br/> Evaluates Configs]
+        E[CIS Benchmarks <br/> Custom Security Baselines <br/> Best Practices] -- 5. Security Ruleset --> D
+        D -- 6. Finding Generation --> F[Interactive HTML Report Generation <br/> Categorized Dashboard: <br/> - Danger Red <br/> - Warning Yellow <br/> - Good Green]
+    end
 ```
 
 ## Interpreting ScoutSuite Output and Findings

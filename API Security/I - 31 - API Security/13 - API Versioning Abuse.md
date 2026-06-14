@@ -31,32 +31,20 @@ Over time, security teams focus their penetration testing, threat modeling, and 
 
 ## 3. Attack Architecture & Flow
 
-```text
-       [Attacker]
-           |
-           | 1. Interacts with modern application, 
-           |    observes modern API calls.
-           |    POST /api/v2/fund_transfer (Requires 2FA / OTP)
-           |    -> 403 Forbidden (MFA Required)
-           |
-           | 2. Attacker modifies the request, hunting for legacy endpoints.
-           |    POST /api/v1/fund_transfer (Legacy Version)
-           v
-      [API Gateway / Load Balancer]
-           |
-           +-----------------------------------------+
-           |                                         |
-           v                                         v
-   [v2 Microservice]                         [v1 Microservice]
-  (Modern Auth / 2FA)                       (Basic Auth / Deprecated)
-  (Strict Input Validation)                 (Trusts User Input)
-           |                                         |
-           X (Request bypassed)                      | 3. Processes Transfer without MFA
-                                                     v
-                                          [Core Production Database]
-                                                     |
-                                                     | 4. Database updated successfully.
-                                                     |    Attacker bypasses modern security.
+```mermaid
+flowchart TD
+    Attacker["Attacker"]
+    GW["API Gateway / Load Balancer"]
+    V2["v2 Microservice\n(Modern Auth / 2FA)\n(Strict Input Validation)"]
+    V1["v1 Microservice\n(Basic Auth / Deprecated)\n(Trusts User Input)"]
+    DB["Core Production Database"]
+
+    Attacker -- "1. Interacts with modern app:\nPOST /api/v2/fund_transfer\n-> 403 Forbidden\n\n2. Modifies request:\nPOST /api/v1/fund_transfer" --> GW
+    GW --> V2
+    GW --> V1
+    V2 -- "X (Request bypassed)" --> V2_Blocked[ ]
+    V1 -- "3. Processes Transfer without MFA" --> DB
+    DB -- "4. Database updated successfully.\nAttacker bypasses modern security." --> Attacker
 ```
 
 ## 4. Deep Dive: Exploitation Methodologies

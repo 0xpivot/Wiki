@@ -17,31 +17,24 @@ If a Windows service is configured to run under a high-privileged account (such 
 
 The premise is exceedingly simple: the Service Control Manager blindly trusts the executable sitting at the path defined in the registry. It does not natively verify the hash, digital signature, or integrity of the binary before executing it (unless specific, modern application control policies like Windows Defender Application Control - WDAC are enforced).
 
-```text
-+--------------------------------------------------------------------------+
-|                  MODIFIABLE SERVICE BINARY ATTACK FLOW                   |
-+--------------------------------------------------------------------------+
-|
-|  [ Original State ]
-|  C:\App\service.exe (Legitimate Binary) <--- Owned by SYSTEM
-|        ^
-|        |
-|  SCM starts service -> Executes Legitimate Binary as SYSTEM
-|
-|
-|  [ Attacker Action ]
-|  Attacker discovers BUILTIN\Users has Modify (M) access to C:\App\
-|  Attacker renames/deletes legitimate service.exe
-|  Attacker copies malicious payload as C:\App\service.exe
-|
-|
-|  [ Exploited State ]
-|  C:\App\service.exe (Malicious Payload) <--- Owned by Attacker
-|        ^
-|        |
-|  SCM starts service -> Executes Malicious Payload as SYSTEM -> PWNED
-|
-+--------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph MSBAF[MODIFIABLE SERVICE BINARY ATTACK FLOW]
+        OS["[ Original State ]\nC:\\App\\service.exe (Legitimate Binary) <-- Owned by SYSTEM"]
+        SCM1["SCM starts service -> Executes Legitimate Binary as SYSTEM"]
+        
+        SCM1 --> OS
+        
+        AA["[ Attacker Action ]\nAttacker discovers BUILTIN\\Users has Modify (M) access to C:\\App\\\nAttacker renames/deletes legitimate service.exe\nAttacker copies malicious payload as C:\\App\\service.exe"]
+        
+        OS --> AA
+        
+        ES["[ Exploited State ]\nC:\\App\\service.exe (Malicious Payload) <-- Owned by Attacker"]
+        SCM2["SCM starts service -> Executes Malicious Payload as SYSTEM -> PWNED"]
+        
+        AA --> ES
+        SCM2 --> ES
+    end
 ```
 
 ## Enumeration and Identification

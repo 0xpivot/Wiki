@@ -18,21 +18,13 @@ This document explores the mechanics of `etcd`, how it is targeted by threat act
 
 In a standard Kubernetes architecture, only the `kube-apiserver` is permitted to communicate directly with `etcd`. 
 
-```ascii
-      [ Kubernetes Control Plane ]
-      
-      +-------------------+       mTLS       +-------------------+
-      |                   | <==============> |                   |
-      |  kube-apiserver   |                  |  etcd Datastore   |
-      |                   | <==============> |  (Port 2379)      |
-      +--------+----------+                  +---------+---------+
-               |                                       |
-               v                                       |
-     (RBAC, Admission Control,                         |
-      Audit Logs Enforced Here)                        v
-                                            [ Raw Cluster Data ]
-                                            (Secrets, Pod Specs, 
-                                             Service Accounts)
+```mermaid
+graph TD
+    subgraph Kubernetes Control Plane
+        A[kube-apiserver] <==>|mTLS| B[etcd Datastore <br/> Port 2379]
+        A --> C[RBAC, Admission Control, <br/> Audit Logs Enforced Here]
+        B --> D[Raw Cluster Data <br/> Secrets, Pod Specs, <br/> Service Accounts]
+    end
 ```
 
 ### Port Details

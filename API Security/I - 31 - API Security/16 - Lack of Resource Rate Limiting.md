@@ -38,35 +38,22 @@ Understanding how rate limiters work is crucial for identifying weaknesses and d
 
 ## ASCII Architecture Diagram: Rate Limiting Flow and Bypass
 
-```text
-                                        Rate Limiting Evasion Vectors
-                                        +---------------------------+
-                                        | 1. IP Rotation (Proxies)  |
-                                        | 2. Header Spoofing        |
-                                        | 3. Unauthenticated Routes |
-                                        | 4. Endpoint Variations    |
-                                        +-------------+-------------+
-                                                      |
-                                                      v
-  +-----------+     [Request] X-Forwarded-For: 1.2.3.4  +-------------+       +---------------+
-  | Attacker  | --------------------------------------> | WAF / Proxy | ----> |  API Gateway  |
-  +-----------+                                         +-------------+       +---------------+
-        ^                                                     |                       |
-        |                                                (Checks IP)             (Checks Token/
-        |                                                     |                   User ID)
-        |                                                     v                       |
-        |                                              +---------------+              |
-        +--------------------------------------------- | Block / Allow | <------------+
-            429 Too Many Requests (If Blocked)         +---------------+              |
-                                                                                      v
-                                                                             +-----------------+
-                                                                             | Backend Server  |
-                                                                             | (Database/App)  |
-                                                                             +-----------------+
-                                                                             [Resource Exhaustion]
-                                                                             - Heavy DB Queries
-                                                                             - Memory Leaks
-                                                                             - Pagination Abuse
+```mermaid
+flowchart TD
+    Vectors["Rate Limiting Evasion Vectors\n1. IP Rotation (Proxies)\n2. Header Spoofing\n3. Unauthenticated Routes\n4. Endpoint Variations"]
+    Attacker["Attacker"]
+    WAF["WAF / Proxy\n(Checks IP)"]
+    GW["API Gateway\n(Checks Token / User ID)"]
+    BlockAllow["Block / Allow"]
+    Backend["Backend Server (Database/App)\n[Resource Exhaustion]\n- Heavy DB Queries\n- Memory Leaks\n- Pagination Abuse"]
+
+    Vectors --> WAF
+    Attacker -- "[Request] X-Forwarded-For: 1.2.3.4" --> WAF
+    WAF --> GW
+    WAF --> BlockAllow
+    GW --> BlockAllow
+    BlockAllow -- "429 Too Many Requests (If Blocked)" --> Attacker
+    BlockAllow --> Backend
 ```
 
 ---

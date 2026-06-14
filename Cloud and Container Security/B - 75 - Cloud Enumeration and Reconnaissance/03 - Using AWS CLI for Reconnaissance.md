@@ -18,30 +18,18 @@ The reconnaissance phase using the AWS CLI focuses on answering three critical q
 
 ## 2. Architecture and Attack Flow
 
-```text
-+---------------------+        +-------------------------+        +---------------------------+
-|   Attacker / VAPT   |        |   AWS CLI Configuration |        |   AWS Cloud API / IAM     |
-|   Professional      |        |   (~/.aws/credentials)  |        |   (Target Account)        |
-+---------------------+        +-------------------------+        +---------------------------+
-           |                               |                                |
-           | 1. Obtain leaked credentials  |                                |
-           |    (GitHub, SSRF, S3 leak)    |                                |
-           |------------------------------>|                                |
-           |                               |                                |
-           | 2. Configure AWS CLI profile  |                                |
-           |------------------------------>|                                |
-           |                               |                                |
-           | 3. aws sts get-caller-identity|                                |
-           |--------------------------------------------------------------->|
-           |                               |                                |
-           | 4. Return Account ID, User ARN|                                |
-           |<---------------------------------------------------------------|
-           |                               |                                |
-           | 5. aws iam list-user-policies |                                |
-           |--------------------------------------------------------------->|
-           |                               |                                |
-           | 6. Enumerate EC2, S3, RDS     |                                |
-           |--------------------------------------------------------------->|
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker / VAPT Professional
+    participant CLI as AWS CLI Configuration (~/.aws/credentials)
+    participant API as AWS Cloud API / IAM (Target Account)
+
+    Attacker->>CLI: 1. Obtain leaked credentials (GitHub, SSRF, S3 leak)
+    Attacker->>CLI: 2. Configure AWS CLI profile
+    Attacker->>API: 3. aws sts get-caller-identity
+    API-->>Attacker: 4. Return Account ID, User ARN
+    Attacker->>API: 5. aws iam list-user-policies
+    Attacker->>API: 6. Enumerate EC2, S3, RDS
 ```
 
 ## 3. The "How": Detailed Methodology

@@ -19,37 +19,18 @@ If a caching layer is present and treats `X-Forwarded-Scheme` as an **Unkeyed In
 The Backend sees the `http` scheme, assumes the user is on an insecure connection, and generates a 301 Redirect to the HTTPS URL. The Cache Server sees the 301 Redirect, saves it, and associates it with the normal Cache Key. Now, every legitimate user who visits the site (even if they are already using HTTPS!) is served the 301 Redirect back to the exact same HTTPS URL, resulting in an **infinite redirect loop** that effectively takes the website offline (Denial of Service).
 
 ## ASCII Diagram
-```text
-================================================================================
-                    POISONING VIA X-FORWARDED-SCHEME (DoS)
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["1. Attacker Sends Payload over HTTPS <br/> GET / HTTP/1.1 <br/> Host: target.com <br/> X-Forwarded-Scheme: http <-- THE LIE"]
+    Back["2. Backend Logic (Enforcing HTTPS) <br/> Backend says: 'Wait, the scheme is HTTP! I must redirect them to HTTPS!' <br/> Response: <br/> HTTP/1.1 301 Moved Permanently <br/> Location: https://target.com/"]
+    Cache["3. Cache Storage <br/> Cache saves the 301 Redirect under the Cache Key: GET / | target.com"]
+    Victim["4. Victim Requests the Page over HTTPS <br/> GET / HTTP/1.1 <br/> Host: target.com"]
+    Result["5. The Infinite Loop <br/> Cache serves the poisoned 301 Redirect. <br/> Victim's browser goes to: https://target.com/ <br/> Victim hits the Cache again. <br/> Cache serves the 301 Redirect again. <br/> Victim's browser goes to: https://target.com/ <br/> (ERR_TOO_MANY_REDIRECTS)"]
 
-[1. Attacker Sends Payload over HTTPS]
-GET / HTTP/1.1
-Host: target.com
-X-Forwarded-Scheme: http               <-- THE LIE
-
-[2. Backend Logic (Enforcing HTTPS)]
-Backend says: "Wait, the scheme is HTTP! I must redirect them to HTTPS!"
-Response: 
-HTTP/1.1 301 Moved Permanently
-Location: https://target.com/
-
-[3. Cache Storage]
-Cache saves the 301 Redirect under the Cache Key: GET / | target.com
-
-[4. Victim Requests the Page over HTTPS]
-GET / HTTP/1.1
-Host: target.com
-
-[5. The Infinite Loop]
-Cache serves the poisoned 301 Redirect.
-Victim's browser goes to: https://target.com/
-Victim hits the Cache again.
-Cache serves the 301 Redirect again.
-Victim's browser goes to: https://target.com/
-(ERR_TOO_MANY_REDIRECTS)
-================================================================================
+    Attacker --> Back
+    Back --> Cache
+    Victim --> Result
+    Cache -.-> Result
 ```
 
 ## How to Find It

@@ -22,28 +22,17 @@ In the OWASP API Security Top 10, this often falls under Broken User Authenticat
 
 ## Architecture and Attack Flow
 
-```text
-+-----------------------+
-|   Attacker (No Auth)  |
-+-----------------------+
-           |
-           | 1. Discovers undocumented endpoint
-           |    (e.g., /api/v1/internal/users)
-           v
-+-----------------------+      2. Missing Auth Check      +-----------------------+
-|                       |-------------------------------->|                       |
-|      API Gateway /    |                                 |   Backend Service /   |
-|      Load Balancer    |                                 |   Database            |
-|                       |<--------------------------------|                       |
-+-----------------------+      3. Sensitive Data Returned +-----------------------+
-           |
-           | 4. Data Exfiltration
-           v
-+-----------------------+
-|   Attacker Receives   |
-|   PII, Credentials,   |
-|   Internal Configs    |
-+-----------------------+
+```mermaid
+flowchart TD
+    Attacker1["Attacker (No Auth)"]
+    GW["API Gateway / Load Balancer"]
+    Backend["Backend Service / Database"]
+    Attacker2["Attacker Receives\nPII, Credentials, Internal Configs"]
+
+    Attacker1 -- "1. Discovers undocumented endpoint\n(e.g., /api/v1/internal/users)" --> GW
+    GW -- "2. Missing Auth Check" --> Backend
+    Backend -- "3. Sensitive Data Returned" --> GW
+    GW -- "4. Data Exfiltration" --> Attacker2
 ```
 
 ### Flow Breakdown

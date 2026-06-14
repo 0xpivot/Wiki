@@ -34,39 +34,16 @@ If an attacker sends the payload `<sCrIpT>alert(1)</ScRiPt>`, the WAF processes 
 
 ### 2.2 Execution Flow Diagram
 
-```text
-+-------------------------------------------------------------+
-|                        ATTACKER                             |
-|  Payload: <ScRiPt>alert(1)</ScRiPt>                         |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                      WAF / FILTER                           |
-| 1. Receives HTTP Request                                    |
-| 2. Evaluates against Ruleset                                |
-|    Rule 101: Block if payload contains "<script>"           |
-| 3. Regex Match Execution:                                   |
-|    "<sCrIpT>" == "<script>" ? -> FALSE                      |
-| 4. Decision: ALLOW (Traffic Forwarded)                      |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                   BACKEND APPLICATION                       |
-| 1. Processes request parameters                             |
-| 2. Reflects payload into HTML template without escaping     |
-| 3. Sends HTTP 200 OK with reflected HTML                    |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                     VICTIM BROWSER                          |
-| 1. Parses DOM Tree                                          |
-| 2. Encounters <ScRiPt> tag                                  |
-| 3. HTML Spec states tags are case-insensitive               |
-| 4. Executes JavaScript: alert(1)                            |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["ATTACKER <br/> Payload: &lt;ScRiPt&gt;alert(1)&lt;/ScRiPt&gt;"]
+    WAF["WAF / FILTER <br/> 1. Receives HTTP Request <br/> 2. Evaluates against Ruleset <br/> Rule 101: Block if payload contains '&lt;script&gt;' <br/> 3. Regex Match Execution: <br/> '&lt;sCrIpT&gt;' == '&lt;script&gt;' ? -> FALSE <br/> 4. Decision: ALLOW (Traffic Forwarded)"]
+    Backend["BACKEND APPLICATION <br/> 1. Processes request parameters <br/> 2. Reflects payload into HTML template without escaping <br/> 3. Sends HTTP 200 OK with reflected HTML"]
+    Browser["VICTIM BROWSER <br/> 1. Parses DOM Tree <br/> 2. Encounters &lt;ScRiPt&gt; tag <br/> 3. HTML Spec states tags are case-insensitive <br/> 4. Executes JavaScript: alert(1)"]
+
+    Attacker --> WAF
+    WAF --> Backend
+    Backend --> Browser
 ```
 
 ---

@@ -36,29 +36,17 @@ If you see devices like `/dev/sda`, `/dev/sda1`, `/dev/vda1`, or `/dev/nvme0n1`,
 
 ### Attack Architecture Diagram
 
-```text
-+--------------------------------------------------------------------------------+
-|                              HOST OPERATING SYSTEM                             |
-|                                                                                |
-|  +--------------------------------------------------------------------------+  |
-|  |                         PRIVILEGED CONTAINER                             |  |
-|  |  [ ] Seccomp Disabled            [ ] AppArmor Disabled                   |  |
-|  |  [X] CAP_SYS_ADMIN               [X] All Devices (/dev/*) Accessible     |  |
-|  |                                                                          |  |
-|  |  +---------------------------+       +--------------------------------+  |  |
-|  |  | Technique 1: Disk Mount   |       | Technique 2: cgroups release   |  |  |
-|  |  |                           |       |                                |  |  |
-|  |  | $ mount /dev/sda1 /mnt    |       | $ echo payload > release_agent |  |  |
-|  |  | $ chroot /mnt             |       | (Kernel executes on host)      |  |  |
-|  |  +---------------------------+       +--------------------------------+  |  |
-|  +----------------|--------------------------------------|------------------+  |
-|                   |                                      |                     |
-|                   v                                      v                     |
-|  +--------------------------------+       +--------------------------------+   |
-|  |       Host Root Filesystem     |       |          Host Kernel           |   |
-|  |       (/etc/shadow, ~/.ssh)    |       |  (Executes payload as root)    |   |
-|  +--------------------------------+       +--------------------------------+   |
-+--------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph HOST OPERATING SYSTEM
+        subgraph PRIVILEGED CONTAINER
+            A[[ ] Seccomp Disabled <br/> [ ] AppArmor Disabled <br/> [X] CAP_SYS_ADMIN <br/> [X] All Devices /dev/* Accessible]
+            B[Technique 1: Disk Mount <br/> $ mount /dev/sda1 /mnt <br/> $ chroot /mnt]
+            C[Technique 2: cgroups release <br/> $ echo payload > release_agent <br/> Kernel executes on host]
+        end
+        B --> D[Host Root Filesystem <br/> /etc/shadow, ~/.ssh]
+        C --> E[Host Kernel <br/> Executes payload as root]
+    end
 ```
 
 ## Exploitation Techniques

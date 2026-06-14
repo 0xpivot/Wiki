@@ -38,27 +38,16 @@ To hunt effectively, one must understand the ingestion vectors for attackers:
 
 ## 4. Architecture Visualization: Credential Theft & Misuse Lifecycle
 
-```text
-    [Developer]                       [Compromised EC2]
-         |                                   |
-    Commits Code                       SSRF Vulnerability
-         |                                   |
-         v                                   v
-  [Public GitHub] <--- Scraper         [IMDS 169.254.169.254]
-  (AKIA Key Leak)                            |
-         |                                   v
-         +------------> [ATTACKER] <---------+
-                             | (Extracts ASIA Key)
-                             |
-                             v
-                  +--------------------+
-                  |  AWS Control Plane | (Attacker configures AWS CLI)
-                  +--------------------+
-                             |
-         +-------------------+-------------------+
-         |                   |                   |
-    Reconnaissance      Privilege Esc.      Exfiltration
-   (GetCallerIdentity) (AttachUserPolicy)   (S3 Sync / RDS)
+```mermaid
+flowchart TD
+    A[Developer] -->|Commits Code| B[Public GitHub<br>AKIA Key Leak]
+    C[Compromised EC2] -->|SSRF Vulnerability| D[IMDS 169.254.169.254]
+    B -->|Scraper| E[ATTACKER]
+    D -->|Extracts ASIA Key| E
+    E -->|Configures AWS CLI| F[AWS Control Plane]
+    F --> G[Reconnaissance<br>GetCallerIdentity]
+    F --> H[Privilege Esc.<br>AttachUserPolicy]
+    F --> I[Exfiltration<br>S3 Sync / RDS]
 ```
 
 ## 5. Hunting Methodologies and Indicators of Compromise (IoCs)

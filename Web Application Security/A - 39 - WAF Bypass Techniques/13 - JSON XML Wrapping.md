@@ -32,18 +32,14 @@ Many commercial WAFs default to the second option (fail-open) to avoid blocking 
 
 ## ASCII Diagram: JSON Wrapping Bypass
 
-```text
-+-------------+                                   +-------------+                                    +-----------------+
-|             |   Nested JSON Payload             |             |  WAF stops parsing at depth 5      |                 |
-|   Attacker  | --------------------------------> |     WAF     | ---------------------------------> | Backend Server  |
-|             |  {"a":{"b":{"c":{"d":{"e":        |             |  Payload at depth 6 is ignored     |                 |
-|             |  {"target":"<script>"}...}        |             |  Passes request to backend         |                 |
-+-------------+                                   +-------------+                                    +-----------------+
-       |                                                 |                                                    |
-       |  Crafts deeply nested JSON object.              |  Reads "a", "b", "c", "d", "e".                    | Parses entire JSON structure
-       |  Places XSS/SQLi at the deepest level.          |  Hits MaxDepth=5 threshold.                        | Extracts "target" value
-       |                                                 |  Ignores remaining JSON body.                      | Executes malicious payload
-       |                                                 |                                                    |
+```mermaid
+flowchart LR
+    Attacker["Attacker <br/> Nested JSON Payload <br/> {'a':{'b':{'c':{'d':{'e': <br/> {'target':'&lt;script&gt;'}...}"]
+    WAF["WAF <br/> WAF stops parsing at depth 5 <br/> Payload at depth 6 is ignored <br/> Passes request to backend"]
+    Backend["Backend Server <br/> Parses entire JSON structure <br/> Extracts 'target' value <br/> Executes malicious payload"]
+
+    Attacker --> WAF
+    WAF --> Backend
 ```
 
 ## Exploitation Mechanics

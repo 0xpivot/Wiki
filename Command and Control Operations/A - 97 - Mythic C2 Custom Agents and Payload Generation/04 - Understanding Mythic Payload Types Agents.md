@@ -29,46 +29,31 @@ When an operator clicks "Generate Payload" in the Mythic React UI, a complex, hi
 
 ## 3. Payload Build Architecture and Compilation Diagram
 
-```text
-+---------------------+
-|  Operator (Web UI)  |
-| 1. Selects Options  |
-| 2. Clicks "Build"   |
-+---------+-----------+
-          | (GraphQL Mutation / JSON config)
-          v
-+---------------------+
-|  Mythic Core Server |
-|  Records Request    |
-+---------+-----------+
-          | (Message Published to RabbitMQ)
-          v
-+-------------------------------------------------------------+
-|               PAYLOAD TYPE CONTAINER (e.g., Apollo)         |
-|                                                             |
-|  +----------------+     +-------------------------------+   |
-|  | builder.py     | --> | 1. Parse Operator JSON Config |   |
-|  | (Python Core)  |     | 2. Modify C# Source Files     |   |
-|  +----------------+     | 3. Inject Crypto/AES Keys     |   |
-|                         | 4. Select Build Profile       |   |
-|                         +---------------+---------------+   |
-|                                         |                   |
-|                                         v                   |
-|                         +---------------+---------------+   |
-|                         | .NET Core SDK / Compiler      |   |
-|                         | `dotnet build /p:Obfuscate=1` |   |
-|                         +---------------+---------------+   |
-|                                         |                   |
-|                                         v                   |
-|  +----------------+     +-------------------------------+   |
-|  | Result Payload | <-- | Output: apollo_artifact.exe   |   |
-|  | (to RabbitMQ)  |     +-------------------------------+   |
-+-------------------------------------------------------------+
-          | (Compiled Binary sent back via RPC)
-          v
-+---------------------+
-|  Mythic Core Server | (Available for Download / Hosting)
-+---------------------+
+```mermaid
+flowchart TD
+    Op["Operator (Web UI)<br>1. Selects Options<br>2. Clicks 'Build'"]
+    
+    Core1["Mythic Core Server<br>Records Request"]
+    Op -- "(GraphQL Mutation / JSON config)" --> Core1
+    
+    subgraph PayloadCont["PAYLOAD TYPE CONTAINER (e.g., Apollo)"]
+        Builder["builder.py<br>(Python Core)"]
+        Steps["1. Parse Operator JSON Config<br>2. Modify C# Source Files<br>3. Inject Crypto/AES Keys<br>4. Select Build Profile"]
+        Comp[".NET Core SDK / Compiler<br>`dotnet build /p:Obfuscate=1`"]
+        Out["Output: apollo_artifact.exe"]
+        Result["Result Payload<br>(to RabbitMQ)"]
+        
+        Builder --> Steps
+        Steps --> Comp
+        Comp --> Out
+        Out --> Result
+    end
+    
+    Core1 -- "(Message Published to RabbitMQ)" --> PayloadCont
+    
+    Core2["Mythic Core Server<br>(Available for Download / Hosting)"]
+    
+    Result -- "(Compiled Binary sent back via RPC)" --> Core2
 ```
 
 ## 4. Defining Commands and Strict Parameter Typing

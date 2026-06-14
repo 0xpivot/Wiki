@@ -18,38 +18,20 @@ Furthermore, WMI processes are executed under the context of the authenticating 
 
 ## Architectural ASCII Diagram: WMI Execution Flow
 
-```text
-+-----------------------+                                +-----------------------------------+
-|                       |                                |                                   |
-|   Attacker Node       |                                |      Target Windows Server        |
-|                       |                                |                                   |
-|  +-----------------+  |   1. Initial Connection &      |  +-----------------------------+  |
-|  |                 |  |      Auth (RPC Port 135)       |  | RPC Endpoint Mapper         |  |
-|  |   wmiexec.py /  |=====================================>| (RPCSS Service)             |  |
-|  |   wmic.exe      |  |                                |  +-----------------------------+  |
-|  |                 |  |   2. Port Negotiation          |                 |                 |
-|  +-----------------+  |      (Dynamic High Port        |                 v                 |
-|           ^           |       e.g., 49152+)            |  +-----------------------------+  |
-|           |           |   3. DCOM / WMI Connection     |  | Windows Management Service  |  |
-|           |           |      to Winmgmt Service        |  | (Winmgmt / svchost.exe)     |  |
-|           |           |=====================================>                              |  |
-|           |           |                                |  +-----------------------------+  |
-|           |           |                                |                 |                 |
-|           |           |   4. Process Creation Request  |                 v                 |
-|           |           |      (Win32_Process.Create)    |  +-----------------------------+  |
-|           |           |                                |  | WMI Provider Host           |  |
-|           +================================================== (WmiPrvSE.exe)            |  |
-|                       |   5. SMB (Port 445) used for   |  |                             |  |
-|                       |      Command Output Retrieval  |  +--------------+--------------+  |
-|                       |      (If using wmiexec)        |                 |                 |
-|                       |                                |                 | 6. Spawns     |
-|                       |                                |                 v                 |
-+-----------------------+                                |  +-----------------------------+  |
-                                                         |  | cmd.exe / powershell.exe    |  |
-                                                         |  | (Running as Auth. User)     |  |
-                                                         |  +-----------------------------+  |
-                                                         |                                   |
-                                                         +-----------------------------------+
+```mermaid
+graph TD
+    A["Attacker Node<br>wmiexec.py / wmic.exe"]
+    B["Target Windows Server<br>RPC Endpoint Mapper (RPCSS Service)"]
+    C["Target Windows Server<br>Windows Management Service (Winmgmt / svchost.exe)"]
+    D["Target Windows Server<br>WMI Provider Host (WmiPrvSE.exe)"]
+    E["Target Windows Server<br>cmd.exe / powershell.exe (Running as Auth. User)"]
+
+    A -->|"1. Initial Connection & Auth (RPC Port 135)"| B
+    B -->|"2. Port Negotiation (Dynamic High Port e.g., 49152+)"| C
+    A -->|"3. DCOM / WMI Connection to Winmgmt Service"| C
+    C -->|"4. Process Creation Request (Win32_Process.Create)"| D
+    A -.->|"5. SMB (Port 445) used for Command Output Retrieval (If using wmiexec)"| D
+    D -->|"6. Spawns"| E
 ```
 
 ---

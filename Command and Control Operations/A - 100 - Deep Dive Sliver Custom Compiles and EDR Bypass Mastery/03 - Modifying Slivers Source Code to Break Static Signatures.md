@@ -83,28 +83,25 @@ type ImplantContext struct {
 
 ## ASCII Diagram: The Effect of Source Modification on Compilation
 
-```text
-Original Source Code                  Modified Source Code
-(Sliver Default)                      (Customized Fork)
-       |                                     |
-       v                                     v
-+-------------+                       +-------------+
-| AST Parsing |                       | AST Parsing | (Different Tree Shape)
-+-------------+                       +-------------+
-       |                                     |
-       v                                     v
-+-------------+                       +-------------+
-| SSA Gen     |                       | SSA Gen     | (Different Register Allocation)
-+-------------+                       +-------------+
-       |                                     |
-       v                                     v
-+-------------+                       +-------------+
-| Machine Code|                       | Machine Code|
-| (Hash: A1B2)|                       | (Hash: F9C4)|
-+-------------+                       +-------------+
-       |                                     |
-    [Detect]                              [Bypass]
- (YARA Matches)                        (No YARA Match)
+```mermaid
+flowchart TD
+    Orig["Original Source Code<br>(Sliver Default)"]
+    Mod["Modified Source Code<br>(Customized Fork)"]
+    
+    AST1["AST Parsing"]
+    AST2["AST Parsing<br>(Different Tree Shape)"]
+    
+    SSA1["SSA Gen"]
+    SSA2["SSA Gen<br>(Different Register Allocation)"]
+    
+    Mach1["Machine Code<br>(Hash: A1B2)"]
+    Mach2["Machine Code<br>(Hash: F9C4)"]
+    
+    Det["[Detect]<br>(YARA Matches)"]
+    Byp["[Bypass]<br>(No YARA Match)"]
+    
+    Orig --> AST1 --> SSA1 --> Mach1 --> Det
+    Mod --> AST2 --> SSA2 --> Mach2 --> Byp
 ```
 
 ## 4. The Limits of Manual Modification

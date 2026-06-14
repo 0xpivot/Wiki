@@ -78,35 +78,16 @@ icacls "C:\Path\To\Task.exe"
 
 ## ASCII Diagram: Task Hijacking via Weak Permissions
 
-```text
-+-----------------------+
-| Attacker Context      |
-| (Standard User)       |
-+-----------------------+
-          |
-          | 1. Enumerate tasks, find 'Backup.bat' running as SYSTEM
-          | 2. Check icacls: 'BUILTIN\Users:(M)' (Modify access granted)
-          | 3. Overwrite Backup.bat with malicious payload
-          |    (e.g., echo "net localgroup administrators attacker /add" > Backup.bat)
-          v
-+-----------------------+
-| File System           |
-| C:\Scripts\Backup.bat | <--- Now contains Attacker Payload
-+-----------------------+
-          ^
-          | 4. Trigger occurs (e.g., 12:00 AM, or manual start)
-          |
-+-----------------------+
-| Task Scheduler Engine |
-| Context: SYSTEM       |
-+-----------------------+
-          |
-          | 5. Executes C:\Scripts\Backup.bat as SYSTEM
-          v
-+-----------------------+
-| Outcome               |
-| Attacker is now Admin |
-+-----------------------+
+```mermaid
+flowchart TD
+    AC["Attacker Context\n(Standard User)"]
+    FS["File System\nC:\\Scripts\\Backup.bat <-- Now contains Attacker Payload"]
+    TSE["Task Scheduler Engine\nContext: SYSTEM"]
+    OUT["Outcome\nAttacker is now Admin"]
+    
+    AC -->|"1. Enumerate tasks, find 'Backup.bat' running as SYSTEM\n2. Check icacls: 'BUILTIN\\Users:M' Modify access granted\n3. Overwrite Backup.bat with malicious payload"| FS
+    TSE -->|"4. Trigger occurs e.g., 12:00 AM, or manual start"| FS
+    FS -->|"5. Executes C:\\Scripts\\Backup.bat as SYSTEM"| OUT
 ```
 
 ## Triggering the Task

@@ -55,29 +55,31 @@ The impact is critical and includes:
 
 #### ASCII Diagram: Boolean Inference Logic
 
-```text
-+-------------------+       Payload: ' OR 1=1 --    +-------------------+
-| Attacker          | ----------------------------> | Application       |
-| Sends Payload     |                               | Processes Query   |
-+-------------------+                               +---------+---------+
-                                                              |
-                                                              v
-+-------------------+       True Condition:         +---------+---------+
-| Attacker Infers   | <---------------------------- | Database Returns  |
-| Data bit is '1'   |       "Invalid Password"      | Result to App     |
-+-------------------+                               +-------------------+
-        ^
-        |
-        |                   Payload: ' OR 1=2 --    +-------------------+
-+-------------------+ ----------------------------> | Application       |
-| Attacker          |                               | Processes Query   |
-+-------------------+                               +---------+---------+
-                                                              |
-                                                              v
-+-------------------+       False Condition:        +---------+---------+
-| Attacker Infers   | <---------------------------- | Database Returns  |
-| Data bit is '0'   |       "Invalid Username"      | Result to App     |
-+-------------------+                               +-------------------+
+```mermaid
+flowchart TD
+    subgraph True Query
+        A1["Attacker<br>Sends Payload"]
+        A2["Application<br>Processes Query"]
+        A3["Database Returns<br>Result to App"]
+        A4["Attacker Infers<br>Data bit is '1'"]
+
+        A1 -- "Payload: ' OR 1=1 --" --> A2
+        A2 --> A3
+        A3 -- "True Condition:<br>Invalid Password" --> A4
+    end
+
+    subgraph False Query
+        B1["Attacker"]
+        B2["Application<br>Processes Query"]
+        B3["Database Returns<br>Result to App"]
+        B4["Attacker Infers<br>Data bit is '0'"]
+
+        B1 -- "Payload: ' OR 1=2 --" --> B2
+        B2 --> B3
+        B3 -- "False Condition:<br>Invalid Username" --> B4
+    end
+    
+    A4 -.-> B1
 ```
 
 #### Proof of Concept (PoC)

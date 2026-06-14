@@ -43,22 +43,19 @@ void go(char * args, int alen) {
 
 ## 4. Architecture Diagram: Fork & Run vs. BOF Execution
 
-```text
-TRADITIONAL "FORK AND RUN"                 BEACON OBJECT FILE (BOF)
-+-------------------------+                +-------------------------+
-|      Beacon.exe         |                |      Beacon.exe         |
-|                         |                |                         |
-|  1. Spawns child        |                |  1. Allocates memory    |
-|  2. Injects DLL         |                |  2. Copies BOF to mem   |
-|  3. Reads Named Pipe    |                |  3. Executes in-thread  |
-+-------------------------+                |  4. Returns output      |
-           |                               |  5. Frees memory        |
-           v                               +-------------------------+
-+-------------------------+                             ^
-|    rundll32.exe         |                             |
-|    (Sacrificial)        |                             | (No child process)
-|  Executes payload       |                             | (No named pipe)
-+-------------------------+                             | (No disk I/O)
+```mermaid
+flowchart TD
+    subgraph Trad["TRADITIONAL 'FORK AND RUN'"]
+        B1["Beacon.exe<br>1. Spawns child<br>2. Injects DLL<br>3. Reads Named Pipe"]
+        R["rundll32.exe<br>(Sacrificial)<br>Executes payload"]
+        B1 --> R
+    end
+    
+    subgraph BOF["BEACON OBJECT FILE (BOF)"]
+        B2["Beacon.exe<br>1. Allocates memory<br>2. Copies BOF to mem<br>3. Executes in-thread<br>4. Returns output<br>5. Frees memory"]
+        Note["(No child process)<br>(No named pipe)<br>(No disk I/O)"]
+        Note -.-> B2
+    end
 ```
 
 ## 5. The Internal Beacon API

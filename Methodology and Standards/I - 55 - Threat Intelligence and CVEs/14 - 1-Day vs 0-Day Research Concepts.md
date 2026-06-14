@@ -37,32 +37,26 @@ Finding a crash is only 10% of the work. Weaponization transforms a crash into a
 - **Pricing:** Prices dictate the market focus. A 0-click, remote code execution (RCE) chain for iOS or Android can sell for upwards of $2,500,000. A local privilege escalation (LPE) in Windows might fetch $80,000. 
 - **Pwn2Own:** An annual hacking competition run by the Zero Day Initiative (ZDI) where researchers demonstrate 0-days against targets like Tesla, Safari, and Windows, receiving huge cash prizes and prestige, while ZDI handles the CVD process with the vendors.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                     0-DAY TO 1-DAY LIFECYCLE TIMELINE                             |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [Time: T - X Months]       [Time: T = 0]            [Time: T + X Days/Weeks]     |
-|                                                                                   |
-|  0-Day Discovery            Patch Released           1-Day Weaponization          |
-|         |                          |                          |                   |
-|         v                          v                          v                   |
-|  +----------------+         +----------------+         +----------------+         |
-|  | APTs & Brokers |         | Vendor (PSIRT) |         | Criminals &    |         |
-|  | - Fuzzing      |         | - Triage       |         |   Researchers  |         |
-|  | - Reverse Eng. |         | - RCA          |         | - Patch Diffing|         |
-|  | - Exploit Dev  |         | - Patch Deploy |         | - Reverse Eng. |         |
-|  +----------------+         +----------------+         +----------------+         |
-|         |                          |                          |                   |
-|         | (Stealth)                | (Public)                 | (Mass Scan)       |
-|         v                          v                          v                   |
-|  [ Silent Exploitation ]    [ CVE Published ]          [ Wide Exploitation ]      |
-|  (The 0-Day Window)                                    (The 1-Day Window)         |
-|                                                                                   |
-|  <------------------------> <---------------------------------------------------> |
-|     Defense is blind             Defense relies on speed of patching              |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    T1["Time: T - X Months<br>0-Day Discovery"]
+    T2["Time: T = 0<br>Patch Released"]
+    T3["Time: T + X Days/Weeks<br>1-Day Weaponization"]
+
+    APT["APTs & Brokers<br>- Fuzzing<br>- Reverse Eng.<br>- Exploit Dev"]
+    VEN["Vendor (PSIRT)<br>- Triage<br>- RCA<br>- Patch Deploy"]
+    CRIM["Criminals & Researchers<br>- Patch Diffing<br>- Reverse Eng."]
+
+    T1 --> APT
+    T2 --> VEN
+    T3 --> CRIM
+
+    APT -- "(Stealth)" --> S1["Silent Exploitation<br>(The 0-Day Window)"]
+    VEN -- "(Public)" --> S2["CVE Published"]
+    CRIM -- "(Mass Scan)" --> S3["Wide Exploitation<br>(The 1-Day Window)"]
+
+    S1 -.- S2
+    S2 -.- S3
 ```
 
 ## 4. The Anatomy of a 1-Day Exploit

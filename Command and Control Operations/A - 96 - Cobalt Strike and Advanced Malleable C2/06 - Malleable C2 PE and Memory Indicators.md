@@ -82,33 +82,15 @@ When a Beacon executes, it requires a thread. Threat hunters analyze thread call
 
 ## Custom ASCII Diagram
 
-```text
-+-----------------------------------------------------------------------------------+
-|                           Advanced Memory Evasion Strategy                        |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  1. Injection & Allocation                                                        |
-|     VirtualAlloc (PAGE_READWRITE) -> NO RWX!                                      |
-|            |                                                                      |
-|            v                                                                      |
-|  2. Payload Loading                                                               |
-|     Write Beacon payload to allocated memory region                               |
-|            |                                                                      |
-|            v                                                                      |
-|  3. PE Modification (stomppe / obfuscate)                                         |
-|     [ MZ Header ] -> Overwritten with 0x00 or custom bytes                        |
-|     [ PE Header ] -> Destroyed, Manipulated, or Faked                             |
-|            |                                                                      |
-|            v                                                                      |
-|  4. Permission Change & Execution                                                 |
-|     VirtualProtect (PAGE_EXECUTE_READ)                                            |
-|     Execute payload via Thread Creation                                           |
-|            |                                                                      |
-|            v                                                                      |
-|  5. Sleep Cycle (sleep_mask & Thread Stack Spoofing)                              |
-|     Encrypt RX region -> Manipulate Stack -> Wait -> Restore Stack -> Decrypt     |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    S1["1. Injection & Allocation<br>VirtualAlloc (PAGE_READWRITE) -> NO RWX!"]
+    S2["2. Payload Loading<br>Write Beacon payload to allocated memory region"]
+    S3["3. PE Modification (stomppe / obfuscate)<br>[ MZ Header ] -> Overwritten with 0x00 or custom bytes<br>[ PE Header ] -> Destroyed, Manipulated, or Faked"]
+    S4["4. Permission Change & Execution<br>VirtualProtect (PAGE_EXECUTE_READ)<br>Execute payload via Thread Creation"]
+    S5["5. Sleep Cycle (sleep_mask & Thread Stack Spoofing)<br>Encrypt RX region -> Manipulate Stack -> Wait -> Restore Stack -> Decrypt"]
+    
+    S1 --> S2 --> S3 --> S4 --> S5
 ```
 
 ## Real-World Attack Scenario

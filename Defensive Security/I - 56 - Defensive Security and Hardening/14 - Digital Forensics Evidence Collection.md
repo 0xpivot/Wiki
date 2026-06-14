@@ -16,37 +16,21 @@ The core guiding principle of forensic collection is the **Order of Volatility**
 
 Below is a visualization of the Order of Volatility, illustrating the fragility of data at each level and the specialized tools typically used for acquisition.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        THE ORDER OF VOLATILITY (RFC 3227)                         |
-|                                                                                   |
-|    MOST VOLATILE (Acquire First)                                                  |
-|    ^  +-----------------------------------------------------------------+         |
-|    |  | 1. CPU Registers, L1/L2 Cache                                   |         |
-|    |  |    (Rarely collected by standard IR due to extreme volatility)  |         |
-|    |  +-----------------------------------------------------------------+         |
-|    |  | 2. Routing Tables, ARP Cache, Process Tables, Kernel Stats      |         |
-|    |  |    (Tools: netstat, arp, ps, EDR telemetry scripts)             |         |
-|    |  +-----------------------------------------------------------------+         |
-|    |  | 3. System Memory (RAM)                                          |         |
-|    |  |    (Tools: DumpIt, FTK Imager, WinPmem, LiME for Linux)         |         |
-|    |  +-----------------------------------------------------------------+         |
-|    |  | 4. Temporary File Systems / Swap Space                          |         |
-|    |  |    (pagefile.sys, hiberfil.sys, /tmp, Linux swap partitions)    |         |
-|    |  +-----------------------------------------------------------------+         |
-|    |  | 5. Disk Drives (Persistent Storage / Artifacts)                 |         |
-|    |  |    (Tools: dd, dc3dd, FTK Imager, KAPE, EnCase, Guymager)       |         |
-|    |  +-----------------------------------------------------------------+         |
-|    |  | 6. Remote Logging and Monitoring Data                           |         |
-|    |  |    (SIEM logs, Firewall logs, NetFlow/Zeek PCAPs)               |         |
-|    |  +-----------------------------------------------------------------+         |
-|    |  | 7. Physical Configuration / Network Topology                    |         |
-|    |  |    (Architecture diagrams, rack layouts, system time offsets)   |         |
-|    |  +-----------------------------------------------------------------+         |
-|    v  | 8. Archival Media                                               |         |
-|  LEAST|    (Tape backups, cold cloud storage, CD-ROMs)                  |         |
-|  VOL. +-----------------------------------------------------------------+         |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Volatility["THE ORDER OF VOLATILITY (RFC 3227)"]
+        direction TB
+        V1["1. CPU Registers, L1/L2 Cache\n(Rarely collected by standard IR due to extreme volatility)"]
+        V2["2. Routing Tables, ARP Cache, Process Tables, Kernel Stats\n(Tools: netstat, arp, ps, EDR telemetry scripts)"]
+        V3["3. System Memory (RAM)\n(Tools: DumpIt, FTK Imager, WinPmem, LiME for Linux)"]
+        V4["4. Temporary File Systems / Swap Space\n(pagefile.sys, hiberfil.sys, /tmp, Linux swap partitions)"]
+        V5["5. Disk Drives (Persistent Storage / Artifacts)\n(Tools: dd, dc3dd, FTK Imager, KAPE, EnCase, Guymager)"]
+        V6["6. Remote Logging and Monitoring Data\n(SIEM logs, Firewall logs, NetFlow/Zeek PCAPs)"]
+        V7["7. Physical Configuration / Network Topology\n(Architecture diagrams, rack layouts, system time offsets)"]
+        V8["8. Archival Media\n(Tape backups, cold cloud storage, CD-ROMs)"]
+        
+        V1 --> V2 --> V3 --> V4 --> V5 --> V6 --> V7 --> V8
+    end
 ```
 
 ## Core Principles of Evidence Handling

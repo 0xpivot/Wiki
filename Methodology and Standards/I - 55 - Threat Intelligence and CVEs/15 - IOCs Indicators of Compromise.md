@@ -16,28 +16,16 @@ When a breach occurs, analysts extract these artifacts and ingest them into Secu
 
 The "Pyramid of Pain," conceptualized by David Bianco, is a critical model for understanding the effectiveness of different IOCs. It measures how much "pain" (difficulty) an adversary experiences when a defender successfully denies them the use of a specific indicator.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                             THE PYRAMID OF PAIN                                   |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|                                    / \                                            |
-|                                   /   \                                           |
-|                                  / TTPs\         <-- TOUGH (Actor must re-train)  |
-|                                 /-------\                                         |
-|                                /  Tools  \       <-- CHALLENGING (Must re-code)   |
-|                               /-----------\                                       |
-|                              /   Network   \     <-- ANNOYING (Reconfigure C2)    |
-|                             / & Host Artifacts\                                   |
-|                            /-------------------\                                  |
-|                           /    Domain Names     \    <-- SIMPLE (Register new)    |
-|                          /-----------------------\                                |
-|                         /       IP Addresses      \  <-- EASY (Change Proxy/VPN)  |
-|                        /---------------------------\                              |
-|                       /         Hash Values         \ <-- TRIVIAL (Recompile)     |
-|                      /-------------------------------\                            |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    TTP["TTPs<br>TOUGH (Actor must re-train)"]
+    TLS["Tools<br>CHALLENGING (Must re-code)"]
+    ART["Network & Host Artifacts<br>ANNOYING (Reconfigure C2)"]
+    DOM["Domain Names<br>SIMPLE (Register new)"]
+    IP["IP Addresses<br>EASY (Change Proxy/VPN)"]
+    HASH["Hash Values<br>TRIVIAL (Recompile)"]
+
+    TTP --> TLS --> ART --> DOM --> IP --> HASH
 ```
 
 ### Breakdown of the Pyramid

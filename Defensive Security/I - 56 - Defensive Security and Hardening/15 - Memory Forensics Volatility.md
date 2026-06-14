@@ -16,36 +16,28 @@ The industry-standard open-source framework for this discipline is **Volatility*
 
 Below is a visualization of how Volatility interacts with a raw memory dump, utilizing Symbol Tables to map binary offsets to human-readable OS data structures, thereby extracting structured forensic artifacts.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                            MEMORY FORENSICS WORKFLOW                              |
-|                                                                                   |
-|  +--------------------+         +-----------------------------------------+       |
-|  | Compromised System |         |           Forensic Workstation          |       |
-|  |                    |         |                                         |       |
-|  |  +--------------+  |         |  +--------------+    +---------------+  |       |
-|  |  | Active RAM   |  | --(1)-> |  | Memory Dump  |    | Volatility 3  |  |       |
-|  |  | (Processes,  |  | Acquire |  | (.raw, .mem, |    | Framework     |  |       |
-|  |  |  Network,    |  |         |  | .vmem, .dmp) |    |               |  |       |
-|  |  |  Malware)    |  |         |  +-------+------+    |  +---------+  |  |       |
-|  |  +--------------+  |         |          |           |  | Plugins |  |  |       |
-|  +--------------------+         |          |           |  +----+----+  |  |       |
-|                                 |          |               |   |       |  |       |
-|                                 |          +-------(2)-----+   |       |  |       |
-|                                 |       Analyze via ISF        |       |  |       |
-|                                 |      (Symbol Tables)         |       |  |       |
-|                                 |                              v       |  |       |
-|                                 |  +-----------------------------------+  |       |
-|                                 |  |        Extracted Artifacts        |  |       |
-|                                 |  | - Process Trees (pslist, pstree)  |  |       |
-|                                 |  | - Network Conns (netscan)         |  |       |
-|                                 |  | - Injected Code (malfind)         |  |       |
-|                                 |  | - API Hooks (apihooks)            |  |       |
-|                                 |  | - Extracted DLLs / Exes (procdump)|  |       |
-|                                 |  | - Command Lines & Env Variables   |  |       |
-|                                 |  +-----------------------------------+  |       |
-|                                 +-----------------------------------------+       |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Workflow["MEMORY FORENSICS WORKFLOW"]
+        direction LR
+        
+        subgraph Comp["Compromised System"]
+            direction TB
+            RAM["Active RAM\n(Processes, Network, Malware)"]
+        end
+        
+        subgraph Workstation["Forensic Workstation"]
+            direction TB
+            Dump["Memory Dump\n(.raw, .mem, .vmem, .dmp)"]
+            Vol["Volatility 3 Framework\n[ Plugins ]"]
+            
+            Dump -- "Analyze via ISF\n(Symbol Tables)" --> Vol
+            
+            Vol --> Arts["Extracted Artifacts\n- Process Trees (pslist, pstree)\n- Network Conns (netscan)\n- Injected Code (malfind)\n- API Hooks (apihooks)\n- Extracted DLLs / Exes (procdump)\n- Command Lines & Env Variables"]
+        end
+        
+        RAM -- "(1) Acquire" --> Dump
+    end
 ```
 
 ## Profiles (Volatility 2) vs. Symbol Tables (Volatility 3)

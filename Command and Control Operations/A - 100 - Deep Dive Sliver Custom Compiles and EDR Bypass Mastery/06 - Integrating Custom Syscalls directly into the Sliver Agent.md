@@ -39,41 +39,30 @@ Theoretical methods for dynamic resolution include:
 
 ## Architecture Diagram: Standard vs. Direct Syscalls
 
-```ascii
-================================================================================
-                        USER MODE (Ring 3)
-================================================================================
-
-[ Standard Execution Flow ]             [ Direct Syscall Flow (Theoretical) ]
-
-+-------------------------+             +-------------------------+
-|    Sliver Agent         |             |    Sliver Agent         |
-|  (Standard API Call)    |             |  (Direct Syscall Imp)   |
-+-----------+-------------+             +-----------+-------------+
-            |                                       |
-            v                                       |
-+-------------------------+                         |
-|    kernel32.dll         |                         |
-| (e.g., VirtualAlloc)    |                         |
-+-----------+-------------+                         |
-            |                                       |
-            v                                       |
-+-------------------------+                         |
-|      ntdll.dll          |                         |
-| (e.g., NtAllocate...)   |                         |
-|  [ EDR HOOK PLACED ] <--+--- Detection            |
-+-----------+-------------+    Occurs Here          |
-            |                                       |
-            | (syscall)                             | (syscall instruction
-            |                                       |  executed manually)
-============|=======================================|===========================
-            |           KERNEL MODE (Ring 0)        |
-============|=======================================|===========================
-            v                                       v
-+-----------------------------------------------------------------+
-|                        ntoskrnl.exe                             |
-|                  System Service Dispatcher                      |
-+-----------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph UserMode["USER MODE (Ring 3)"]
+        subgraph Std["Standard Execution Flow"]
+            A1["Sliver Agent<br>(Standard API Call)"]
+            A2["kernel32.dll<br>(e.g., VirtualAlloc)"]
+            A3["ntdll.dll<br>(e.g., NtAllocate...)<br>[ EDR HOOK PLACED ]"]
+            Det["Detection Occurs Here"]
+            
+            A1 --> A2 --> A3
+            A3 -.-> Det
+        end
+        
+        subgraph Dir["Direct Syscall Flow (Theoretical)"]
+            B1["Sliver Agent<br>(Direct Syscall Imp)"]
+        end
+    end
+    
+    subgraph KernelMode["KERNEL MODE (Ring 0)"]
+        K1["ntoskrnl.exe<br>System Service Dispatcher"]
+    end
+    
+    A3 -- "(syscall)" --> K1
+    B1 -- "(syscall instruction executed manually)" --> K1
 ```
 
 ## Defensive Telemetry and Detection

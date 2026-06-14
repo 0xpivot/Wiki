@@ -34,32 +34,16 @@ Modern Active Directory heavily prefers AES encryption (AES128 or AES256 keys). 
 
 ## ASCII Diagram: Over-Pass-the-Hash Flow
 
-```text
-       [Attacker Machine]                                 [Domain Controller (KDC)]
-       (Possesses NTLM Hash or AES Key)
-               |                                                 |
-               | -- 1. Craft AS-REQ with Pre-Auth Timestamp ---->|
-               |       Encrypted using Stolen Hash/Key           |
-               |                                                 |
-               |                                    +--------------------------+
-               |                                    | KDC decrypts timestamp   |
-               |                                    | using its database copy  |
-               |                                    | of the user's key.       |
-               |                                    +--------------------------+
-               |                                                 |
-               | <------ 2. KDC replies with AS-REP ------------ |
-               |         (Contains valid TGT encrypted           |
-               |          with krbtgt account hash)              |
-               v                                                 v
-  +--------------------------+                     +--------------------------+
-  | Attacker extracts TGT    |                     |                          |
-  | and injects into memory  |                     |                          |
-  | (Pass-the-Ticket phase)  |                     |                          |
-  +--------------------------+                     +--------------------------+
-               |
-               v
-     [Authentication via Kerberos]
-     (No NTLM traffic generated)
+```mermaid
+sequenceDiagram
+    participant A as Attacker Machine<br>(Possesses NTLM Hash or AES Key)
+    participant K as Domain Controller (KDC)
+
+    A->>K: 1. Craft AS-REQ with Pre-Auth Timestamp<br>Encrypted using Stolen Hash/Key
+    Note over K: KDC decrypts timestamp<br>using its database copy<br>of the user's key.
+    K-->>A: 2. KDC replies with AS-REP<br>(Contains valid TGT encrypted<br>with krbtgt account hash)
+    Note over A: Attacker extracts TGT<br>and injects into memory<br>(Pass-the-Ticket phase)
+    Note over A: Authentication via Kerberos<br>(No NTLM traffic generated)
 ```
 
 ## Methodology and Execution

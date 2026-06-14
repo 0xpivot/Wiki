@@ -16,24 +16,23 @@ While trusts facilitate collaboration and resource sharing, they also introduce 
 
 ### ASCII Architecture Diagram: Forest Trust Attack Flow
 
-```text
-       [ COMPROMISED FOREST ]                                   [ TARGET FOREST ]
-       Forest A (attacker.local)                               Forest B (target.local)
-      +-------------------------+                             +-------------------------+
-      |                         |                             |                         |
-      |    [Domain Controller]  |       Forest Trust          |    [Domain Controller]  |
-      |    - krbtgt hash        |<===========================>|    - Resources          |
-      |    - Trust Key          |     (Inter-Forest)          |    - Enterprise Admins  |
-      |                         |                             |                         |
-      +-------------------------+                             +-------------------------+
-                 |                                                         ^
-                 | 1. Compromise Forest A                                  |
-                 | 2. Extract Trust Key ($)                                | 5. Access target resources
-                 | 3. Forge Inter-Forest TGT                               |
-                 |    (Inject SID History)                                 |
-                 v                                                         |
-          [ Attacker Machine ] --------------------------------------------+
-                                  4. Present forged TGT to Target DC
+```mermaid
+graph TD
+    subgraph ForestA["COMPROMISED FOREST<br>Forest A (attacker.local)"]
+        DCA["Domain Controller<br>- krbtgt hash<br>- Trust Key"]
+    end
+    
+    subgraph ForestB["TARGET FOREST<br>Forest B (target.local)"]
+        DCB["Domain Controller<br>- Resources<br>- Enterprise Admins"]
+    end
+    
+    DCA <== "Forest Trust<br>(Inter-Forest)" ==> DCB
+    
+    AttackerMachine["Attacker Machine"]
+    
+    DCA -- "1. Compromise Forest A<br>2. Extract Trust Key ($)<br>3. Forge Inter-Forest TGT<br>(Inject SID History)" --> AttackerMachine
+    AttackerMachine -- "4. Present forged TGT to Target DC" --> DCB
+    DCB -- "5. Access target resources" --> AttackerMachine
 ```
 
 ## 2. Deep Dive into Trust Mechanics

@@ -78,32 +78,21 @@ When executing the build process within the container, several environment varia
 
 ## ASCII Diagram: The Custom Compilation Pipeline
 
-```text
-+-------------------------------------------------------------+
-|                     Host Machine                            |
-|  +-------------------------------------------------------+  |
-|  |                  Docker Container                     |  |
-|  |                                                       |  |
-|  |  1. Pull Source Code -> /workspace/sliver             |  |
-|  |                                                       |  |
-|  |  2. Set Environment Variables:                        |  |
-|  |     GOOS=windows, GOARCH=amd64, CGO_ENABLED=1         |  |
-|  |     CC=x86_64-w64-mingw32-gcc                         |  |
-|  |                                                       |  |
-|  |  3. Pre-Compilation Hooks:                            |  |
-|  |     - String replacement script                       |  |
-|  |     - AST obfuscator (Garble)                         |  |
-|  |                                                       |  |
-|  |  4. Go Compiler (go build -trimpath -ldflags="-s -w") |  |
-|  |                                                       |  |
-|  |  5. Post-Compilation Hooks:                           |  |
-|  |     - Sign binary with stolen certificate             |  |
-|  |     - Pack/Encrypt (optional)                         |  |
-|  +-------------------------------------------------------+  |
-|                            |                                |
-|                            v                                |
-|                  Artifact: payload.exe                      |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Host["Host Machine"]
+        subgraph Docker["Docker Container"]
+            s1["1. Pull Source Code -> /workspace/sliver"]
+            s2["2. Set Environment Variables:<br>GOOS=windows, GOARCH=amd64, CGO_ENABLED=1<br>CC=x86_64-w64-mingw32-gcc"]
+            s3["3. Pre-Compilation Hooks:<br>- String replacement script<br>- AST obfuscator (Garble)"]
+            s4["4. Go Compiler (go build -trimpath -ldflags='-s -w')"]
+            s5["5. Post-Compilation Hooks:<br>- Sign binary with stolen certificate<br>- Pack/Encrypt (optional)"]
+            
+            s1 --> s2 --> s3 --> s4 --> s5
+        end
+        Artifact["Artifact: payload.exe"]
+        s5 --> Artifact
+    end
 ```
 
 ## 5. Automating the Build Matrix

@@ -23,34 +23,22 @@ If an attacker in a container has `CAP_SYS_PTRACE` and can see a process running
 
 ### Attack Architecture Diagram
 
-```text
-+---------------------------------------------------------------------------------+
-|                               HOST OPERATING SYSTEM                             |
-|                                                                                 |
-|  +--------------------------------+          +-------------------------------+  |
-|  |     VULNERABLE CONTAINER       |          |        HOST PROCESSES         |  |
-|  |                                |          |                               |  |
-|  |  Capabilities: CAP_SYS_PTRACE  |          |  [PID 1] systemd (root)       |  |
-|  |  Namespace: --pid=host         |          |  [PID 500] sshd (root)        |  |
-|  |                                |          |  [PID 1024] nginx (www-data)  |  |
-|  |  +--------------------------+  |          +-------------------------------+  |
-|  |  | Attacker Shell           |  |                        ^                  |  |
-|  |  |                          |  |                        |                  |  |
-|  |  | $ ps aux (sees host pids)|  |                        |                  |  |
-|  |  | $ ./inject <PID 500>     |===(1. ptrace attach)======+                  |  |
-|  |  +--------------------------+  |                        |                  |  |
-|  +--------------------------------+                        |                  |  |
-|                                                            |                  |  |
-|  (2. Write shellcode to memory) <==========================+                  |  |
-|                                                            |                  |  |
-|  (3. Hijack execution flow)     <==========================+                  |  |
-|                                                            |                  |  |
-|  +---------------------------------------------------------v---------------+  |
-|  |                        ATTACK EXECUTION                                 |  |
-|  |  Host sshd (PID 500) executes shellcode.                                |  |
-|  |  Spawns reverse shell back to attacker as Host Root.                    |  |
-|  +-------------------------------------------------------------------------+  |
-+---------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph HOST OPERATING SYSTEM
+        subgraph VULNERABLE CONTAINER
+            A[Capabilities: CAP_SYS_PTRACE <br/> Namespace: --pid=host]
+            B[Attacker Shell <br/> $ ps aux sees host pids <br/> $ ./inject PID 500]
+        end
+        subgraph HOST PROCESSES
+            C[PID 1 systemd root <br/> PID 500 sshd root <br/> PID 1024 nginx www-data]
+        end
+        B -- 1. ptrace attach --> C
+        C -- 2. Write shellcode to memory --> B
+        C -- 3. Hijack execution flow --> B
+        D[ATTACK EXECUTION <br/> Host sshd PID 500 executes shellcode. <br/> Spawns reverse shell back to attacker as Host Root.]
+        B --> D
+    end
 ```
 
 ## Exploitation Walkthrough

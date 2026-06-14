@@ -40,35 +40,16 @@ Adversaries can persist via Identity and Access Management (IAM) or by backdoori
 
 ## 4. Architecture Visualization: CloudTrail Logging Flow
 
-```text
-+------------------+      (1) API Call      +----------------------+
-|                  | ---------------------> |                      |
-|  Attacker / User |                        |     AWS API Endpoints|
-|                  | <--------------------- |     (Control Plane)  |
-+------------------+      (2) Response      +----------------------+
-                                                        |
-                                                        | (3) Event Logged
-                                                        v
-                                             +----------------------+
-                                             |                      |
-                                             |    AWS CloudTrail    |
-                                             |                      |
-                                             +----------------------+
-                                               |                 |
-                             (4) Log Delivery  |                 | (5) EventBridge
-                                               v                 v
-                               +-------------------+    +-------------------+
-                               |                   |    |                   |
-                               |    Amazon S3      |    | Amazon CloudWatch /
-                               |    (Log Archive)  |    | Sentinel / Splunk |
-                               +-------------------+    +-------------------+
-                                        |
-                                        v
-                               +-------------------+
-                               |                   |
-                               |   Amazon Athena   | <-- Threat Hunter runs
-                               |   (SQL Queries)   |     SQL queries here.
-                               +-------------------+
+```mermaid
+flowchart TD
+    A[Attacker / User] -->|1 API Call| B[AWS API Endpoints<br>Control Plane]
+    B -->|2 Response| A
+    B -->|3 Event Logged| C[AWS CloudTrail]
+    C -->|4 Log Delivery| D[Amazon S3<br>Log Archive]
+    C -->|5 EventBridge| E[Amazon CloudWatch /<br>Sentinel / Splunk]
+    D --> F[Amazon Athena<br>SQL Queries]
+    classDef hunter fill:#f9f,stroke:#333,stroke-width:2px;
+    F:::hunter
 ```
 
 ## 5. Deep Dive into Specific API Calls

@@ -19,32 +19,15 @@ In this extensive document, we will explore the mechanisms of severity ratings, 
 
 Most professional VAPT reports utilize a standard four- or five-tier qualitative severity scale. These tiers dictate the absolute urgency of the required remediation and often tie directly into a client's internal SLAs (Service Level Agreements).
 
-```text
-+---------------------------------------------------------------------------------+
-|                              Standard Severity Scale Diagram                    |
-+---------------------------------------------------------------------------------+
-|                                                                                 |
-|  [ CRITICAL ] Immediate, widespread business impact. Can lead to total          |
-|               system compromise. Requires emergency out-of-band patching.       |
-|               SLA: 24 - 48 Hours.                                               |
-|                                                                                 |
-|  [ HIGH ]     Significant impact, potential for severe data loss or             |
-|               system compromise, but may require authentication or conditions.  |
-|               SLA: 7 - 14 Days.                                                 |
-|                                                                                 |
-|  [ MEDIUM ]   Moderate impact, often requires chaining with other flaws         |
-|               or complex prerequisites/social engineering.                      |
-|               SLA: 30 - 90 Days.                                                |
-|                                                                                 |
-|  [ LOW ]      Minimal immediate impact. Often minor misconfigurations or        |
-|               limited information disclosure.                                   |
-|               SLA: 90 - 180 Days.                                                |
-|                                                                                 |
-|  [ INFO ]     Best practice recommendations. No direct vulnerability,           |
-|               but the system could be hardened further.                         |
-|               SLA: Discretionary / Backlog.                                     |
-|                                                                                 |
-+---------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    CRITICAL["[ CRITICAL ]<br>Immediate, widespread business impact. Can lead to total system compromise. Requires emergency out-of-band patching.<br>SLA: 24 - 48 Hours."]
+    HIGH["[ HIGH ]<br>Significant impact, potential for severe data loss or system compromise, but may require authentication or conditions.<br>SLA: 7 - 14 Days."]
+    MEDIUM["[ MEDIUM ]<br>Moderate impact, often requires chaining with other flaws or complex prerequisites/social engineering.<br>SLA: 30 - 90 Days."]
+    LOW["[ LOW ]<br>Minimal immediate impact. Often minor misconfigurations or limited information disclosure.<br>SLA: 90 - 180 Days."]
+    INFO["[ INFO ]<br>Best practice recommendations. No direct vulnerability, but the system could be hardened further.<br>SLA: Discretionary / Backlog."]
+    
+    CRITICAL --- HIGH --- MEDIUM --- LOW --- INFO
 ```
 
 ### 2.1 Critical Severity

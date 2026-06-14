@@ -38,38 +38,12 @@ For complex vulnerabilities, a single screenshot is rarely sufficient. Use a seq
 
 The following ASCII diagram contrasts a poor, amateur screenshot approach with a professional, consultant-grade approach.
 
-```text
-+------------------------------------------------------------------------------------------+
-|                            SCREENSHOT BEST PRACTICES                                     |
-+------------------------------------------------------------------------------------------+
-|                                                                                          |
-|   [ AMATEUR SCREENSHOT ]                                                                 |
-|   +------------------------------------------------------------------------------+       |
-|   | [Spotify] [Slack: "Hey, order pizza"] [Browser: StackOverflow]               |       |
-|   |                                                                              |       |
-|   |   +----------------------------------------------------------------------+   |       |
-|   |   | Terminal - full screen, tiny text.                                   |   |       |
-|   |   | User typed something here, maybe an exploit?                         |   |       |
-|   |   | Lots of irrelevant output...                                         |   |       |
-|   |   | root@target:~# id                                                    |   |       |
-|   |   | uid=0(root) gid=0(root)                                              |   |       |
-|   |   | ...more irrelevant output...                                         |   |       |
-|   |   +----------------------------------------------------------------------+   |       |
-|   |                                                                              |       |
-|   | (Reader has to zoom in 500% and search the entire screen to find the impact) |       |
-|   +------------------------------------------------------------------------------+       |
-|                                                                                          |
-|   [ PROFESSIONAL SCREENSHOT ]                                                            |
-|   +-------------------------------------------------------+                              |
-|   | root@target-prod-db:~# id                             | <--- Cropped tightly.        |
-|   | +---------------------------------------------------+ |                              |
-|   | | uid=0(root) gid=0(root) groups=0(root)            | | <--- Highlight Box           |
-|   | +---------------------------------------------------+ |      draws the eye           |
-|   | root@target-prod-db:~# cat /etc/shadow | grep root    |      immediately.            |
-|   | root:!!:19000:0:99999:7:::                            |                              |
-|   +-------------------------------------------------------+                              |
-|                                                                                          |
-+------------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph "SCREENSHOT BEST PRACTICES"
+        AM["AMATEUR SCREENSHOT<br>Full screen, tiny text.<br>Lots of irrelevant output...<br>(Reader has to zoom in 500% to find impact)"]
+        PRO["PROFESSIONAL SCREENSHOT<br>Cropped tightly.<br>Highlight Box draws the eye immediately.<br>Target data clearly visible."]
+    end
 ```
 
 ## 4. Specific Tooling Evidence Guidelines

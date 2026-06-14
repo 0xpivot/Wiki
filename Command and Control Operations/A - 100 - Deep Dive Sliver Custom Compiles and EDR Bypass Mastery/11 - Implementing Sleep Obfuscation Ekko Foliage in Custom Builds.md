@@ -40,41 +40,26 @@ Foliage takes a similar approach but utilizes Asynchronous Procedure Calls (APCs
 
 ## Technical ASCII Diagram: Ekko Execution Flow
 
-```text
-================================================================================
-                    SLEEP OBFUSCATION EXECUTION FLOW (EKKO)
-================================================================================
-
-[ C2 Implant Main Thread ]
-         |
-         | 1. Capture CONTEXT
-         v
-+------------------------+      2. Create Timers via       +-------------------+
-| CONTEXT Structure      | ------------------------------> | Windows Thread    |
-| (Registers, RIP, RSP)  |      CreateTimerQueueTimer      | Pool Worker       |
-+------------------------+                                 +---------+---------+
-         |                                                           |
-         | 3. Main thread suspends/terminates                        |
-         v                                                           |
-  [ Thread Sleeps ] <------------------------------------------------+
-                                  4. Timers Fire Sequentially
-                                  
-TIMER 1:  [ VirtualProtect ] ----> Changes Implant Memory to PAGE_READWRITE
-                 |
-TIMER 2:  [ SystemFunction032 ] -> Encrypts Implant Memory Region (RC4)
-                 |
-TIMER 3:  [ WaitForSingleObject ]> Sleeps for Beacon Interval (e.g., 60s)
-                 |
-TIMER 4:  [ SystemFunction032 ] -> Decrypts Implant Memory Region
-                 |
-TIMER 5:  [ VirtualProtect ] ----> Restores Implant Memory to PAGE_EXECUTE_READ
-                 |
-TIMER 6:  [ NtContinue ] --------> Restores CONTEXT, Execution Resumes
-                 |
-                 v
-[ C2 Implant Wakes Up ] ---------> Beacons to C2 Server
-
-================================================================================
+```mermaid
+flowchart TD
+    Main["C2 Implant Main Thread"]
+    Ctx["CONTEXT Structure<br>(Registers, RIP, RSP)"]
+    Pool["Windows Thread Pool Worker"]
+    Sleep["Thread Sleeps"]
+    T1["TIMER 1: VirtualProtect<br>Changes Implant Memory to PAGE_READWRITE"]
+    T2["TIMER 2: SystemFunction032<br>Encrypts Implant Memory Region (RC4)"]
+    T3["TIMER 3: WaitForSingleObject<br>Sleeps for Beacon Interval (e.g., 60s)"]
+    T4["TIMER 4: SystemFunction032<br>Decrypts Implant Memory Region"]
+    T5["TIMER 5: VirtualProtect<br>Restores Implant Memory to PAGE_EXECUTE_READ"]
+    T6["TIMER 6: NtContinue<br>Restores CONTEXT, Execution Resumes"]
+    Wake["C2 Implant Wakes Up<br>Beacons to C2 Server"]
+    
+    Main -- "1. Capture CONTEXT" --> Ctx
+    Ctx -- "2. Create Timers via<br>CreateTimerQueueTimer" --> Pool
+    Ctx -- "3. Main thread suspends/terminates" --> Sleep
+    Pool -- "4. Timers Fire Sequentially" --> T1
+    T1 --> T2 --> T3 --> T4 --> T5 --> T6
+    T6 --> Wake
 ```
 
 ## Defensive Engineering: Detecting Sleep Obfuscation

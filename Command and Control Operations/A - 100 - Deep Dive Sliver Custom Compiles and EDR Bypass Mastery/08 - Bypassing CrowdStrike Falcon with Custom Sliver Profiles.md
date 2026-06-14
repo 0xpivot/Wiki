@@ -52,44 +52,20 @@ Profiles also attempt to manage how the agent behaves on the host.
 
 ## Architecture Diagram: Behavioral Analysis Engine
 
-```ascii
-=============================================================================
-                     EDR BEHAVIORAL ANALYSIS PIPELINE
-=============================================================================
-
-[ Endpoint Telemetry Sources ]
-      |
-      |-- Kernel Callbacks (Process/Thread creation)
-      |-- ETWti (Syscalls, Memory allocation)
-      |-- Network Filter Drivers (Connections, DNS)
-      |
-      v
-+---------------------------------------------------+
-|               Event Aggregation                   |
-| (Normalizing raw data into structured events)     |
-+---------------------------------------------------+
-      |
-      v
-+---------------------------------------------------+
-|               Contextual Enrichment               |
-| (Adding user context, reputation scores, etc.)    |
-+---------------------------------------------------+
-      |
-      v
-+---------------------------------------------------+
-|               Behavioral Analytics Engine         |
-|                                                   |
-|  [ Rule Engine ]          [ ML Baselines ]        |
-|  (e.g., "Word spawned     (e.g., "This host has   |
-|   cmd" = ALERT)            never connected to     |
-|                            this IP" = ANOMALY)    |
-+---------------------------------------------------+
-      |
-      v
-[ Alert Generation & Response ]
-(Isolate host, terminate process)
-
-=============================================================================
+```mermaid
+flowchart TD
+    Src["Endpoint Telemetry Sources<br>-- Kernel Callbacks (Process/Thread creation)<br>-- ETWti (Syscalls, Memory allocation)<br>-- Network Filter Drivers (Connections, DNS)"]
+    Agg["Event Aggregation<br>(Normalizing raw data into structured events)"]
+    Enrich["Contextual Enrichment<br>(Adding user context, reputation scores, etc.)"]
+    Eng["Behavioral Analytics Engine"]
+    Rules["Rule Engine<br>(e.g., 'Word spawned cmd' = ALERT)"]
+    ML["ML Baselines<br>(e.g., 'This host has never connected to this IP' = ANOMALY)"]
+    Alert["Alert Generation & Response<br>(Isolate host, terminate process)"]
+    
+    Src --> Agg --> Enrich --> Eng
+    Eng --- Rules
+    Eng --- ML
+    Eng --> Alert
 ```
 
 ## Defensive Counter-Measures and Robust Baselines

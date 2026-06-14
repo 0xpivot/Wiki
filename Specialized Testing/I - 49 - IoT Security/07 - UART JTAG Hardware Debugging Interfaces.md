@@ -83,35 +83,20 @@ JTAG headers are often 10-pin, 14-pin, or 20-pin blocks (e.g., standard ARM 10-p
 
 ### 3.3. Architecture of a JTAG Attack (ASCII Diagram)
 
-```text
-  [ Attacker Workstation ]
-         |
-    (USB / OpenOCD)
-         |
- +-----------------------+
- | Hardware Debugger     |
- | (e.g., J-Link, FT2232)|
- +-----------------------+
-         | (TCK, TMS, TDI, TDO)
-         v
- +-----------------------------------------------+
- | IoT Device PCB                                |
- |                                               |
- |  +-------------+       +-------------------+  |
- |  | CPU / SoC   |<------| JTAG TAP / DAP    |  |
- |  | (ARM Cortex)|       | (Debug Access)    |  |
- |  +-------------+       +-------------------+  |
- |        |                         ^            |
- |        v                         |            |
- |  +-------------+                 |            |
- |  | System Bus  |-----------------+            |
- |  | (AHB/APB)   |                              |
- |  +-------------+                              |
- |        |                                      |
- |        +-----> [ RAM ] (Keys, Stack)          |
- |        |                                      |
- |        +-----> [ SPI Controller ] -> [ FLASH ]|
- +-----------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker Workstation"] -->|USB / OpenOCD| Debugger["Hardware Debugger<br>(e.g., J-Link, FT2232)"]
+    Debugger -->|TCK, TMS, TDI, TDO| JTAG
+
+    subgraph PCB["IoT Device PCB"]
+        direction TB
+        JTAG["JTAG TAP / DAP<br>(Debug Access)"] --> CPU["CPU / SoC<br>(ARM Cortex)"]
+        CPU --> Bus["System Bus<br>(AHB/APB)"]
+        Bus --> JTAG
+        Bus --> RAM["[ RAM ]<br>(Keys, Stack)"]
+        Bus --> SPI["[ SPI Controller ]"]
+        SPI --> Flash["[ FLASH ]"]
+    end
 ```
 
 ### 3.4. Interfacing with JTAG via OpenOCD

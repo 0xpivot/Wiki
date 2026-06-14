@@ -26,37 +26,20 @@ Before attempting enumeration, a VAPT professional must understand the GCP hiera
 ## 3. Enumeration Architecture Diagram
 The following ASCII diagram maps the GCP hierarchy and illustrates the primary targets during the enumeration phase.
 
-```text
-+-------------------------------------------------------------+
-|                GCP ENUMERATION TARGET STRUCTURE             |
-+-------------------------------------------------------------+
-                            |
-                   [ORGANIZATION ROOT]
-              (e.g., example-corp.com)
-            (Enumerate Org Policies & Roles)
-                            |
-          +-----------------+-----------------+
-          |                                   |
-      [FOLDER: Prod]                      [FOLDER: Dev]
-          |                                   |
-          v                                   v
-+-------------------+               +-------------------+
-| PROJECT: prod-db  |               | PROJECT: dev-test |
-| (Default Target)  |               |                   |
-+-------------------+               +-------------------+
-  | - Compute Engine                  | - Compute Engine
-  | - Cloud Storage                   | - Cloud Storage
-  | - Service Accounts                | - Service Accounts
-  | - Secret Manager                  | - BigQuery
-  +-----------------------------------+-----------------+
-                            |
-                   [IDENTITY ENUMERATION]
-         +---------------------------------------+
-         |                                       |
-  [Service Accounts]                       [Human Users]
-  (Key enumeration,                        (Cloud Identity,
-   Impersonation checks)                    Workspace Sync)
-
+```mermaid
+graph TD
+    subgraph GCP ENUMERATION TARGET STRUCTURE
+        A[ORGANIZATION ROOT <br/> e.g., example-corp.com <br/> Enumerate Org Policies & Roles] --> B[FOLDER: Prod]
+        A --> C[FOLDER: Dev]
+        B --> D[PROJECT: prod-db <br/> Default Target]
+        C --> E[PROJECT: dev-test]
+        D --> F[- Compute Engine <br/> - Cloud Storage <br/> - Service Accounts <br/> - Secret Manager]
+        E --> G[- Compute Engine <br/> - Cloud Storage <br/> - Service Accounts <br/> - BigQuery]
+        F --> H[IDENTITY ENUMERATION]
+        G --> H
+        H --> I[Service Accounts <br/> Key enumeration, Impersonation checks]
+        H --> J[Human Users <br/> Cloud Identity, Workspace Sync]
+    end
 ```
 
 ## 4. Initial Access and Context Identification

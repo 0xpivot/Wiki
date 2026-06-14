@@ -22,33 +22,30 @@ From an offensive perspective, LSASS is the ultimate treasure trove. To facilita
 
 ## 2. Visual Architecture: The Dumping Workflow
 
-```ascii
-+-----------------------------------------------------------------------------------+
-|                            VICTIM WINDOWS MACHINE                                 |
-|                                                                                   |
-|  +--------------------+        1. Open Handle         +------------------------+  |
-|  |     ATTACKER       | ----------------------------> |       LSASS.EXE        |  |
-|  |   (Local Admin +   |                               |      (PID: 648)        |  |
-|  |  SeDebugPrivilege) | <---------------------------- |  [ Credential Data ]   |  |
-|  +---------+----------+        2. Read Memory         +------------------------+  |
-|            |                                                                      |
-|            | 3. Write Dump                                                        |
-|            V                                                                      |
-|  +--------------------+                                                           |
-|  |    lsass.dmp       | --- 4. Exfiltrate via SMB/HTTPS ------------------+       |
-|  |  (Offline File)    |                                                   |       |
-|  +--------------------+                                                   |       |
-+---------------------------------------------------------------------------|-------+
-                                                                            |
-                                                                            V
-+-----------------------------------------------------------------------------------+
-|                            ATTACKER INFRASTRUCTURE                                |
-|                                                                                   |
-|  +--------------------+        +--------------------+                             |
-|  |   lsass.dmp        | -----> | Mimikatz/Pypykatz  | ---> [ Administrator Hash ] |
-|  |                    |        |  (Offline Parse)   | ---> [ Kerberos Tickets ]   |
-|  +--------------------+        +--------------------+                             |
-+-----------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Victim["VICTIM WINDOWS MACHINE"]
+        Attacker["ATTACKER<br>(Local Admin + SeDebugPrivilege)"]
+        LSASS["LSASS.EXE<br>(PID: 648)<br>[ Credential Data ]"]
+        DumpFile["lsass.dmp<br>(Offline File)"]
+        
+        Attacker -- "1. Open Handle" --> LSASS
+        LSASS -- "2. Read Memory" --> Attacker
+        Attacker -- "3. Write Dump" --> DumpFile
+    end
+    
+    subgraph Infrastructure["ATTACKER INFRASTRUCTURE"]
+        InfraDump["lsass.dmp"]
+        Parser["Mimikatz/Pypykatz<br>(Offline Parse)"]
+        OutputHashes["[ Administrator Hash ]"]
+        OutputTickets["[ Kerberos Tickets ]"]
+        
+        InfraDump --> Parser
+        Parser --> OutputHashes
+        Parser --> OutputTickets
+    end
+    
+    DumpFile -- "4. Exfiltrate via SMB/HTTPS" --> InfraDump
 ```
 
 ---

@@ -51,27 +51,21 @@ Accurate documentation is critical during the retest.
 
 ## ASCII Diagram: Retesting Workflow
 
-```text
-+-------------------+       +-------------------+       +-------------------+
-| Initial VAPT      |       | Client            |       | Remediation       |
-| Report Delivered  +------>+ Implementation    +------>+ Notification      |
-|                   |       | Phase             |       | Sent to Testers   |
-+-------------------+       +-------------------+       +---------+---------+
-                                                                  |
-                                                                  v
-+-------------------+       +-------------------+       +---------+---------+
-| Retesting Report  |       | Execute Retest    |       | Prepare for       |
-| Generated &       +<------+ (Replicate,       +<------+ Retest (Review    |
-| Delivered         |       | Bypass, Verify)   |       | Evidence)         |
-+-------------------+       +---------+---------+       +-------------------+
-                                      |
-                                      v
-                            +---------+---------+
-                            | Update Status:    |
-                            | - Fixed           |
-                            | - Partially Fixed |
-                            | - Not Fixed       |
-                            +-------------------+
+```mermaid
+flowchart TD
+    A["Initial VAPT<br>Report Delivered"]
+    B["Client<br>Implementation<br>Phase"]
+    C["Remediation<br>Notification<br>Sent to Testers"]
+    D["Prepare for<br>Retest (Review<br>Evidence)"]
+    E["Execute Retest<br>(Replicate,<br>Bypass, Verify)"]
+    F["Retesting Report<br>Generated &<br>Delivered"]
+    G["Update Status:<br>- Fixed<br>- Partially Fixed<br>- Not Fixed"]
+
+    A --> B --> C
+    C --> D
+    D --> E
+    E --> F
+    E --> G
 ```
 
 ## Defining Retest Statuses

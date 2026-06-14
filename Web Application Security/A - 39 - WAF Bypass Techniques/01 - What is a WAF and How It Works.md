@@ -76,54 +76,28 @@ When an HTTP request arrives, the WAF does not simply run a regex against the ra
 
 ## 5. ASCII Diagram: WAF Architecture and Request Flow
 
-```text
-       [ External Attacker ]
-                 |
-                 | (1) Malicious Request: GET /?id=1%u0027+OR+1=1
-                 v
-+---------------------------------------------------+
-|               Cloud / Network Edge                |
-+---------------------------------------------------+
-                 |
-                 v
-+===================================================+
-|            WEB APPLICATION FIREWALL (WAF)         |
-|                                                   |
-|  +---------------------------------------------+  |
-|  | 1. Parsing & Decoding Engine                |  | <-- Decodes URL, Base64
-|  +---------------------------------------------+  |
-|                        |                          |
-|  +---------------------------------------------+  |
-|  | 2. Normalization Engine                     |  | <-- Lowers case, removes ../
-|  +---------------------------------------------+  |
-|                        |                          |
-|  +---------------------------------------------+  |
-|  | 3. Inspection Rules Engine                  |  |
-|  |    - Negative Security (Regex Signatures)   |  | <-- Checks against signatures
-|  |    - Positive Security (Schema Validation)  |  |
-|  +---------------------------------------------+  |
-|                        |                          |
-|  +---------------------------------------------+  |
-|  | 4. Anomaly Scoring System                   |  | <-- Accumulates threat score
-|  +---------------------------------------------+  |
-|                        |                          |
-|  +---------------------------------------------+  |
-|  | 5. Decision Engine (Block / Allow / Log)    |  |
-|  +---------------------------------------------+  |
-+===================================================+
-                 |
-                 | (6) If Score < Threshold, Request Allowed
-                 v
-+---------------------------------------------------+
-|               Backend Web Server                  |
-|               (Apache, Nginx, IIS)                |
-+---------------------------------------------------+
-                 |
-                 | (7) Application Logic interprets payload
-                 v
-+---------------------------------------------------+
-|               Database / API Layer                | <-- Vulnerability Executed!
-+---------------------------------------------------+
+```mermaid
+flowchart TD
+    ExtAttacker[External Attacker]
+    CloudEdge[Cloud / Network Edge]
+    subgraph WAF[WEB APPLICATION FIREWALL]
+        PE["1. Parsing & Decoding Engine <br/> Decodes URL, Base64"]
+        NE["2. Normalization Engine <br/> Lowers case, removes ../"]
+        IRE["3. Inspection Rules Engine <br/> - Negative Security (Regex Signatures) <br/> - Positive Security (Schema Validation)"]
+        AS["4. Anomaly Scoring System <br/> Accumulates threat score"]
+        DE["5. Decision Engine (Block / Allow / Log)"]
+        PE --> NE
+        NE --> IRE
+        IRE --> AS
+        AS --> DE
+    end
+    Backend["Backend Web Server <br/> (Apache, Nginx, IIS)"]
+    DB["Database / API Layer"]
+
+    ExtAttacker -- "1. Malicious Request: GET /?id=1%u0027+OR+1=1" --> CloudEdge
+    CloudEdge --> PE
+    DE -- "6. If Score < Threshold, Request Allowed" --> Backend
+    Backend -- "7. Application Logic interprets payload" --> DB
 ```
 
 ## 6. Core Rule Sets and Paranoia Levels

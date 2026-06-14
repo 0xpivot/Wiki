@@ -30,24 +30,18 @@ To understand the padding oracle attack, one must intimately understand the math
 
 ### ASCII Diagram: CBC Decryption Process
 
-```text
-    [Ciphertext Block 1 (C1)]         [Ciphertext Block 2 (C2)]
-               |                                 |
-               v                                 v
-         +-----------+                     +-----------+
-         | Block     |                     | Block     |
- Key --->| Cipher    |             Key --->| Cipher    |
-         | Decrypt   |                     | Decrypt   |
-         +-----------+                     +-----------+
-               |                                 |
-               | (Intermediate State, I1)        | (Intermediate State, I2)
-               v                                 v
-  IV ------> (XOR)                     +-----> (XOR)
-               |                       |         |
-               v                       |         v
-       [Plaintext Block 1]             |  [Plaintext Block 2]
-                                       |
-    (C1 is used to XOR against I2) ----+
+```mermaid
+flowchart TD
+    C1["[Ciphertext Block 1 (C1)]"] --> Dec1[Block Cipher Decrypt]
+    C2["[Ciphertext Block 2 (C2)]"] --> Dec2[Block Cipher Decrypt]
+    Key[Key] --> Dec1
+    Key --> Dec2
+    Dec1 -->|Intermediate State, I1| XOR1((XOR))
+    Dec2 -->|Intermediate State, I2| XOR2((XOR))
+    IV[IV] --> XOR1
+    XOR1 --> P1["[Plaintext Block 1]"]
+    XOR2 --> P2["[Plaintext Block 2]"]
+    C1 -->|C1 is used to XOR against I2| XOR2
 ```
 
 ### The Mathematical Relationship

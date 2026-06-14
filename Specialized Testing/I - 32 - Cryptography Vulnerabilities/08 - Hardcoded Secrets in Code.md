@@ -43,50 +43,26 @@ The advent of Single Page Applications (SPAs) built with frameworks like React, 
 
 ## ASCII Diagram: The Secret Exposure and Exploitation Pipeline
 
-```text
-======================================================================================
-|                       THE LIFECYCLE OF A HARDCODED SECRET                          |
-======================================================================================
+```mermaid
+flowchart TD
+    subgraph Lifecycle[THE LIFECYCLE OF A HARDCODED SECRET]
+        direction TB
+        Dev["[ Developer's Workstation ]"] -->|Writes Code with Secret| LocalGit["[ Local Git Repository ]\nSecret embedded in commit history"]
+    end
 
-[ Developer's Workstation ]
-          |
-          | Writes Code: `const AWS_SECRET_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";`
-          v
-[ Local Git Repository ] (Secret embedded in commit history)
-          |
-          | `git push origin main`
-          v
-======================================================================================
-|                             EXPOSURE VECTORS                                       |
-======================================================================================
-          |
-          +---------------------------------------------+
-          |                                             |
-          v                                             v
-[ Remote Git Server (GitHub/GitLab) ]        [ CI/CD Build Server (Jenkins) ]
-          |                                             |
-          | (Accidental Public Repo OR                  | (Secret baked into Docker Image
-          |  Compromised Developer Account OR           |  or leaked in build logs)
-          |  Malicious Insider)                         |
-          |                                             |
-          +---------------------------------------------+
-          |
-          v
-======================================================================================
-|                               ATTACKER ACTIONS                                     |
-======================================================================================
-[ Threat Actor / Automated Scraper ]
-          |
-          | 1. Discovers and extracts AWS Key.
-          | 2. Configures local AWS CLI with stolen credentials.
-          v
-[ Target Infrastructure (AWS Cloud) ]
-          |
-          | `aws s3 ls` (Enumerates buckets)
-          | `aws s3 cp s3://customer-db-backups/prod.sql .` (Steals PII)
-          | `aws ec2 run-instances` (Spins up 100 GPU instances for Crypto Mining)
-          v
-   CATASTROPHIC FINANCIAL AND REPUTATIONAL DAMAGE
+    subgraph Vectors[EXPOSURE VECTORS]
+        direction TB
+        LocalGit -->|git push origin main| RemoteGit["[ Remote Git Server ]\nGitHub/GitLab"]
+        LocalGit --> CICD["[ CI/CD Build Server ]\nJenkins"]
+    end
+
+    subgraph Actions[ATTACKER ACTIONS]
+        direction TB
+        RemoteGit -->|Accidental Public Repo OR\nCompromised Dev OR\nMalicious Insider| Actor["[ Threat Actor / Automated Scraper ]"]
+        CICD -->|Secret baked into Docker Image\nor leaked in build logs| Actor
+        Actor -->|1. Discovers and extracts AWS Key\n2. Configures local AWS CLI| Target["[ Target Infrastructure - AWS Cloud ]"]
+        Target -->|aws s3 ls\naws ec2 run-instances| Damage["CATASTROPHIC FINANCIAL AND REPUTATIONAL DAMAGE"]
+    end
 ```
 
 ## Impact and Real-World Exploitation Scenarios

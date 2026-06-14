@@ -23,32 +23,48 @@ SAMM is highly flexible and can be customized to any organizational context, whe
 ## 2. SAMM Architectural Diagram
 The following ASCII diagram illustrates the core components and structure of the SAMM framework, highlighting its tiered, hierarchical layout.
 
-```text
-+---------------------------------------------------------------------------------------+
-|                       OWASP SAMM (Software Assurance Maturity Model)                  |
-|                                                                                       |
-| +-------------+  +-------------+  +-------------+  +-------------+  +---------------+ |
-| | GOVERNANCE  |  |   DESIGN    |  |IMPLEMENTATION| | VERIFICATION | |  OPERATIONS   | |
-| +------+------+  +------+------+  +------+------+  +------+------+  +-------+-------+ |
-|        |                |                |                |                 |         |
-|   +----+----+      +----+----+      +----+----+      +----+----+       +----+----+    |
-|   |Strategy &      |Threat    |      |Secure   |      |Arch      |       |Incident  |    |
-|   |Metrics  |      |Modeling  |      |Build    |      |Assess    |       |Management|    |
-|   +---------+      +---------+      +---------+      +---------+       +---------+    |
-|                                                                                       |
-|   +---------+      +---------+      +---------+      +---------+       +---------+    |
-|   |Policy & |      |Security  |      |Secure   |      |Require-  |       |Environment|   |
-|   |Compliance      |Require.  |      |Deploy   |      |ment Test |       |Management|    |
-|   +---------+      +---------+      +---------+      +---------+       +---------+    |
-|                                                                                       |
-|   +---------+      +---------+      +---------+      +---------+       +---------+    |
-|   |Education&      |Security  |      |Defect   |      |Security  |       |Operation-|    |
-|   |Guidance |      |Arch.     |      |Manage   |      |Testing   |       |al Mgmt   |    |
-|   +---------+      +---------+      +---------+      +---------+       +---------+    |
-|                                                                                       |
-+---------------------------------------------------------------------------------------+
-|   Maturity Levels: [ Level 1 (Ad-Hoc) ] -> [ Level 2 (Structured) ] -> [ Level 3 (Optimized) ]  |
-+---------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph SAMM ["OWASP SAMM (Software Assurance Maturity Model)"]
+        subgraph G ["GOVERNANCE"]
+            direction TB
+            G1["Strategy & Metrics"]
+            G2["Policy & Compliance"]
+            G3["Education & Guidance"]
+            G1 --> G2 --> G3
+        end
+        subgraph D ["DESIGN"]
+            direction TB
+            D1["Threat Modeling"]
+            D2["Security Require."]
+            D3["Security Arch."]
+            D1 --> D2 --> D3
+        end
+        subgraph I ["IMPLEMENTATION"]
+            direction TB
+            I1["Secure Build"]
+            I2["Secure Deploy"]
+            I3["Defect Manage"]
+            I1 --> I2 --> I3
+        end
+        subgraph V ["VERIFICATION"]
+            direction TB
+            V1["Arch Assess"]
+            V2["Requirement Test"]
+            V3["Security Testing"]
+            V1 --> V2 --> V3
+        end
+        subgraph O ["OPERATIONS"]
+            direction TB
+            O1["Incident Management"]
+            O2["Environment Management"]
+            O3["Operational Mgmt"]
+            O1 --> O2 --> O3
+        end
+    end
+
+    ML["Maturity Levels: [ Level 1 (Ad-Hoc) ] -> [ Level 2 (Structured) ] -> [ Level 3 (Optimized) ]"]
+    SAMM --- ML
 ```
 
 ---

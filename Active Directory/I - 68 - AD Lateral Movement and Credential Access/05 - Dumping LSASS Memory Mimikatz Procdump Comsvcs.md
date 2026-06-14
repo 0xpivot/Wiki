@@ -22,44 +22,24 @@ For an attacker who has achieved Local Administrator or `SYSTEM` privileges, dum
 
 ## Architectural ASCII Diagram: LSASS Credential Harvesting
 
-```text
-+-------------------------------------------------------------------------------------------------+
-|                                                                                                 |
-|   +-------------------+                                                                         |
-|   | Domain Admin User | ---- Logs into target Server via RDP/SMB ---->                          |
-|   +-------------------+                                            |                            |
-|                                                                    |                            |
-|                                                                    v                            |
-|   +-----------------------------------------------------------------------------------------+   |
-|   |                          Target Server (Compromised by Attacker)                        |   |
-|   |                                                                                         |   |
-|   |  +-----------------------------------------------------------------------------------+  |   |
-|   |  |                                lsass.exe (PID: 648)                               |  |   |
-|   |  |  [ WDigest: None ]  [ Kerberos: TGTs/Keys ]  [ MSV: NTLM Hashes ]  [ DPAPI Keys ] |  |   |
-|   |  +-----------------------------------------------------------------------------------+  |   |
-|   |            ^                              ^                              ^              |   |
-|   |            |                              |                              |              |   |
-|   |  +---------+---------+          +---------+---------+          +---------+---------+    |   |
-|   |  |    Method 1:      |          |    Method 2:      |          |    Method 3:      |    |   |
-|   |  |    Mimikatz       |          |    Procdump       |          |    Comsvcs.dll    |    |   |
-|   |  | (sekurlsa module) |          |  (Sysinternals)   |          |  (Native LoLBin)  |    |   |
-|   |  +---------+---------+          +---------+---------+          +---------+---------+    |   |
-|   |            |                              |                              |              |   |
-|   |            | Reads memory directly        | Writes memory to file        | Writes memory|   |
-|   |            v                              v                              v              |   |
-|   |  +-------------------+          +-------------------+          +-------------------+    |   |
-|   |  | Outputs Hashes/   |          |     lsass.dmp     |          |     lsass.dmp     |    |   |
-|   |  | Passwords to CLI  |          |  (Dump File on    |          |  (Dump File on    |    |   |
-|   |  |                   |          |   Disk)           |          |   Disk)           |    |   |
-|   |  +-------------------+          +-------------------+          +-------------------+    |   |
-|   +-----------------------------------------------------------------------------------------+   |
-|                                                                                                 |
-|   +-----------------------------------------------------------------------------------------+   |
-|   |  Attacker exfiltrates lsass.dmp and parses it offline (e.g., via pypykatz) to avoid     |   |
-|   |  dropping malicious binaries like Mimikatz on the target server.                        |   |
-|   +-----------------------------------------------------------------------------------------+   |
-|                                                                                                 |
-+-------------------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    A["Domain Admin User"]
+    B["Target Server (Compromised by Attacker)<br>lsass.exe (PID: 648)<br>[ WDigest: None ] [ Kerberos: TGTs/Keys ] [ MSV: NTLM Hashes ] [ DPAPI Keys ]"]
+    C["Method 1: Mimikatz (sekurlsa module)"]
+    D["Method 2: Procdump (Sysinternals)"]
+    E["Method 3: Comsvcs.dll (Native LoLBin)"]
+    F["Outputs Hashes/Passwords to CLI"]
+    G["lsass.dmp (Dump File on Disk)"]
+
+    A -->|"Logs into target Server via RDP/SMB"| B
+    B -->|"Reads memory directly"| C
+    B -->|"Writes memory to file"| D
+    B -->|"Writes memory"| E
+    C --> F
+    D --> G
+    E --> G
+    G -->|"Attacker exfiltrates lsass.dmp and parses it offline"| H["Offline Parsing (e.g., via pypykatz)"]
 ```
 
 ---

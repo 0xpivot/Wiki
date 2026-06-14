@@ -21,48 +21,26 @@ The **OWASP Core Rule Set (CRS)** is a set of generic attack detection rules des
 
 ## 2. ModSecurity CRS Architecture and Flow
 
-The WAF engine processes requests in distinct phases. The ASCII diagram below illustrates the life cycle of an HTTP transaction through ModSecurity phases.
+The WAF engine processes requests in distinct phases. The diagram below illustrates the life cycle of an HTTP transaction through ModSecurity phases.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        HTTP Transaction Lifecycle in ModSecurity                  |
-|                                                                                   |
-|  [ Client Request ]                                                               |
-|          |                                                                        |
-|          v                                                                        |
-|  +--------------------+                                                           |
-|  | PHASE 1            | --> Parses URI, Query Strings, HTTP Headers.              |
-|  | (Request Headers)  |     (Checks for malicious User-Agents, Protocol issues)   |
-|  +--------------------+                                                           |
-|          |                                                                        |
-|          v                                                                        |
-|  +--------------------+                                                           |
-|  | PHASE 2            | --> Parses Request Body (POST/PUT data, JSON, XML).       |
-|  | (Request Body)     |     (Checks for SQLi, XSS, RCE payloads in payload)       |
-|  +--------------------+                                                           |
-|          |                                                                        |
-|          | (If not blocked, passed to Backend Application)                        |
-|          v                                                                        |
-|  [ Backend Application ]                                                          |
-|          |                                                                        |
-|          v                                                                        |
-|  +--------------------+                                                           |
-|  | PHASE 3            | --> Parses HTTP Response Headers from backend.            |
-|  | (Response Headers) |     (Checks for missing secure headers, status codes)     |
-|  +--------------------+                                                           |
-|          |                                                                        |
-|          v                                                                        |
-|  +--------------------+                                                           |
-|  | PHASE 4            | --> Parses Response Body (HTML, API responses).           |
-|  | (Response Body)    |     (Checks for Data Leakage, Stack Traces, SSNs)         |
-|  +--------------------+                                                           |
-|          |                                                                        |
-|          v                                                                        |
-|  [ Phase 5: Logging ] ----> Request logged to audit logs regardless of action.    |
-|          |                                                                        |
-|          v                                                                        |
-|   [ Client Response ]                                                             |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    CLIENT["Client Request"]
+
+    P1["PHASE 1 (Request Headers)<br>Parses URI, Query Strings, HTTP Headers.<br>(Checks for malicious User-Agents, Protocol issues)"]
+    P2["PHASE 2 (Request Body)<br>Parses Request Body (POST/PUT data, JSON, XML).<br>(Checks for SQLi, XSS, RCE payloads in payload)"]
+
+    BACKEND["Backend Application"]
+
+    P3["PHASE 3 (Response Headers)<br>Parses HTTP Response Headers from backend.<br>(Checks for missing secure headers, status codes)"]
+    P4["PHASE 4 (Response Body)<br>Parses Response Body (HTML, API responses).<br>(Checks for Data Leakage, Stack Traces, SSNs)"]
+    
+    P5["PHASE 5 (Logging)<br>Request logged to audit logs regardless of action."]
+
+    CLIENT --> P1 --> P2
+    P2 -- "(If not blocked, passed to Backend Application)" --> BACKEND
+    BACKEND --> P3 --> P4 --> P5
+    P5 --> RESPONSE["Client Response"]
 ```
 
 ---

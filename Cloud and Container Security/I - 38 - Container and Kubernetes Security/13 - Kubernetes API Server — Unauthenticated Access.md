@@ -34,29 +34,12 @@ However, vulnerabilities arise when:
 
 ## Visualizing the Attack Flow
 
-```ascii
-      [ External Attacker ]
-               |
-               | (1) Discovery: Port 6443 / 8080 open
-               v
-      +--------------------+
-      |  Corporate         | 
-      |  Firewall / Cloud  | (Misconfigured SG/Firewall)
-      |  Load Balancer     |
-      +--------+-----------+
-               |
-               | (2) Unauthenticated REST API call
-               v
-      +--------------------+
-      |  kube-apiserver    | <--- Flag: --anonymous-auth=true
-      |  (Port 6443/8080)  | <--- RBAC: system:unauthenticated -> cluster-admin
-      +--------+-----------+
-               |
-               | (3) Request accepted, authorized
-               v
-      +--------------------+
-      |  etcd Datastore    | ---> Attacker dumps secrets, creates pods,
-      +--------------------+      gains code execution on nodes.
+```mermaid
+graph TD
+    A[External Attacker] -- 1 Discovery: Port 6443 / 8080 open --> B[Corporate <br/> Firewall / Cloud <br/> Load Balancer <br/> Misconfigured SG/Firewall]
+    B -- 2 Unauthenticated REST API call --> C[kube-apiserver <br/> Port 6443/8080 <br/> <--- Flag: --anonymous-auth=true <br/> <--- RBAC: system:unauthenticated -> cluster-admin]
+    C -- 3 Request accepted, authorized --> D[etcd Datastore]
+    D --> E[Attacker dumps secrets, creates pods, <br/> gains code execution on nodes.]
 ```
 
 ## Discovery and Reconnaissance

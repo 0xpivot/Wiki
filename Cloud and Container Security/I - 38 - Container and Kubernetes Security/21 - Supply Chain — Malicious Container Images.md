@@ -14,24 +14,12 @@ A compromise at any point in this chain allows an attacker to inject malicious c
 
 ## Core Concepts & Attack Architecture
 
-```text
-+-------------------+        +--------------------+        +---------------------+
-|   Public Registry |        |   CI/CD Pipeline   |        | Internal Enterprise |
-|   (Docker Hub)    |        |  (GitHub Actions)  |        |      Registry       |
-|                   |        |                    |        |                     |
-|  [ubuntu:latest]  | =====> |  Dockerfile:       | =====> | [myapp:v1.0-mal]    |
-|  [node:alpine]    |        |  FROM node:alpine  |        |                     |
-|  (Typosquatting/  |        |  RUN npm install   |        |                     |
-|   Poisoning)      |        |                    |        |                     |
-+-------------------+        +---------+----------+        +----------+----------+
-                                       ^                              |
-                                       |                              v
-                             +---------+----------+        +----------+----------+
-                             | Attacker commits   |        | Kubernetes Cluster  |
-                             | malicious code /   |        |                     |
-                             | alters CI script   |        | Kubelet pulls image |
-                             +--------------------+        | and executes malware|
-                                                           +---------------------+
+```mermaid
+graph TD
+    A[Public Registry <br/> Docker Hub <br/> ubuntu:latest <br/> node:alpine <br/> Typosquatting/Poisoning] ==> B[CI/CD Pipeline <br/> GitHub Actions <br/> Dockerfile: <br/> FROM node:alpine <br/> RUN npm install]
+    C[Attacker commits <br/> malicious code / <br/> alters CI script] --> B
+    B ==> D[Internal Enterprise <br/> Registry <br/> myapp:v1.0-mal]
+    D --> E[Kubernetes Cluster <br/> Kubelet pulls image <br/> and executes malware]
 ```
 
 ## Vectors for Container Supply Chain Attacks

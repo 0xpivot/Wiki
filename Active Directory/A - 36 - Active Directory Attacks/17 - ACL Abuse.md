@@ -17,24 +17,16 @@ In complex, long-standing AD environments, permissions are frequently modified b
 
 ## 2. ASCII Diagram of Attack Flow
 
-```text
-    [ Standard User (Compromised) ]                               [ Domain Admin Group ]
-              |                                                            |
-              | 1. Enumerate AD using BloodHound                           |
-              |----------------------------------------------------------> |
-              |                                                            |
-              | 2. Identify Misconfigured DACL                             |
-              |    (e.g., 'IT_Helpdesk' group has 'GenericAll' over DA)    |
-              |                                                            |
-              | 3. Exploit: User belongs to 'IT_Helpdesk'                  |
-              |    Execute PowerView to add Attacker to DA group           |
-              |----------------------------------------------------------> |
-              |                                                            |
-              | 4. AD processes request                                    |
-              |    (Checks DACL: IT_Helpdesk has GenericAll -> Allowed)    |
-              |                                                            |
-              | 5. Attacker becomes Domain Admin                           |
-              |<---------------------------------------------------------- |
+```mermaid
+sequenceDiagram
+    participant User as Standard User (Compromised)
+    participant DA as Domain Admin Group
+    
+    User->>DA: 1. Enumerate AD using BloodHound
+    Note over User: 2. Identify Misconfigured DACL<br>(e.g., 'IT_Helpdesk' group has 'GenericAll' over DA)
+    User->>DA: 3. Exploit: User belongs to 'IT_Helpdesk'<br>Execute PowerView to add Attacker to DA group
+    Note over DA: 4. AD processes request<br>(Checks DACL: IT_Helpdesk has GenericAll -> Allowed)
+    DA-->>User: 5. Attacker becomes Domain Admin
 ```
 
 ## 3. Attack Mechanics & Dangerous Rights

@@ -24,34 +24,18 @@ When developers fail to generate, manage, or transmit these values correctly, th
 
 ### ASCII Diagram: CBC Encryption with IV
 
-```text
-       IV (Initialization Vector)
-               |
-               v
-  [Plaintext Block 1] ---> (XOR)
-                             |
-                             v
-                       +-----------+
-                       | Block     |
-               Key --->| Cipher    |
-                       | Encrypt   |
-                       +-----------+
-                             |
-                             |---------------------+
-                             v                     |
-                   [Ciphertext Block 1]            |
-                                                   v
-  [Plaintext Block 2] -------------------------> (XOR)
-                                                   |
-                                                   v
-                                             +-----------+
-                                             | Block     |
-                                     Key --->| Cipher    |
-                                             | Encrypt   |
-                                             +-----------+
-                                                   |
-                                                   v
-                                         [Ciphertext Block 2]
+```mermaid
+flowchart TD
+    IV[IV Initialization Vector] --> XOR1((XOR))
+    P1["[Plaintext Block 1]"] --> XOR1
+    XOR1 --> Enc1[Block Cipher Encrypt]
+    Key[Key] --> Enc1
+    Key --> Enc2[Block Cipher Encrypt]
+    Enc1 --> C1["[Ciphertext Block 1]"]
+    Enc1 --> XOR2((XOR))
+    P2["[Plaintext Block 2]"] --> XOR2
+    XOR2 --> Enc2
+    Enc2 --> C2["[Ciphertext Block 2]"]
 ```
 
 As the diagram illustrates, the IV is XORed with the very first block of plaintext before it enters the block cipher. If the IV is static, predictable, or heavily biased, the security of the first block is severely compromised.

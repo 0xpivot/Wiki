@@ -108,44 +108,15 @@ The payload looked like:
 
 ## Custom ASCII Diagram: SSRF to Cloud Metadata Exfiltration
 
-```text
-=============================================================================
-                  SSRF CLOUD EXFILTRATION ARCHITECTURE
-=============================================================================
-
- [1. The Malicious Request]
- +-------------------------+
- | Attacker payload:       |
- | ?fetch_url=             |
- | http://169.254.169.254/ |
- | latest/meta-data/...    |
- +-------------------------+
-             |
-             v
- [2. The Vulnerable Server (AWS EC2 Instance)]
- +---------------------------------------------------------+
- | App parses URL and executes HTTP Client (e.g. cURL).    |
- | Flaw: No validation against internal link-local IPs.    |
- +---------------------------------------------------------+
-             |
-             | (Internal Server-Side Request via eth0)
-             v
- [3. AWS Instance Metadata Service (IMDS)]
- +---------------------------------------------------------+
- | Address: 169.254.169.254 (Non-Routable over Internet)   |
- | Receives legitimate request from the EC2 instance.      |
- | Returns sensitive IAM role credentials.                 |
- +---------------------------------------------------------+
-             |
-             | (Internal Response Body)
-             v
- [4. Exfiltration]
- +---------------------------------------------------------+
- | Vulnerable App takes the response body and displays it  |
- | directly to the Attacker via the HTTP response.         |
- |                                                         |
- | { "AccessKeyId": "ASIAXXXX...", "SecretAccessKey": ...} |
- +---------------------------------------------------------+
+```mermaid
+graph TD
+    A["1. The Malicious Request<br/>Attacker payload:<br/>?fetch_url=http://169.254.169.254/latest/meta-data/..."] --> B
+    
+    B["2. The Vulnerable Server (AWS EC2 Instance)<br/>App parses URL and executes HTTP Client (e.g. cURL).<br/>Flaw: No validation against internal link-local IPs."] -->|Internal Server-Side Request via eth0| C
+    
+    C["3. AWS Instance Metadata Service (IMDS)<br/>Address: 169.254.169.254 (Non-Routable over Internet)<br/>Receives legitimate request from the EC2 instance.<br/>Returns sensitive IAM role credentials."] -->|Internal Response Body| D
+    
+    D["4. Exfiltration<br/>Vulnerable App takes the response body and displays it<br/>directly to the Attacker via the HTTP response.<br/>{ 'AccessKeyId': 'ASIAXXXX...', 'SecretAccessKey': ...}"]
 ```
 
 ---

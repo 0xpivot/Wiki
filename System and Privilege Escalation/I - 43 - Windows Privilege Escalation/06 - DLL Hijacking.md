@@ -24,26 +24,32 @@ The most common and safest form of DLL Hijacking is "Phantom DLL Hijacking" (or 
 
 If an attacker has write permissions to *any* directory in that search order, they can drop their malicious DLL there. The application will find it, load it, and execute it. Because the original DLL never existed, proxying the original functions is unnecessary, and the application usually does not crash.
 
-```text
-+--------------------------------------------------------------------------+
-|                        PHANTOM DLL HIJACKING FLOW                        |
-+--------------------------------------------------------------------------+
-|
-|  [ SYSTEM Process: C:\App\updater.exe ]
-|
-|  1. App calls LoadLibrary("missing_lib.dll")
-|
-|  2. Windows Search Sequence Initiated:
-|     -> Checks C:\App\missing_lib.dll (NOT FOUND)
-|     -> Checks C:\Windows\System32\missing_lib.dll (NOT FOUND)
-|     -> Checks C:\Windows\missing_lib.dll (NOT FOUND)
-|     -> Checks C:\Custom_Path\ (Writen by Attacker: FOUND!)
-|
-|  3. Attacker's missing_lib.dll is loaded into updater.exe memory.
-|
-|  4. DllMain executes malicious code as SYSTEM.
-|
-+--------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Flow[PHANTOM DLL HIJACKING FLOW]
+        SP["[ SYSTEM Process: C:\\App\\updater.exe ]"]
+        CALL["1. App calls LoadLibrary('missing_lib.dll')"]
+        
+        SP --> CALL
+        
+        SEQ["2. Windows Search Sequence Initiated:"]
+        C1["Checks C:\\App\\missing_lib.dll (NOT FOUND)"]
+        C2["Checks C:\\Windows\\System32\\missing_lib.dll (NOT FOUND)"]
+        C3["Checks C:\\Windows\\missing_lib.dll (NOT FOUND)"]
+        C4["Checks C:\\Custom_Path\\ (Writen by Attacker: FOUND!)"]
+        
+        CALL --> SEQ
+        SEQ --> C1
+        C1 --> C2
+        C2 --> C3
+        C3 --> C4
+        
+        L3["3. Attacker's missing_lib.dll is loaded into updater.exe memory."]
+        L4["4. DllMain executes malicious code as SYSTEM."]
+        
+        C4 --> L3
+        L3 --> L4
+    end
 ```
 
 ## Enumeration and Identification

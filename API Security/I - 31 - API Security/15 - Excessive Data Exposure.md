@@ -59,41 +59,20 @@ The API is inherently vulnerable; it relies on the client (which is entirely con
 
 ## 3. Attack Architecture & Flow
 
-```text
-      [Client Browser / UI]
-           |
-           | 1. HTTP GET /api/users/123
-           |    (UI only needs Name and Avatar)
-           v
-      [REST API Backend]
-           |
-           | 2. SELECT * FROM users WHERE id = 123;
-           v
-      [Production Database]
-           |
-           | 3. Returns Full Database Record
-           |    (Includes SSN, Hashes, Roles, Internal IDs)
-           v
-      [REST API Backend]
-           |
-           | 4. Serializes entire object to JSON
-           |    HTTP 200 OK
-           |    {"id":123, "name":"John", "ssn":"...", "hash":"..."}
-           v
-  +-------------------------------------------------------+
-  |                   [Attacker Proxy]                    |
-  |                    (Burp Suite)                       |
-  |                                                       |
-  | 5. Intercepts Raw JSON. Extracts SSN, Hash, and Role. |
-  |    (Data Breach Occurs Here)                          |
-  +-------------------------------------------------------+
-           |
-           | 6. Forwards data to Browser
-           v
-      [Client Browser / UI]
-           |
-           | 7. UI silently ignores sensitive fields
-           |    Displays ONLY Name and Avatar
+```mermaid
+flowchart TD
+    Client1["Client Browser / UI"]
+    API1["REST API Backend"]
+    DB["Production Database"]
+    API2["REST API Backend"]
+    Proxy["Attacker Proxy\n(Burp Suite)\nIntercepts Raw JSON. Extracts SSN, Hash, and Role.\n(Data Breach Occurs Here)"]
+    Client2["Client Browser / UI\nUI silently ignores sensitive fields\nDisplays ONLY Name and Avatar"]
+
+    Client1 -- "1. HTTP GET /api/users/123\n(UI only needs Name and Avatar)" --> API1
+    API1 -- "2. SELECT * FROM users WHERE id = 123;" --> DB
+    DB -- "3. Returns Full Database Record\n(Includes SSN, Hashes, Roles, Internal IDs)" --> API2
+    API2 -- "4. Serializes entire object to JSON\nHTTP 200 OK\n{'id':123, 'name':'John', 'ssn':'...', 'hash':'...'}" --> Proxy
+    Proxy -- "6. Forwards data to Browser" --> Client2
 ```
 
 ## 4. Deep Dive: Exploitation Methodologies

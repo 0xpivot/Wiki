@@ -44,34 +44,26 @@ These rigorous standards require documented evidence that security testing was p
 
 The impact of a VAPT report extends long after the engagement is formally closed. It becomes a living document within the organization.
 
-```text
-+---------------------------------------------------------------------------------+
-|                              The Report Lifecycle Diagram                       |
-+---------------------------------------------------------------------------------+
-|                                                                                 |
-|  [ Phase 1: Creation ]                                                          |
-|      +----------------+       Translates Tech to Risk    +-------------------+  |
-|      | Penetration    | -------------------------------> | Executive Board   |  |
-|      | Tester         |                                  | (Risk & Budget)   |  |
-|      +----------------+                                  +-------------------+  |
-|              |                                                     |            |
-|              | Detailed PoCs & Fixes                               | Approves   |
-|              v                                                     v            |
-|  [ Phase 2: Action ]                                                            |
-|      +----------------+                                  +-------------------+  |
-|      | Dev / IT Team  | <------------------------------- | Security / CISO   |  |
-|      | (Remediation)  |   Assigns tasks / Jira Tickets   | (Prioritization)  |  |
-|      +----------------+                                  +-------------------+  |
-|              |                                                                  |
-|              | Deploys Patches to Prod                                          |
-|              v                                                                  |
-|  [ Phase 3: Verification ]                                                      |
-|      +----------------+       Requests Retest            +-------------------+  |
-|      | Production     | -------------------------------> | Penetration     |  |
-|      | Environment    |                                  | Tester (Retest)   |  |
-|      +----------------+                                  +-------------------+  |
-|                                                                                 |
-+---------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Phase 1: Creation
+        PT["Penetration Tester"]
+        EB["Executive Board (Risk & Budget)"]
+        PT -- "Translates Tech to Risk" --> EB
+    end
+    subgraph Phase 2: Action
+        SEC["Security / CISO (Prioritization)"]
+        DEV["Dev / IT Team (Remediation)"]
+    end
+    subgraph Phase 3: Verification
+        PROD["Production Environment"]
+        RETEST["Penetration Tester (Retest)"]
+    end
+    EB -- "Approves" --> SEC
+    PT -- "Detailed PoCs & Fixes" --> DEV
+    SEC -- "Assigns tasks / Jira Tickets" --> DEV
+    DEV -- "Deploys Patches to Prod" --> PROD
+    PROD -- "Requests Retest" --> RETEST
 ```
 
 ## 4. Stakeholder Perspectives on the VAPT Report

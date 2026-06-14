@@ -52,21 +52,14 @@ If a WAF is searching for the string `admin`, it will not find it in any individ
 
 ## ASCII Diagram: Chunked Transfer Encoding Flow
 
-```text
-+-------------+                              +-------------+                             +-----------------+
-|             |                              |             |                             |                 |
-|   Attacker  | ---- Chunked Request ------> |     WAF     | ---- Reassembled / -------> | Backend Server  |
-|             |      (Payload split)         |             |      Chunked Forwarding     |                 |
-+-------------+                              +-------------+                             +-----------------+
-       |                                            |                                             |
-       |  POST / HTTP/1.1                           |  Inspects chunks individually               |  Reassembles chunks
-       |  Transfer-Encoding: chunked                |  Chunk 1: "S" (OK)                          |  "SELECT * FROM users"
-       |                                            |  Chunk 2: "E" (OK)                          |  Executes SQLi
-       |  1                                         |  Chunk 3: "L" (OK)                          |
-       |  S                                         |  ...                                        |
-       |  1                                         |  Fails to match "SELECT"                    |
-       |  E                                         |                                             |
-       |  ...                                       |                                             |
+```mermaid
+flowchart LR
+    Attacker["Attacker <br/> POST / HTTP/1.1 <br/> Transfer-Encoding: chunked <br/> <br/> 1 <br/> S <br/> 1 <br/> E <br/> ..."]
+    WAF["WAF <br/> Inspects chunks individually <br/> Chunk 1: 'S' (OK) <br/> Chunk 2: 'E' (OK) <br/> Chunk 3: 'L' (OK) <br/> ... <br/> Fails to match 'SELECT'"]
+    Backend["Backend Server <br/> Reassembles chunks <br/> 'SELECT * FROM users' <br/> Executes SQLi"]
+
+    Attacker -- "Chunked Request (Payload split)" --> WAF
+    WAF -- "Reassembled / Chunked Forwarding" --> Backend
 ```
 
 ## Mechanics of the Bypass

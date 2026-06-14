@@ -84,37 +84,19 @@ Once the TGT is obtained, the attacker transitions to a "Pass the Ticket" (PtT) 
 
 ## 6. ASCII Workflow Diagram
 
-```text
-========================================================================
-                      PASS THE HASH (PtH) WORKFLOW
-========================================================================
-
- [ Compromised Host A ]                         [ Target Server B ]
-           |                                             |
-  1. Dump LSASS / SAM                                    |
-     (Gets NTLM Hash: 88e4d...)                          |
-           |                                             |
-  2. Mimikatz sekurlsa::pth                              |
-     (Spawns cmd.exe)                                    |
-           |                                             |
-  3. cmd.exe attempts access --------------------------> |
-     (Negotiate NTLM Auth)                               |
-           |                                             |
-           | <------------------------------------------ |
-           | (Server sends 8-byte Challenge)             |
-           |                                             |
-  4. Client encrypts challenge                           |
-     using the dumped NTLM Hash                          |
-           |                                             |
-           | ------------------------------------------> |
-           | (Sends Response)                            |
-           |                                             |
-           |                                 [ Local Auth / DC Auth ]
-           |                                  Validates Response
-           |                                             |
-  5. Access Granted! <---------------------------------- |
-     (Attacker gets remote shell via SMB/WMI/WinRM)
-========================================================================
+```mermaid
+sequenceDiagram
+    participant HostA as Compromised Host A
+    participant ServerB as Target Server B
+    
+    Note over HostA: 1. Dump LSASS / SAM<br>(Gets NTLM Hash: 88e4d...)
+    Note over HostA: 2. Mimikatz sekurlsa::pth<br>(Spawns cmd.exe)
+    HostA->>ServerB: 3. cmd.exe attempts access (Negotiate NTLM Auth)
+    ServerB-->>HostA: (Server sends 8-byte Challenge)
+    Note over HostA: 4. Client encrypts challenge<br>using the dumped NTLM Hash
+    HostA->>ServerB: (Sends Response)
+    Note over ServerB: Local Auth / DC Auth<br>Validates Response
+    ServerB-->>HostA: 5. Access Granted!<br>(Attacker gets remote shell via SMB/WMI/WinRM)
 ```
 
 ## 7. Limitations and Local Account Restrictions

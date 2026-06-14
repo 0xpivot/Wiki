@@ -75,31 +75,19 @@ Borrowed from military special operations, the **F3EAD** cycle is perfectly suit
 
 ## Visualizing the IDIR Lifecycle
 
-```ascii
-========================================================================================
-                 THE INTELLIGENCE DRIVEN INCIDENT RESPONSE OODA LOOP
-========================================================================================
+```mermaid
+flowchart TD
+    subgraph OODA["THE INTELLIGENCE DRIVEN INCIDENT RESPONSE OODA LOOP"]
+        Observe["OBSERVE<br/>- SIEM Alerts<br/>- EDR Telemetry<br/>- Network Traffic"]
+        Orient["ORIENT<br/>- Contextualization<br/>- TTP Mapping<br/>- Scope Definition"]
+        Decide["DECIDE<br/>- Select Playbook<br/>- Plan Eradication<br/>- Risk Assessment"]
+        Act["ACT<br/>- Contain Threat<br/>- Eradicate<br/>- Generate New Intel"]
 
-      +----------------------+                 +----------------------+
-      |     OBSERVE          |   External CTI  |      ORIENT          |
-      |----------------------|<----------------|----------------------|
-      | - SIEM Alerts        |                 | - Contextualization  |
-      | - EDR Telemetry      |                 | - TTP Mapping        |
-      | - Network Traffic    |                 | - Scope Definition   |
-      +----------------------+                 +----------------------+
-                 ^                                        |
-                 |                                        |
-                 |                                        v
-      +----------------------+                 +----------------------+
-      |       ACT            |  Internal CTI   |      DECIDE          |
-      |----------------------|---------------->|----------------------|
-      | - Contain Threat     |  Generated!     | - Select Playbook    |
-      | - Eradicate          |                 | - Plan Eradication   |
-      | - Generate New Intel |                 | - Risk Assessment    |
-      +----------------------+                 +----------------------+
-
-      ** Continuous Feedback Loop: Today's Incident is Tomorrow's Intelligence **
-========================================================================================
+        Observe -->|External CTI| Orient
+        Orient --> Decide
+        Decide --> Act
+        Act -->|Internal CTI Generated| Observe
+    end
 ```
 
 ## Key Roles in an IDIR Team

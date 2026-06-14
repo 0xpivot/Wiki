@@ -29,34 +29,17 @@ The threat actor designed a multi-stage campaign focusing on operational securit
 
 ### Technical ASCII Diagram: The Incident Response Timeline
 
-```text
-================================================================================
-                    INCIDENT RESPONSE KILL CHAIN TIMELINE
-================================================================================
-
-T+00:00 [Initial Access] User clicks HTML smuggling link, downloads ZIP.
-          |
-T+00:05 [Execution]      User extracts and runs 'SignedApp.exe'.
-          |
-T+00:06 [Evasion]        'SignedApp.exe' loads malicious 'legit.dll'.
-          |              -> Loader bypasses hooks via direct syscalls.
-          |              -> Injects Custom Sliver into 'werfault.exe'.
-          |
-T+00:10 [C2 Beacons]     Sliver payload sleeps for 2 hours. 
-          |              -> Memory encrypted (Ekko). 
-          |              -> VAD shows RW (No RWX). [EDR SCANS EVADED]
-          |
-T+02:10 [C2 Active]      Payload wakes, changes to RX, beacons out via DoH.
-          |              -> Traffic blends with standard HTTPS.
-          |
-T+24:00 [DETECTION]  <-- BLUE TEAM THREAT HUNT TRIGGERS
-          |              -> Anomaly: 'werfault.exe' resolving unusually high
-          |                 number of unique subdomains.
-          |              -> Anomaly: ETW-Ti flags suspicious VirtualProtect 
-          |                 calls originating from 'werfault.exe'.
-          |
-T+26:00 [Containment]    Host isolated. Memory dump captured for forensics.
-================================================================================
+```mermaid
+flowchart TD
+    T0["T+00:00 [Initial Access]<br>User clicks HTML smuggling link, downloads ZIP."]
+    T5["T+00:05 [Execution]<br>User extracts and runs 'SignedApp.exe'."]
+    T6["T+00:06 [Evasion]<br>'SignedApp.exe' loads malicious 'legit.dll'.<br>-> Loader bypasses hooks via direct syscalls.<br>-> Injects Custom Sliver into 'werfault.exe'."]
+    T10["T+00:10 [C2 Beacons]<br>Sliver payload sleeps for 2 hours.<br>-> Memory encrypted (Ekko).<br>-> VAD shows RW (No RWX). [EDR SCANS EVADED]"]
+    T2h10["T+02:10 [C2 Active]<br>Payload wakes, changes to RX, beacons out via DoH.<br>-> Traffic blends with standard HTTPS."]
+    T24h["T+24:00 [DETECTION] <-- BLUE TEAM THREAT HUNT TRIGGERS<br>-> Anomaly: 'werfault.exe' resolving unusually high number of unique subdomains.<br>-> Anomaly: ETW-Ti flags suspicious VirtualProtect calls originating from 'werfault.exe'."]
+    T26h["T+26:00 [Containment]<br>Host isolated. Memory dump captured for forensics."]
+    
+    T0 --> T5 --> T6 --> T10 --> T2h10 --> T24h --> T26h
 ```
 
 ## Defensive Engineering: How the Blue Team Won

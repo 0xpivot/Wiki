@@ -29,23 +29,31 @@ Understanding what you are looking for is the first step in discovery.
 
 ## ASCII Diagram: Documentation Discovery to Exploitation Pipeline
 
-```text
-  [Reconnaissance Phase]                                       [Exploitation Phase]
-  
-  +-------------------+       +-----------------------+       +------------------------+
-  | OSINT & Dorking   |       | Exposed Swagger UI    |       | Import to Postman/Burp |
-  | (GitHub, Google)  | ----> | (/api/swagger.json)   | ----> | Auto-generate requests |
-  +-------------------+       +-----------------------+       +-----------+------------+
-          |                                                               |
-  +-------------------+       +-----------------------+                   |
-  | Brute Forcing     |       | GraphQL Introspection |                   v
-  | (ffuf, Kiterunner)| ----> | (/graphql?query=...)  |       +------------------------+
-  +-------------------+       +-----------------------+       | Target High-Value APIs |
-          |                                                   | - /api/v1/admin/*      |
-  +-------------------+       +-----------------------+       | - Unauthenticated GETs |
-  | JS File Analysis  |       | WSDL XML Docs         |       | - Deprecated /v1/ routes
-  | (Webpack, Maps)   | ----> | (?wsdl)               |       | - Exposed ID fields    |
-  +-------------------+       +-----------------------+       +------------------------+
+```mermaid
+flowchart TD
+    subgraph Recon ["Reconnaissance Phase"]
+        M1["OSINT & Dorking\n(GitHub, Google)"]
+        M2["Brute Forcing\n(ffuf, Kiterunner)"]
+        M3["JS File Analysis\n(Webpack, Maps)"]
+        
+        R1["Exposed Swagger UI\n(/api/swagger.json)"]
+        R2["GraphQL Introspection\n(/graphql?query=...)"]
+        R3["WSDL XML Docs\n(?wsdl)"]
+    end
+
+    subgraph Exploit ["Exploitation Phase"]
+        Import["Import to Postman/Burp\nAuto-generate requests"]
+        Target["Target High-Value APIs\n- /api/v1/admin/*\n- Unauthenticated GETs\n- Deprecated /v1/ routes\n- Exposed ID fields"]
+    end
+
+    M1 --> R1
+    M1 --> M2
+    M2 --> R2
+    M2 --> M3
+    M3 --> R3
+    
+    R1 --> Import
+    Import --> Target
 ```
 
 ---

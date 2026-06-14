@@ -37,31 +37,22 @@ UAC bypasses do not necessarily exploit kernel vulnerabilities. Instead, they ab
 
 ## 4. Architecture Diagram: Elevate Kit Execution Flow
 
-```text
-+-------------------------------------------------------------------+
-|                       Cobalt Strike Team Server                   |
-|                                                                   |
-|  [Operator] --> Types: `elevate uac-schtasks default`             |
-|                                |                                  |
-+--------------------------------|----------------------------------+
-                                 | 1. Command and DLL sent to Beacon
-                                 v
-+-------------------------------------------------------------------+
-|                       Compromised Endpoint                        |
-|                                                                   |
-| +-------------------------+                                       |
-| |       Beacon.exe        |  2. Aggressor script intercepts       |
-| |                         |  3. Reflective DLL packaged           |
-| | [ In-Memory Execution ] |  4. Injection into target process     |
-| +-------------------------+                                       |
-|            |                                                      |
-|            | 5. Exploit Execution (e.g., COM Elevation)           |
-|            v                                                      |
-| +-------------------------+                                       |
-| |   High-Priv Process     |  6. Spawns new elevated Beacon        |
-| | (e.g., svchost.exe)     |-------------------------------------->[New SYSTEM Beacon]
-| +-------------------------+                                       |
-+-------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph TS["Cobalt Strike Team Server"]
+        Op["Operator --> Types: `elevate uac-schtasks default`"]
+    end
+    
+    subgraph End["Compromised Endpoint"]
+        B["Beacon.exe<br>[ In-Memory Execution ]<br>2. Aggressor script intercepts<br>3. Reflective DLL packaged<br>4. Injection into target process"]
+        HP["High-Priv Process<br>(e.g., svchost.exe)"]
+        NewB["New SYSTEM Beacon"]
+        
+        B -- "5. Exploit Execution (e.g., COM Elevation)" --> HP
+        HP -- "6. Spawns new elevated Beacon" --> NewB
+    end
+    
+    Op -- "1. Command and DLL sent to Beacon" --> B
 ```
 
 ## 5. Deep Dive: Named Pipe Impersonation

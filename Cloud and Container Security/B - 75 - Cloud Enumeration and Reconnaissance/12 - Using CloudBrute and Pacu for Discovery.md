@@ -104,44 +104,21 @@ pacu
 
 ## Abstract Architecture of Discovery Tooling
 
-```text
-+-----------------------------------------------------------------------------------------+
-|                      Cloud Discovery and Enumeration Architecture                       |
-+-----------------------------------------------------------------------------------------+
-|                                                                                         |
-|                    [ Unauthenticated Phase ]                                            |
-|                                                                                         |
-|  +------------------+     Mutations (dev, prod)     +-----------------------------+     |
-|  |   CloudBrute     | ----------------------------> | Target Public DNS Space     |     |
-|  |  (Attacker Box)  |                               |                             |     |
-|  +------------------+ <---- Resolves to CNAME ----- | - example-dev.s3.amazonaws  |     |
-|           |                                         | - example-prod.blob.core    |     |
-|           | Identifies Public Assets                +-----------------------------+     |
-|           v                                                                             |
-|  +------------------+                                                                   |
-|  | Anonymous Access |                                                                   |
-|  |     Testing      |                                                                   |
-|  +------------------+                                                                   |
-|                                                                                         |
-|-----------------------------------------------------------------------------------------|
-|                                                                                         |
-|                     [ Authenticated Phase ]                                             |
-|                                                                                         |
-|  +------------------+     Initial Access Keys       +-----------------------------+     |
-|  |      Pacu        | ----------------------------> |       Target AWS Cloud      |     |
-|  |  (Attacker Box)  |     (e.g., AKIA...)           |                             |     |
-|  +------------------+                               | IAM       EC2        VPC    |     |
-|  | - SQLite DB      | <--- API JSON Responses ----- | API       API        API    |     |
-|  | - Attack Modules |                               |                             |     |
-|  +------------------+                               +-----------------------------+     |
-|           |                                                        |                    |
-|           v                                                        v                    |
-|  +------------------+                               +-----------------------------+     |
-|  | Mapped Attack    |                               | GuardDuty / CloudTrail      |     |
-|  | Surface & Paths  |                               | (Monitoring API Noise)      |     |
-|  +------------------+                               +-----------------------------+     |
-|                                                                                         |
-+-----------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Cloud Discovery and Enumeration Architecture
+        subgraph Unauthenticated Phase
+            A[CloudBrute Attacker Box] -- Mutations dev, prod --> B[Target Public DNS Space <br/> - example-dev.s3.amazonaws <br/> - example-prod.blob.core]
+            B -- Resolves to CNAME --> A
+            A -- Identifies Public Assets --> C[Anonymous Access Testing]
+        end
+        subgraph Authenticated Phase
+            D[Pacu Attacker Box <br/> - SQLite DB <br/> - Attack Modules] -- Initial Access Keys e.g., AKIA... --> E[Target AWS Cloud <br/> IAM API, EC2 API, VPC API]
+            E -- API JSON Responses --> D
+            D --> F[Mapped Attack Surface & Paths]
+            E --> G[GuardDuty / CloudTrail Monitoring API Noise]
+        end
+    end
 ```
 
 ## Advanced Execution and Operational Security (OPSEC)

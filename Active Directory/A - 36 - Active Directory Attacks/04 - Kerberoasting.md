@@ -87,32 +87,17 @@ john --format=krb5tgs --wordlist=rockyou.txt hashes.txt
 
 ## 5. ASCII Workflow Diagram
 
-```text
-========================================================================
-                      KERBEROASTING ATTACK FLOW
-========================================================================
-
-    [ Attacker (Any Domain User) ]                [ Domain Controller (KDC) ]
-                 |                                             |
-                 | --- 1. TGS-REQ for SPN: MSSQLSvc/sql01 ---> |
-                 |    (Can I get a ticket to talk to SQL?)     |
-                 |                                             |
-                 | <--- 2. TGS-REP containing Service Ticket - |
-                 |                                             |
-   +-------------+-------------+                               |
-   | Service Ticket            |                               |
-   | Encrypted with:           |                               |
-   | NTLM Hash of svc_mssql    |                               |
-   +-------------+-------------+                               |
-                 |
-                 v
-   [ Offline Cracking Rig ]
-                 |
-                 | ---> Brute Force Dictionary Attack
-                 | ---> Decrypts Ticket -> Yields Plaintext Password!
-                 v
-     [ Domain Dominance ]
-========================================================================
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker (Any Domain User)
+    participant DC as Domain Controller (KDC)
+    
+    Attacker->>DC: 1. TGS-REQ for SPN: MSSQLSvc/sql01 (Can I get a ticket to talk to SQL?)
+    DC-->>Attacker: 2. TGS-REP containing Service Ticket
+    Note over Attacker: Service Ticket<br>Encrypted with: NTLM Hash of svc_mssql
+    
+    Note over Attacker: Offline Cracking Rig<br>---> Brute Force Dictionary Attack<br>---> Decrypts Ticket -> Yields Plaintext Password!
+    Note over Attacker: Domain Dominance
 ```
 
 ## 6. OPSEC and Detection

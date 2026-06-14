@@ -47,37 +47,26 @@ Once an attacker has authenticated via Entra ID, they interface with the Azure R
 
 ## 4. Architecture Visualization: Azure Logging Flow
 
-```text
-  [ Users / Attackers ]                [ Automated Scripts / Apps ]
-           |                                        |
-           | (Authenticates via Browser/CLI)        | (Authenticates via Secret)
-           v                                        v
-+-----------------------------------------------------------------+
-|                    MICROSOFT ENTRA ID (Azure AD)                |
-|                    (Identity Plane)                             |
-+-----------------------------------------------------------------+
-           |                                        |
-      (Generates)                              (Generates)
-    Sign-in Logs                               Audit Logs
-           |                                        |
-           +--------------------+-------------------+
-                                |
-                                v
-                      [ Log Analytics Workspace ] <--- KQL Queries
-                                ^
-                                |
-           +--------------------+-------------------+
-           |                                        |
-      (Generates)                              (Authorizes)
-    Activity Logs                                   |
-           |                                        v
-+-----------------------------------------------------------------+
-|                AZURE RESOURCE MANAGER (ARM)                     |
-|                (Control Plane)                                  |
-+-----------------------------------------------------------------+
-           |                                        |
-      (Modifies)                               (Deploys)
-    [ Azure VM ]                             [ Storage Account ]
+```mermaid
+flowchart TD
+    A[Users / Attackers] -->|Authenticates via Browser/CLI| B
+    C[Automated Scripts / Apps] -->|Authenticates via Secret| B
+    subgraph Identity Plane
+        B[MICROSOFT ENTRA ID Azure AD]
+    end
+    B -->|Generates| D[Sign-in Logs]
+    B -->|Generates| E[Audit Logs]
+    D --> F[Log Analytics Workspace]
+    E --> F
+    F -->|KQL Queries| F
+    G[Activity Logs] --> F
+    subgraph Control Plane
+        H[AZURE RESOURCE MANAGER ARM]
+    end
+    H -->|Generates| G
+    B -->|Authorizes| H
+    H -->|Modifies| I[Azure VM]
+    H -->|Deploys| J[Storage Account]
 ```
 
 ## 5. Real-World Attack Scenario

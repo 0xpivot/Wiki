@@ -32,36 +32,17 @@ The `netscan` plugin does not rely on the standard Windows APIs or linked lists 
 
 Once a pool tag is found, the plugin validates the structure by checking internal pointers and field alignments. If the structure is valid, `netscan` parses the local/remote IP and ports, the state, and the associated PID. This approach makes `netscan` incredibly resilient against Direct Kernel Object Manipulation (DKOM), a common rootkit technique used to unlink objects from active lists.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                            Network Connection Analysis                            |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  Live System (Rootkit Active)                 Memory Image (Post-Acquisition)     |
-|                                                                                   |
-|  +-----------------+  <Hidden>                +-----------------------------+     |
-|  | netstat.exe     |--------------------X     | Physical RAM (Dump.raw)     |     |
-|  +-----------------+                          |                             |     |
-|          | Queries API                        | +-------------------------+ |     |
-|          v                                    | | Non-Paged Pool          | |     |
-|  +-----------------+                          | |                         | |     |
-|  | TCP/IP Stack    |                          | | [ Pool Tag: 'TCPT' ]    | |     |
-|  | Linked List     | <--- Rootkit             | | [ Local IP: 10.0.0.5]   | |     |
-|  +-----------------+      unlinks C2          | | [ Rem IP: 192.168.1.100]| |     |
-|                           connection          | | [ State: ESTABLISHED]   | |     |
-|                                               | | [ PID: 1337 ]           | |     |
-|                                               | +-------------------------+ |     |
-|                                               |              ^              |     |
-|                                               +--------------|--------------+     |
-|                                                              |                    |
-|                                                       +-------------+             |
-|                                                       | Volatility  |             |
-|                                                       | 'netscan'   |             |
-|                                                       +-------------+             |
-|                                                       (Scans physical memory      |
-|                                                        for pool tags, bypassing   |
-|                                                        unlinked API lists)        |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Live System Rootkit Active
+        A[netstat.exe] -->|Queries API| B[TCP/IP Stack<br>Linked List]
+        B -.->|Rootkit unlinks C2 connection| B
+        A -.->|Hidden| X[X]
+    end
+    subgraph Memory Image Post-Acquisition
+        C[Physical RAM Dump.raw] --> D[Non-Paged Pool<br>Pool Tag: TCPT<br>Local IP: 10.0.0.5<br>Rem IP: 192.168.1.100<br>State: ESTABLISHED<br>PID: 1337]
+        E[Volatility netscan<br>Scans physical memory for pool tags, bypassing unlinked API lists] --> D
+    end
 ```
 
 ## Advanced Analysis Techniques with Netscan

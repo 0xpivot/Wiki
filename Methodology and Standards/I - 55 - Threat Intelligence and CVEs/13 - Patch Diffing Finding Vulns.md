@@ -27,39 +27,27 @@ Binary diffing tools do not simply compare bytes. If a developer adds a single i
 2. **Call Graphs:** The macroscopic view of which functions call which other functions across the entire binary.
 3. **Heuristics:** Diffing engines use heuristics to match functions between the old and new binaries. These include matching function names (if symbols are present), string references, the number of basic blocks, loop structures, and instruction mnemonic sequences.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                          BINARY PATCH DIFFING WORKFLOW                            |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  [Vulnerable Binary V1]                            [Patched Binary V2]            |
-|            |                                                 |                    |
-|            v                                                 v                    |
-|   +------------------+                              +------------------+          |
-|   | Disassembler     |                              | Disassembler     |          |
-|   | (IDA / Ghidra)   |                              | (IDA / Ghidra)   |          |
-|   +--------+---------+                              +--------+---------+          |
-|            | 1. Generate CFG                                 | 1. Generate CFG    |
-|            | 2. Extract Basic Blocks                         | 2. Extract Blocks  |
-|            v                                                 v                    |
-|   +--------------------------------------------------------------------+          |
-|   |                          DIFFING ENGINE                            |          |
-|   |                       (BinDiff / Diaphora)                         |          |
-|   +--------------------------------------------------------------------+          |
-|            |                                                                      |
-|            | 3. Match Identical Functions (100% Similarity)                       |
-|            | 4. Match Modified Functions (<100% Similarity)                       |
-|            | 5. Highlight Added / Removed Basic Blocks                            |
-|            v                                                                      |
-|   +--------------------------------------------------------------------+          |
-|   |                      RESEARCHER ANALYSIS                           |          |
-|   |     (Identify bounds checks, size validations, logic changes)      |          |
-|   +--------------------------------------------------------------------+          |
-|            |                                                                      |
-|            v                                                                      |
-|     Root Cause Analysis (RCA) --> Weaponization --> 1-Day Exploit                 |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    V1["Vulnerable Binary V1"]
+    V2["Patched Binary V2"]
+
+    D1["Disassembler (IDA / Ghidra)"]
+    D2["Disassembler (IDA / Ghidra)"]
+
+    V1 --> D1
+    V2 --> D2
+
+    D1 -- "1. Generate CFG<br>2. Extract Basic Blocks" --> DE
+    D2 -- "1. Generate CFG<br>2. Extract Blocks" --> DE
+
+    DE["DIFFING ENGINE (BinDiff / Diaphora)"]
+
+    DE -- "3. Match Identical Functions (100% Similarity)<br>4. Match Modified Functions (<100% Similarity)<br>5. Highlight Added / Removed Basic Blocks" --> RA
+
+    RA["RESEARCHER ANALYSIS<br>(Identify bounds checks, size validations, logic changes)"]
+
+    RA --> RCA["Root Cause Analysis (RCA) --> Weaponization --> 1-Day Exploit"]
 ```
 
 ## 4. Industry Standard Tooling

@@ -49,23 +49,14 @@ A professional report structures the PoC logically so the reader can seamlessly 
 
 The following ASCII diagram shows the lifecycle of a PoC from initial discovery during the testing phase to remediation validation by the engineering team.
 
-```text
-+-----------------------------------------------------------------------------------------+
-|                              THE PROOF OF CONCEPT LIFECYCLE                             |
-+-----------------------------------------------------------------------------------------+
-|                                                                                         |
-|  1. DISCOVERY        2. REFINEMENT          3. REPORTING          4. VALIDATION         |
-|  +-------------+     +-------------+        +-------------+       +-------------+       |
-|  | Messy, raw  |     | Minimize    |        | Document    |       | Developer   |       |
-|  | exploit     |     | payload.    |        | steps.      |       | runs PoC    |       |
-|  | script or   |---->| Remove      |------->| Format HTTP |------>| to confirm  |       |
-|  | complex UI  |     | unnecessary |        | req/res.    |       | the patch   |       |
-|  | interaction |     | steps/data. |        | Add context.|       | works.      |       |
-|  +-------------+     +-------------+        +-------------+       +-------------+       |
-|         |                   |                      |                     |              |
-|   (Hacker Mode)      (Engineering Mode)      (Writer Mode)         (Remediation Mode)   |
-|                                                                                         |
-+-----------------------------------------------------------------------------------------+
+```mermaid
+flowchart LR
+    D["1. DISCOVERY<br>Messy, raw exploit"]
+    R["2. REFINEMENT<br>Minimize payload."]
+    RP["3. REPORTING<br>Document steps."]
+    V["4. VALIDATION<br>Developer runs PoC"]
+
+    D --> R --> RP --> V
 ```
 
 ## 5. Examples of High-Quality PoCs

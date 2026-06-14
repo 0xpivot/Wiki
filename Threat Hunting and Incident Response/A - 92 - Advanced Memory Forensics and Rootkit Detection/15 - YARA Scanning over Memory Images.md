@@ -68,34 +68,12 @@ By scanning the process memory of `svchost.exe` with YARA rules targeting the de
 
 ## 5. Architectural Diagram: Memory Scanning Workflow
 
-```text
-+-----------------------+
-|  Raw Physical Memory  |
-|  (Fragmented Pages)   |
-+-----------------------+
-           |
-           v
-+-----------------------+      Reconstructs Virtual Address Space
-|  Volatility Engine    | <--- (Handles Paging, CR3, VAD Trees)
-+-----------------------+
-           |
-           v
-+-----------------------+      Applies YARA logic to contiguous blocks
-|  Process Space (PID)  | <--- (Accounts for SectionAlignment)
-|  [Contiguous Memory]  |
-+-----------------------+
-           |
-           v
-+-----------------------+
-|  YARA Matching Engine |
-|  (Matches Signatures) |
-+-----------------------+
-           |
-           v
-+-----------------------+
-|    IOC Detection /    |
-|    Payload Dump       |
-+-----------------------+
+```mermaid
+flowchart TD
+    A[Raw Physical Memory Fragmented Pages] --> B[Volatility Engine<br>Reconstructs Virtual Address Space<br>Handles Paging, CR3, VAD Trees]
+    B --> C[Process Space PID<br>Contiguous Memory<br>Applies YARA logic to contiguous blocks<br>Accounts for SectionAlignment]
+    C --> D[YARA Matching Engine<br>Matches Signatures]
+    D --> E[IOC Detection / Payload Dump]
 ```
 
 ## 6. Real-World Attack Scenario

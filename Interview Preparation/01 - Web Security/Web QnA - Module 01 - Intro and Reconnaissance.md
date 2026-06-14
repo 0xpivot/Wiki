@@ -101,35 +101,22 @@ The developers had left the Spring Boot Actuators enabled without authentication
 
 ## Custom ASCII Diagram: Complete Reconnaissance Architecture
 
-```text
-=============================================================================
-                  EXTERNAL ATTACK SURFACE RECONNAISSANCE
-=============================================================================
-
- [Phase 1: Scope & Horizontal Recon]
- +-------------------+       +-----------------------+       +------------------+
- |   Target Name     | ----> | ASN / CIDR Extraction | ----> | Reverse WHOIS    |
- | (E.g. OmniCorp)   |       | (bgp.he.net / RIPE)   |       | (DomainTools)    |
- +-------------------+       +-----------------------+       +------------------+
-                                                                       |
-                                                                       v
- [Phase 2: Vertical Enumeration]                               +------------------+
- +-------------------+       +-----------------------+         | Subdomain Enum   |
- | Certificate Logs  | ----> | OSINT / Source Code   | <------ | (Amass/Subfinder)|
- | (crt.sh / Censys) |       | (GitHub / Pastebin)   |         +------------------+
- +-------------------+       +-----------------------+                 |
-                                                                       v
- [Phase 3: Active Scanning & Validation]                       +------------------+
- +-------------------+       +-----------------------+         | DNS Resolution   |
- | Directory Brute   | <---- | Port Scanning         | <------ | & Bruteforcing   |
- | (ffuf / gobuster) |       | (Naabu / Masscan)     |         | (DNSx / Puredns) |
- +-------------------+       +-----------------------+         +------------------+
-          |
-          v
- +-------------------+
- | Attack Surface    |
- | Mapped & Ready    |
- +-------------------+
+```mermaid
+graph TD
+    classDef phase fill:transparent,stroke:none;
+    
+    A["Target Name<br/>(E.g. OmniCorp)"] --> B["ASN / CIDR Extraction<br/>(bgp.he.net / RIPE)"]
+    B --> C["Reverse WHOIS<br/>(DomainTools)"]
+    
+    C --> D["Subdomain Enum<br/>(Amass/Subfinder)"]
+    E["Certificate Logs<br/>(crt.sh / Censys)"] --> F["OSINT / Source Code<br/>(GitHub / Pastebin)"]
+    D --> F
+    
+    D --> G["DNS Resolution<br/>& Bruteforcing<br/>(DNSx / Puredns)"]
+    G --> H["Port Scanning<br/>(Naabu / Masscan)"]
+    H --> I["Directory Brute<br/>(ffuf / gobuster)"]
+    
+    I --> J["Attack Surface<br/>Mapped & Ready"]
 ```
 
 ---

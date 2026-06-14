@@ -46,35 +46,23 @@ Scripts can be designed to automatically evaluate the privilege level of a new b
 
 ## 5. Architecture Diagram: Event-Driven Automation
 
-```text
-+-------------------------------------------------------------------------+
-|                          Cobalt Strike Client                           |
-|                                                                         |
-|  +--------------------+       Event Trigger      +-------------------+  |
-|  |   Aggressor Engine | <----------------------- |  Event Bus        |  |
-|  |  (Sleep Script)    |                          | (New Beacon, etc) |  |
-|  +--------------------+                          +-------------------+  |
-|           |                                                ^            |
-|           | 1. Auto-Recon Commands Queued                  |            |
-|           v                                                |            |
-|  +--------------------+                                    |            |
-|  |  Beacon Console    |------------------------------------+            |
-|  +--------------------+                                                 |
-+----------|--------------------------------------------------------------+
-           | 2. Commands sent to Team Server via TLS
-           v
-+-------------------------------------------------------------------------+
-|                            Team Server                                  |
-|  (Stores taskings in the database until beacon checks in)               |
-+-------------------------------------------------------------------------+
-           | 3. Tasks pulled by Beacon (HTTPS/DNS/SMB)
-           v
-+-------------------------------------------------------------------------+
-|                        Compromised Endpoint                             |
-|  > whoami /groups                                                       |
-|  > netstat -ano                                                         |
-|  > ipconfig /all                                                        |
-+-------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Client["Cobalt Strike Client"]
+        Bus["Event Bus<br>(New Beacon, etc)"]
+        Agg["Aggressor Engine<br>(Sleep Script)"]
+        Con["Beacon Console"]
+        
+        Bus -- "Event Trigger" --> Agg
+        Agg -- "1. Auto-Recon Commands Queued" --> Con
+        Con --> Bus
+    end
+    
+    TS["Team Server<br>(Stores taskings in the database until beacon checks in)"]
+    End["Compromised Endpoint<br>> whoami /groups<br>> netstat -ano<br>> ipconfig /all"]
+    
+    Con -- "2. Commands sent to Team Server via TLS" --> TS
+    TS -- "3. Tasks pulled by Beacon (HTTPS/DNS/SMB)" --> End
 ```
 
 ## 6. Threat Hunting and Detection Engineering

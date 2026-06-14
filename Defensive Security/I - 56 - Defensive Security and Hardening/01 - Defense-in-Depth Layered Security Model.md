@@ -19,43 +19,27 @@ In VAPT (Vulnerability Assessment and Penetration Testing), understanding DiD is
 
 ## Architectural ASCII Diagram: The Security Onion
 
-```text
-                                 +-------------------------------------------------------------+
-                                 |                                                             |
-                                 |                POLICIES, PROCEDURES, AWARENESS              |
-                                 |                 (The Human and Governance Layer)            |
-                                 |                                                             |
-                                 |    +---------------------------------------------------+    |
-                                 |    |                                                   |    |
-                                 |    |                 PHYSICAL SECURITY                 |    |
-                                 |    |            (Mantraps, Badges, Cameras)            |    |
-                                 |    |                                                   |    |
-                                 |    |    +-----------------------------------------+    |    |
-                                 |    |    |                                         |    |    |
-                                 |    |    |           PERIMETER SECURITY            |    |    |
-                                 |    |    |       (Edge Firewalls, WAF, VPN)        |    |    |
-                                 |    |    |                                         |    |    |
-                                 |    |    |    +-------------------------------+    |    |    |
-                                 |    |    |    |                               |    |    |    |
-                                 |    |    |    |   INTERNAL NETWORK SECURITY   |    |    |    |
-                                 |    |    |    |       (VLANs, NAC, IDS)       |    |    |    |
-                                 |    |    |    |                               |    |    |    |
-                                 |    |    |    |    +---------------------+    |    |    |    |
-                                 |    |    |    |    |                     |    |    |    |    |
-                                 |    |    |    |    |    HOST SECURITY    |    |    |    |    |
-                                 |    |    |    |    |  (EDR, Patching, AV)|    |    |    |    |
-                                 |    |    |    |    |                     |    |    |    |    |
-                                 |    |    |    |    |    +-----------+    |    |    |    |    |
-                                 |    |    |    |    |    |           |    |    |    |    |    |
-                                 |    |    |    |    |    |APP & DATA |    |    |    |    |    |
-                                 |    |    |    |    |    | (Crypto)  |    |    |    |    |    |
-                                 |    |    |    |    |    |           |    |    |    |    |    |
-                                 |    |    |    |    |    +-----------+    |    |    |    |    |
-                                 |    |    |    |    +---------------------+    |    |    |    |
-                                 |    |    |    +-------------------------------+    |    |    |
-                                 |    |    +-----------------------------------------+    |    |
-                                 |    +---------------------------------------------------+    |
-                                 +-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph L1["1. POLICIES, PROCEDURES, AWARENESS (The Human and Governance Layer)"]
+        direction TB
+        subgraph L2["2. PHYSICAL SECURITY (Mantraps, Badges, Cameras)"]
+            direction TB
+            subgraph L3["3. PERIMETER SECURITY (Edge Firewalls, WAF, VPN)"]
+                direction TB
+                subgraph L4["4. INTERNAL NETWORK SECURITY (VLANs, NAC, IDS)"]
+                    direction TB
+                    subgraph L5["5. HOST SECURITY (EDR, Patching, AV)"]
+                        direction TB
+                        subgraph L6["6. APP & DATA (Crypto)"]
+                            direction TB
+                            Target["Data & Crown Jewels"]
+                        end
+                    end
+                end
+            end
+        end
+    end
 ```
 
 ---

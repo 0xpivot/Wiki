@@ -59,46 +59,17 @@ How the cloud is deployed dictates the level of control, isolation, and security
 
 ## 5. ASCII Diagram: Cloud Computing Stack & Abstraction Layers
 
-```text
-+-----------------------------------------------------------------------+
-|                       CLOUD ABSTRACTION LAYERS                        |
-+-----------------------------------------------------------------------+
-|                                                                       |
-|  [ Software as a Service - SaaS ]                                     |
-|  Examples: Salesforce, Google Workspace, Microsoft 365                |
-|  Consumer Control: Minimal (App Config, Users, Data)                  |
-|  Provider Control: Applications, Data, Runtime, Middleware, OS, etc.  |
-|                                                                       |
-+-----------------------------------------------------------------------+
-|                                  ^                                    |
-|                                  | Abstraction increases              |
-+-----------------------------------------------------------------------+
-|                                                                       |
-|  [ Platform as a Service - PaaS ]                                     |
-|  Examples: AWS Elastic Beanstalk, Azure App Service, Heroku           |
-|  Consumer Control: Applications, Data                                 |
-|  Provider Control: Runtime, Middleware, OS, Virtualization, Hardware  |
-|                                                                       |
-+-----------------------------------------------------------------------+
-|                                  ^                                    |
-|                                  | Abstraction increases              |
-+-----------------------------------------------------------------------+
-|                                                                       |
-|  [ Infrastructure as a Service - IaaS ]                               |
-|  Examples: AWS EC2, Azure VMs, Google Compute Engine (GCE)            |
-|  Consumer Control: OS, Middleware, Runtime, Data, Applications, Net   |
-|  Provider Control: Virtualization, Servers, Storage, Networking (HW)  |
-|                                                                       |
-+-----------------------------------------------------------------------+
-|                                  ^                                    |
-|                                  | Physical Boundary                  |
-+-----------------------------------------------------------------------+
-|                                                                       |
-|  [ Physical Infrastructure ]                                          |
-|  Data Centers, Racks, Power, Cooling, Physical Security, Hardware     |
-|  Strictly managed by the Cloud Service Provider (CSP).                |
-|                                                                       |
-+-----------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph CLOUD ABSTRACTION LAYERS
+        A[Software as a Service - SaaS <br/> Examples: Salesforce, Google Workspace, Microsoft 365 <br/> Consumer Control: Minimal App Config, Users, Data <br/> Provider Control: Applications, Data, Runtime, Middleware, OS, etc.]
+        B[Platform as a Service - PaaS <br/> Examples: AWS Elastic Beanstalk, Azure App Service, Heroku <br/> Consumer Control: Applications, Data <br/> Provider Control: Runtime, Middleware, OS, Virtualization, Hardware]
+        C[Infrastructure as a Service - IaaS <br/> Examples: AWS EC2, Azure VMs, Google Compute Engine GCE <br/> Consumer Control: OS, Middleware, Runtime, Data, Applications, Net <br/> Provider Control: Virtualization, Servers, Storage, Networking HW]
+        D[Physical Infrastructure <br/> Data Centers, Racks, Power, Cooling, Physical Security, Hardware <br/> Strictly managed by the Cloud Service Provider CSP.]
+        D -- Physical Boundary --> C
+        C -- Abstraction increases --> B
+        B -- Abstraction increases --> A
+    end
 ```
 
 ## 6. Deep Dive: Cloud Service Models

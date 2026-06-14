@@ -59,41 +59,18 @@ Software as a Service (SaaS) shifts the maximum amount of responsibility to the 
 
 ## 6. Comprehensive ASCII Diagram of the Responsibility Matrix
 
-```text
-+-----------------------------------------------------------------------------------+
-|                        THE SHARED RESPONSIBILITY MATRIX                           |
-+----------------------+-------------------+-------------------+--------------------+
-|   Security Layer     |   On-Premises     |       IaaS        |   PaaS / CaaS      |       SaaS         |
-+----------------------+-------------------+-------------------+--------------------+
-| Data Governance      |     Customer      |     Customer      |     Customer       |     Customer       |
-| & Classification     |                   |                   |                    |                    |
-+----------------------+-------------------+-------------------+--------------------+
-| Client & Endpoint    |     Customer      |     Customer      |     Customer       |     Customer       |
-| Protection           |                   |                   |                    |                    |
-+----------------------+-------------------+-------------------+--------------------+
-| Identity & Access    |     Customer      |     Customer      |     Customer       |     Customer       |
-| Management (IAM)     |                   |                   |                    |                    |
-+----------------------+-------------------+-------------------+--------------------+
-| Application Controls |     Customer      |     Customer      |     Customer       |  SHARED / CSP      |
-| (Code, Logic, APIs)  |                   |                   |                    |                    |
-+----------------------+-------------------+-------------------+--------------------+
-| Network Controls     |     Customer      |     Customer      |  SHARED / CSP      |       CSP          |
-| (VPC, FW, Routing)   |                   |                   |                    |                    |
-+----------------------+-------------------+-------------------+--------------------+
-| Host Infrastructure  |     Customer      |     Customer      |       CSP          |       CSP          |
-| (OS, Patching)       |                   |                   |                    |                    |
-+----------------------+-------------------+-------------------+--------------------+
-| Physical Security    |     Customer      |       CSP         |       CSP          |       CSP          |
-| (Compute, Storage)   |                   |                   |                    |                    |
-+----------------------+-------------------+-------------------+--------------------+
-| Data Center          |     Customer      |       CSP         |       CSP          |       CSP          |
-| (Facilities, Power)  |                   |                   |                    |                    |
-+----------------------+-------------------+-------------------+--------------------+
-
-Legend:
-Customer = Customer is solely responsible.
-CSP      = Cloud Service Provider is solely responsible.
-SHARED   = Responsibility varies based on specific configuration/service.
+```mermaid
+table
+| Security Layer | On-Premises | IaaS | PaaS / CaaS | SaaS |
+|---|---|---|---|---|
+| Data Governance & Classification | Customer | Customer | Customer | Customer |
+| Client & Endpoint Protection | Customer | Customer | Customer | Customer |
+| Identity & Access Management IAM | Customer | Customer | Customer | Customer |
+| Application Controls Code, Logic, APIs | Customer | Customer | Customer | SHARED / CSP |
+| Network Controls VPC, FW, Routing | Customer | Customer | SHARED / CSP | CSP |
+| Host Infrastructure OS, Patching | Customer | Customer | CSP | CSP |
+| Physical Security Compute, Storage | Customer | CSP | CSP | CSP |
+| Data Center Facilities, Power | Customer | CSP | CSP | CSP |
 ```
 
 ## 7. The Core Customer Responsibilities Across All Models

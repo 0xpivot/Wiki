@@ -98,48 +98,25 @@ The server processed the GET request and updated the victim's account email to m
 
 ## Custom ASCII Diagram: Cross-Site Request Forgery (CSRF) Flow
 
-```text
-=============================================================================
-                  CSRF ATTACK ARCHITECTURE & DATA FLOW
-=============================================================================
+```mermaid
+sequenceDiagram
+    participant V as Victim User
+    participant B as Vulnerable Bank (bank.com)
+    participant A as Attacker Server (evil.com)
 
- [1. The Setup]
- +-----------------+                +-------------------+
- | Victim User     |                | Vulnerable Bank   |
- | Authenticates   | -------------- | (bank.com)        |
- | to Bank Site.   | <------------- | Returns Session   |
- +-----------------+                | Cookie            |
-          |                         +-------------------+
-          | (Cookie stored locally)
-          v
- [2. The Trap]
- +-----------------+                +-------------------+
- | Victim Browses  |                | Attacker Server   |
- | the Internet,   | -------------- | (evil.com)        |
- | visits Evil Site| <------------- | Returns HTML with |
- +-----------------+                | hidden payload.   |
-          |                         +-------------------+
-          |
-          v
- [3. The Execution (Invisible to User)]
- +------------------------------------------------------+
- | Browser processes evil HTML:                         |
- | <form action="https://bank.com/transfer" method="POST">
- |  <input type="hidden" name="to" value="AttackerAcct">|
- |  <input type="hidden" name="amount" value="5000">    |
- | </form>                                              |
- | <script>document.forms[0].submit();</script>         |
- +------------------------------------------------------+
-          |
-          | (Browser AUTO-ATTACHES bank.com Session Cookie)
-          v
- [4. The Exploit]
- +------------------------------------------------------+
- | Vulnerable Bank (bank.com)                           |
- | Receives POST request with valid session cookie.     |
- | Lacks CSRF Token validation.                         |
- | Trusts the request and executes the fund transfer.   |
- +------------------------------------------------------+
+    Note over V, B: 1. The Setup
+    V->>B: Authenticates to Bank Site.
+    B-->>V: Returns Session Cookie
+    Note left of V: (Cookie stored locally)
+
+    Note over V, A: 2. The Trap
+    V->>A: Browses the Internet, visits Evil Site
+    A-->>V: Returns HTML with hidden payload.
+
+    Note over V: 3. The Execution (Invisible to User)<br/>Browser processes evil HTML:<br/><form action="https://bank.com/transfer" method="POST"><br/>  <input type="hidden" name="to" value="AttackerAcct"><br/>  <input type="hidden" name="amount" value="5000"><br/></form><br/><script>document.forms[0].submit();</script>
+
+    V->>B: (Browser AUTO-ATTACHES bank.com Session Cookie)
+    Note over B: 4. The Exploit<br/>Receives POST request with valid session cookie.<br/>Lacks CSRF Token validation.<br/>Trusts the request and executes the fund transfer.
 ```
 
 ---

@@ -18,36 +18,18 @@ When abusing WinRM, attackers do not need to drop malicious binaries to disk imm
 
 ## Architectural ASCII Diagram: WinRM / PSRemoting Execution
 
-```text
-+-----------------------+                                +-----------------------+
-|                       |                                |                       |
-|   Attacker Node /     |                                |    Target Windows     |
-|   Compromised Client  |                                |    Server / Workstation|
-|                       |                                |                       |
-|  +-----------------+  |                                |  +-----------------+  |
-|  |                 |  |       1. Authenticated     ======>|                 |  |
-|  |  PowerShell.exe |  |       HTTP/SOAP Request        |  |  WinRM Service  |  |
-|  |                 |  |       (Port 5985/5986)         |  |   (svchost.exe) |  |
-|  +--------+--------+  |                                |  +--------+--------+  |
-|           |           |                                |           |           |
-|           |           |                                |           | 2. Spawns |
-|           v           |                                |           v           |
-|  +-----------------+  |                                |  +-----------------+  |
-|  |                 |  |       3. Sends Encrypted       |  |                 |  |
-|  |  WSMan Provider |<====================================>|   wsmprovhost   |  |
-|  |                 |  |       Payload / Commands       |  |     .exe        |  |
-|  +-----------------+  |                                |  +-----------------+  |
-|                       |                                |           |           |
-+-----------------------+                                |           | 4. Exec   |
-                                                         |           v           |
-                                                         |  +-----------------+  |
-                                                         |  |                 |  |
-                                                         |  |   PowerShell    |  |
-                                                         |  |   Runspace      |  |
-                                                         |  |                 |  |
-                                                         |  +-----------------+  |
-                                                         |                       |
-                                                         +-----------------------+
+```mermaid
+graph TD
+    A["Attacker Node / Compromised Client<br>PowerShell.exe"]
+    B["Attacker Node / Compromised Client<br>WSMan Provider"]
+    C["Target Windows Server / Workstation<br>WinRM Service (svchost.exe)"]
+    D["Target Windows Server / Workstation<br>wsmprovhost.exe"]
+    E["Target Windows Server / Workstation<br>PowerShell Runspace"]
+
+    A -->|"1. Authenticated HTTP/SOAP Request (Port 5985/5986)"| C
+    C -->|"2. Spawns"| D
+    B <-->|"3. Sends Encrypted Payload / Commands"| D
+    D -->|"4. Exec"| E
 ```
 
 ---

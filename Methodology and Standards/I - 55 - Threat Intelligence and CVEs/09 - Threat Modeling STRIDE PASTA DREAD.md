@@ -31,18 +31,18 @@ Before applying any framework, the system must be mapped. The standard tool for 
 - **Trust Boundaries (Dotted Lines):** The boundary where data changes its level of trust (e.g., from the Internet to the DMZ, or from a user to the database).
 
 ### ASCII DFD Example: Simple Web App
-```text
-               [ Trust Boundary: Internet vs Internal ]
-                              . . . . . . . . . . . . . . . . . . . . .
- [ User ]                     .                                       .
-    |                         .                                       .
-    | (1. HTTP POST Creds)    .        (2. Query User Hash)           .
-    V                         .                 |                     .
- ( Web Server / Login ) <-----------------------+                     .
-                              .                 V                     .
-                              .         [ User Database ]             .
-                              .                                       .
-                              . . . . . . . . . . . . . . . . . . . . .
+```mermaid
+flowchart TD
+    U["User"]
+    
+    subgraph Internal["Trust Boundary: Internet vs Internal"]
+        WS("Web Server / Login")
+        DB[("User Database")]
+    end
+    
+    U -- "1. HTTP POST Creds" --> WS
+    WS -- "2. Query User Hash" --> DB
+    DB -.-> WS
 ```
 *Threats almost always manifest across Trust Boundaries.*
 

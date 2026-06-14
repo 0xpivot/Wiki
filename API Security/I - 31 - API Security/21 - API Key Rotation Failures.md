@@ -23,31 +23,19 @@ The inability or refusal to implement key rotation signifies a profound architec
 
 ### The Attack Lifecycle
 
-```text
-+---------------------+      1. Leakage       +---------------------+
-|                     |---------------------->|                     |
-|  Legitimate System  |                       |   Public Repo /     |
-|  (Source Code, Log) |                       |   Dark Web / Logs   |
-|                     |                       |                     |
-+---------------------+                       +---------------------+
-           |                                             |
-           | 2. Routine Usage                            | 3. Discovery
-           v                                             v
-+---------------------+                       +---------------------+
-|                     |                       |                     |
-|    API Gateway /    |<----------------------|      Attacker       |
-|    Auth Server      |   4. Exploitation     |                     |
-|                     |                       |                     |
-+---------------------+                       +---------------------+
-           |
-           | 5. Prolonged Access
-           v
-+---------------------+
-|                     |
-|  Target Application /|
-|  Data Infrastructure|
-|                     |
-+---------------------+
+```mermaid
+flowchart TD
+    System["Legitimate System\n(Source Code, Log)"]
+    Repo["Public Repo / Dark Web / Logs"]
+    GW["API Gateway / Auth Server"]
+    Attacker["Attacker"]
+    Target["Target Application / Data Infrastructure"]
+
+    System -- "1. Leakage" --> Repo
+    System -- "2. Routine Usage" --> GW
+    Repo -- "3. Discovery" --> Attacker
+    Attacker -- "4. Exploitation" --> GW
+    GW -- "5. Prolonged Access" --> Target
 ```
 
 ### Explaining the Diagram

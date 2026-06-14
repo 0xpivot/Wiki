@@ -30,35 +30,15 @@ GuardDuty is powerful because it operates "under the hood." You do not need to e
 
 ## 3. Architecture Visualization: GuardDuty & Security Hub Flow
 
-```text
-  [VPC Flow Logs]  [DNS Logs]  [CloudTrail]  [EKS Logs]
-        |              |             |            |
-        +--------------+------+------+------------+
-                              |
-                     (Backend Data Streams)
-                              |
-                              v
-                  +-----------------------+
-                  |                       |
-                  |   Amazon GuardDuty    | <--- Threat Intel / ML Models
-                  |                       |
-                  +-----------------------+
-                              |
-                     (Generates Findings)
-                              |
-                              v
-                  +-----------------------+
-                  |                       |
-                  |    AWS Security Hub   | <--- Aggregates Macie, Inspector
-                  |    (ASFF Normalization|
-                  +-----------------------+
-                              |
-                              | (EventBridge Routing)
-                              v
-                 +--------------------------+
-                 |    SIEM / SOAR / Slack   |
-                 | (Splunk, PagerDuty, Jira)|
-                 +--------------------------+
+```mermaid
+flowchart TD
+    A[VPC Flow Logs] --> B
+    C[DNS Logs] --> B
+    D[CloudTrail] --> B
+    E[EKS Logs] --> B
+    B[Backend Data Streams] --> F[Amazon GuardDuty<br>Threat Intel / ML Models]
+    F -->|Generates Findings| G[AWS Security Hub<br>ASFF Normalization]
+    G -->|EventBridge Routing| H[SIEM / SOAR / Slack<br>Splunk, PagerDuty, Jira]
 ```
 
 ## 4. Dissecting GuardDuty Findings

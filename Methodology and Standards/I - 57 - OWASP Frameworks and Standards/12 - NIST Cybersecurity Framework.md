@@ -17,26 +17,17 @@ The framework consists of three main components: the Core, the Implementation Ti
 
 ## NIST CSF Core Architecture
 
-```text
-       NIST Cybersecurity Framework (CSF) Core
-+-------------------------------------------------------------+
-|                                                             |
-|  [ IDENTIFY (ID) ] ---> Understand organizational risk      |
-|           |             (Asset Management, Risk Assessment) |
-|           v                                                 |
-|  [ PROTECT (PR) ]  ---> Implement safeguards                |
-|           |             (Access Control, Data Security)     |
-|           v                                                 |
-|  [ DETECT (DE) ]   ---> Discover cybersecurity events       |
-|           |             (Continuous Monitoring, Anomalies)  |
-|           v                                                 |
-|  [ RESPOND (RS) ]  ---> Take action regarding incidents     |
-|           |             (Analysis, Mitigation, Comms)       |
-|           v                                                 |
-|  [ RECOVER (RC) ]  ---> Restore impaired capabilities       |
-|                         (Recovery Planning, Improvements)   |
-|                                                             |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Core ["NIST Cybersecurity Framework (CSF) Core"]
+        ID["IDENTIFY (ID)<br>Understand organizational risk<br>(Asset Management, Risk Assessment)"]
+        PR["PROTECT (PR)<br>Implement safeguards<br>(Access Control, Data Security)"]
+        DE["DETECT (DE)<br>Discover cybersecurity events<br>(Continuous Monitoring, Anomalies)"]
+        RS["RESPOND (RS)<br>Take action regarding incidents<br>(Analysis, Mitigation, Comms)"]
+        RC["RECOVER (RC)<br>Restore impaired capabilities<br>(Recovery Planning, Improvements)"]
+
+        ID --> PR --> DE --> RS --> RC
+    end
 ```
 
 ## Core Functions Deep Dive

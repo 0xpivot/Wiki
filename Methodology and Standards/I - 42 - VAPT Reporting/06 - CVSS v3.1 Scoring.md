@@ -84,49 +84,33 @@ This metric measures the impact to the availability of the impacted component re
 
 To properly evaluate a vulnerability, an assessor must systematically evaluate each metric in sequence. The following ASCII diagram outlines the logical decision flow for Base Metric evaluation:
 
-```text
-+---------------------------------------------------------------------------------------+
-|                       CVSS v3.1 Base Metric Assessment Flow                           |
-+---------------------------------------------------------------------------------------+
-|                                                                                       |
-|  1. EXPLOITABILITY METRICS                                                            |
-|  +--------------------+    +--------------------+    +--------------------+           |
-|  | Attack Vector (AV) |--->| Attack Compl. (AC) |--->| Privs Req'd (PR)   |           |
-|  | - Network          |    | - Low              |    | - None             |           |
-|  | - Adjacent         |    | - High             |    | - Low              |           |
-|  | - Local            |    +--------------------+    | - High             |           |
-|  | - Physical         |                              +---------+----------+           |
-|  +--------------------+                                        |                      |
-|                                                                v                      |
-|                                                      +--------------------+           |
-|                                                      | User Interact (UI) |           |
-|                                                      | - None             |           |
-|                                                      | - Required         |           |
-|                                                      +---------+----------+           |
-|                                                                |                      |
-|  2. SCOPE ASSESSMENT                                           v                      |
-|                                                      +--------------------+           |
-|                                                      |     Scope (S)      |           |
-|                                                      | - Unchanged        |           |
-|                                                      | - Changed          |           |
-|                                                      +---------+----------+           |
-|                                                                |                      |
-|  3. IMPACT METRICS                                             v                      |
-|  +--------------------+    +--------------------+    +--------------------+           |
-|  | Confidentiality (C)|<---|   Integrity (I)    |<---|  Availability (A)  |           |
-|  | - High             |    | - High             |    | - High             |           |
-|  | - Low              |    | - Low              |    | - Low              |           |
-|  | - None             |    | - None             |    | - None             |           |
-|  +---------+----------+    +--------------------+    +--------------------+           |
-|            |                                                                          |
-|            +----------------------------+-----------------------------+               |
-|                                         |                                             |
-|                                         v                                             |
-|                             +-----------------------+                                 |
-|                             | FINAL BASE SCORE &    |                                 |
-|                             | VECTOR STRING GENERAT |                                 |
-|                             +-----------------------+                                 |
-+---------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph EXPLOITABILITY["1. EXPLOITABILITY METRICS"]
+        direction LR
+        AV["Attack Vector (AV)<br>- Network<br>- Adjacent<br>- Local<br>- Physical"]
+        AC["Attack Compl. (AC)<br>- Low<br>- High"]
+        PR["Privs Req'd (PR)<br>- None<br>- Low<br>- High"]
+        UI["User Interact (UI)<br>- None<br>- Required"]
+        AV --> AC --> PR --> UI
+    end
+
+    subgraph SCOPE["2. SCOPE ASSESSMENT"]
+        S["Scope (S)<br>- Unchanged<br>- Changed"]
+    end
+    UI --> S
+
+    subgraph IMPACT["3. IMPACT METRICS"]
+        direction RL
+        A["Availability (A)<br>- High<br>- Low<br>- None"]
+        I["Integrity (I)<br>- High<br>- Low<br>- None"]
+        C["Confidentiality (C)<br>- High<br>- Low<br>- None"]
+        A --> I --> C
+    end
+    S --> A
+
+    FINAL["FINAL BASE SCORE &<br>VECTOR STRING GENERATION"]
+    C --> FINAL
 ```
 
 ## 4. The Severity Rating Scale

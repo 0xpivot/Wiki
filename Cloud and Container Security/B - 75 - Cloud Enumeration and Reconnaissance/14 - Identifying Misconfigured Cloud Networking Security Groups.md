@@ -68,37 +68,22 @@ Manual CLI querying is effective but tedious. Automated tools streamline this pr
 
 ## Visualizing Security Group Topologies
 
-```text
-+--------------------------------------------------------------------------------------------------+
-|                              Cloud Network Security Architecture                                 |
-+--------------------------------------------------------------------------------------------------+
-|                                                                                                  |
-|   [ The Internet ]                                                                               |
-|          |                                                                                       |
-|          v                                                                                       |
-|  +--------------------------------------------------------------------------------------------+  |
-|  | VPC (Virtual Private Cloud) - 10.0.0.0/16                                                  |  |
-|  |                                                                                            |  |
-|  |  +-------------------------------+         +--------------------------------------------+  |  |
-|  |  | Public Subnet                 |         | Private Subnet                             |  |  |
-|  |  |                               |         |                                            |  |  |
-|  |  |  [ Web Server (EC2) ]         |         |   [ Database (RDS) ]                       |  |  |
-|  |  |  Elastic IP: 203.0.113.50     |         |   Internal IP: 10.0.2.100                  |  |  |
-|  |  |                               |         |                                            |  |  |
-|  |  |  +-------------------------+  |         |   +------------------------------------+   |  |  |
-|  |  |  | SG: Web-DMZ             |  |         |   | SG: DB-Internal                    |   |  |  |
-|  |  |  | Inbound:                |  |         |   | Inbound:                           |   |  |  |
-|  |  |  | - Port 443 (0.0.0.0/0)  |=============>> | - Port 3306 (Source: SG Web-DMZ)   |   |  |  |
-|  |  |  | - Port 22 (0.0.0.0/0)   |  |         |   | - Port 3306 (Source: 0.0.0.0/0)    |<-- MISCONFIGURTION
-|  |  |  |   ^ MISCONFIGURATION!   |  |         |   |                            ^       |   |  |  |
-|  |  |  +-------------------------+  |         |   +----------------------------|-------+   |  |  |
-|  |  +-------------------------------+         +--------------------------------|-----------+  |  |
-|  +-----------------------------------------------------------------------------|--------------+  |
-|                                                                                |                 |
-|       Even though the DB is in a private subnet, if a NAT or routing           |                 |
-|       flaw exists, or if a compromised Web Server pivots, the overly           |                 |
-|       permissive 0.0.0.0/0 rule on the DB SG negates defense-in-depth.         |                 |
-+--------------------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Cloud Network Security Architecture
+        A[The Internet] --> B[VPC Virtual Private Cloud - 10.0.0.0/16]
+        subgraph VPC Virtual Private Cloud - 10.0.0.0/16
+            subgraph Public Subnet
+                C[Web Server EC2 <br/> Elastic IP: 203.0.113.50]
+                D[SG: Web-DMZ <br/> Inbound: <br/> - Port 443 0.0.0.0/0 <br/> - Port 22 0.0.0.0/0 <br/> ^ MISCONFIGURATION!]
+            end
+            subgraph Private Subnet
+                E[Database RDS <br/> Internal IP: 10.0.2.100]
+                F[SG: DB-Internal <br/> Inbound: <br/> - Port 3306 Source: SG Web-DMZ <br/> - Port 3306 Source: 0.0.0.0/0 <br/> ^ MISCONFIGURATION]
+            end
+            D ==>> F
+        end
+    end
 ```
 
 ## Bridging Cloud Recon to Traditional Exploitation

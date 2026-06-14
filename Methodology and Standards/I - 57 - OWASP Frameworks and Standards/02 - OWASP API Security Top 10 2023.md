@@ -17,19 +17,20 @@ The 2023 list brought significant conceptual shifts:
 - **API10:2023 Unsafe Consumption of APIs** was introduced as a new category, addressing the trust developers place in third-party APIs (e.g., Stripe, Twilio) and the risks of supply-chain style API poisoning.
 
 ## ASCII Architecture Diagram
-```text
-  [ Client Application ]                          [ Third-Party APIs ]
-        |       ^                                          ^
-        |       |                                          |
-   (1) API Req  | (4) API Res                 (API10: Unsafe Consumption)
-        |       |                                          |
-        v       |                                          v
-  +-----------------------+                    +-----------------------+
-  |      API Gateway      | ---(2) Forward---> |    Microservices      |
-  |  (Auth, Rate Limit)   |                    |   (Business Logic)    |
-  |  API2, API4, API8     | <---(3) Process--- |  API1, API3, API5,    |
-  +-----------------------+                    |  API6, API7, API9     |
-                                               +-----------------------+
+```mermaid
+flowchart TD
+    CLIENT["Client Application"]
+    THIRD["Third-Party APIs"]
+    GATEWAY["API Gateway<br>(Auth, Rate Limit)<br>API2, API4, API8"]
+    MICRO["Microservices<br>(Business Logic)<br>API1, API3, API5,<br>API6, API7, API9"]
+
+    CLIENT -- "(1) API Req" --> GATEWAY
+    GATEWAY -- "(4) API Res" --> CLIENT
+    GATEWAY -- "(2) Forward" --> MICRO
+    MICRO -- "(3) Process" --> GATEWAY
+
+    MICRO -- "(API10: Unsafe Consumption)" --> THIRD
+    THIRD --> MICRO
 ```
 
 ## Deep Dive into the API Top 10

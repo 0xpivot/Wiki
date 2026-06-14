@@ -20,41 +20,29 @@ Dependency-Check solves this by deeply analyzing applications, building an inven
 
 The following ASCII diagram shows how Dependency-Check processes an application, extracts metadata, correlates with databases, and generates a report.
 
-```text
-+---------------------+
-|   Application Code  |
-|  & Build Manifests  | (pom.xml, package.json, requirements.txt)
-+---------+-----------+
-          |
-          v
-+-------------------------------------------------------------+
-|               OWASP Dependency-Check Engine                 |
-|                                                             |
-|  1. [Evidence Collection]                                   |
-|      (Parses manifests, extracts JAR/DLL metadata, hashes)  |
-|               |                                             |
-|               v                                             |
-|  2. [CPE Identification]                                    |
-|      (Maps evidence to Common Platform Enumeration format)  |
-|               |                                             |
-|               v                                             |
-|  3. [Vulnerability Database Correlation]                    |
-|      (Queries local/remote NVD, Sonatype OSS Index, etc.)   |
-+-------------------------+-----------------------------------+
-          |               ^
-          | Updates       | Fetches CVE/CVS scores
-          v               v
-+---------------------+ +-------------------------------------+
-| Local H2 Database   | | External Vulnerability Databases    |
-| (NVD Mirror Cache)  | | (NVD, GitHub Advisories, OSS Index) |
-+---------------------+ +-------------------------------------+
-          |
-          v
-+-------------------------------------------------------------+
-|                      Report Generation                      |
-|  [ HTML Report ]   [ XML Report ]   [ JSON Report ]         |
-|  (Human Readable)  (SonarQube)      (Custom Tooling)        |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    APP["Application Code & Build Manifests<br>(pom.xml, package.json, requirements.txt)"]
+
+    subgraph ENGINE ["OWASP Dependency-Check Engine"]
+        E1["1. Evidence Collection<br>(Parses manifests, extracts JAR/DLL metadata, hashes)"]
+        E2["2. CPE Identification<br>(Maps evidence to Common Platform Enumeration format)"]
+        E3["3. Vulnerability Database Correlation<br>(Queries local/remote NVD, Sonatype OSS Index, etc.)"]
+
+        E1 --> E2 --> E3
+    end
+
+    L_DB["Local H2 Database<br>(NVD Mirror Cache)"]
+    E_DB["External Vulnerability Databases<br>(NVD, GitHub Advisories, OSS Index)"]
+
+    APP --> E1
+
+    E3 -- "Updates" --> L_DB
+    E_DB -- "Fetches CVE/CVS scores" --> E3
+    L_DB --> E3
+
+    REP["Report Generation<br>[ HTML Report ] [ XML Report ] [ JSON Report ]<br>(Human Readable) (SonarQube) (Custom Tooling)"]
+    E3 --> REP
 ```
 
 ---

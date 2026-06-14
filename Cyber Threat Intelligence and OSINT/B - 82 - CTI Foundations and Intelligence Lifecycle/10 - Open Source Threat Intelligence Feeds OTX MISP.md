@@ -95,39 +95,26 @@ A critical, often overlooked challenge with free OSINT feeds is maintaining data
 
 ## Visualizing MISP and OTX Integration Architecture
 
-```ascii
-========================================================================================
-                 OSINT THREAT INTELLIGENCE INGESTION ARCHITECTURE
-========================================================================================
+```mermaid
+flowchart LR
+    subgraph External["External Communities"]
+        OTX["AlienVault OTX<br/>(Crowdsourced IoCs)"]
+        Abuse["Abuse.ch Feeds<br/>(URLhaus, SSL Black)"]
+        MISP["Partner MISP Server<br/>(Sector ISAC)"]
+    end
 
-    [ External Communities ]                               [ Internal Corporate Network ]
-                                                              
-  +----------------------+                                     +----------------------+
-  |                      |                                     |                      |
-  |  AlienVault OTX      |-----+       (API Polling)           |   Corporate SIEM     |
-  |  (Crowdsourced IoCs) |     |------------------------------>|   (Splunk / Sentinel)|
-  |                      |     |                               |                      |
-  +----------------------+     |                               +----------------------+
-                               |                                          ^
-                               v                                          |
-  +----------------------+  [ SOAR Platform / TIP Orchestrator ]          |
-  |                      |  (De-duplication, Allowlisting, Context)       |
-  |  Abuse.ch Feeds      |---->|                                          |
-  |  (URLhaus, SSL Black)|     |==========================================+
-  |                      |     |                                          |
-  +----------------------+     |                                          | (Automated 
-                               ^                                          |  Blocking)
-                               |                                          v
-  +----------------------+     |                               +----------------------+
-  |                      |     |                               |                      |
-  |  Partner MISP Server |-----+       (MISP Sync Protocol)    |  Perimeter Firewall  |
-  |  (Sector ISAC)       |<----------------------------------->|  (Palo Alto, Forti)  |
-  |                      |                                     |                      |
-  +----------------------+                                     +----------------------+
+    subgraph Internal["Internal Corporate Network"]
+        SOAR["SOAR Platform / TIP Orchestrator<br/>(De-duplication, Allowlisting, Context)"]
+        SIEM["Corporate SIEM<br/>(Splunk / Sentinel)"]
+        FW["Perimeter Firewall<br/>(Palo Alto, Forti)"]
+    end
 
-========================================================================================
-    Strategy: Ingest data widely, filter ruthlessly, and automate defensive actions.
-========================================================================================
+    OTX -->|(API Polling)| SIEM
+    OTX --> SOAR
+    Abuse --> SOAR
+    MISP <-->|(MISP Sync Protocol)| SOAR
+    SOAR --> SIEM
+    SOAR -->|(Automated Blocking)| FW
 ```
 
 ## Other Notable OSINT Feeds

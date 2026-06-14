@@ -30,41 +30,19 @@ Identifiers are the linchpin of BOLA.
 
 The diagram below illustrates the disparity between a secure authorization flow and a vulnerable BOLA flow.
 
-```text
-========================================================================================
-                          BOLA ATTACK ARCHITECTURE DIAGRAM
-========================================================================================
+```mermaid
+flowchart TD
+    A["Attacker (User ID: A)"]
+    G["API Gateway"]
+    AuthN["Authentication Service"]
+    AuthZ["Authorization Service\n(MISSING OR FLAWED IN BOLA!\nAPI assumes A is authorized for B.)"]
+    DB["Database Engine\n(SELECT * FROM records WHERE id = 'B')"]
 
-      [ Attacker (User ID: A) ]
-                 |
-                 | 1. GET /api/v1/financial_records/B
-                 V
-   +---------------------------+
-   |        API Gateway        | --> Routes request
-   +---------------------------+
-                 |
-                 V
-   +---------------------------+
-   |   Authentication Service  | --> Validates User A's JWT. (AuthN passes)
-   +---------------------------+
-                 |
-                 V
-   +---------------------------+
-   |   Authorization Service   | --> MISSING OR FLAWED IN BOLA!
-   |  (Should check if A owns  |     API assumes A is authorized for B.
-   |   record B)               |
-   +---------------------------+
-                 |
-                 V
-   +---------------------------+
-   |      Database Engine      | --> SELECT * FROM records WHERE id = 'B'
-   +---------------------------+
-                 |
-                 | 2. Returns Record B
-                 V
-      [ Attacker (User ID: A) ]   <-- EXPLOITATION SUCCESSFUL
-
-========================================================================================
+    A -- "1. GET /api/v1/financial_records/B" --> G
+    G -- "Routes request" --> AuthN
+    AuthN -- "Validates User A's JWT. (AuthN passes)" --> AuthZ
+    AuthZ --> DB
+    DB -- "2. Returns Record B\nEXPLOITATION SUCCESSFUL" --> A
 ```
 
 ## 4. Attack Vectors and Threat Modeling

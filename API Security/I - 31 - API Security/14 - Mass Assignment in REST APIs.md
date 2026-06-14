@@ -55,32 +55,16 @@ Because the `user.update()` function iterates over every key provided in the pay
 
 ## 3. Attack Architecture & Flow
 
-```text
-      [Attacker]
-           |
-           | 1. Intercepts legitimate profile update request
-           |    PUT /api/v1/profile
-           |    {"email": "hacker@evil.com"}
-           |
-           | 2. Appends hidden, sensitive properties to the JSON payload
-           |    {"email": "hacker@evil.com", "role": "admin", "is_verified": true}
-           v
-      [REST API / Framework Middleware]
-           |
-           | 3. Framework performs Auto-Binding / Mass Assignment
-           |    UserObject.bind(Incoming_JSON)
-           |    (Fails to filter out unauthorized fields)
-           v
-   [Internal Business Logic / ORM]
-           |
-           | 4. Generates SQL Query:
-           |    UPDATE users SET email='hacker@evil.com', role='admin', 
-           |    is_verified=true WHERE id=42;
-           v
-      [Production Database]
-           |
-           | 5. Database Executes Query.
-           |    Attacker account is now an Administrator.
+```mermaid
+flowchart TD
+    Attacker["Attacker"]
+    API["REST API / Framework Middleware\n3. Framework performs Auto-Binding / Mass Assignment\nUserObject.bind(Incoming_JSON)\n(Fails to filter out unauthorized fields)"]
+    Logic["Internal Business Logic / ORM"]
+    DB["Production Database\n5. Database Executes Query.\nAttacker account is now an Administrator."]
+
+    Attacker -- "1. Intercepts legitimate profile update request\nPUT /api/v1/profile\n{'email': 'hacker@evil.com'}\n\n2. Appends hidden, sensitive properties to the JSON payload\n{'email': 'hacker@evil.com', 'role': 'admin', 'is_verified': true}" --> API
+    API --> Logic
+    Logic -- "4. Generates SQL Query:\nUPDATE users SET email='hacker@evil.com', role='admin',\nis_verified=true WHERE id=42;" --> DB
 ```
 
 ## 4. Deep Dive: Exploitation Methodologies

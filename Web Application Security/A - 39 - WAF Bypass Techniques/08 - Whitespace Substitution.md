@@ -27,39 +27,16 @@ If the WAF's normalization engine does not map these obscure control characters 
 
 ### 2.1 Execution Flow Diagram
 
-```text
-+-------------------------------------------------------------+
-|                        ATTACKER                             |
-|  Payload: SELECT%0Bid%0BFROM%0Busers                        |
-|  (%0B is Vertical Tab)                                      |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                      WAF / FILTER                           |
-| 1. URL Decodes payload: "SELECT\x0Bid\x0BFROM\x0Busers"     |
-| 2. Evaluates Rule: /SELECT\s+id/i                           |
-| 3. Regex Engine Evaluation:                                 |
-|    Does \x0B match \s? (In many default configs, NO)        |
-| 4. Match: FALSE                                             |
-| 5. Decision: ALLOW                                          |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                   BACKEND DATABASE ENGINE                   |
-| 1. Lexer processes input stream.                            |
-| 2. Encounters \x0B.                                         |
-| 3. Lexer definition maps \x0B to whitespace token.          |
-| 4. Tokenizes: [SELECT] [id] [FROM] [users]                  |
-| 5. AST built and query parsed successfully.                 |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                    PAYLOAD EXECUTION                        |
-| Query executes successfully. Data returned.                 |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["ATTACKER <br/> Payload: SELECT%0Bid%0BFROM%0Busers <br/> (%0B is Vertical Tab)"]
+    WAF["WAF / FILTER <br/> 1. URL Decodes payload: SELECT\\x0Bid\\x0BFROM\\x0Busers <br/> 2. Evaluates Rule: /SELECT\\s+id/i <br/> 3. Regex Engine Evaluation: <br/> Does \\x0B match \\s? (In many default configs, NO) <br/> 4. Match: FALSE <br/> 5. Decision: ALLOW"]
+    Backend["BACKEND DATABASE ENGINE <br/> 1. Lexer processes input stream. <br/> 2. Encounters \\x0B. <br/> 3. Lexer definition maps \\x0B to whitespace token. <br/> 4. Tokenizes: [SELECT] [id] [FROM] [users] <br/> 5. AST built and query parsed successfully."]
+    Execution["PAYLOAD EXECUTION <br/> Query executes successfully. Data returned."]
+
+    Attacker --> WAF
+    WAF --> Backend
+    Backend --> Execution
 ```
 
 ---

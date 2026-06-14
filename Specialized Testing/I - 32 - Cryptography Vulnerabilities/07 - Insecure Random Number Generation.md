@@ -67,42 +67,28 @@ A ubiquitous and dangerous anti-pattern is seeding a PRNG with the current syste
 
 ### ASCII Diagram: PRNG Prediction Attack Architecture
 
-```text
-=============================================================================
-|                  Normal Secure Operation (CSPRNG)                         |
-=============================================================================
-[ System Entropy Pool ]  (High Quality: Hardware interrupts, timing)
-          |
-          | (Cryptographic Seed - 256+ bits)
-          v
-[ CSPRNG Algorithm (e.g., HMAC_DRBG, ChaCha20) ]
-          |
-          v
-  Output: 8f4a2b9e7... (Secure, Unpredictable, Resilient to state discovery)
+```mermaid
+flowchart TD
+    subgraph Secure[Normal Secure Operation CSPRNG]
+        direction TB
+        Pool["[ System Entropy Pool ]\nHigh Quality: Hardware interrupts, timing"] -->|Cryptographic Seed - 256+ bits| CSPRNG["[ CSPRNG Algorithm ]\ne.g., HMAC_DRBG, ChaCha20"]
+        CSPRNG --> Out1["Output: 8f4a2b9e7...\nSecure, Unpredictable"]
+    end
 
+    subgraph Vuln[Vulnerable Operation - Predictable Seed Attack]
+        direction TB
+        AppServer["[ Application Server ]"] -->|"Seed = int(time.time() * 1000)"| PRNG["[ PRNG Algorithm ]"]
+        PRNG --> OutA["Output Token: 123456\n(Sent to User A)"]
+        PRNG --> OutB["Output Token: 789012\n(Sent to Victim B - TARGET)"]
+    end
 
-=============================================================================
-|                  Vulnerable Operation (Predictable Seed Attack)           |
-=============================================================================
-[ Application Server ]
-          |
-          | Seed = int(time.time() * 1000)  <-- VULNERABILITY!
-          v
-[ PRNG Algorithm ] ---> Output Token: "123456" (Sent to User A)
-                   ---> Output Token: "789012" (Sent to Victim B - TARGET)
-
------------------------------------------------------------------------------
-[ Attacker Infrastructure ]
-          |
-          | 1. Attacker observes User A token generated around timestamp T.
-          | 2. Attacker knows Victim B token generated at timestamp T + 50ms.
-          v
-[ Attacker's Local PRNG Clone ]
-          |
-          +--> Try Seed: T      --> Output: "123456" (Matches User A! Sync established)
-          +--> Try Seed: T+1    --> Output: ...
-          | ...
-          +--> Try Seed: T+50   --> Output: "789012" (Matches TARGET! Attack successful)
+    subgraph Attacker[Attacker Infrastructure]
+        direction TB
+        Obs["1. Observes User A token at time T.\n2. Knows Victim B token at T+50ms."] --> Clone["[ Attacker's Local PRNG Clone ]"]
+        Clone -->|Try Seed: T| MatchA["Output: 123456\nMatches User A! Sync established"]
+        Clone -->|Try Seed: T+1| MatchNext["Output: ..."]
+        Clone -->|Try Seed: T+50| MatchTarget["Output: 789012\nMatches TARGET! Attack successful"]
+    end
 ```
 
 ## Detailed Exploitation Scenarios in the Wild

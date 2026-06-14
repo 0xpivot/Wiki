@@ -33,34 +33,20 @@ This hierarchy manages the actual cloud resources (VMs, databases, networks).
 
 ### Visualizing the Azure Flow
 
-```text
-+-------------------------------------------------------+
-|                Tenant (Directory / Entra ID)          |
-|                                                       |
-|  +----------------+               +----------------+  |
-|  |  Global Admin  |               | Entra ID Roles |  |
-|  +-------+--------+               +----------------+  |
-|          |                                            |
-|          v      (Elevate access to Azure Resources)   |
-+-------------------------------------------------------+
-           |
-           v
-+-------------------------------------------------------+
-|              Management Group (Root)                  |
-|  +-------------------------------------------------+  |
-|  |             Subscription (e.g., Prod)           |  |
-|  |                                                 |  |
-|  |  +-------------------------------------------+  |  |
-|  |  |         Resource Group (Web-App)          |  |  |
-|  |  |                                           |  |  |
-|  |  |  +------------+          +-------------+  |  |  |
-|  |  |  | Virtual    |          | Storage     |  |  |  |
-|  |  |  | Machine    |          | Account     |  |  |  |
-|  |  |  | (Owner)    |          | (Reader)    |  |  |  |
-|  |  |  +------------+          +-------------+  |  |  |
-|  |  +-------------------------------------------+  |  |
-|  +-------------------------------------------------+  |
-+-------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Tenant Directory / Entra ID
+        A[Global Admin] -->|Elevate access to Azure Resources| B[Management Group Root]
+        C[Entra ID Roles]
+    end
+    subgraph Management Group Root
+        subgraph Subscription e.g., Prod
+            subgraph Resource Group Web-App
+                D[Virtual Machine Owner]
+                E[Storage Account Reader]
+            end
+        end
+    end
 ```
 
 ---

@@ -29,46 +29,15 @@ Before diving into enumeration techniques, it is crucial to understand the build
 ## 3. Enumeration Flow and ASCII Diagram
 The typical flow of IAM enumeration begins from a point of compromise (e.g., a leaked access key, a Server-Side Request Forgery on an EC2 instance, or a compromised CI/CD pipeline).
 
-```text
-+-------------------------------------------------------------+
-|                AWS IAM Enumeration Workflow                 |
-+-------------------------------------------------------------+
-                            |
-                     [Initial Access]
-             (Leaked Keys / SSRF / Web Shell)
-                            |
-                            v
-+-------------------------------------------------------------+
-| 1. Context Identification                                   |
-|   - sts:GetCallerIdentity (Who am I?)                       |
-|   - Identify Account ID, ARN, and User ID                   |
-+-------------------------------------------------------------+
-                            |
-                            v
-+-------------------------------------------------------------+
-| 2. Basic IAM Enumeration (If permitted)                     |
-|   - iam:ListUsers, iam:ListRoles                            |
-|   - iam:ListGroupsForUser                                   |
-+-------------------------------------------------------------+
-                            |
-                            v
-+-------------------------------------------------------------+
-| 3. Policy & Permission Extraction                           |
-|   - iam:ListAttachedUserPolicies                            |
-|   - iam:ListUserPolicies (Inline)                           |
-|   - iam:GetPolicy / iam:GetPolicyVersion                    |
-+-------------------------------------------------------------+
-                            |
-                            v
-+-------------------------------------------------------------+
-| 4. Analyzing Privilege Escalation Paths                     |
-|   - Can I create a new user? (iam:CreateUser)               |
-|   - Can I attach a policy? (iam:AttachUserPolicy)           |
-|   - Can I pass a role? (iam:PassRole)                       |
-+-------------------------------------------------------------+
-                            |
-                            v
-                  [Exploitation / PrivEsc]
+```mermaid
+graph TD
+    subgraph AWS IAM Enumeration Workflow
+        A[Initial Access <br/> Leaked Keys / SSRF / Web Shell] --> B[1. Context Identification <br/> - sts:GetCallerIdentity Who am I? <br/> - Identify Account ID, ARN, and User ID]
+        B --> C[2. Basic IAM Enumeration If permitted <br/> - iam:ListUsers, iam:ListRoles <br/> - iam:ListGroupsForUser]
+        C --> D[3. Policy & Permission Extraction <br/> - iam:ListAttachedUserPolicies <br/> - iam:ListUserPolicies Inline <br/> - iam:GetPolicy / iam:GetPolicyVersion]
+        D --> E[4. Analyzing Privilege Escalation Paths <br/> - Can I create a new user? iam:CreateUser <br/> - Can I attach a policy? iam:AttachUserPolicy <br/> - Can I pass a role? iam:PassRole]
+        E --> F[Exploitation / PrivEsc]
+    end
 ```
 
 ## 4. Phase 1: Context Identification

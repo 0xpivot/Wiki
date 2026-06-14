@@ -29,34 +29,21 @@ Before utilizing enumeration tools, one must understand the structural hierarchy
 ## 3. Enumeration Architecture Diagram
 The following ASCII diagram illustrates the separation and connection between the Identity Plane and the Resource Plane, and where enumeration tools typically interface.
 
-```text
-+-------------------------------------------------------------------------+
-|                        MICROSOFT CLOUD ENVIRONMENT                      |
-|                                                                         |
-|  [IDENTITY PLANE: Entra ID]           [RESOURCE PLANE: Azure RM]        |
-|  (Graph API / Azure AD Graph)         (Azure Resource Manager API)      |
-|                                                                         |
-|      +------------------+                   +------------------+        |
-|      |                  |  Role Assignments | Root Management  |        |
-|      | Global Admin     | ----------------> | Group (Azure)    |        |
-|      |                  |  (Elevate Access) |                  |        |
-|      +------------------+                   +--------+---------+        |
-|              |                                       |                  |
-|              v                                       v                  |
-|      +------------------+                   +--------+---------+        |
-|      |                  |     Azure RBAC    |                  |        |
-|      | Users & Groups   | ----------------> | Subscriptions    |        |
-|      |                  |  (e.g., Owner,    |                  |        |
-|      +------------------+   Contributor)    +--------+---------+        |
-|              |                                       |                  |
-|              v                                       v                  |
-|      +------------------+                   +--------+---------+        |
-|      | App Registrations|     Azure RBAC    | Resource Groups  |        |
-|      | & Service        | ----------------> | (VMs, KeyVault,  |        |
-|      | Principals       |                   | Storage Accounts)|        |
-|      +------------------+                   +------------------+        |
-|                                                                         |
-+-------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph MICROSOFT CLOUD ENVIRONMENT
+        subgraph IDENTITY PLANE: Entra ID <br/> Graph API / Azure AD Graph
+            A[Global Admin] --> B[Users & Groups]
+            B --> C[App Registrations & Service Principals]
+        end
+        subgraph RESOURCE PLANE: Azure RM <br/> Azure Resource Manager API
+            D[Root Management Group Azure] --> E[Subscriptions]
+            E --> F[Resource Groups VMs, KeyVault, Storage Accounts]
+        end
+        A -- Role Assignments Elevate Access --> D
+        B -- Azure RBAC e.g., Owner, Contributor --> E
+        C -- Azure RBAC --> F
+    end
 ```
 
 ## 4. Initial Access and Authentication

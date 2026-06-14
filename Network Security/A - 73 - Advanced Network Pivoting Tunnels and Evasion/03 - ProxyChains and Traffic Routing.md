@@ -14,19 +14,18 @@ Establishing a SOCKS proxy (via SSH, Chisel, or Metasploit) is only the first ha
 
 ## 2. ASCII Architecture Diagram
 
-```text
-[Offensive Tool]             [Proxychains System Hook]              [Local SOCKS Proxy]
- Nmap / Hydra   ===========>   LD_PRELOAD Hooking      ===========>   127.0.0.1:9050
- (Executes as      Intercepts: connect()                      (SSH -D or Chisel)
-  normal)                      gethostbyname()                        |
-                               sendto()                               |
-                                                                      V
-                                                        [Compromised Pivot Machine]
-                                                        (10.10.10.50 via Tunnel)
-                                                                      |
-                                                                      V
-                                                            [Internal Target Server]
-                                                            (192.168.100.25:445)
+```mermaid
+sequenceDiagram
+    participant Tool as Offensive Tool<br/>Nmap / Hydra<br/>(Executes as normal)
+    participant Hook as Proxychains System Hook<br/>LD_PRELOAD Hooking
+    participant Proxy as Local SOCKS Proxy<br/>127.0.0.1:9050<br/>(SSH -D or Chisel)
+    participant Pivot as Compromised Pivot Machine<br/>(10.10.10.50 via Tunnel)
+    participant Target as Internal Target Server<br/>(192.168.100.25:445)
+
+    Tool->>Hook: connect(), gethostbyname(), sendto()
+    Hook->>Proxy: Intercepted and routed
+    Proxy->>Pivot: Encapsulated through Tunnel
+    Pivot->>Target: Forwarded to Internal Target
 ```
 
 ## 3. How ProxyChains Works: The LD_PRELOAD Mechanism

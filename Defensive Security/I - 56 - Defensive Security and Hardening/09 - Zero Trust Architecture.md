@@ -21,35 +21,37 @@ Zero Trust is not a single product or software suite you can buy; it is a strate
 
 ## Architecture Diagram: Zero Trust vs Traditional
 
-```text
-===================================================================================
-                       Traditional "Castle and Moat"
-===================================================================================
-     Untrusted                   Firewall Perimeter                 Trusted
-  [ Internet ] ---------------------> [ FW ] <------------------ [ Internal Network ]
-   Attacker -----------------------> Breaches FW -----------> Moves freely inside!
-                                                              No further checks.
+```mermaid
+flowchart TD
+    subgraph Trad["Traditional 'Castle and Moat'"]
+        direction LR
+        T_Int["Untrusted\n[ Internet ]"] --> T_FW["Firewall Perimeter\n[ FW ]"]
+        T_FW --> T_Trusted["Trusted\n[ Internal Network ]"]
+        T_Att["Attacker"] -- "Breaches FW" --> T_Move["Moves freely inside!\nNo further checks."]
+    end
 
-===================================================================================
-                            Zero Trust Architecture
-===================================================================================
-                                                           
-   User / Device                      Policy Engine /                   Enterprise
-   Context                            Trust Broker                      Resources
-                                                                     
- +---------------+                  +---------------+             +-----------------+
- | Identity (IdP)|                  |               |             |  App A (SaaS)   |
- | MFA Status    |                  |  Continuous   |  Enforces   +-----------------+
- | Device Health | =======>         |  Risk         | ========>   |  App B (On-Prem)|
- | Location      | (Request Access) |  Assessment   |  Policy     +-----------------+
- | Behavior      |                  |               |             |  Database C     |
- +---------------+                  +---------------+             +-----------------+
-                                           ^
-                                           | Telemetry & Logs
-                                  +--------+--------+
-                                  | SIEM / EDR / XDR|
-                                  +-----------------+
-===================================================================================
+    subgraph ZT["Zero Trust Architecture"]
+        direction LR
+        subgraph Context["User / Device Context"]
+            direction TB
+            C_Id["Identity (IdP)\nMFA Status"]
+            C_Health["Device Health\nLocation\nBehavior"]
+        end
+        
+        Broker["Policy Engine /\nTrust Broker\n(Continuous Risk Assessment)"]
+        
+        subgraph Resources["Enterprise Resources"]
+            direction TB
+            R_SaaS["App A (SaaS)"]
+            R_OnPrem["App B (On-Prem)"]
+            R_DB["Database C"]
+        end
+        
+        Context -- "(Request Access)" --> Broker
+        Broker -- "Enforces Policy" --> Resources
+        
+        Telemetry["SIEM / EDR / XDR"] -- "Telemetry & Logs" --> Broker
+    end
 ```
 
 ## The Pillars of Zero Trust

@@ -18,26 +18,16 @@ For years, penetration testers and red teamers relied heavily on SSH SOCKS proxi
 
 ## 2. ASCII Architecture Diagram
 
-```text
-===============================================================================================
-[Attacker Machine]                                        [Compromised Target]
- (Ligolo Server / Proxy)                                     (Ligolo Agent)
-  192.168.1.10                                                 10.10.10.50
-       |                                                            |
- [tun0 Interface]                                                   |
- (10.0.0.1/24) <============ TLS / MuxRPC Encapsulation ===========>|
-       |                                                            |
- Native OS Routing                                                  |
- (ip route add 10.10.20.0/24 via 10.0.0.1)                          |
-       |                                                            |
-       \------------------------------------------------------------/
-                                      |
-                               [Internal Subnet]
-                                 10.10.20.0/24
-                                      |
-                           [Target A: 10.10.20.100]
-                           (Responds directly to Ping, UDP, TCP)
-===============================================================================================
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker Machine<br/>(Ligolo Server / Proxy)<br/>192.168.1.10
+    participant Agent as Compromised Target<br/>(Ligolo Agent)<br/>10.10.10.50
+    participant Target as Internal Subnet Target A<br/>10.10.20.100
+
+    Note over Attacker: [tun0 Interface]<br/>(10.0.0.1/24)
+    Attacker<->>Agent: TLS / MuxRPC Encapsulation
+    Note over Attacker: Native OS Routing<br/>(ip route add 10.10.20.0/24 via 10.0.0.1)
+    Attacker->>Target: Routed to Target A<br/>(Responds directly to Ping, UDP, TCP)
 ```
 
 ## 3. Ligolo-ng Architecture and Core Components

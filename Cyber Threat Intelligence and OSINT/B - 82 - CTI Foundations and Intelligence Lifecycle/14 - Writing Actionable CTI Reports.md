@@ -46,38 +46,15 @@ A single intelligence product rarely satisfies all audiences. CTI teams typicall
 
 ### ASCII Diagram: Report Structure and Flow
 
-```text
-+-------------------------------------------------------------+
-|                     TITLE & METADATA                        |
-| Title: High-Confidence Warning regarding APT-X Phishing     |
-| Date: 2023-11-01  | TLP: AMBER | Analyst: Team Alpha        |
-+-------------------------------------------------------------+
-                              |
-+-------------------------------------------------------------+
-|                 EXECUTIVE SUMMARY (BLUF)                    |
-| State the Threat. State the Impact. State the Action.       |
-| (Read by Executives and Management)                         |
-+-------------------------------------------------------------+
-                              |
-+-------------------------------------------------------------+
-|                   ANALYSIS & NARRATIVE                      |
-| Context, Attack Vector, MITRE ATT&CK Mapping.               |
-| Why is this happening? How does it work?                    |
-| (Read by Operational Leads and Intelligence Peers)          |
-+-------------------------------------------------------------+
-                              |
-+-------------------------------------------------------------+
-|                  TECHNICAL DETAILS & IOCS                   |
-| Hashes, Domains, IP Addresses, YARA/Sigma Rules.            |
-| Usually formatted as tables or attached as CSV/JSON.        |
-| (Read by SOC Analysts and Threat Hunters)                   |
-+-------------------------------------------------------------+
-                              |
-+-------------------------------------------------------------+
-|                 DEFENSIVE RECOMMENDATIONS                   |
-| 1. Short-term mitigation (e.g., Block IPs)                  |
-| 2. Long-term remediation (e.g., Disable SMBv1, enforce MFA) |
-+-------------------------------------------------------------+
+```mermaid
+flowchart TD
+    A["TITLE & METADATA<br/>Title: High-Confidence Warning regarding APT-X Phishing<br/>Date: 2023-11-01 | TLP: AMBER | Analyst: Team Alpha"]
+    B["EXECUTIVE SUMMARY (BLUF)<br/>State the Threat. State the Impact. State the Action.<br/>(Read by Executives and Management)"]
+    C["ANALYSIS & NARRATIVE<br/>Context, Attack Vector, MITRE ATT&CK Mapping.<br/>Why is this happening? How does it work?<br/>(Read by Operational Leads and Intelligence Peers)"]
+    D["TECHNICAL DETAILS & IOCS<br/>Hashes, Domains, IP Addresses, YARA/Sigma Rules.<br/>Usually formatted as tables or attached as CSV/JSON.<br/>(Read by SOC Analysts and Threat Hunters)"]
+    E["DEFENSIVE RECOMMENDATIONS<br/>1. Short-term mitigation (e.g., Block IPs)<br/>2. Long-term remediation (e.g., Disable SMBv1, enforce MFA)"]
+
+    A --> B --> C --> D --> E
 ```
 
 ## Estimative Language and Confidence Levels

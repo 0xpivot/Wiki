@@ -30,21 +30,13 @@ Not all patches are created equal, and not all assets require immediate patching
 
 ## The ASCII Architecture: Patch Deployment Workflow
 
-```text
-+-------------------+       +-----------------------+       +-------------------+
-| Vendor Release    |       | Vulnerability Triage  |       | Testing Phase     |
-| - Patch Tuesday   | ====> | - EPSS / CISA KEV     | ====> | - QA Environment  |
-| - Out-of-Band     |       | - Asset Criticality   |       | - UAT Sign-off    |
-| - Advisories      |       | - Define SLAs         |       | - Rollback Plan   |
-+-------------------+       +-----------------------+       +-------------------+
-                                                                     |
-                                                                     v
-+-------------------+       +-----------------------+       +-------------------+
-| Validation Phase  | <==== | Deployment Phase      | <==== | Phased Rollout    |
-| - Scan Validation |       | - Automated Push      |       | - Ring 0 (IT)     |
-| - Compliance KPIs |       | - SCCM/Intune/Ansible |       | - Ring 1 (Dev)    |
-| - Exception Mgmt  |       | - Monitor for Issues  |       | - Ring 2 (Prod)   |
-+-------------------+       +-----------------------+       +-------------------+
+```mermaid
+flowchart TD
+    Vendor["Vendor Release\n- Patch Tuesday\n- Out-of-Band\n- Advisories"] --> Triage["Vulnerability Triage\n- EPSS / CISA KEV\n- Asset Criticality\n- Define SLAs"]
+    Triage --> Testing["Testing Phase\n- QA Environment\n- UAT Sign-off\n- Rollback Plan"]
+    Testing --> Phased["Phased Rollout\n- Ring 0 (IT)\n- Ring 1 (Dev)\n- Ring 2 (Prod)"]
+    Phased --> Deployment["Deployment Phase\n- Automated Push\n- SCCM/Intune/Ansible\n- Monitor for Issues"]
+    Deployment --> Validation["Validation Phase\n- Scan Validation\n- Compliance KPIs\n- Exception Mgmt"]
 ```
 
 ## Deployment Strategies: Ring Methodology

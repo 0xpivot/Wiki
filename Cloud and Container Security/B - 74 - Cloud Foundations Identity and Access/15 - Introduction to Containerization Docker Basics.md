@@ -42,30 +42,36 @@ A Docker registry stores and distributes Docker images. Docker Hub is the defaul
 
 ## 3. Visualizing Container Architecture vs. VM
 
-```text
-  +--------------------------------+       +--------------------------------+
-  |       VIRTUAL MACHINES         |       |         CONTAINERS             |
-  +--------------------------------+       +--------------------------------+
-  | +---------+      +---------+   |       | +---------+      +---------+   |
-  | |  App A  |      |  App B  |   |       | |  App A  |      |  App B  |   |
-  | +---------+      +---------+   |       | +---------+      +---------+   |
-  | | Bins/Libs|     | Bins/Libs|  |       | | Bins/Libs|     | Bins/Libs|  |
-  | +---------+      +---------+   |       | +---------+      +---------+   |
-  | | Guest OS|      | Guest OS|   |       | |         |      |         |   |
-  | +---------+      +---------+   |       | +---------+      +---------+   |
-  |                                |       |                                |
-  | +----------------------------+ |       | +----------------------------+ |
-  | |        HYPERVISOR          | |       | |       DOCKER ENGINE        | |
-  | +----------------------------+ |       | +----------------------------+ |
-  |                                |       |                                |
-  | +----------------------------+ |       | +----------------------------+ |
-  | |    HOST OPERATING SYSTEM   | |       | |    HOST OPERATING SYSTEM   | |
-  | +----------------------------+ |       | +----------------------------+ |
-  |                                |       |                                |
-  | +----------------------------+ |       | +----------------------------+ |
-  | |       INFRASTRUCTURE       | |       | |       INFRASTRUCTURE       | |
-  | +----------------------------+ |       | +----------------------------+ |
-  +--------------------------------+       +--------------------------------+
+```mermaid
+graph TD
+    subgraph VIRTUAL MACHINES
+        A[App A]
+        B[App B]
+        C[Bins/Libs]
+        D[Bins/Libs]
+        E[Guest OS]
+        F[Guest OS]
+        A --> C
+        B --> D
+        C --> E
+        D --> F
+        E --> G[HYPERVISOR]
+        F --> G
+        G --> H[HOST OPERATING SYSTEM]
+        H --> I[INFRASTRUCTURE]
+    end
+    subgraph CONTAINERS
+        J[App A]
+        K[App B]
+        L[Bins/Libs]
+        M[Bins/Libs]
+        J --> L
+        K --> M
+        L --> N[DOCKER ENGINE]
+        M --> N
+        N --> O[HOST OPERATING SYSTEM]
+        O --> P[INFRASTRUCTURE]
+    end
 ```
 
 ## 4. Threat Landscape and Vulnerabilities

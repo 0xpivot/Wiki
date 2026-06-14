@@ -102,39 +102,15 @@ This drastically alters the Cyclomatic Complexity and the basic block layout in 
 
 ## ASCII Diagram: The Garble Compilation Wrapper
 
-```text
-+-----------------------+
-|  Original Go Source   |
-|  (main.go, net.go)    |
-+-----------+-----------+
-            |
-            v
-+=======================+
-| GARBLE WRAPPER PIPELINE|
-|                       |
-| 1. Parse into AST     |
-| 2. Scramble Names     |
-| 3. XOR String Literals|
-| 4. Flatten CFG        |
-+===========+===========+
-            |
-            v
-+-----------------------+
-|  Obfuscated AST       |
-|  (In-Memory)          |
-+-----------+-----------+
-            |
-            v
-+-----------------------+
-|  Standard Go Compiler |
-|  (go build -trimpath) |
-+-----------+-----------+
-            |
-            v
-+-----------------------+
-| Obfuscated Executable |
-| (High Entropy, No Str)|
-+-----------------------+
+```mermaid
+flowchart TD
+    Orig["Original Go Source<br>(main.go, net.go)"]
+    Garble["GARBLE WRAPPER PIPELINE<br>1. Parse into AST<br>2. Scramble Names<br>3. XOR String Literals<br>4. Flatten CFG"]
+    ObfAST["Obfuscated AST<br>(In-Memory)"]
+    Comp["Standard Go Compiler<br>(go build -trimpath)"]
+    Exec["Obfuscated Executable<br>(High Entropy, No Str)"]
+    
+    Orig --> Garble --> ObfAST --> Comp --> Exec
 ```
 
 ## 5. The Defensive Trade-off: High Entropy

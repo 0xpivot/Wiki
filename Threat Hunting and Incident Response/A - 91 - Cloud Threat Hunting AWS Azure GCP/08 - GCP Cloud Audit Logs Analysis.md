@@ -25,19 +25,11 @@ GCP categorizes audit logs into four distinct types:
 
 ## ASCII Diagram: GCP Audit Log Architecture
 
-```text
-+---------------------+     +--------------------------+     +------------------------+
-| Google Cloud APIs   | --> | Cloud Logging (Audit)    | --> | Log Router             |
-| (Compute, Storage)  |     | - Admin Activity         |     | - Sinks (Pub/Sub, BQ)  |
-| - Data Access       | --> | - Data Access            | --> | - BigQuery Workspace   |
-| - System Events     |     | - System Events          |     | - Splunk / SIEM        |
-+---------------------+     +--------------------------+     +------------------------+
-                                      |
-                                      v
-                             +------------------------+
-                             | Threat Hunter          |
-                             | (Querying BQ / Logs)   |
-                             +------------------------+
+```mermaid
+flowchart TD
+    A[Google Cloud APIs<br>Compute, Storage<br>- Data Access<br>- System Events] --> B[Cloud Logging Audit<br>- Admin Activity<br>- Data Access<br>- System Events]
+    B --> C[Log Router<br>- Sinks Pub/Sub, BQ<br>- BigQuery Workspace<br>- Splunk / SIEM]
+    B --> D[Threat Hunter<br>Querying BQ / Logs]
 ```
 
 ## Structure of a LogEntry

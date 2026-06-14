@@ -23,35 +23,16 @@ Administrators often configure firewalls with an explicit "Deny All" for outboun
 
 ## 3. ASCII Diagram: Egress Evasion Architecture
 
-```text
-    +----------------------------------+
-    | Compromised Internal Server      |
-    | IP: 10.0.0.50                    |
-    | Running: Egress Testing Script   |
-    +----------------------------------+
-             |
-             | SYN to Port 1-65535
-             v
-    +----------------------------------+
-    | Corporate Stateful Firewall      |
-    | Rule: DENY ALL OUTBOUND          |
-    | Exception: ALLOW TCP 123 (NTP)   |
-    | Exception: ALLOW TCP 443 (HTTPS) |
-    +----------------------------------+
-             |
-             | (Port 443, 123 Allowed)
-             | (Ports 1-122, 124-442 Dropped)
-             v
-    +----------------------------------+
-    | Attacker C2 Server               |
-    | Public IP: 203.0.113.5           |
-    | Running: EgressBuster Listener   |
-    | Listening on ALL ports (1-65535) |
-    +----------------------------------+
-             |
-             v
-      [ Valid Egress Ports Discovered! ]
-      [ C2 automatically spins up shell ]
+```mermaid
+flowchart TD
+    Host["Compromised Internal Server<br/>IP: 10.0.0.50<br/>Running: Egress Testing Script"]
+    Firewall["Corporate Stateful Firewall<br/>Rule: DENY ALL OUTBOUND<br/>Exception: ALLOW TCP 123 (NTP)<br/>Exception: ALLOW TCP 443 (HTTPS)"]
+    Attacker["Attacker C2 Server<br/>Public IP: 203.0.113.5<br/>Running: EgressBuster Listener<br/>Listening on ALL ports (1-65535)"]
+    Result["Valid Egress Ports Discovered!<br/>C2 automatically spins up shell"]
+
+    Host -->|SYN to Port 1-65535| Firewall
+    Firewall -->|"Port 443, 123 Allowed<br/>Ports 1-122, 124-442 Dropped"| Attacker
+    Attacker --> Result
 ```
 
 ## 4. Deep Dive: Egress Testing Methodology

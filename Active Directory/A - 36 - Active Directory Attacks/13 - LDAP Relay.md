@@ -20,30 +20,23 @@ LDAP Relaying fundamentally exploits the NTLM challenge-response mechanism. NTLM
 
 ## 2. ASCII Diagram of Attack Flow
 
-```text
-    [ Victim (Client/Server) ]                           [ Attacker (Kali) ]                           [ Domain Controller (LDAP) ]
-              |                                                   |                                                   |
-              | 1. Triggered Authentication (e.g., Coercion)      |                                                   |
-              |-------------------------------------------------->|                                                   |
-              |    (HTTP, SMB, etc. without signing enforced)     | 2. Relay Setup                                    |
-              |                                                   |-------------------------------------------------->|
-              |                                                   |    (Negotiate NTLM over LDAP)                     |
-              |                                                   |                                                   |
-              |                                                   |<--------------------------------------------------|
-              | 3. Forward NTLM Challenge                         | 3. Send NTLM Challenge                            |
-              |<--------------------------------------------------|                                                   |
-              |                                                   |                                                   |
-              | 4. Compute NTLM Response (using victim hash)      |                                                   |
-              |-------------------------------------------------->| 4. Forward NTLM Response                          |
-              |                                                   |-------------------------------------------------->|
-              |                                                   |                                                   |
-              |                                                   | 5. Authentication Successful                      |
-              |                                                   |<--------------------------------------------------|
-              |                                                   |                                                   |
-              |                                                   | 6. Perform LDAP Modifications                     |
-              |                                                   |    (e.g., Modify msDS-AllowedToActOnBehalf...)    |
-              |                                                   |-------------------------------------------------->|
-              |                                                   |                                                   |
+```mermaid
+sequenceDiagram
+    participant Victim as Victim (Client/Server)
+    participant Attacker as Attacker (Kali)
+    participant DC as Domain Controller (LDAP)
+    
+    Victim->>Attacker: 1. Triggered Authentication (e.g. Coercion)<br>(HTTP, SMB, etc. without signing enforced)
+    Attacker->>DC: 2. Relay Setup (Negotiate NTLM over LDAP)
+    
+    DC-->>Attacker: 3. Send NTLM Challenge
+    Attacker-->>Victim: 3. Forward NTLM Challenge
+    
+    Victim->>Attacker: 4. Compute NTLM Response (using victim hash)
+    Attacker->>DC: 4. Forward NTLM Response
+    
+    DC-->>Attacker: 5. Authentication Successful
+    Attacker->>DC: 6. Perform LDAP Modifications<br>(e.g. Modify msDS-AllowedToActOnBehalf...)
 ```
 
 ## 3. Attack Mechanics

@@ -78,33 +78,16 @@ This model emphasizes the relationships between four core features of any intrus
 
 ## Visualizing the Threat Intelligence Lifecycle
 
-```text
-+---------------------------------------------------------+
-|              Threat Intelligence Lifecycle              |
-+---------------------------------------------------------+
-       ^                                         |
-       |                                         |
-       | 1. Direction & Planning                 |
-       |    (Defining Requirements)              |
-       |                                         v
-       |                               +-------------------+
-+------+------+                        | 2. Collection     |
-| 6. Feedback |                        |    (Raw Data)     |
-| & Review    |                        +--------+----------+
-+------+------+                                 |
-       ^                                        |
-       |                                        v
-+------+----------+                    +-------------------+
-| 5. Dissemination|                    | 3. Processing     |
-|    (To Stake-   |                    |    (Normalisation)|
-|     holders)    |                    +--------+----------+
-+------+----------+                             |
-       ^                                        |
-       |                                        v
-       |          +-------------------+         |
-       +----------+ 4. Analysis &     |<--------+
-                  |    Production     |
-                  +-------------------+
+```mermaid
+flowchart TD
+    D1["1. Direction & Planning<br>(Defining Requirements)"]
+    D2["2. Collection<br>(Raw Data)"]
+    D3["3. Processing<br>(Normalisation)"]
+    D4["4. Analysis & Production<br>(Adding Context)"]
+    D5["5. Dissemination<br>(To Stakeholders)"]
+    D6["6. Feedback & Review"]
+
+    D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> D1
 ```
 
 ## Incorporating CTI into VAPT

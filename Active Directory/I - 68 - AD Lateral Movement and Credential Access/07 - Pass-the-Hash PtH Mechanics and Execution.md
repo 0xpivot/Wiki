@@ -26,31 +26,18 @@ To understand why PtH works, one must understand the NTLM Challenge-Response mec
 
 ## ASCII Diagram: The Pass-the-Hash Authentication Flow
 
-```text
-       [Attacker Machine]                                 [Target Server]
-       (Has Stolen NT Hash)                               (NTLM Authentication)
-               |                                                 |
-               | ------- 1. Negotiate Authentication ----------> |
-               |                                                 |
-               | <------ 2. Server sends Challenge (C) --------- |
-               |                                                 |
-   +-----------------------+                                     |
-   | Attacker encrypts (C) |                                     |
-   | using stolen NT Hash  |                                     |
-   | to create Response (R)|                                     |
-   +-----------------------+                                     |
-               |                                                 |
-               | ------- 3. Send Response (R) to Server -------> |
-               |                                                 |
-               |                                    +--------------------------+
-               |                                    | Server verifies (R)      |
-               |                                    | matches (C) encrypted    |
-               |                                    | by the actual NT Hash    |
-               |                                    +--------------------------+
-               |                                                 |
-               | <------ 4. Authentication Success! ------------ |
-               v                                                 v
-      [SMB/WMI/WinRM Access Granted]                      [Access Granted]
+```mermaid
+sequenceDiagram
+    participant A as Attacker Machine<br>(Has Stolen NT Hash)
+    participant S as Target Server<br>(NTLM Authentication)
+
+    A->>S: 1. Negotiate Authentication
+    S-->>A: 2. Server sends Challenge (C)
+    Note over A: Attacker encrypts (C)<br>using stolen NT Hash<br>to create Response (R)
+    A->>S: 3. Send Response (R) to Server
+    Note over S: Server verifies (R)<br>matches (C) encrypted<br>by the actual NT Hash
+    S-->>A: 4. Authentication Success!
+    Note over A,S: Access Granted<br>[SMB/WMI/WinRM Access Granted]
 ```
 
 ## Methodology and Execution

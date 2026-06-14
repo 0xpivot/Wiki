@@ -21,41 +21,14 @@ The Back-End server receives an HTTP/1.1 request containing both a valid `Conten
 Think of it like translating a letter from English to French. In English (HTTP/2), you write a paragraph that says "PS: Read only the first half of this letter." The translator (Front-End) doesn't understand the context; they just translate it word-for-word into French (HTTP/1.1). The French reader (Back-End) reads the translated instruction and stops halfway through, leaving the rest of the letter to be attached to the next person's mail.
 
 ## ASCII Diagram
-```text
-================================================================================
-                        HTTP/2 DOWNGRADE SMUGGLING
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["1. Attacker sends HTTP/2 Frames <br/> HEADERS Frame: <br/> :method = POST <br/> :path = / <br/> :authority = target.com <br/> transfer-encoding = chunked <br/> <br/> DATA Frame: <br/> 0\r\n\r\n <br/> GET /admin HTTP/1.1\r\n <br/> Host: target.com\r\n\r\n"]
+    Front["2. Front-End (Translates H2 -> H1.1) <br/> 'Okay, I need to convert this to HTTP/1.1. I'll write the start line. <br/> Then I'll copy all the headers over. Then I'll calculate the Content-Length <br/> of the DATA frame and add that.'"]
+    Back["3. The Resulting HTTP/1.1 Request sent to Back-End <br/> POST / HTTP/1.1 <br/> Host: target.com <br/> Transfer-Encoding: chunked <br/> Content-Length: 42 <br/> <br/> 0 <br/> <br/> GET /admin HTTP/1.1 <br/> Host: target.com <br/> <br/> Result: The Back-End is now facing a classic CL.TE Smuggling scenario!"]
 
-[1. Attacker sends HTTP/2 Frames]
-HEADERS Frame:
-  :method = POST
-  :path = /
-  :authority = target.com
-  transfer-encoding = chunked   <-- Injected into H2!
-
-DATA Frame:
-  0\r\n\r\n
-  GET /admin HTTP/1.1\r\n
-  Host: target.com\r\n\r\n
-
-[2. Front-End (Translates H2 -> H1.1)]
-"Okay, I need to convert this to HTTP/1.1. I'll write the start line.
-Then I'll copy all the headers over. Then I'll calculate the Content-Length
-of the DATA frame and add that."
-
-[3. The Resulting HTTP/1.1 Request sent to Back-End]
-POST / HTTP/1.1
-Host: target.com
-Transfer-Encoding: chunked      <-- The proxy blindly translated this!
-Content-Length: 42              <-- The proxy generated this!
-
-0
-
-GET /admin HTTP/1.1
-Host: target.com
-
-[Result: The Back-End is now facing a classic CL.TE Smuggling scenario!]
-================================================================================
+    Attacker --> Front
+    Front --> Back
 ```
 
 ## How to Find It

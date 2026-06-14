@@ -75,38 +75,22 @@ The attacker wants to steal the CSRF token `abc123xyz`. They know the format of 
 
 ## 4. Visualizing the BREACH Attack
 
-```text
-==========================================================================================
-                     THE BREACH ATTACK FLOW (Length Side-Channel)
-==========================================================================================
-
-[ VICTIM BROWSER ]                                           [ ATTACKER (Sniffing + JS) ]
- (Running Attacker JS)                                                     |
-        |                                                                  |
-        | --- 1. JS forces request: GET /search?q=csrf_token="x ---------> |
-        |                                                                  |
-        |                                                                  |
-        | <--- 2. Server responds (GZIP + TLS)                             |
-        |         Body contains: q=csrf_token="x ... actual=csrf_token="a  |
-        |         (No match, minimal compression)                          |
-        |                                                                  |
-        | --- 3. Attacker sniffs traffic length: [ Size: 1500 bytes ] ---> |
-        |                                                                  |
-        | --- 4. JS forces request: GET /search?q=csrf_token="a ---------> |
-        |                                                                  |
-        |                                                                  |
-        | <--- 5. Server responds (GZIP + TLS)                             |
-        |         Body contains: q=csrf_token="a ... actual=csrf_token="a  |
-        |         (MATCH! GZIP compresses the repetition)                  |
-        |                                                                  |
-        | --- 6. Attacker sniffs traffic length: [ Size: 1485 bytes ] ---> |
-        |                                                                  |
-        | <--- 7. Attacker logic: Size dropped! The first char is 'a'.     |
-        |                                                                  |
-        | --- 8. JS forces next guess: GET /search?q=csrf_token="aa -----> |
-        | --- 9. JS forces next guess: GET /search?q=csrf_token="ab -----> |
-        |        (Iterate until size drops again)                          |
-==========================================================================================
+```mermaid
+sequenceDiagram
+    participant V as VICTIM BROWSER<br>(Running Attacker JS)
+    participant A as ATTACKER<br>(Sniffing + JS)
+    
+    V->>A: 1. JS forces request: GET /search?q=csrf_token="x
+    A-->>V: 2. Server responds (GZIP + TLS)<br>No match, minimal compression
+    V->>A: 3. Attacker sniffs traffic length: [ Size: 1500 bytes ]
+    
+    V->>A: 4. JS forces request: GET /search?q=csrf_token="a
+    A-->>V: 5. Server responds (GZIP + TLS)<br>MATCH! GZIP compresses the repetition
+    V->>A: 6. Attacker sniffs traffic length: [ Size: 1485 bytes ]
+    
+    A-->>V: 7. Attacker logic: Size dropped! The first char is 'a'.
+    V->>A: 8. JS forces next guess: GET /search?q=csrf_token="aa
+    V->>A: 9. JS forces next guess: GET /search?q=csrf_token="ab
 ```
 
 ## 5. Technical Nuances and Complications

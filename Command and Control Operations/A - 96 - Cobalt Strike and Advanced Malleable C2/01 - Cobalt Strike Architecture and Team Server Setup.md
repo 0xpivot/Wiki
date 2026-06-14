@@ -31,42 +31,41 @@ The Client is a Java-based GUI application that connects to the Team Server via 
 
 ## ASCII Architecture Diagram
 
-```text
-                               +------------------------------------------------+
-                               |              RED TEAM OPERATORS                |
-                               |                                                |
-                               |  [Client A]      [Client B]      [Client C]    |
-                               |  (10.0.0.2)      (10.0.0.3)      (10.0.0.4)    |
-                               +-------+---------------+---------------+--------+
-                                       |               |               |
-                                       | TLS (50050)   | TLS (50050)   | TLS (50050)
-                                       v               v               v
-+-------------------------------------------------------------------------------+
-|                               TEAM SERVER (C2)                                |
-|                                                                               |
-|  +----------------+  +-----------------+  +----------------+  +------------+  |
-|  | Web Server     |  | DNS Server      |  | Aggressor      |  | Data Model |  |
-|  | (HTTP/S)       |  | (UDP/TCP 53)    |  | Script Engine  |  | Sync       |  |
-|  +--------+-------+  +--------+--------+  +----------------+  +------------+  |
-+-----------|-------------------|-----------------------------------------------+
-            |                   |
-        HTTP/HTTPS           DNS TXT/A
-            |                   |
-            v                   v
-+-------------------------------------------------------------------------------+
-|                            REDIRECTOR TIER (NGINX/HAPROXY/CDN)                |
-|  (Obfuscates backend Team Server IP, handles SSL termination, applies WAF)    |
-+-------------------------------------------------------------------------------+
-            |                   |
-        HTTP/HTTPS           DNS TXT/A
-            |                   |
-            v                   v
-+-------------------------------------------------------------------------------+
-|                               TARGET ENVIRONMENT                              |
-|                                                                               |
-|  [Compromised Host 1] <---SMB P2P---> [Compromised Host 2]                    |
-|   (Egress Beacon)                       (Internal Pivot)                      |
-+-------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Operators["RED TEAM OPERATORS"]
+        A["Client A<br>(10.0.0.2)"]
+        B["Client B<br>(10.0.0.3)"]
+        C["Client C<br>(10.0.0.4)"]
+    end
+    
+    subgraph TeamServer["TEAM SERVER (C2)"]
+        Web["Web Server<br>(HTTP/S)"]
+        DNS["DNS Server<br>(UDP/TCP 53)"]
+        Agg["Aggressor<br>Script Engine"]
+        Data["Data Model<br>Sync"]
+    end
+    
+    A -- "TLS (50050)" --> TeamServer
+    B -- "TLS (50050)" --> TeamServer
+    C -- "TLS (50050)" --> TeamServer
+    
+    subgraph Redirector["REDIRECTOR TIER (NGINX/HAPROXY/CDN)<br>(Obfuscates backend Team Server IP, handles SSL termination, applies WAF)"]
+        RedirHttp["HTTP/HTTPS Redirector"]
+        RedirDns["DNS Redirector"]
+    end
+    
+    Web -- "HTTP/HTTPS" --> RedirHttp
+    DNS -- "DNS TXT/A" --> RedirDns
+    
+    subgraph TargetEnv["TARGET ENVIRONMENT"]
+        Host1["Compromised Host 1<br>(Egress Beacon)"]
+        Host2["Compromised Host 2<br>(Internal Pivot)"]
+        Host1 <--"SMB P2P"--> Host2
+    end
+    
+    RedirHttp -- "HTTP/HTTPS" --> Host1
+    RedirDns -- "DNS TXT/A" --> Host1
 ```
 
 ---

@@ -194,3 +194,11 @@ If an attacker compromises an account that has `WriteProperty` or `GenericAll` o
 - [[07 - Access Control Lists ACLs and Access Control Entries ACEs]]
 - [[01 - Active Directory Structure and Components]]
 - [[08 - NTLM vs Kerberos Authentication Basics]]
+
+## Real-World Attack Scenario
+During a recent red team engagement, the assessment team compromised a standard domain user account belonging to a junior helpdesk technician. Through BloodHound enumeration, the team identified that this account possessed `GenericWrite` privileges over a broadly applied Group Policy Object (GPO) named `Corp_Standard_Workstations`, which was linked directly to the primary Workstations Organizational Unit. This misconfiguration allowed the operators to modify the GPO without requiring Domain Admin privileges, bypassing several tiers of the organization's defensive architecture.
+
+To weaponize this access, the team utilized `SharpGPOAbuse` to inject a malicious Immediate Scheduled Task into the GPO's configuration. The scheduled task was designed to execute a heavily obfuscated Cobalt Strike beacon payload, staged on the organization's publicly readable SYSVOL share. Because the payload was fetched locally from a trusted domain controller via SMB, network-based IDS and EDR solutions monitoring for anomalous external downloads were completely circumvented. The task was configured to run under the `NT AUTHORITY\SYSTEM` context, ensuring maximal privileges upon execution.
+
+Once the malicious GPO modifications replicated across the domain, the team simply waited for the natural Group Policy refresh cycle to trigger on the target endpoints. Over the next 90 to 120 minutes, hundreds of workstations silently pulled the updated policy, constructed the scheduled task, and executed the payload. This resulted in a synchronized, mass-compromise event, granting the assessment team simultaneous SYSTEM-level callbacks from the majority of the organization's endpoint fleet, effectively achieving domain dominance through the abuse of native configuration management infrastructure.
+

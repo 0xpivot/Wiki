@@ -17,26 +17,12 @@ Therefore, detection relies heavily on two safe, non-destructive methodologies:
 Think of it like trying to figure out the layout of a dark cave by throwing a rock. If you don't hear the rock hit the ground for 10 seconds (Timing), you know the cave is very deep. If the echo sounds metallic instead of stony (Differential), you know there is a different structure inside.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    THE TIMING DETECTION METHOD
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["Detecting TE.CL <br/> Attacker sends: <br/> POST / HTTP/1.1 <br/> Content-Length: 6 <br/> Transfer-Encoding: chunked <br/> <br/> 0"]
+    Result["Result <br/> Because the Front-End closed the stream early, the Back-End just sits there, <br/> waiting for the remaining bytes until its internal socket times out (usually <br/> 10 to 30 seconds). The attacker's tool measures this massive delay and flags <br/> the server as potentially vulnerable to TE.CL!"]
 
-[Detecting TE.CL]
-Attacker sends:
-POST / HTTP/1.1
-Content-Length: 6      <-- Back-End expects 6 bytes.
-Transfer-Encoding: chunked
-
-0                      <-- Front-End sees '0', finishes reading (3 bytes).
-                       <-- Back-End is STILL WAITING for 3 more bytes!
-
-[Result]
-Because the Front-End closed the stream early, the Back-End just sits there, 
-waiting for the remaining bytes until its internal socket times out (usually 
-10 to 30 seconds). The attacker's tool measures this massive delay and flags 
-the server as potentially vulnerable to TE.CL!
-================================================================================
+    Attacker --> Result
 ```
 
 ## How to Find It (Methodology)

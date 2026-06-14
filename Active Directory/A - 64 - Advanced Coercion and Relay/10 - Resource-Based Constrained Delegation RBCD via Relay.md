@@ -17,36 +17,20 @@ When combined with NTLM Relaying, RBCD creates a devastating, highly reliable at
 
 ## 2. Architectural Flow & ASCII Diagram
 
-```text
-  +-----------------------+                            +-----------------------+
-  |    Target Server      |                            |   Domain Controller   |
-  |  (e.g., File Server)  |                            |   (LDAP Port 389)     |
-  +-----------+-----------+                            +-----------+-----------+
-              |                                                    ^
-              | 2. Coerced Auth via MS-EFSR                        |
-              V                                                    |
-  +-----------+-----------+                                        |
-  |    Attacker Node      |  3. Relay NTLM to LDAP (as Target$)    |
-  |  (ntlmrelayx.py)      |========================================+
-  +-----------+-----------+                                        |
-              |                                                    |
-              | 1. Create Fake Computer Account (AttackerPC$)      |
-              |--------------------------------------------------->|
-              |                                                    |
-              | 4. Modify Target$'s msDS-AllowedTo... attribute    |
-              |    (Points back to AttackerPC$)                    |
-              |--------------------------------------------------->|
-              |                                                    |
-              | 5. S4U2Self: AttackerPC$ gets Service Ticket       |
-              |    for "Administrator" to itself                   |
-              |--------------------------------------------------->|
-              |                                                    |
-              | 6. S4U2Proxy: AttackerPC$ swaps ticket for         |
-              |    "Administrator" to Target Server (CIFS)         |
-              |--------------------------------------------------->|
-              |                                                    |
-              V                                                    |
-      [ FULL COMPROMISE OF TARGET SERVER VIA PASSTHETICKET ]
+```mermaid
+graph TD
+    A["Attacker Node<br>(ntlmrelayx.py)"]
+    B["Domain Controller<br>(LDAP Port 389)"]
+    C["Target Server<br>(e.g., File Server)"]
+    D["[ FULL COMPROMISE OF TARGET SERVER VIA PASSTHETICKET ]"]
+
+    A -->|"1. Create Fake Computer Account (AttackerPC$)"| B
+    C -->|"2. Coerced Auth via MS-EFSR"| A
+    A -->|"3. Relay NTLM to LDAP (as Target$)"| B
+    A -->|"4. Modify Target$'s msDS-AllowedTo... attribute<br>(Points back to AttackerPC$)"| B
+    A -->|"5. S4U2Self: AttackerPC$ gets Service Ticket<br>for 'Administrator' to itself"| B
+    A -->|"6. S4U2Proxy: AttackerPC$ swaps ticket for<br>'Administrator' to Target Server (CIFS)"| B
+    A --> D
 ```
 
 ## 3. Pre-Requisites for the Attack

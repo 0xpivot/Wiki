@@ -32,39 +32,18 @@ The attack lifecycle against a sensitive business flow typically involves revers
 
 ### Visualizing the Architecture of Abuse
 
-```ascii
-                                     [ Threat Actor ]
-                                            |
-                                  (1) Reverse Engineers
-                                     Mobile/Web Client
-                                            |
-                                            v
-    +-------------------------------------------------------------------------------+
-    |                          Distributed Bot Network                              |
-    |  [Bot IP 1]   [Bot IP 2]   [Bot IP 3] ... [Bot IP N]                          |
-    |     |            |            |              |                                |
-    |     | (2)        |            |              |  Requests mimic                |
-    |     | valid      |            |              |  human timing & headers        |
-    +-----|------------|------------|--------------|--------------------------------+
-          |            |            |              |
-          v            v            v              v
-    +-------------------------------------------------------------------------------+
-    |                          Traditional WAF / Load Balancer                      |
-    |  (Passes traffic because requests are syntactically valid & low volume/IP)    |
-    +-------------------------------------------------------------------------------+
-                                            |
-                                            v
-    +-------------------------------------------------------------------------------+
-    |                                 API Gateway                                   |
-    |   POST /api/v1/checkout                                                       |
-    |   POST /api/v1/tickets/reserve                                                |
-    +-------------------------------------------------------------------------------+
-                                            |
-                                            v
-    +-------------------------------------------------------------------------------+
-    |                          Backend Microservices / DB                           |
-    |  [ Inventory Depleted ]  [ Fake Accounts Created ]  [ System Spammed ]        |
-    +-------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    TA["Threat Actor"]
+    BN["Distributed Bot Network\n[Bot IP 1] [Bot IP 2] ... [Bot IP N]"]
+    WAF["Traditional WAF / Load Balancer\n(Passes traffic because requests are syntactically valid & low volume/IP)"]
+    GW["API Gateway\nPOST /api/v1/checkout\nPOST /api/v1/tickets/reserve"]
+    DB["Backend Microservices / DB\n[ Inventory Depleted ] [ Fake Accounts Created ] [ System Spammed ]"]
+
+    TA -- "1. Reverse Engineers\nMobile/Web Client" --> BN
+    BN -- "2. valid requests mimic\nhuman timing & headers" --> WAF
+    WAF --> GW
+    GW --> DB
 ```
 
 ### Attack Phases

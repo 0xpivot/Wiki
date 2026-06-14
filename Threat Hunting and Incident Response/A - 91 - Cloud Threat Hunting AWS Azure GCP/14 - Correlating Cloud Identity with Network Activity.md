@@ -24,22 +24,13 @@ When an advanced attacker compromises a workload, they inherit the identity (the
 
 ## Architecture of Cloud Telemetry Correlation
 
-```text
-+-------------------------+        +-------------------------+        +-------------------------+
-| VPC Flow Logs           |        | Cloud Resource API      |        | CloudTrail / Audit Logs |
-| (Network Layer)         |        | (Asset Inventory State) |        | (Identity API Layer)    |
-| Src: 10.0.1.55          |        | IP 10.0.1.55 = ENI-X    |        | Role: "Web-Server-1"    |
-| Dst: 198.51.100.2 (C2)  | <====> | ENI-X = Instance-Y      | <====> | Action: AssumeRole      |
-| Port: 4444              |        | Inst-Y = Role "Web-1"   |        | Action: GetObject (S3)  |
-+-------------------------+        +-------------------------+        +-------------------------+
-             |                                  |                                  |
-             v                                  v                                  v
-+-------------------------------------------------------------------------------------------------+
-|                            SIEM / Cloud Security Data Lake                                      |
-| Correlated Event: Instance-Y (operating as IAM Role Web-Server-1) communicated with known       |
-| Malicious IP 198.51.100.2 over Port 4444. This was immediately followed by anomalous GetObject  |
-| calls to a highly sensitive S3 bucket by the exact same IAM Role. Exfiltration confirmed.       |
-+-------------------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    A[VPC Flow Logs<br>Network Layer<br>Src: 10.0.1.55<br>Dst: 198.51.100.2 C2<br>Port: 4444] <==> B[Cloud Resource API<br>Asset Inventory State<br>IP 10.0.1.55 = ENI-X<br>ENI-X = Instance-Y<br>Inst-Y = Role Web-1]
+    B <==> C[CloudTrail / Audit Logs<br>Identity API Layer<br>Role: Web-Server-1<br>Action: AssumeRole<br>Action: GetObject S3]
+    A --> D[SIEM / Cloud Security Data Lake<br>Correlated Event: Instance-Y operating as IAM Role Web-Server-1 communicated with known Malicious IP 198.51.100.2 over Port 4444. This was immediately followed by anomalous GetObject calls to a highly sensitive S3 bucket by the exact same IAM Role. Exfiltration confirmed.]
+    B --> D
+    C --> D
 ```
 
 ## Threat Hunting Methodologies

@@ -17,33 +17,18 @@ Because this attack leverages legitimate, built-in network protocols designed fo
 
 ## 2. ASCII Diagram of Attack Flow
 
-```text
-    [ Attacker Workstation ]                                      [ Legitimate Domain Controller ]
-   (Compromised DA Account)                                              (DC01.domain.local)
-              |                                                                |
-              | 1. Bind to DRSUAPI RPC Endpoint                                |
-              |--------------------------------------------------------------->|
-              |    (Over MSRPC / SMB / TCP 135 & High Ports)                   |
-              |                                                                |
-              | 2. DRSBind() Request                                           |
-              |    (Authenticates and establishes replication context)         |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 3. DRSBind() Response                                          |
-              |<---------------------------------------------------------------|
-              |                                                                |
-              | 4. IDL_DRSGetNCChanges() Request                               |
-              |    ("Please replicate the secrets for user 'krbtgt'")          |
-              |--------------------------------------------------------------->|
-              |                                                                |
-              | 5. Verifies ACLs (Replicating Directory Changes)               |
-              |    (Authorization successful)                                  |
-              |                                                                |
-              | 6. IDL_DRSGetNCChanges() Response                              |
-              |    (Returns encrypted attributes: NTLM hash, AES keys, etc.)   |
-              |<---------------------------------------------------------------|
-              |                                                                |
-              | 7. Attacker decrypts and displays hashes                       |
+```mermaid
+sequenceDiagram
+    participant Attacker as Attacker Workstation<br>(Compromised DA Account)
+    participant DC as Legitimate Domain Controller<br>(DC01.domain.local)
+    
+    Attacker->>DC: 1. Bind to DRSUAPI RPC Endpoint<br>(Over MSRPC / SMB / TCP 135 & High Ports)
+    Attacker->>DC: 2. DRSBind() Request<br>(Authenticates and establishes replication context)
+    DC-->>Attacker: 3. DRSBind() Response
+    Attacker->>DC: 4. IDL_DRSGetNCChanges() Request<br>("Please replicate the secrets for user 'krbtgt'")
+    Note over DC: 5. Verifies ACLs (Replicating Directory Changes)<br>(Authorization successful)
+    DC-->>Attacker: 6. IDL_DRSGetNCChanges() Response<br>(Returns encrypted attributes: NTLM hash, AES keys, etc.)
+    Note over Attacker: 7. Attacker decrypts and displays hashes
 ```
 
 ## 3. Attack Mechanics

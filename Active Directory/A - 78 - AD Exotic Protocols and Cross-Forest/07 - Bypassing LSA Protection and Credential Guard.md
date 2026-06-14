@@ -169,3 +169,13 @@ The loading of custom drivers or malicious SSPs requires creating new system ser
 - [[05 - Windows Defender Application Control WDAC Evasion]]
 - [[01 - Introduction to Active Directory Trusts]]
 - [[09 - PrinterBug and PetitPotam Alternatives]]
+
+## Real-World Attack Scenario
+## Real-World Attack Scenario
+
+While operating on a compromised administrator workstation (`WKS-ADMIN-04`), the assessment team encountered a hardened environment where both LSA Protection (RunAsPPL) and Windows Defender Credential Guard were strictly enforced. Initial attempts to dump LSASS using standard tools like Mimikatz or ProcDump were actively blocked by the OS-level protections, as the process could not obtain the necessary `PROCESS_VM_READ` handle to the protected LSA space.
+
+To circumvent the RunAsPPL restriction, the team executed a Bring Your Own Vulnerable Driver (BYOVD) attack. By loading a known vulnerable signed driver (`RTCore64.sys`), the team gained arbitrary kernel memory read/write capabilities. They then manually patched the `EPROCESS` structure of the `lsass.exe` process in kernel memory, effectively stripping the protection light (PPL) flag. While this allowed handle creation, Credential Guard's Virtualization-Based Security (VBS) still prevented the extraction of plaintext passwords or the primary NTLM hashes.
+
+Adapting to the VBS boundary, the team shifted tactics from hash extraction to ticket harvesting and credential interception. They utilized Rubeus to extract cached Kerberos Service Tickets (TGS), which are stored in the unprotected user-mode LSASS memory, allowing lateral movement to specific internal file shares. Simultaneously, they deployed a custom Security Support Provider (SSP) module. Upon the administrator's next interactive logon, the malicious SSP intercepted the plaintext credentials before they crossed the trustlet boundary into the isolated LSA process, granting the team full administrative control over the workstation.
+

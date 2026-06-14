@@ -16,46 +16,26 @@ The industry standard for IR methodologies is derived from frameworks provided b
 
 Below is a visualization of the PICERL lifecycle. It highlights the critical, iterative feedback loop between the Containment, Eradication, and Recovery phases—as responders often discover new compromised assets during cleanup, forcing them back into containment.
 
-```text
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|                                THE PICERL LIFECYCLE                               |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|  +-----------------+                                                              |
-|  | 1. Preparation  | <-------------------------------------------------------+    |
-|  |   (People,      |                                                         |    |
-|  |    Process,     |                                                         |    |
-|  |    Technology)  |                                                         |    |
-|  +--------+--------+                                                         |    |
-|           |                                                                  |    |
-|           v                                                                  |    |
-|  +-----------------+                                                         |    |
-|  | 2. Identification|                                                         |    |
-|  |   (Detection,   |                                                         |    |
-|  |    Triage,      |                                                         |    |
-|  |    Declaration) |                                                         |    |
-|  +--------+--------+                                                         |    |
-|           |                                                                  |    |
-|           v                                                                  |    |
-|  +-----------------+       +-----------------+       +-----------------+     |    |
-|  | 3. Containment  | ----> | 4. Eradication  | ----> | 5. Recovery     |     |    |
-|  |   (Short-term,  | <---- |   (Root Cause,  | <---- |   (Restore,     |     |    |
-|  |    Long-term)   | (Iter)|    Removal)     | (Iter)|    Monitor)     |     |    |
-|  +--------+--------+       +--------+--------+       +--------+--------+     |    |
-|           |                         |                         |              |    |
-|           |                         |                         |              |    |
-|           +-------------------------+-------------------------+              |    |
-|                                     |                                        |    |
-|                                     v                                        |    |
-|                            +-----------------+                               |    |
-|                            | 6. Lessons      |                               |    |
-|                            |    Learned      | ------------------------------+    |
-|                            |   (Post-Mortem, |                                    |
-|                            |    Improvement) |                                    |
-|                            +-----------------+                                    |
-+-----------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Lifecycle["THE PICERL LIFECYCLE"]
+        direction TB
+        P1["1. Preparation\n(People, Process, Technology)"] --> P2["2. Identification\n(Detection, Triage, Declaration)"]
+        
+        P2 --> P3["3. Containment\n(Short-term, Long-term)"]
+        
+        P3 -- "(Iter)" --> P4["4. Eradication\n(Root Cause, Removal)"]
+        P4 -- "(Iter)" --> P3
+        
+        P4 -- "(Iter)" --> P5["5. Recovery\n(Restore, Monitor)"]
+        P5 -- "(Iter)" --> P4
+        
+        P3 --> P6["6. Lessons Learned\n(Post-Mortem, Improvement)"]
+        P4 --> P6
+        P5 --> P6
+        
+        P6 -- "Feeds Back" --> P1
+    end
 ```
 
 ## 1. Preparation (The Most Critical Phase)

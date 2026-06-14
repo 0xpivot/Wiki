@@ -21,33 +21,21 @@ Every individual vulnerability identified during the engagement must be document
 
 A standard finding consists of the following critical components:
 
-```text
-+---------------------------------------------------------------------------------+
-|                              The Standard Finding Template                      |
-+---------------------------------------------------------------------------------+
-|                                                                                 |
-|  [ FINDING-001 ] Title of the Specific Vulnerability                            |
-|  Severity: Critical | CVSS Score: 9.8 | Status: Open                            |
-|                                                                                 |
-|  1. Technical Description                                                       |
-|     (What is the precise technical nature of the flaw?)                         |
-|                                                                                 |
-|  2. Business Impact                                                             |
-|     (What is the worst-case scenario if successfully exploited?)                |
-|                                                                                 |
-|  3. Affected Assets                                                             |
-|     (Specific URLs, IP addresses, vulnerable Parameters, file paths)            |
-|                                                                                 |
-|  4. Proof of Concept (PoC)                                                      |
-|     (Step-by-step reproduction guide + Raw HTTP Requests + Screenshots)         |
-|                                                                                 |
-|  5. Remediation Recommendations                                                 |
-|     (How to fix it - specific code snippets, config changes, architecture)      |
-|                                                                                 |
-|  6. References                                                                  |
-|     (Links to CVEs, OWASP documentation, Official Vendor Patches)               |
-|                                                                                 |
-+---------------------------------------------------------------------------------+
+```mermaid
+classDiagram
+    class Finding {
+        +ID: FINDING-001
+        +Title: Title of the Specific Vulnerability
+        +Severity: Critical
+        +CVSS Score: 9.8
+        +Status: Open
+        +1. Technical Description
+        +2. Business Impact
+        +3. Affected Assets
+        +4. Proof of Concept (PoC)
+        +5. Remediation Recommendations
+        +6. References
+    }
 ```
 
 ## 3. Breaking Down the Components

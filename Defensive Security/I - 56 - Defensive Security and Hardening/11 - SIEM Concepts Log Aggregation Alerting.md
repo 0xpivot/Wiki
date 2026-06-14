@@ -18,57 +18,43 @@ SIEM architecture consists of several core components working in tandem: data co
 
 Below is a detailed architectural representation of a typical distributed SIEM deployment. It illustrates data ingestion pipelines, message brokering, core processing, and the analyst interface.
 
-```text
-+-------------------+       +-------------------+       +-------------------+
-|  Network Devices  |       |   Endpoints / OS  |       |   Cloud / SaaS    |
-| - Firewalls       |       | - Windows/Linux   |       | - AWS CloudTrail  |
-| - IDS/IPS         |       | - Active Directory|       | - Azure AD        |
-| - Web Proxies     |       | - Web Servers     |       | - M365 / Okta     |
-+--------+----------+       +--------+----------+       +--------+----------+
-         |                           |                           |
-         v                           v                           v
-+---------------------------------------------------------------------------+
-|                              Log Forwarders                               |
-|          (Filebeat, Winlogbeat, Splunk Universal Forwarder, Fluentd)      |
-+------------------------------------+--------------------------------------+
-                                     |
-                                     v
-+---------------------------------------------------------------------------+
-|                   Message Broker / Queuing (Optional)                     |
-|                 (Apache Kafka, RabbitMQ, Redis, AWS SQS)                  |
-|    - Buffers spikes in log volume to prevent dropping events              |
-+------------------------------------+--------------------------------------+
-                                     |
-                                     v
-+---------------------------------------------------------------------------+
-|                          Ingestion & Processing                           |
-|                       (Logstash, Splunk Heavy Forwarder)                  |
-|                                                                           |
-|  [ 1. Parsing (Regex/Grok) ] ---> [ 2. Normalization (ECS/CIM) ]          |
-|                                            |                              |
-|  [ 4. Filtering (Drop noisy logs) ] <--- [ 3. Enrichment (GeoIP, Threat) ]|
-+------------------------------------+--------------------------------------+
-                                     |
-                                     v
-+---------------------------------------------------------------------------+
-|                        SIEM Core Analytics Engine                         |
-|                                                                           |
-|  +--------------------+   +-------------------+   +--------------------+  |
-|  | Indexing & Storage |   | Correlation Engine|   | Threat Intelligence|  |
-|  | (Elasticsearch,    |<->| (Rules, ML, UEBA) |<->| (MISP, OTX, STIX)  |  |
-|  |  Data Lakes, S3)   |   |                   |   |                    |  |
-|  +--------------------+   +-------------------+   +--------------------+  |
-+------------------------------------+--------------------------------------+
-                                     |
-                                     v
-+---------------------------------------------------------------------------+
-|                       Alerting & Incident Response                        |
-|                                                                           |
-|  +--------------------+   +-------------------+   +--------------------+  |
-|  |   Dashboards &     |   | Alert Generation  |   |    SOAR / Ticketing|  |
-|  |   Visualizations   |   | (Email, PagerDuty)|   |    (Jira, TheHive) |  |
-|  +--------------------+   +-------------------+   +--------------------+  |
-+---------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Sources["Data Sources"]
+        direction LR
+        Net["Network Devices\n- Firewalls\n- IDS/IPS\n- Web Proxies"]
+        End["Endpoints / OS\n- Windows/Linux\n- Active Directory\n- Web Servers"]
+        Cloud["Cloud / SaaS\n- AWS CloudTrail\n- Azure AD\n- M365 / Okta"]
+    end
+
+    Forwarders["Log Forwarders\n(Filebeat, Winlogbeat, Splunk Universal Forwarder, Fluentd)"]
+    Broker["Message Broker / Queuing (Optional)\n(Apache Kafka, RabbitMQ, Redis, AWS SQS)\n- Buffers spikes in log volume to prevent dropping events"]
+
+    subgraph Ingestion["Ingestion & Processing\n(Logstash, Splunk Heavy Forwarder)"]
+        direction TB
+        P1["1. Parsing (Regex/Grok)"] --> P2["2. Normalization (ECS/CIM)"]
+        P2 --> P3["3. Enrichment (GeoIP, Threat)"]
+        P3 --> P4["4. Filtering (Drop noisy logs)"]
+    end
+
+    subgraph SIEM["SIEM Core Analytics Engine"]
+        direction LR
+        S1["Indexing & Storage\n(Elasticsearch, Data Lakes, S3)"] <--> S2["Correlation Engine\n(Rules, ML, UEBA)"]
+        S2 <--> S3["Threat Intelligence\n(MISP, OTX, STIX)"]
+    end
+
+    subgraph Alerting["Alerting & Incident Response"]
+        direction LR
+        A1["Dashboards &\nVisualizations"]
+        A2["Alert Generation\n(Email, PagerDuty)"]
+        A3["SOAR / Ticketing\n(Jira, TheHive)"]
+    end
+
+    Sources --> Forwarders
+    Forwarders --> Broker
+    Broker --> Ingestion
+    Ingestion --> SIEM
+    SIEM --> Alerting
 ```
 
 ## Log Aggregation Strategies

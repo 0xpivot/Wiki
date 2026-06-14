@@ -38,32 +38,26 @@ When you spawn an SMB Beacon on a target:
 
 ## ASCII Architecture Diagram: P2P Chaining
 
-```text
-+---------------------------------------------------------------------------------------+
-|                                    TARGET ENTERPRISE                                  |
-|                                                                                       |
-|  [Tier 2 Workstation]       [Tier 1 Server]             [Tier 0 Domain Controller]    |
-|  (User: J.Doe)              (User: Svc_App)             (System)                      |
-|                                                                                       |
-|  +-------------------+      +-------------------+       +-------------------+         |
-|  |                   |      |                   |       |                   |         |
-|  |  Egress HTTPS     |      |  SMB Beacon       |       |  TCP Bind Beacon  |         |
-|  |  Beacon (PID 100) |      |  (PID 4050)       |       |  (PID 880)        |         |
-|  |                   |      |                   |       |                   |         |
-|  +--------+----------+      +---------+---------+       +---------+---------+         |
-|           |                           ^                           ^                   |
-|           |        SMB Port 445       |                           |                   |
-|           |     \\.\pipe\mojo.1234    |        TCP Port 4444      |                   |
-|           +---------------------------+---------------------------+                   |
-|                      (P2P Link)                  (P2P Link)                           |
-+-----------|---------------------------------------------------------------------------+
-            |
-            | HTTPS Egress (Port 443)
-            v
-+-----------------------+
-|     TEAM SERVER       |
-|  (External Red Team)  |
-+-----------------------+
+```mermaid
+flowchart TD
+    subgraph Target["TARGET ENTERPRISE"]
+        subgraph Tier2["Tier 2 Workstation<br>(User: J.Doe)"]
+            B1["Egress HTTPS<br>Beacon (PID 100)"]
+        end
+        subgraph Tier1["Tier 1 Server<br>(User: Svc_App)"]
+            B2["SMB Beacon<br>(PID 4050)"]
+        end
+        subgraph Tier0["Tier 0 Domain Controller<br>(System)"]
+            B3["TCP Bind Beacon<br>(PID 880)"]
+        end
+        
+        B1 -- "SMB Port 445<br>\\.\pipe\mojo.1234<br>(P2P Link)" --> B2
+        B1 -- "TCP Port 4444<br>(P2P Link)" --> B3
+    end
+    
+    TeamServer["TEAM SERVER<br>(External Red Team)"]
+    
+    B1 -- "HTTPS Egress (Port 443)" --> TeamServer
 ```
 
 ---

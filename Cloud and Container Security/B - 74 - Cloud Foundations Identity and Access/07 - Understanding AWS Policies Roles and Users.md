@@ -66,31 +66,14 @@ This defines **WHAT** the role is allowed to do once it has been successfully as
 
 ### The AssumeRole Flow Visualized
 
-```text
-+-------------------+       1. STS:AssumeRole         +-------------------+
-|                   | ------------------------------> |                   |
-|   IAM User /      |                                 |   AWS IAM Role    |
-|   Compute Inst.   | <------------------------------ |                   |
-|                   |    2. Temp Credentials          +---------+---------+
-+---------+---------+       (AKIA..., Token)                    |
-          |                                                     | 3. Evaluates
-          |                                                     v    Trust Pol.
-          |                                           +-------------------+
-          | 4. API Call with Temp Creds               | Trust Policy      |
-          +-----------------------------------------> | (Who can assume)  |
-                                                      +---------+---------+
-                                                                |
-                                                                v
-                                                      +-------------------+
-                                                      | Permission Policy |
-                                                      | (What role does)  |
-                                                      +---------+---------+
-                                                                | 5. Allows/
-                                                                v    Denies
-                                                      +-------------------+
-                                                      | Target Resource   |
-                                                      | (S3, EC2, KMS)    |
-                                                      +-------------------+
+```mermaid
+graph TD
+    A[IAM User / Compute Inst.] -- 1. STS:AssumeRole --> B[AWS IAM Role]
+    B -- 2. Temp Credentials AKIA..., Token --> A
+    B -->|3. Evaluates Trust Pol.| C[Trust Policy Who can assume]
+    A -- 4. API Call with Temp Creds --> D[Target Resource S3, EC2, KMS]
+    C --> E[Permission Policy What role does]
+    E -->|5. Allows/Denies| D
 ```
 
 ---

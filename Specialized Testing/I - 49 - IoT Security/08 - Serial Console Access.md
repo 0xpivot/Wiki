@@ -136,36 +136,22 @@ for pwd in passwords:
 
 ## 6. Architectural Flow of UART Exploitation (ASCII Diagram)
 
-```text
-       [ Attacker's Terminal ] (screen /dev/ttyUSB0)
-                 |
-                 v
- +-----------------------------------------------+
- | IoT Device Boot Sequence                      |
- |                                               |
- | 1. BootROM Execution                          |
- |        |                                      |
- |        v                                      |
- | 2. U-Boot (Bootloader)                        |
- |    * Output: Hardware Specs, Memory Maps      |
- |    * Prompt: "Hit any key to stop autoboot"   |
- |        |                                      |
- |        +-----> [Attacker Presses Enter] ----> [ U-Boot Shell ]
- |        |                                         - setenv init=/bin/sh
- |        | (Autoboot completes)                    - TFTP load malicious OS
- |        v                                         - Memory dump firmware
- | 3. Linux Kernel Execution                     |
- |    * Output: Driver loading, mount points     |
- |        |                                      |
- |        v                                      |
- | 4. User-Space Init (SysVinit / Systemd)       |
- |        |                                      |
- |        +-----> Case A: Drops to `#`       --> [ Unauthenticated Root Shell ]
- |        |                                      |
- |        +-----> Case B: "login:" Prompt    --> [ Bruteforce / Cracking req. ]
- |        |                                      |
- |        +-----> Case C: Restricted CLI     --> [ Jailbreak via Cmd Injection ]
- +-----------------------------------------------+
+```mermaid
+flowchart TD
+    Term["Attacker's Terminal (screen /dev/ttyUSB0)"] --> BootROM
+
+    subgraph BootSeq["IoT Device Boot Sequence"]
+        BootROM["1. BootROM Execution"] --> UBoot["2. U-Boot (Bootloader)<br>* Output: Hardware Specs, Memory Maps<br>* Prompt: 'Hit any key to stop autoboot'"]
+        
+        UBoot -- "Attacker Presses Enter" --> UBootShell["[ U-Boot Shell ]<br>- setenv init=/bin/sh<br>- TFTP load malicious OS<br>- Memory dump firmware"]
+        
+        UBoot -- "Autoboot completes" --> Kernel["3. Linux Kernel Execution<br>* Output: Driver loading, mount points"]
+        Kernel --> Init["4. User-Space Init (SysVinit / Systemd)"]
+        
+        Init -- "Case A: Drops to `#`" --> ShellA["[ Unauthenticated Root Shell ]"]
+        Init -- "Case B: 'login:' Prompt" --> ShellB["[ Bruteforce / Cracking req. ]"]
+        Init -- "Case C: Restricted CLI" --> ShellC["[ Jailbreak via Cmd Injection ]"]
+    end
 ```
 
 ## 7. Securing the Serial Console

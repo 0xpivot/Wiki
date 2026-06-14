@@ -64,44 +64,31 @@ A deep, intimate understanding of the generated `.env` file is necessary for adv
 
 ## 3. Mythic Deployment Architecture and Access Diagram
 
-```text
-+-------------------------------------------------------------------+
-|                        OPERATOR ENDPOINT                          |
-|                                                                   |
-|   +----------------+           +-----------------------------+    |
-|   | Local Browser  | ===SSH==> | Local Port Forward (7443)   |    |
-|   | (Firefox/Brave)|           | (ssh -L 7443:127.0.0.1:7443)|    |
-|   +----------------+           +-----------------------------+    |
-+-------------------------------------------------------------------+
-                                        |
-                                        | Encrypted SSH Tunnel
-                                        v
-+-------------------------------------------------------------------+
-|                      MYTHIC C2 VPS (Ubuntu 22.04)                 |
-|                                                                   |
-|   +-----------------------------------------------------------+   |
-|   |                      Docker Network Bridge                |   |
-|   |                                                           |   |
-|   |  +-----------------+     +--------------------------+     |   |
-|   |  | mythic-react-ui |<--->|    mythic-server         |     |   |
-|   |  | (127.0.0.1:7443)|     | (Golang, Core Logic)     |     |   |
-|   |  +-----------------+     +--------------------------+     |   |
-|   |          ^                             |                  |   |
-|   |          | Hasura/GraphQL              | RabbitMQ         |   |
-|   |          v                             v                  |   |
-|   |  +-----------------+     +--------------------------+     |   |
-|   |  | mythic-postgres |     | mythic_http_profile      |     |   |
-|   |  | (Data Storage)  |     | (Exposes Port 8080)      |     |   |
-|   |  +-----------------+     +--------------------------+     |   |
-|   +-----------------------------------------------------------+   |
-|                                        |                          |
-|                                        | Reverse Proxy (Nginx)    |
-|                                        | (Terminates SSL)         |
-|                                        v                          |
-|                               +----------------+                  |
-|                               |  Public IP     | (443/TCP)        |
-|                               +----------------+                  |
-+-------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Op["OPERATOR ENDPOINT"]
+        Br["Local Browser<br>(Firefox/Brave)"]
+        PF["Local Port Forward (7443)<br>(ssh -L 7443:127.0.0.1:7443)"]
+        Br == "SSH" ==> PF
+    end
+    
+    subgraph VPS["MYTHIC C2 VPS (Ubuntu 22.04)"]
+        subgraph Docker["Docker Network Bridge"]
+            UI["mythic-react-ui<br>(127.0.0.1:7443)"]
+            Server["mythic-server<br>(Golang, Core Logic)"]
+            PG["mythic-postgres<br>(Data Storage)"]
+            HTTP["mythic_http_profile<br>(Exposes Port 8080)"]
+            
+            UI <--> Server
+            UI <--"Hasura/GraphQL"--> PG
+            Server --"RabbitMQ"--> HTTP
+        end
+        IP["Public IP (443/TCP)"]
+        
+        HTTP --"Reverse Proxy (Nginx)<br>(Terminates SSL)"--> IP
+    end
+    
+    PF -- "Encrypted SSH Tunnel" --> UI
 ```
 
 ## 4. Web Interface Operations and OPSEC Workflow

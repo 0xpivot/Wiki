@@ -46,47 +46,19 @@ An active attacker can intercept the `Client Hello` and maliciously modify it, s
 
 ### ASCII Diagram: The TLS Downgrade Attack Architecture
 
-```text
-======================================================================================
-|                       TLS PROTOCOL DOWNGRADE ATTACK (MitM)                         |
-======================================================================================
-
-[ Modern Client (Browser) ]                                  [ Vulnerable Server ]
-Supported Protocols:                                         Supported Protocols:
-- TLS 1.3, TLS 1.2                                           - TLS 1.3, TLS 1.2, TLS 1.0, SSLv3
-Supported Ciphers:                                           Supported Ciphers:
-- AES-256-GCM, ChaCha20                                      - AES-256-GCM, RC4, 3DES
-          |                                                            |
-          | 1. Client Hello (Proposes TLS 1.3 + Strong Ciphers)        |
-          |-------------------------\                                  |
-                                    |                                  |
-                             +------------------------+                |
-                             |  ACTIVE ATTACKER       | (MitM)         |
-                             | (Intercepts Traffic)   |                |
-                             +------------------------+                |
-                                    |                                  |
-                                    | 2. Modified Client Hello (Maliciously altered)
-                                    |    Proposes ONLY: Protocol: SSLv3, Cipher: RC4
-                                    |--------------------------------->|
-                                                                       |
-                                    | 3. Server Hello (Accepts Downgrade)
-                                    |    Agrees to use SSLv3 and RC4   |
-                                    |<---------------------------------|
-                             +------------------------+                |
-                             |  ACTIVE ATTACKER       |                |
-                             | (Forwards unmodified)  |                |
-                             +------------------------+                |
-                                    |                                  |
-          | 4. Server Hello Received|                                  |
-          |<------------------------/                                  |
-          |                                                            |
-======================================================================================
-|      ENCRYPTED CHANNEL ESTABLISHED USING BROKEN SSLv3 AND RC4 CIPHER               |
-======================================================================================
-          |                                                            |
-          | Attacker executes statistical attacks against RC4 stream   |
-          | to decrypt the HTTP Authorization headers in plaintext.    |
-          v                                                            v
+```mermaid
+sequenceDiagram
+    participant C as Modern Client (Browser)
+    participant A as ACTIVE ATTACKER (MitM)
+    participant S as Vulnerable Server
+    
+    C->>A: 1. Client Hello<br>(Proposes TLS 1.3 + Strong Ciphers)
+    A->>S: 2. Modified Client Hello<br>(Proposes ONLY SSLv3, RC4)
+    S->>A: 3. Server Hello<br>(Accepts Downgrade to SSLv3 and RC4)
+    A->>C: 4. Server Hello Received
+    
+    Note over C,S: ENCRYPTED CHANNEL ESTABLISHED USING BROKEN SSLv3 AND RC4 CIPHER
+    Note over A: Attacker executes statistical attacks against RC4 stream<br>to decrypt HTTP Authorization headers.
 ```
 
 ## Notable Vulnerabilities and Exploitation Frameworks

@@ -42,34 +42,16 @@ Risk Rating is the final, contextualized assessment of the clear and present dan
 
 The following ASCII diagram illustrates how a raw CVSS score is transformed into a final Business Risk Rating through the application of environmental and business context.
 
-```text
-+------------------------------------------------------------------------------------------+
-|                        THE RISK CONTEXTUALIZATION PIPELINE                               |
-+------------------------------------------------------------------------------------------+
-|                                                                                          |
-|    +-------------------+                                                                 |
-|    | VULNERABILITY     |                                                                 |
-|    | (e.g., SQLi)      |                                                                 |
-|    +---------+---------+                                                                 |
-|              |                                                                           |
-|              v                                                                           |
-|    +-------------------+       +------------------------------------+                    |
-|    | TECHNICAL SEVERITY|       | ENVIRONMENTAL & BUSINESS CONTEXT   |                    |
-|    | (CVSS Base Score) |       | - Asset Criticality (High/Med/Low) |                    |
-|    | e.g., 9.8 CRITICAL|+++++++| - Data Sensitivity (PII, PCI, PHI) |                    |
-|    +-------------------+   +   | - Compensating Controls (WAF, IPS) |                    |
-|                            +   | - Threat Intel (Actively exploited?|                    |
-|                            +   +------------------------------------+                    |
-|                            +                                                             |
-|                            +>>>>>>>>>>>>>>>>>>>>>+                                       |
-|                                                  |                                       |
-|                                                  v                                       |
-|                                        +-------------------+                             |
-|                                        | FINAL RISK RATING |                             |
-|                                        | e.g., MEDIUM RISK |                             |
-|                                        +-------------------+                             |
-|                                                                                          |
-+------------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    VULN["VULNERABILITY<br>(e.g., SQLi)"]
+    TS["TECHNICAL SEVERITY<br>(CVSS Base Score)<br>e.g., 9.8 CRITICAL"]
+    EBC["ENVIRONMENTAL & BUSINESS CONTEXT<br>- Asset Criticality (High/Med/Low)<br>- Data Sensitivity (PII, PCI, PHI)<br>- Compensating Controls (WAF, IPS)<br>- Threat Intel (Actively exploited?)"]
+    FRR["FINAL RISK RATING<br>e.g., MEDIUM RISK"]
+
+    VULN --> TS
+    TS --> FRR
+    EBC -.-> FRR
 ```
 
 ## 5. Practical Scenarios: The Divergence of CVSS and Risk

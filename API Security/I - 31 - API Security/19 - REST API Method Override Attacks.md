@@ -36,39 +36,25 @@ If an API framework is configured to accept these, an attacker can manipulate th
 
 ## ASCII Diagram: Method Override WAF Bypass Flow
 
-```text
-  [Attacker Goal: Delete User 123 (Requires DELETE method)]
-  
-  +-----------+                                           +-----------------------+
-  | Attacker  | ---[ DELETE /api/v1/users/123 ]---------> |  WAF / Reverse Proxy  |
-  +-----------+                                           +-----------------------+
-                                                                     |
-                                                              [WAF Rule: Block DELETE]
-                                                                     |
-                                                              [403 Forbidden Response]
+```mermaid
+flowchart TD
+    subgraph Initial ["Initial Attack (Blocked)"]
+        Attacker1["Attacker"]
+        WAF1["WAF / Reverse Proxy\n[WAF Rule: Block DELETE]"]
+        Attacker1 -- "DELETE /api/v1/users/123" --> WAF1
+        WAF1 -- "[403 Forbidden Response]" --> Attacker1
+    end
 
-  [Bypass Execution]
-  
-  +-----------+     POST /api/v1/users/123                +-----------------------+
-  | Attacker  |     X-HTTP-Method-Override: DELETE  ----> |  WAF / Reverse Proxy  |
-  +-----------+     (Or ?_method=DELETE)                  +-----------------------+
-                                                                     |
-                                                           [Sees POST, Allows Request]
-                                                                     |
-                                                                     v
-                                                          +-----------------------+
-                                                          |  API Gateway / Router |
-                                                          +-----------------------+
-                                                                     |
-                                                        [Framework sees Override Header]
-                                                        [Translates POST to DELETE]
-                                                                     |
-                                                                     v
-                                                          +-----------------------+
-                                                          |    Backend Server     |
-                                                          |   (Executes DELETE)   |
-                                                          +-----------------------+
-                                                              [User 123 Deleted!]
+    subgraph Bypass ["Bypass Execution"]
+        Attacker2["Attacker"]
+        WAF2["WAF / Reverse Proxy\n[Sees POST, Allows Request]"]
+        Gateway["API Gateway / Router\n[Framework sees Override Header]\n[Translates POST to DELETE]"]
+        Backend["Backend Server\n(Executes DELETE)\n[User 123 Deleted!]"]
+
+        Attacker2 -- "POST /api/v1/users/123\nX-HTTP-Method-Override: DELETE\n(Or ?_method=DELETE)" --> WAF2
+        WAF2 --> Gateway
+        Gateway --> Backend
+    end
 ```
 
 ---

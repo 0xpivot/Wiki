@@ -19,30 +19,27 @@ This act of tricking the cache into saving a malicious payload is called **Web C
 Think of a web cache like a printing press for a newspaper. The journalist (Back-End) writes an article. The printing press (Cache) prints 100,000 copies and hands them to the delivery boys. If a malicious intern breaks into the journalist's office and changes the headline to a scam link right before the press starts, the printing press will faithfully print 100,000 copies of the scam and deliver them to every house in the city. Web Cache Poisoning is the act of poisoning the master copy.
 
 ## ASCII Diagram
-```text
-================================================================================
-                        THE WEB CACHING LIFECYCLE
-================================================================================
+```mermaid
+flowchart TD
+    subgraph Normal["Normal Operation"]
+        UserA["User A"] -- "GET /image.png" --> CacheA["CACHE SERVER"]
+        CacheA -- "(MISS)" --> BackA["BACK-END SERVER"]
+        BackA -- "Returns image.png" --> CacheA
+        CacheA -- "(SAVES COPY) Returns image.png" --> UserA
+        
+        UserB["User B"] -- "GET /image.png" --> CacheB["CACHE SERVER"]
+        CacheB -- "(HIT!) Returns image.png" --> UserB
+    end
 
-[Normal Operation]
-User A ──> GET /image.png ──> [ CACHE SERVER ] ──(MISS)──> [ BACK-END SERVER ]
-                                    │                           │
-User A <── [Returns image.png] <──(SAVES COPY)<── [Returns image.png]
-                                    
-User B ──> GET /image.png ──> [ CACHE SERVER ] ──(HIT!)
-                                    │
-User B <── [Returns image.png] <────┘
-
-[Cache Poisoning Operation]
-Hacker ──> GET /index ──> [ CACHE SERVER ] ──(MISS)──> [ BACK-END SERVER ]
-           + Evil Header                                 (Processes Evil Header)
-                                    │                           │
-Hacker <── [Returns Evil HTML] <──(SAVES COPY)<── [Returns Evil HTML]
-
-Victim ──> GET /index ──> [ CACHE SERVER ] ──(HIT!)
-                                    │
-Victim <── [Returns Evil HTML] <────┘   <-- VICTIM IS HACKED!
-================================================================================
+    subgraph Poisoning["Cache Poisoning Operation"]
+        Hacker["Hacker"] -- "GET /index <br/> + Evil Header" --> CacheC["CACHE SERVER"]
+        CacheC -- "(MISS)" --> BackC["BACK-END SERVER <br/> (Processes Evil Header)"]
+        BackC -- "Returns Evil HTML" --> CacheC
+        CacheC -- "(SAVES COPY) Returns Evil HTML" --> Hacker
+        
+        Victim["Victim"] -- "GET /index" --> CacheD["CACHE SERVER"]
+        CacheD -- "(HIT!) Returns Evil HTML <br/> VICTIM IS HACKED!" --> Victim
+    end
 ```
 
 ## How to Find It

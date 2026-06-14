@@ -52,61 +52,39 @@ In languages like Java or C#, developers sometimes implement custom `TrustManage
 
 The following ASCII diagram illustrates the difference between a secure connection and a Man-in-the-Middle attack exploiting a certificate validation bypass.
 
-```text
-==========================================================================================
-                     NORMAL, SECURE TLS HANDSHAKE (Proper Validation)
-==========================================================================================
+**NORMAL, SECURE TLS HANDSHAKE (Proper Validation)**
+```mermaid
+sequenceDiagram
+    participant C as CLIENT
+    participant S as LEGITIMATE SERVER
+    C->>S: (1) ClientHello (Supported Ciphers, etc.)
+    S->>C: (2) ServerHello, Certificate Chain, ServerKeyExchange
+    Note over C: Client performs checks:<br>- Signature valid? YES<br>- Chain leads to trusted Root CA? YES<br>- Hostname matches requested URL? YES<br>- Not expired? YES
+    C->>S: (3) ClientKeyExchange, ChangeCipherSpec, Finished
+    S->>C: (4) ChangeCipherSpec, Finished
+    Note over C,S: SECURE ENCRYPTED TUNNEL ESTABLISHED
+```
 
- [ CLIENT ]                                                          [ LEGITIMATE SERVER ]
-     |                                                                        |
-     | ----- (1) ClientHello (Supported Ciphers, etc.) ---------------------> |
-     |                                                                        |
-     | <---- (2) ServerHello, Certificate Chain, ServerKeyExchange ---------- |
-     |                                                                        |
-     |  * Client performs checks:                                             |
-     |    - Signature valid? YES                                              |
-     |    - Chain leads to trusted Root CA? YES                               |
-     |    - Hostname matches requested URL? YES                               |
-     |    - Not expired? YES                                                  |
-     |                                                                        |
-     | ----- (3) ClientKeyExchange, ChangeCipherSpec, Finished -------------> |
-     |                                                                        |
-     | <---- (4) ChangeCipherSpec, Finished --------------------------------- |
-     |                                                                        |
-     | ======= SECURE ENCRYPTED TUNNEL ESTABLISHED =======>                   |
-
-==========================================================================================
-               MITM ATTACK via CERTIFICATE VALIDATION BYPASS
-==========================================================================================
-
- [ VULNERABLE CLIENT ]                  [ ATTACKER (MitM) ]           [ LEGIT SERVER ]
-     |                                          |                             |
-     | -- (1) ClientHello --------------------> |                             |
-     |                                          | -- (1') ClientHello ------> |
-     |                                          |                             |
-     |                                          | <- (2') ServerHello, Cert - |
-     |                                          |                             |
-     | <- (2) ServerHello, FORGED Cert -------- |                             |
-     |        (Self-signed or wrong Hostname)   |                             |
-     |                                          |                             |
-     |  * Client checks:                        |                             |
-     |    - Dev disabled checks! -> RETURN TRUE |                             |
-     |    - VULNERABILITY EXPLOITED!            |                             |
-     |                                          |                             |
-     | -- (3) ClientKeyExchange, Finished ----> |                             |
-     |                                          | -- (3') KeyEx, Finished --> |
-     |                                          |                             |
-     | <- (4) ChangeCipherSpec, Finished ------ |                             |
-     |                                          | <- (4') CipherSpec, Fin --- |
-     |                                          |                             |
-     | === ENCRYPTED TUNNEL 1 (Client->MitM) ===|== ENCRYPTED TUNNEL 2 =======|
-     |                                          |   (MitM->Server)            |
-     |                                          |                             |
-     | -- (5) GET /api/sensitive_data (Auth) -> |                             |
-     |                                          | [Attacker reads Auth token!]|
-     |                                          |                             |
-     |                                          | -- (5') GET /api/... -----> |
-==========================================================================================
+**MITM ATTACK via CERTIFICATE VALIDATION BYPASS**
+```mermaid
+sequenceDiagram
+    participant VC as VULNERABLE CLIENT
+    participant A as ATTACKER (MitM)
+    participant LS as LEGIT SERVER
+    VC->>A: (1) ClientHello
+    A->>LS: (1') ClientHello
+    LS->>A: (2') ServerHello, Cert
+    A->>VC: (2) ServerHello, FORGED Cert<br>(Self-signed or wrong Hostname)
+    Note over VC: Client checks:<br>- Dev disabled checks! -> RETURN TRUE<br>- VULNERABILITY EXPLOITED!
+    VC->>A: (3) ClientKeyExchange, Finished
+    A->>LS: (3') KeyEx, Finished
+    A->>VC: (4) ChangeCipherSpec, Finished
+    LS->>A: (4') CipherSpec, Fin
+    Note over VC,A: ENCRYPTED TUNNEL 1 (Client->MitM)
+    Note over A,LS: ENCRYPTED TUNNEL 2 (MitM->Server)
+    VC->>A: (5) GET /api/sensitive_data (Auth)
+    Note over A: Attacker reads Auth token!
+    A->>LS: (5') GET /api/...
 ```
 
 ## 5. Technical Context & Examples

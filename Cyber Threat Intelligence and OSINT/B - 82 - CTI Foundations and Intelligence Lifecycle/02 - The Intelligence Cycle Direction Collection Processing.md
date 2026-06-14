@@ -26,21 +26,14 @@ The standard Cyber Threat Intelligence (CTI) cycle consists of six distinct phas
 
 ### ASCII Diagram: The Continuous Intelligence Cycle
 
-```text
-       +-----------------------------------------+
-       |                                         |
-       v                                         |
-+-------------+      +-------------+      +-------------+
-| 1. Direction| ---> |2. Collection| ---> |3. Processing|
-| (Planning)  |      |  (Gathering)|      | (Formatting)|
-+-------------+      +-------------+      +-------------+
-       ^                                         |
-       |                                         |
-       |                                         v
-+-------------+      +-------------+      +-------------+
-| 6. Feedback | <--- |5. Disseminate|<--- | 4. Analysis |
-| (Evaluation)|      | (Reporting) |      | (Contextual)|
-+-------------+      +-------------+      +-------------+
+```mermaid
+flowchart TD
+    A["1. Direction<br/>(Planning)"] --> B["2. Collection<br/>(Gathering)"]
+    B --> C["3. Processing<br/>(Formatting)"]
+    C --> D["4. Analysis<br/>(Contextual)"]
+    D --> E["5. Disseminate<br/>(Reporting)"]
+    E --> F["6. Feedback<br/>(Evaluation)"]
+    F --> A
 ```
 
 ## 3. Phase 1: Direction (Planning and Requirements)

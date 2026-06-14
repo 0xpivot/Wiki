@@ -23,26 +23,24 @@ When an access check is performed on a service, Windows evaluates the requested 
 - **WRITE_OWNER (0x80000):** Allows the user to take ownership of the service, subsequently allowing them to modify the DACL and grant themselves configuration rights.
 - **SERVICE_START (0x0010) / SERVICE_STOP (0x0020):** While not sufficient for privilege escalation on their own, these permissions are crucial for the exploitation phase, allowing the attacker to seamlessly restart the service and trigger the payload without requiring a system reboot.
 
-```text
-+--------------------------------------------------------------------------+
-|                  SERVICE PERMISSION ACCESS CONTROL FLOW                  |
-+--------------------------------------------------------------------------+
-|                                                                          |
-|  [Low-Privileged User]                                                   |
-|            |                                                             |
-|            | Request: Modify Configuration (Change binPath)              |
-|            v                                                             |
-|  [Service Control Manager (SCM)]                                         |
-|            |                                                             |
-|            +---> Checks Security Descriptor of target service            |
-|            |                                                             |
-|            |     Does Token SID match DACL allowing                      |
-|            |     SERVICE_CHANGE_CONFIG or SERVICE_ALL_ACCESS?            |
-|            |                                                             |
-|            +---> [YES] Access Granted! Configuration updated.            |
-|            |                                                             |
-|            +---> [NO]  Access Denied! Error 5.                           |
-+--------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Flow[SERVICE PERMISSION ACCESS CONTROL FLOW]
+        LPU["[Low-Privileged User]"]
+        SCM["[Service Control Manager (SCM)]"]
+        
+        LPU -- "Request: Modify Configuration (Change binPath)" --> SCM
+        
+        SD["Checks Security Descriptor of target service\nDoes Token SID match DACL allowing\nSERVICE_CHANGE_CONFIG or SERVICE_ALL_ACCESS?"]
+        
+        SCM --> SD
+        
+        YES["[YES] Access Granted! Configuration updated."]
+        NO["[NO] Access Denied! Error 5."]
+        
+        SD --> YES
+        SD --> NO
+    end
 ```
 
 ## Enumeration and Identification

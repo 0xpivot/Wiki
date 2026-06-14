@@ -47,44 +47,30 @@ Like the SAM database, LSA Secrets are encrypted using the Boot Key (Syskey) sto
 
 ## ASCII Diagram: The SAM and LSA Extraction Architecture
 
-```text
-+-----------------------------------------------------------------------------------+
-|                         Compromised Windows Endpoint                              |
-|                                                                                   |
-|  +--------------------+                                                           |
-|  | Administrator/     | ----[Impersonates]----> +--------------------+            |
-|  | High Priv User     |                         | NT AUTHORITY\SYSTEM|            |
-|  +--------------------+                         +--------------------+            |
-|          |                                                |                       |
-|          | (Needs SYSTEM access to read hives)            | (Has Read Access)     |
-|          v                                                v                       |
-|  +-----------------------------------------------------------------------------+  |
-|  |                                Windows Registry                             |  |
-|  |                                                                             |  |
-|  |  +------------------+    +------------------+    +------------------+       |  |
-|  |  | HKLM\SYSTEM      |    | HKLM\SAM         |    | HKLM\SECURITY    |       |  |
-|  |  | (Contains Boot   |    | (Encrypted local |    | (Encrypted LSA   |       |  |
-|  |  |  Key / Syskey)   |    |  hashes)         |    |  Secrets)        |       |  |
-|  |  +------------------+    +------------------+    +------------------+       |  |
-|  |          |                        |                       |                 |  |
-|  +----------|------------------------|-----------------------|-----------------+  |
-|             |                        |                       |                    |
-+-------------|------------------------|-----------------------|--------------------+
-              |                        |                       |
-              v                        v                       v
-      [Extract Boot Key] ----> [Decrypt SAM Hashes]    [Decrypt LSA Secrets]
-                                       |                       |
-                                       v                       v
-                           +----------------------+  +-------------------------+
-                           |  Local NT Hashes     |  | Plaintext Passwords,    |
-                           |  (Administrator, etc)|  | Service Accounts,       |
-                           |                      |  | Machine Account Pass    |
-                           +----------------------+  +-------------------------+
-                                       |                       |
-                                       +-----------+-----------+
-                                                   |
-                                                   v
-                                   [Lateral Movement & Escalation]
+```mermaid
+graph TD
+    A["Administrator/High Priv User"]
+    B["NT AUTHORITY\SYSTEM"]
+    C["Windows Registry<br>HKLM\SYSTEM (Contains Boot Key / Syskey)<br>HKLM\SAM (Encrypted local hashes)<br>HKLM\SECURITY (Encrypted LSA Secrets)"]
+    D["Extract Boot Key"]
+    E["Decrypt SAM Hashes"]
+    F["Decrypt LSA Secrets"]
+    G["Local NT Hashes<br>(Administrator, etc)"]
+    H["Plaintext Passwords, Service Accounts, Machine Account Pass"]
+    I["Lateral Movement & Escalation"]
+
+    A -->|Impersonates| B
+    A -->|Needs SYSTEM access to read hives| C
+    B -->|Has Read Access| C
+    C --> D
+    C --> E
+    C --> F
+    D --> E
+    D --> F
+    E --> G
+    F --> H
+    G --> I
+    H --> I
 ```
 
 ## Methodology: Techniques for Extraction

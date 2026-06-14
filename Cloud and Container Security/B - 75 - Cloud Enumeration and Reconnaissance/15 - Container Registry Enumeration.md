@@ -96,38 +96,21 @@ Once an image is downloaded, `dive` is an exceptional tool for exploring the ima
 
 ## Visualizing Registry Compromise
 
-```text
-+-------------------------------------------------------------------------------------------------+
-|                              Container Registry Attack Architecture                             |
-+-------------------------------------------------------------------------------------------------+
-|                                                                                                 |
-|   [ CI/CD Pipeline ]                       [ Cloud Provider IAM ]                               |
-|          | (Builds Image)                            | (Misconfigured Policy)                   |
-|          v                                           v                                          |
-|  +----------------------+                 +-------------------------+                           |
-|  | Container Registry   | <== Pull ==     | Attacker Recon Node     |                           |
-|  | (ECR / ACR / Harbor) |                 |                         |                           |
-|  |                      |                 | 1. Enumerates /_catalog |                           |
-|  | - payment-gateway:v1 |                 | 2. Identifies Tags      |                           |
-|  | - auth-service:dev   |                 | 3. Uses 'crane' to pull |                           |
-|  | - internal-tools:v2  |                 |    filesystem tarball   |                           |
-|  +----------------------+                 +-------------------------+                           |
-|          |                                           |                                          |
-|          | (Deploys Image)                           | 4. Local Deep Dive Analysis              |
-|          v                                           v                                          |
-|  +----------------------+                 +-------------------------+                           |
-|  | Kubernetes Cluster   |                 | Secret Extraction Phase |                           |
-|  | (Production Env)     |                 |                         |                           |
-|  |                      |                 | - Extracts .env files   |                           |
-|  | Running Pods         |                 | - Finds DB Passwords    |                           |
-|  |                      |                 | - Finds AWS IAM Keys    |                           |
-|  +----------------------+                 +-------------------------+                           |
-|                                                      |                                          |
-|                                                      | 5. Exploitation                          |
-|                                                      v                                          |
-|                                           Attacker uses extracted keys                          |
-|                                           to compromise production DB                           |
-+-------------------------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Container Registry Attack Architecture
+        subgraph Internal
+            A[CI/CD Pipeline] -- Builds Image --> B[Container Registry <br/> ECR / ACR / Harbor <br/> - payment-gateway:v1 <br/> - auth-service:dev <br/> - internal-tools:v2]
+            B -- Deploys Image --> C[Kubernetes Cluster <br/> Production Env <br/> Running Pods]
+        end
+        subgraph Attacker
+            D[Attacker Recon Node <br/> 1. Enumerates /_catalog <br/> 2. Identifies Tags <br/> 3. Uses 'crane' to pull filesystem tarball]
+            D -- 4. Local Deep Dive Analysis --> E[Secret Extraction Phase <br/> - Extracts .env files <br/> - Finds DB Passwords <br/> - Finds AWS IAM Keys]
+            E -- 5. Exploitation --> F[Attacker uses extracted keys <br/> to compromise production DB]
+        end
+        G[Cloud Provider IAM <br/> Misconfigured Policy] --> D
+        B <== Pull == D
+    end
 ```
 
 ## Post-Enumeration: Image Analysis and Secret Hunting

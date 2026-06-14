@@ -26,31 +26,13 @@ When a thread calls `VirtualAlloc` to allocate memory for a payload, a new VAD n
 
 ### Technical ASCII Diagram: VAD Tree Analysis
 
-```text
-================================================================================
-                    VAD TREE AND MEMORY BACKING ANALYSIS
-================================================================================
-
-[ PROCESS MEMORY SPACE ]
-
-Address       Size       State       Protect             Type        Module
--------       ----       -----       -------             ----        ------
-0x7FF...      1024KB     Commit      Execute/Read        Image       ntdll.dll
-  ^
-  | (Legitimate: Backed by an Image file on disk, RX permissions)
-
-0x01A...      512KB      Commit      Read/Write          Private     [None]
-  ^
-  | (Legitimate: Standard heap allocation, no Execute permissions)
-
-0x02B...      2048KB     Commit      Execute/Read/Write  Private     [None] <--- ALERT!
-  ^
-  | (Suspicious: Unbacked Private memory, RWX permissions. Typical 
-  |  behavior of basic VirtualAlloc/Inject payload)
-
-================================================================================
-          DEFENDER VIEW: EDR Memory Scanner traversing VAD Nodes
-================================================================================
+```mermaid
+flowchart TD
+    subgraph Process["PROCESS MEMORY SPACE"]
+        LegitImg["0x7FF... | 1024KB | Commit | Execute/Read | Image | ntdll.dll<br>(Legitimate: Backed by an Image file on disk, RX permissions)"]
+        LegitHeap["0x01A... | 512KB | Commit | Read/Write | Private | [None]<br>(Legitimate: Standard heap allocation, no Execute permissions)"]
+        SuspPrivate["0x02B... | 2048KB | Commit | Execute/Read/Write | Private | [None] <--- ALERT!<br>(Suspicious: Unbacked Private memory, RWX permissions.<br>Typical behavior of basic VirtualAlloc/Inject payload)"]
+    end
 ```
 
 ## Conceptual Evasion Techniques

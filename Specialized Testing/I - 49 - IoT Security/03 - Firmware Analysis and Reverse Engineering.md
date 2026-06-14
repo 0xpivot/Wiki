@@ -30,47 +30,17 @@ Unlike standard ISO images or Windows executables, an IoT firmware file is typic
 
 ## ASCII Diagram: Firmware Unpacking and Analysis Flow
 
-```text
-                                [RAW FIRMWARE BINARY (.bin)]
-                                             |
-                                             v
-                           +-----------------------------------+
-                           | STEP 1: INITIAL RECONNAISSANCE    |
-                           | tools: file, strings, hexdump,    |
-                           |        binwalk, entropy analysis  |
-                           +-----------------------------------+
-                                             |
-                                 Is the firmware encrypted?
-                                /                          \
-                              YES                           NO
-                              /                              \
-            [Hardware extraction required]                    |
-            [to find decryption keys]                         v
-                                             +-----------------------------------+
-                                             | STEP 2: EXTRACTION / UNPACKING    |
-                                             | tools: binwalk -Me, dd, sasquatch,|
-                                             |        jefferson, ubi_reader      |
-                                             +-----------------------------------+
-                                                              |
-                                                              v
-                                             +-----------------------------------+
-                                             | STEP 3: FILESYSTEM ANALYSIS       |
-                                             | - Inspect /etc/shadow, /etc/passwd|
-                                             | - Look for API keys, hardcoded    |
-                                             |   credentials, hidden web roots   |
-                                             +-----------------------------------+
-                                                              |
-                                                              v
-                           +-----------------------------------+-----------------------------------+
-                           |                                                                       |
-                           v                                                                       v
-         +-----------------------------------+                                   +-----------------------------------+
-         | STEP 4: STATIC BINARY ANALYSIS    |                                   | STEP 5: DYNAMIC EMULATION         |
-         | tools: Ghidra, IDA Pro, Radare2   |                                   | tools: QEMU, Firmadyne, FAT       |
-         | - Reverse engineer custom daemons |                                   | - Boot the firmware in a VM       |
-         | - Identify Buffer Overflows, UAF  |                                   | - Fuzz exposed web/binary ports   |
-         | - Trace insecure cryptography     |                                   | - Attach debuggers (gdbserver)    |
-         +-----------------------------------+                                   +-----------------------------------+
+```mermaid
+flowchart TD
+    RAW["[RAW FIRMWARE BINARY .bin]"] --> STEP1
+    STEP1["STEP 1: INITIAL RECONNAISSANCE<br>tools: file, strings, hexdump, binwalk, entropy analysis"] --> COND{"Is the firmware encrypted?"}
+    COND -- YES --> HW["Hardware extraction required<br>to find decryption keys"]
+    COND -- NO --> STEP2
+    STEP2["STEP 2: EXTRACTION / UNPACKING<br>tools: binwalk -Me, dd, sasquatch, jefferson, ubi_reader"] --> STEP3
+    STEP3["STEP 3: FILESYSTEM ANALYSIS<br>- Inspect /etc/shadow, /etc/passwd<br>- Look for API keys, hardcoded credentials, hidden web roots"] --> STEP4
+    STEP3 --> STEP5
+    STEP4["STEP 4: STATIC BINARY ANALYSIS<br>tools: Ghidra, IDA Pro, Radare2<br>- Reverse engineer custom daemons<br>- Identify Buffer Overflows, UAF<br>- Trace insecure cryptography"]
+    STEP5["STEP 5: DYNAMIC EMULATION<br>tools: QEMU, Firmadyne, FAT<br>- Boot the firmware in a VM<br>- Fuzz exposed web/binary ports<br>- Attach debuggers (gdbserver)"]
 ```
 
 ---

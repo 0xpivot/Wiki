@@ -28,40 +28,24 @@ Unlike web applications that utilize stateful sessions (Session IDs stored in me
 
 ## 3. Architectural Context
 
-```text
-========================================================================================
-                      BROKEN AUTHENTICATION ATTACK ARCHITECTURE
-========================================================================================
+```mermaid
+flowchart TD
+    A["Attacker"]
+    LE["Login Endpoint\n(No Rate Limit)"]
+    IDP["Identity Provider\n(No Account Lockout)"]
+    TI["Token Issuer\n(Weak JWT Key)"]
+    VU["Validates User &\nCreates Payload"]
+    GW["API Gateway\n(Accepts Token)"]
+    TS["Target Service\n(Executes as Admin)"]
 
-   [ Attacker ]
-        |
-        | 1. Credential Stuffing / Brute Force Attack
-        V
-+-------------------+       +-----------------------+
-|  Login Endpoint   | ----> |   Identity Provider   |
-| (No Rate Limit)   |       | (No Account Lockout)  |
-+-------------------+       +-----------------------+
-        |                               |
-        | 2. Valid credentials found!   |
-        V                               V
-+-------------------+       +-----------------------+
-|   Token Issuer    | <---- |   Validates User &    |
-|  (Weak JWT Key)   |       |   Creates Payload     |
-+-------------------+       +-----------------------+
-        |
-        | 3. Issues Weakly Signed JWT
-        V
-   [ Attacker ]
-        |
-        | 4. Attacker modifies JWT (e.g., role: "admin")
-        | 5. Signs with cracked weak key
-        V
-+-------------------+       +-----------------------+
-|    API Gateway    | ----> |    Target Service     |
-| (Accepts Token)   |       | (Executes as Admin)   |
-+-------------------+       +-----------------------+
-
-========================================================================================
+    A -- "1. Credential Stuffing / Brute Force Attack" --> LE
+    LE --> IDP
+    LE -- "2. Valid credentials found!" --> TI
+    IDP --> VU
+    VU --> TI
+    TI -- "3. Issues Weakly Signed JWT" --> A
+    A -- "4. Attacker modifies JWT\n5. Signs with cracked weak key" --> GW
+    GW --> TS
 ```
 
 ## 4. Attack Vectors and Threat Modeling

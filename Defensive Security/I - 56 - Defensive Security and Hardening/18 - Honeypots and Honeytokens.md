@@ -59,57 +59,32 @@ The principle is the same: no legitimate user should ever access, use, or query 
 
 ## Deception Architecture Diagram
 
-```text
-                                 +-----------------------+
-                                 |  Attacker / Red Team  |
-                                 +-----------+-----------+
-                                             | (Network Scan / Phishing / Exploit)
-                                             v
-+-------------------------------------------------------------------------------------------------+
-|                                     Corporate Network                                           |
-|                                                                                                 |
-|   +-------------------+       +-------------------+       +-------------------+                 |
-|   | Production Server |       | Developer Workstn |       | Production DB     |                 |
-|   | (Real Asset)      |       | (Real Asset)      |       | (Real Asset)      |                 |
-|   |                   |       |                   |       |                   |                 |
-|   | - Web App         |       | - Source Code     |       | - Real Data       |                 |
-|   | - OS Logs         |       | - Config Files    |       | - User Tables     |                 |
-|   |                   |       |                   |       |                   |                 |
-|   | *Honeytoken: Fake |       | *Honeytoken: Fake |       | *Honeytoken: Fake |                 |
-|   |  Admin Script in  |       |  AWS Keys in .env |       |  Credit Card Row  |                 |
-|   |  /tmp/backup.sh   |       |                   |       |                   |                 |
-|   +-------------------+       +-------------------+       +-------------------+                 |
-|                                                                                                 |
-|                                    +-----------------------+                                    |
-|                                    | Network Aggregation   |                                    |
-|                                    +-----------+-----------+                                    |
-|                                                |                                                |
-|------------------------------------------------|------------------------------------------------|
-                                                 |
-                                     (Strict Firewall / VLAN Segregation)
-                                                 |
-                                                 v
-+-------------------------------------------------------------------------------------------------+
-|                                     Deception Network (DMZ)                                     |
-|                                                                                                 |
-|   +-------------------+       +-------------------+       +-------------------+                 |
-|   | Low Interaction   |       | Medium Interaction|       | High Interaction  |                 |
-|   | Honeypot          |       | Honeypot          |       | Honeypot (Risky)  |                 |
-|   | (e.g., Honeyd)    |       | (e.g., Cowrie)    |       | (e.g., Vuln Windows)|                 |
-|   |                   |       |                   |       |                   |                 |
-|   | - Simulates SSH   |       | - Emulates Shell  |       | - Real OS, Patched|                 |
-|   |   Banners         |       | - Captures Malware|       |   Deliberately    |                 |
-|   | - Detects Scans   |       | - Logs Commands   |       | - Full Keylogging |                 |
-|   +---------+---------+       +---------+---------+       +---------+---------+                 |
-|             |                           |                           |                           |
-|             +---------------------------+---------------------------+                           |
-|                                         |                                                       |
-|                                         v                                                       |
-|                               +-------------------+                                             |
-|                               | SIEM / Alerting   | <==== HIGH FIDELITY ALERTS                  |
-|                               | Infrastructure    |                                             |
-|                               +-------------------+                                             |
-+-------------------------------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    Attacker["Attacker / Red Team"]
+
+    subgraph CorpNet["Corporate Network"]
+        ProdServer["Production Server (Real Asset)\n- Web App\n- OS Logs\n*Honeytoken: Fake Admin Script in /tmp/backup.sh"]
+        DevWorkstation["Developer Workstn (Real Asset)\n- Source Code\n- Config Files\n*Honeytoken: Fake AWS Keys in .env"]
+        ProdDB["Production DB (Real Asset)\n- Real Data\n- User Tables\n*Honeytoken: Fake Credit Card Row"]
+    end
+
+    NetAgg["Network Aggregation"]
+
+    subgraph DeceptionNet["Deception Network (DMZ)"]
+        LowInt["Low Interaction Honeypot\n(e.g., Honeyd)\n- Simulates SSH Banners\n- Detects Scans"]
+        MedInt["Medium Interaction Honeypot\n(e.g., Cowrie)\n- Emulates Shell\n- Captures Malware\n- Logs Commands"]
+        HighInt["High Interaction Honeypot (Risky)\n(e.g., Vuln Windows)\n- Real OS, Patched Deliberately\n- Full Keylogging"]
+    end
+
+    SIEM["SIEM / Alerting Infrastructure"]
+
+    Attacker -- "(Network Scan / Phishing / Exploit)" --> CorpNet
+    CorpNet --> NetAgg
+    NetAgg -- "(Strict Firewall / VLAN Segregation)" --> DeceptionNet
+    LowInt --> SIEM
+    MedInt --> SIEM
+    HighInt --> SIEM
 ```
 
 ## Evasion and Fingerprinting

