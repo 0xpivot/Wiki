@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Network Security/A - 81 - Network Service Pentesting/94 - PPPP P2P Cameras (Port 32100) Pentesting.md",
+                "file": "Specialized Testing/I - 49 - IoT Security/19 - SCADA ICS Security Concepts.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "94 - PPPP P2P Cameras (Port 32100) Pentesting"
+              "title": "19 - SCADA ICS Security Concepts"
             }
           }
         ]
@@ -185,6 +185,15 @@
   },
   "active": "51d30df0541a0fca",
   "lastOpenFiles": [
+    "Specialized Testing/I - 49 - IoT Security/24 - Firmware Integrity and Update Verification.md",
+    "Specialized Testing/I - 49 - IoT Security/24 - Firmware Integrity and Update Verification.md.tmp.566944.d6942732a35f",
+    "Specialized Testing/I - 49 - IoT Security/23 - Secure Boot and Bootloader Testing.md",
+    "Specialized Testing/I - 49 - IoT Security/23 - Secure Boot and Bootloader Testing.md.tmp.566944.2ba164595e23",
+    "Specialized Testing/I - 49 - IoT Security/22 - Escaping Kiosk and Locked-Down GUI Applications.md",
+    "Specialized Testing/I - 49 - IoT Security/22 - Escaping Kiosk and Locked-Down GUI Applications.md.tmp.566944.a12fa9968932",
+    "Network Security/A - 81 - Network Service Pentesting/94 - PPPP P2P Cameras (Port 32100) Pentesting.md",
+    "Specialized Testing/I - 49 - IoT Security/21 - Physical Attacks and Hardware Implants.md",
+    "Specialized Testing/I - 49 - IoT Security/21 - Physical Attacks and Hardware Implants.md.tmp.566944.36a61141a7e7",
     "Network Security/A - 81 - Network Service Pentesting/75 - SAProuter (Port 3299) Pentesting.md",
     "Network Security/A - 81 - Network Service Pentesting/74 - Bitcoin Node (Port 8333) Pentesting.md",
     "Network Security/A - 81 - Network Service Pentesting/72 - HSQLDB (Port 9001) Pentesting.md",
@@ -204,22 +213,13 @@
     "Web Application Security/I - 58 - Advanced Web Techniques/34 - Reverse Proxy Misconfigurations.md",
     "Web Application Security/I - 58 - Advanced Web Techniques/34 - Reverse Proxy Misconfigurations.md.tmp.566944.2c4813ca5ad0",
     "Web Application Security/I - 58 - Advanced Web Techniques/33 - ORM Leak.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/33 - ORM Leak.md.tmp.566944.d6f9cfe41e83",
     "Web Application Security/I - 58 - Advanced Web Techniques/32 - Headless Browser Abuse.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/32 - Headless Browser Abuse.md.tmp.566944.71c13cac9782",
     "Web Application Security/I - 58 - Advanced Web Techniques/31 - Web LLM and Prompt Injection.md",
     "Web Application Security/I - 58 - Advanced Web Techniques/30 - Dependency Confusion.md",
     "Cloud and Container Security/A - 62 - Advanced AWS Exploitation/13 - EC2 User Data and Startup Script Injection.md",
     "Web Application Security/I - 58 - Advanced Web Techniques/29 - Client-Side Path Traversal.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/29 - Client-Side Path Traversal.md.tmp.566944.b5787d5759ae",
     "Web Application Security/I - 58 - Advanced Web Techniques/28 - DOM Clobbering.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/28 - DOM Clobbering.md.tmp.566944.198110c376b5",
     "Active Directory/A - 83 - Advanced Active Directory Exploitation/22 - LDAP Signing Channel Binding and Relay Hardening.md",
-    "Active Directory/A - 83 - Advanced Active Directory Exploitation/21 - Privileged Groups and Token Privilege Abuse.md",
-    "Active Directory/A - 83 - Advanced Active Directory Exploitation/20 - Kerberos Double-Hop and RDP Session Abuse.md",
-    "Active Directory/A - 83 - Advanced Active Directory Exploitation/19 - Password Spraying and Pre-Authentication Attacks.md",
-    "Active Directory/A - 83 - Advanced Active Directory Exploitation/18 - ADWS Enumeration and BloodHound.md",
-    "Active Directory/A - 83 - Advanced Active Directory Exploitation/17 - MSSQL in Active Directory.md",
-    "Active Directory/A - 83 - Advanced Active Directory Exploitation/16 - SCCM and MECM Attacks.md"
+    "Active Directory/A - 83 - Advanced Active Directory Exploitation/21 - Privileged Groups and Token Privilege Abuse.md"
   ]
 }
