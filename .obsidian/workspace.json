@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a15064200ce94d3a",
+        "id": "5531306cd8f884cd",
         "type": "tabs",
         "children": [
           {
-            "id": "285b51f77f5087a7",
+            "id": "51d30df0541a0fca",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Cloud and Container Security/A - 62 - Advanced AWS Exploitation/03 - S3 Bucket Misconfigurations and Ransomware.md",
+                "file": "Network Security/A - 81 - Network Service Pentesting/94 - PPPP P2P Cameras (Port 32100) Pentesting.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "03 - S3 Bucket Misconfigurations and Ransomware"
+              "title": "94 - PPPP P2P Cameras (Port 32100) Pentesting"
             }
           }
         ]
@@ -183,43 +183,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "285b51f77f5087a7",
+  "active": "51d30df0541a0fca",
   "lastOpenFiles": [
-    "Cloud and Container Security/A - 62 - Advanced AWS Exploitation/04 - Exploiting AWS Lambda and Serverless Functions.md",
-    "Cloud and Container Security/A - 62 - Advanced AWS Exploitation/02 - AWS SSRF to Metadata and IMDSv2 Bypass.md",
-    "Cloud and Container Security/B - 75 - Cloud Enumeration and Reconnaissance/01 - OSINT for Cloud Assets Domain to Cloud IP.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/14 - SSM Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/14 - SSM Exploitation.md.tmp.566944.35d08cb03ae2",
-    "Cloud and Container Security/A - 62 - Advanced AWS Exploitation/01 - AWS IAM Privilege Escalation Advanced Vectors.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/13 - KMS Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/13 - KMS Exploitation.md.tmp.566944.4b01ca242384",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/12 - Secrets Manager Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/12 - Secrets Manager Exploitation.md.tmp.566944.44e4d5527d62",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/11 - EFS Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/11 - EFS Exploitation.md.tmp.566944.1b9c59bf3d12",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/10 - EKS Exploitation.md.tmp.566944.34dfd971c352",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/10 - EKS Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/10 - EKS Exploitation.md.tmp.566944.db0ae5c14334",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/09 - ECS Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/09 - ECS Exploitation.md.tmp.566944.3725853aab0a",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/08 - ECR Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/08 - ECR Exploitation.md.tmp.566944.1faa0f57ad7f",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/07 - DynamoDB Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/07 - DynamoDB Exploitation.md.tmp.566944.5cee13362909",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/06 - RDS Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/06 - RDS Exploitation.md.tmp.566944.2a78eccd0558",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/05 - Lambda Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/04 - EC2 Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/03 - S3 Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/02 - STS Exploitation.md",
-    "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/01 - IAM Exploitation.md",
-    "Network Security/A - 81 - Network Service Pentesting/95 - Tiller Helm (Port 44134) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/94 - PPPP P2P Cameras (Port 32100) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/93 - HP Insight Manager (Ports 2301-2381) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/92 - Check Point FW-1 (Port 264) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/91 - Cisco SD-WAN Control Plane (Port 12346) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/90 - Cisco Smart Install (Port 4786) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/89 - IBM MQ (Port 1414) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/88 - EPP (Port 700) Pentesting.md"
+    "Network Security/A - 81 - Network Service Pentesting/75 - SAProuter (Port 3299) Pentesting.md",
+    "Network Security/A - 81 - Network Service Pentesting/74 - Bitcoin Node (Port 8333) Pentesting.md",
+    "Network Security/A - 81 - Network Service Pentesting/72 - HSQLDB (Port 9001) Pentesting.md",
+    "Network Security/A - 81 - Network Service Pentesting/71 - Hadoop (Ports 50070-9870) Pentesting.md",
+    "Network Security/A - 81 - Network Service Pentesting/70 - GlusterFS (Ports 24007-49152) Pentesting.md",
+    "Network Security/A - 81 - Network Service Pentesting/69 - iSCSI (Port 3260) Pentesting.md",
+    "Network Security/A - 81 - Network Service Pentesting/64 - Modbus (Port 502) Pentesting.md",
+    "Web Application Security/I - 10 - Injection Attacks/22 - External Variable Modification.md.tmp.566944.401721eb2562",
+    "Web Application Security/I - 58 - Advanced Web Techniques/XX5MqqwE",
+    "Web Application Security/I - 58 - Advanced Web Techniques/sed2vJFfN",
+    "Network Security/A - 81 - Network Service Pentesting/68 - NDMP (Port 10000) Pentesting.md",
+    "Network Security/A - 81 - Network Service Pentesting/47 - FastCGI (Port 9000) Pentesting.md",
+    "Web Application Security/I - 10 - Injection Attacks/23 - Type Juggling.md",
+    "Web Application Security/I - 10 - Injection Attacks/23 - Type Juggling.md.tmp.566944.604cdc8c3594",
+    "Web Application Security/I - 10 - Injection Attacks/22 - External Variable Modification.md",
+    "Web Application Security/I - 10 - Injection Attacks/22 - External Variable Modification.md.tmp.566944.e4bec369baef",
+    "Web Application Security/I - 58 - Advanced Web Techniques/34 - Reverse Proxy Misconfigurations.md",
+    "Web Application Security/I - 58 - Advanced Web Techniques/34 - Reverse Proxy Misconfigurations.md.tmp.566944.2c4813ca5ad0",
+    "Web Application Security/I - 58 - Advanced Web Techniques/33 - ORM Leak.md",
+    "Web Application Security/I - 58 - Advanced Web Techniques/33 - ORM Leak.md.tmp.566944.d6f9cfe41e83",
+    "Web Application Security/I - 58 - Advanced Web Techniques/32 - Headless Browser Abuse.md",
+    "Web Application Security/I - 58 - Advanced Web Techniques/32 - Headless Browser Abuse.md.tmp.566944.71c13cac9782",
+    "Web Application Security/I - 58 - Advanced Web Techniques/31 - Web LLM and Prompt Injection.md",
+    "Web Application Security/I - 58 - Advanced Web Techniques/30 - Dependency Confusion.md",
+    "Cloud and Container Security/A - 62 - Advanced AWS Exploitation/13 - EC2 User Data and Startup Script Injection.md",
+    "Web Application Security/I - 58 - Advanced Web Techniques/29 - Client-Side Path Traversal.md",
+    "Web Application Security/I - 58 - Advanced Web Techniques/29 - Client-Side Path Traversal.md.tmp.566944.b5787d5759ae",
+    "Web Application Security/I - 58 - Advanced Web Techniques/28 - DOM Clobbering.md",
+    "Web Application Security/I - 58 - Advanced Web Techniques/28 - DOM Clobbering.md.tmp.566944.198110c376b5",
+    "Active Directory/A - 83 - Advanced Active Directory Exploitation/22 - LDAP Signing Channel Binding and Relay Hardening.md",
+    "Active Directory/A - 83 - Advanced Active Directory Exploitation/21 - Privileged Groups and Token Privilege Abuse.md",
+    "Active Directory/A - 83 - Advanced Active Directory Exploitation/20 - Kerberos Double-Hop and RDP Session Abuse.md",
+    "Active Directory/A - 83 - Advanced Active Directory Exploitation/19 - Password Spraying and Pre-Authentication Attacks.md",
+    "Active Directory/A - 83 - Advanced Active Directory Exploitation/18 - ADWS Enumeration and BloodHound.md",
+    "Active Directory/A - 83 - Advanced Active Directory Exploitation/17 - MSSQL in Active Directory.md",
+    "Active Directory/A - 83 - Advanced Active Directory Exploitation/16 - SCCM and MECM Attacks.md"
   ]
 }
