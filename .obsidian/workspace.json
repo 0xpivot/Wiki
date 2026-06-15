@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Specialized Testing/I - 49 - IoT Security/19 - SCADA ICS Security Concepts.md",
+                "file": "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/26 - Glue Exploitation.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "19 - SCADA ICS Security Concepts"
+              "title": "26 - Glue Exploitation"
             }
           }
         ]
@@ -185,6 +185,11 @@
   },
   "active": "51d30df0541a0fca",
   "lastOpenFiles": [
+    "verify_enhancement.py",
+    "PROJECT.md",
+    "Active Directory/A - 36 - Active Directory Attacks/23 - BloodHound — Attack Path Analysis.md",
+    "Specialized Testing/I - 49 - IoT Security/19 - SCADA ICS Security Concepts.md",
+    "ORIGINAL_REQUEST.md",
     "Specialized Testing/I - 49 - IoT Security/24 - Firmware Integrity and Update Verification.md",
     "Specialized Testing/I - 49 - IoT Security/24 - Firmware Integrity and Update Verification.md.tmp.566944.d6942732a35f",
     "Specialized Testing/I - 49 - IoT Security/23 - Secure Boot and Bootloader Testing.md",
@@ -215,11 +220,6 @@
     "Web Application Security/I - 58 - Advanced Web Techniques/33 - ORM Leak.md",
     "Web Application Security/I - 58 - Advanced Web Techniques/32 - Headless Browser Abuse.md",
     "Web Application Security/I - 58 - Advanced Web Techniques/31 - Web LLM and Prompt Injection.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/30 - Dependency Confusion.md",
-    "Cloud and Container Security/A - 62 - Advanced AWS Exploitation/13 - EC2 User Data and Startup Script Injection.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/29 - Client-Side Path Traversal.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/28 - DOM Clobbering.md",
-    "Active Directory/A - 83 - Advanced Active Directory Exploitation/22 - LDAP Signing Channel Binding and Relay Hardening.md",
-    "Active Directory/A - 83 - Advanced Active Directory Exploitation/21 - Privileged Groups and Token Privilege Abuse.md"
+    "Web Application Security/I - 58 - Advanced Web Techniques/30 - Dependency Confusion.md"
   ]
 }
