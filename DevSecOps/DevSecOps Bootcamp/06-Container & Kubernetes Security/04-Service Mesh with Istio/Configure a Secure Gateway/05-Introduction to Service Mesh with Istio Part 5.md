@@ -1,0 +1,156 @@
+---
+course: DevSecOps
+topic: Service Mesh with Istio
+tags: [devsecops]
+---
+
+## Introduction to Service Mesh with Istio
+
+Service mesh is a dedicated infrastructure layer for handling service-to-service communication. It provides a way to manage and monitor interactions between services in a microservices architecture. One of the most popular service mesh implementations is Istio, which adds a layer of networking capabilities to your applications. This chapter focuses on configuring a secure gateway using Istio, ensuring that all communication is encrypted and secure.
+
+### What is Istio?
+
+Istio is an open-source service mesh that provides a uniform way to secure, connect, and monitor microservices. It is designed to work with any platform and supports a wide range of deployment environments, including Kubernetes, VMs, and bare metal servers. Istio includes features such as:
+
+- **Traffic Management**: Routing, load balancing, retries, and circuit breaking.
+- **Security**: Mutual TLS, authentication, and authorization.
+- **Observability**: Metrics, distributed tracing, and logging.
+
+### Why Use Istio for Secure Gateway Configuration?
+
+Configuring a secure gateway is crucial for ensuring that all incoming and outgoing traffic is encrypted and authenticated. Istio simplifies this process by providing built-in support for mutual TLS and other security mechanisms. By using Istio, you can:
+
+- **Encrypt Traffic**: Ensure that all data transmitted between services is encrypted.
+- **Authenticate Services**: Verify the identity of services communicating with each other.
+- **Monitor Traffic**: Gain insights into the health and performance of your services.
+
+### Prerequisites
+
+Before diving into the configuration, ensure you have the following:
+
+- **Kubernetes Cluster**: A running Kubernetes cluster.
+- **Istio Installed**: Istio installed and properly configured on your cluster.
+- **Kubectl**: The `kubectl` command-line tool for interacting with your Kubernetes cluster.
+
+### Background Theory
+
+#### Service Mesh Architecture
+
+A service mesh typically consists of two main components:
+
+- **Sidecar Proxies**: Lightweight proxies deployed alongside each service instance. These proxies handle the communication between services.
+- **Control Plane**: Manages the configuration and policies applied to the sidecar proxies.
+
+In Istio, the sidecar proxies are called Envoy proxies, and the control plane includes components like Pilot, Citadel, and Mixer.
+
+#### Mutual TLS
+
+Mutual TLS (mTLS) is a security mechanism where both the client and server authenticate each other using digital certificates. This ensures that both parties are who they claim to be and that the communication is encrypted.
+
+### Configuring a Secure Gateway
+
+To configure a secure gateway using Istio, follow these steps:
+
+1. **Create a Secret for the TLS Certificate**
+2. **Configure the Gateway to Use the TLS Certificate**
+3. **Ensure Only HTTPS Traffic is Allowed**
+
+#### Step 1: Create a Secret for the TLS Certificate
+
+First, you need to create a Kubernetes secret containing the TLS certificate and key. This secret will be used by Istio to secure the gateway.
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-tls-secret
+  namespace: istio-system
+type: kubernetes.io/tls
+data:
+  tls.crt: <base64-encoded-certificate>
+  tls.key: <base64-encoded-key>
+```
+
+Replace `<base64-encoded-certificate>` and `<base64-encoded-key>` with the base64-encoded versions of your TLS certificate and key.
+
+#### Step 2: Configure the Gateway to Use the TLS Certificate
+
+Next, you need to configure the Istio gateway to use the TLS certificate. This involves creating a `Gateway` resource and specifying the TLS settings.
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: my-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/secret/tls.crt
+      privateKey: /etc/istio/secret/tls.key
+    hosts:
+    - "*"
+```
+
+This configuration sets up the gateway to listen on port 443 (HTTPS) and uses the TLS certificate and key stored in the secret.
+
+#### Step 3: Ensure Only HTTPS Traffic is Allowed
+
+Finally, you need to ensure that only HTTPS traffic is allowed. This can be done by configuring the virtual service to redirect HTTP traffic to HTTPS.
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: my-virtual-service
+  namespace: istio-system
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - my-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: my-service
+        port:
+          number: 80
+    rewrite:
+      uri: /
+  - match:
+    - port: 80
+    redirect:
+      uri: https://{hostname}{uri}
+```
+
+This configuration redirects any HTTP traffic to HTTPS.
+
+### Full Example
+
+Here is the complete example, including the creation of the secret, the gateway configuration, and the virtual service configuration.
+
+#### Creating the Secret
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-tls-secret
+  namespace: istio-system
+type: kubernetes.io/tls
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvVENDQWlRZ0FaQVJNREpBTUJnTUNrR0ExVUVDakFOQmdrcWhraUc5dzBCQVFzRkFEQXpCT05oY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE5qY2pBeE
+
+---
+<!-- nav -->
+[[DevSecOps/DevSecOps Bootcamp/06-Container & Kubernetes Security/04-Service Mesh with Istio/Configure a Secure Gateway/04-Introduction to Service Mesh with Istio Part 4|Introduction to Service Mesh with Istio Part 4]] | [[DevSecOps/DevSecOps Bootcamp/06-Container & Kubernetes Security/04-Service Mesh with Istio/Configure a Secure Gateway/00-Overview|Overview]] | [[DevSecOps/DevSecOps Bootcamp/06-Container & Kubernetes Security/04-Service Mesh with Istio/Configure a Secure Gateway/06-Introduction to Service Mesh with Istio Part 6|Introduction to Service Mesh with Istio Part 6]]

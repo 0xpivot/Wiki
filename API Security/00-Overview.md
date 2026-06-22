@@ -1,0 +1,32 @@
+---
+tags: [overview]
+---
+
+# API Security
+
+- [[API Security/01-Course Introduction/00-Overview|Course Introduction]]
+- [[API Security/02-Preparing for API Pentest/00-Overview|Preparing for API Pentest]]
+- [[API Security/03-Lab Setup & Postman Document Sharing/00-Overview|Lab Setup & Postman Document Sharing]]
+- [[API Security/04-Using Postman tool for API Security Testing/00-Overview|Using Postman tool for API Security Testing]]
+- [[API Security/05-OWASP API TOP 10/00-Overview|OWASP API TOP 10]]
+- [[API Security/06-Broken Object Level Authorization issues/00-Overview|Broken Object Level Authorization issues]]
+- [[API Security/07-BFLA Issues/00-Overview|BFLA Issues]]
+- [[API Security/08-Excessive Data Exposure/00-Overview|Excessive Data Exposure]]
+- [[API Security/09-Lack of Resource & Rate Limiting/00-Overview|Lack of Resource & Rate Limiting]]
+- [[API Security/10-Mass Assignment Attack/00-Overview|Mass Assignment Attack]]
+- [[API Security/11-SQL Injection/00-Overview|SQL Injection]]
+- [[API Security/12-Cross Site Scripting/00-Overview|Cross Site Scripting]]
+- [[API Security/13-Command Injection/00-Overview|Command Injection]]
+- [[API Security/14-Server Side Request Forgery/00-Overview|Server Side Request Forgery]]
+- [[API Security/15-File Path Traversal/00-Overview|File Path Traversal]]
+- [[API Security/16-Information Disclosure/00-Overview|Information Disclosure]]
+- [[API Security/17-Unauthorized Password Change/00-Overview|Unauthorized Password Change]]
+- [[API Security/18-User Enumeration/00-Overview|User Enumeration]]
+- [[API Security/19-JSON Web Token/00-Overview|JSON Web Token]]
+- [[API Security/20-Transport Layer Security Issues/00-Overview|Transport Layer Security Issues]]
+- [[API Security/21-Billion Laugh Attack/00-Overview|Billion Laugh Attack]]
+- [[API Security/22-Offensive XXE Exploitation/00-Overview|Offensive XXE Exploitation]]
+- [[API Security/23-RCE Via Deserialization in API/00-Overview|RCE Via Deserialization in API]]
+- [[API Security/24-Regular Expression DOS Attack/00-Overview|Regular Expression DOS Attack]]
+- [[API Security/25-Hidden API Functionality Exposure/00-Overview|Hidden API Functionality Exposure]]
+- [[API Security/I - 31 - API Security/00-Overview|API Security (OWASP API Top 10)]]

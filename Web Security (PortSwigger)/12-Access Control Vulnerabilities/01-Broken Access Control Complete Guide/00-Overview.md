@@ -1,0 +1,31 @@
+---
+tags: [overview]
+---
+
+# Broken Access Control Complete Guide
+
+- [[01-Access Control Vulnerabilities A Comprehensive Guide|Access Control Vulnerabilities A Comprehensive Guide]]
+- [[02-Authentication Basics|Authentication Basics]]
+- [[03-Fundamentals of Access Control|Fundamentals of Access Control]]
+- [[04-Introduction to Access Control Vulnerabilities|Introduction to Access Control Vulnerabilities]]
+- [[05-What is a Broken Access Control Vulnerability|What is a Broken Access Control Vulnerability]]
+- [[06-Access Control Vulnerabilities|Access Control Vulnerabilities]]
+- [[07-Bypassing Access Control Checks by Modifying Parameters|Bypassing Access Control Checks by Modifying Parameters]]
+- [[08-Centralized Access Control Engine|Centralized Access Control Engine]]
+- [[09-Confidentiality, Integrity, and Availability|Confidentiality, Integrity, and Availability]]
+- [[10-Context-Dependent Access Control|Context-Dependent Access Control]]
+- [[11-Denied by Default Design|Denied by Default Design]]
+- [[12-Escalating Privileges via Hidden Parameters|Escalating Privileges via Hidden Parameters]]
+- [[13-Exploiting CORS Misconfigurations|Exploiting CORS Misconfigurations]]
+- [[14-Forceful Browsing to Authenticated Pages|Forceful Browsing to Authenticated Pages]]
+- [[15-Hands-On Practice Labs|Hands-On Practice Labs]]
+- [[16-Horizontal Privilege Escalation|Horizontal Privilege Escalation]]
+- [[17-Least Privilege Principle|Least Privilege Principle]]
+- [[18-Manipulating Metadata JSON Web Tokens and Cookies|Manipulating Metadata JSON Web Tokens and Cookies]]
+- [[19-Missing Access Controls on API Methods|Missing Access Controls on API Methods]]
+- [[20-Principle of Least Privilege|Principle of Least Privilege]]
+- [[21-Session Management and Access Control|Session Management and Access Control]]
+- [[22-Session Management|Session Management]]
+- [[23-Understanding Access Control Vulnerabilities|Understanding Access Control Vulnerabilities]]
+- [[24-Conclusion|Conclusion]]
+- [[Web Security (PortSwigger)/12-Access Control Vulnerabilities/01-Broken Access Control Complete Guide/25-Practice Questions & Answers|Practice Questions & Answers]]

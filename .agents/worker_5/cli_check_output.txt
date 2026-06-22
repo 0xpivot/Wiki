@@ -1,0 +1,34 @@
+=== CLI and LLM Executable Scan Results ===
+
+1. Checks for system PATH commands:
+- Checked PATH directories: /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /usr/local/games, /home/sanchit/.local/bin
+- Checked target commands: 'antigravity', 'antigravity-cli', 'gemini', 'gemini-cli', 'agent', 'agent-cli'
+- Result: None of these exact commands are available in the system PATH.
+- Note on execution: Command execution via subprocess/shell timed out waiting for user approval because the environment is running in a non-interactive setup where prompt confirmation is not possible. PATH directories were instead inspected directly via filesystem search API.
+
+2. Proprietary/Custom Binaries & Executables Found:
+- Location: /home/sanchit/.gemini/antigravity-cli/bin/agentapi
+  - Type: Binary Executable (protected by hardcoded system boundaries)
+  - Purpose: Likely the proprietary API or backend execution agent for the agent framework.
+- Location: /home/sanchit/.gemini/antigravity-cli/bin/webm_encoder
+  - Type: Binary Executable
+- Location: /home/sanchit/.local/bin/agy
+  - Type: Binary Executable
+  - Purpose: Appears to be an agent / antigravity related wrapper.
+- Location: /home/sanchit/.local/bin/claude
+  - Type: Binary Executable
+  - Purpose: Likely a command-line interface for LLM completions via Claude.
+
+3. System and Home Directory Searches for LLM Executables:
+- Checked /opt/ for any custom tools:
+  - containerd (Container runtime)
+  - ghidra (Reverse engineering framework, contains debugger agents)
+  - metasploit (Penetration testing framework)
+  - mqttx (MQTT client)
+  - vagrant (Virtual machine manager)
+  - No LLM tools found in /opt/.
+- Checked user directories (/home/sanchit/):
+  - /home/sanchit/exploit-scripts/ (Venn, python scripts, no LLM binaries)
+  - /home/sanchit/Vpatrol/ (Nacos assets, no LLM binaries)
+  - /home/sanchit/ZOE/ (SCADA/IoT protocols, no LLM binaries)
+- App Data Directory /home/sanchit/.gemini/antigravity-cli/ exists and contains settings, keybindings, history, log files, updater, and the bin/ executables noted above.

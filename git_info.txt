@@ -1,0 +1,90 @@
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/01 - Lateral Movement via RDP and Hijacking Sessions.md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/02 - WinRM and PowerShell Remoting.md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/03 - WMI and wmic.md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/04 - PsExec and Impacket equivalents.md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/05 - SSH Internals and Port Forwarding.md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/06 - Pass the Hash (PtH) and Overpass-the-Hash.md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/07 - Pass the Ticket (PtT).md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/08 - Token Manipulation and Incognito.md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/09 - Kerberoasting and AS-REP Roasting.md
+	modified:   Active Directory/I - 68 - AD Lateral Movement and Credential Access/10 - LSASS Dumping and Mimikatz.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.agents/
+	ad_chunk_aa
+	ad_chunk_ab
+	ad_chunk_ac
+	ad_chunk_ad
+	ad_chunk_ae
+	ad_chunk_af
+	ad_chunk_ag
+	ad_chunk_ah
+	ad_chunk_ai
+	ad_chunk_aj
+	ad_chunk_ak
+	ad_chunk_al
+	ad_chunk_am
+	ad_chunk_an
+	ad_files.txt
+	add_scenario.py
+	bad_links_list.txt
+	gen_iot.py
+	generate_ad_notes.py
+	generate_scenarios.py
+	run.sh
+	run_all.py
+	run_scenarios.py
+	scenario.txt
+	scenario_01.txt
+	scenario_02.txt
+	scenario_03.txt
+	scenario_04.txt
+	scenario_05.txt
+	scenario_06.txt
+	scenario_07.txt
+	scenario_08.txt
+	scenario_09.txt
+	scenario_10.txt
+	scenario_temp.txt
+	verify_enhancement.py
+	wrapper.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+=== GIT LOG ===
+commit 4f3946380304d405d41e52bcaebe646192e73cc0
+Author: Your Name <you@example.com>
+Date:   Wed Jun 10 13:05:34 2026 +0530
+
+    Notes
+
+commit 5e9eca47afadb6c3c96023d5e7e2310bf843026c
+Author: Your Name <you@example.com>
+Date:   Sat Jun 6 10:36:04 2026 +0530
+
+    9-10
+
+commit 5dfd17a67c58e90c4880284d5e8ea8951049e7ce
+Author: Your Name <you@example.com>
+Date:   Sat Jun 6 09:07:41 2026 +0530
+
+    7-44
+
+commit 7f945e44c27139167370cbd35d05e55347ba88cb
+Author: Your Name <you@example.com>
+Date:   Sun Jun 5 23:45:06 2026 +0530
+
+    10-25
+
+commit 8e177428e6511b7833eb660c72fe628bb0b6dbe4
+Author: Your Name <you@example.com>
+Date:   Sun Jun 5 18:16:04 2026 +0530
+
+    Initial

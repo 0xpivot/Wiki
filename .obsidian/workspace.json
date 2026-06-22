@@ -4,35 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a15064200ce94d3a",
+        "id": "5531306cd8f884cd",
         "type": "tabs",
         "children": [
           {
-            "id": "285b51f77f5087a7",
+            "id": "51d30df0541a0fca",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Network Security/A - 79 - Advanced Network Services/02 - Modbus Protocol Exploitation.md",
+                "file": "Cloud and Container Security/A - 62 - Advanced AWS Exploitation/11 - AWS Systems Manager SSM Run Command Abuse.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02 - Modbus Protocol Exploitation"
-            }
-          },
-          {
-            "id": "0fd62b1c4e5a8576",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Active Directory/A - 63 - AD CS Exploitation/04 - ESC3 - Enrollment Agent Abuse.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "04 - ESC3 - Enrollment Agent Abuse"
+              "title": "11 - AWS Systems Manager SSM Run Command Abuse"
             }
           }
         ]
@@ -197,43 +183,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "285b51f77f5087a7",
+  "active": "aa7b2d3cbbe644e4",
   "lastOpenFiles": [
-    "Network Security/A - 79 - Advanced Network Services/03 - DNP3 Protocol Exploitation.md",
-    "Network Security/A - 73 - Advanced Network Pivoting Tunnels and Evasion/01 - Port Forwarding Local Remote and Dynamic.md",
-    "Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 91 - Cloud Threat Hunting AWS Azure GCP.md",
-    "Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 90 - Network Threat Hunting Zeek Suricata PCAP.md",
-    "Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 89 - Endpoint Threat Hunting Windows Sysmon EDR.md",
-    "Interview Preparation/07 - Threat Hunting and IR/TH QnA - Module 88 - Threat Hunting Foundations and Methodologies.md",
-    "Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/02 - The Threat Hunting Loop Hypothesis to Triage.md",
-    "Threat Hunting and Incident Response/B - 88 - Threat Hunting Foundations and Methodologies/01 - Introduction to Proactive Threat Hunting.md",
-    "Specialized Testing/I - 49 - IoT Security/19 - SCADA ICS Security Concepts.md",
-    "Specialized Testing/I - 49 - IoT Security/16 - IP Camera Exploitation.md",
-    "Specialized Testing/I - 49 - IoT Security/13 - Modbus DNP3 Industrial Protocol Attacks.md",
-    "API Security/I - 31 - API Security/24 - gRPC Security Testing.md",
-    "API Security/I - 31 - API Security/23 - SOAP API Attacks.md",
-    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/02 - API VAPT/API VAPT 01 - API Reconnaissance and Endpoint Discovery.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 05 - Chaining API Logic Flaws for Unlimited Financial Fraud.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 04 - Webhook SSRF to Internal Network Pivoting via Gopher.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 03 - REST API Mass Assignment to Privilege Escalation and RCE.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 02 - Forging RSA JWTs via JWKS Spoofing and Key Confusion.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API/API Ultra 01 - Exploiting GraphQL Introspection to BOLA and PII Dump.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/03 - Network/Network Ultra 04 - Advanced BGP Hijacking and DNS Amplification Campaigns.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web/Web Ultra 05 - Chaining DOM XSS with CORS Misconfigs for Mass Data Exfiltration.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web/Web Ultra 04 - HTTP2 Request Smuggling to Cache Poisoning and Admin Takeover.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web/Web Ultra 03 - Blind SSRF to AWS Metadata Exfiltration via DNS Rebinding.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/03 - Network/Network Ultra 03 - Exploiting Legacy Mainframes and SCADA in OT Environments.md",
-    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/01 - Web VAPT/Web VAPT 04 - Client-Side Exploitation XSS CSRF CORS.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web/Web Ultra 02 - Bypassing Cloudflare WAF for Blind SQLi to RCE via xp_cmdshell.md",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/04 - Active Directory",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/03 - Network",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/02 - API",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank/01 - Web",
-    "Interview Preparation/10 - Ultimate Expert Scenario Bank",
-    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/04 - Active Directory VAPT",
-    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/03 - Network VAPT",
-    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/02 - API VAPT",
-    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides/01 - Web VAPT",
-    "Interview Preparation/09 - Ultimate VAPT Methodology Master Guides"
+    "API Security/I - 31 - API Security/00-Overview.md",
+    "API Security/25-Hidden API Functionality Exposure/04-Hidden API/02-Practice Questions & Answers.md",
+    "API Security/25-Hidden API Functionality Exposure/04-Hidden API/01-Introduction to Hidden API Functionality Exposure.md",
+    "API Security/25-Hidden API Functionality Exposure/04-Hidden API/00-Overview.md",
+    "API Security/25-Hidden API Functionality Exposure/03-Hidden API Functionality Exposure/02-Practice Questions & Answers.md",
+    "API Security/25-Hidden API Functionality Exposure/03-Hidden API Functionality Exposure/01-Hidden API Functionality Exposure.md",
+    "API Security/25-Hidden API Functionality Exposure/03-Hidden API Functionality Exposure/00-Overview.md",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure/07-Practice Questions & Answers.md",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure/06-Conclusion.md",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure/05-Understanding Hidden API Functionality Exposure.md",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure/04-Hidden API Functionality Exposure.md",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure/03-Findings.md",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure/02-Overview.md",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure/01-Introduction to Hidden API Functionality Exposure.md",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure/00-Overview.md",
+    "API Security/25-Hidden API Functionality Exposure/01-Dictionary Attack at API Endpoint/02-Practice Questions & Answers.md",
+    "API Security/25-Hidden API Functionality Exposure/01-Dictionary Attack at API Endpoint/01-Introduction to Hidden API Functionality Exposure.md",
+    "API Security/25-Hidden API Functionality Exposure/01-Dictionary Attack at API Endpoint/00-Overview.md",
+    "API Security/25-Hidden API Functionality Exposure/04-Hidden API",
+    "API Security/25-Hidden API Functionality Exposure/03-Hidden API Functionality Exposure",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure",
+    "API Security/25-Hidden API Functionality Exposure/01-Dictionary Attack at API Endpoint",
+    "API Security/25-Hidden API Functionality Exposure/00-Overview.md",
+    "API Security/25-Hidden API Functionality Exposure",
+    "API Security/24-Regular Expression DOS Attack/03-Regex DOS on Register API/04-Practice Questions & Answers.md",
+    "API Security/24-Regular Expression DOS Attack/03-Regex DOS on Register API/03-Regular Expression Denial of Service (ReDoS).md",
+    "API Security/24-Regular Expression DOS Attack/03-Regex DOS on Register API/02-Regular Expression Denial of Service (ReDoS) Attack on Register API.md",
+    "API Security/24-Regular Expression DOS Attack/03-Regex DOS on Register API/01-Introduction to Regular Expression DOS Attacks.md",
+    "API Security/24-Regular Expression DOS Attack/03-Regex DOS on Register API/00-Overview.md",
+    "API Security/24-Regular Expression DOS Attack/02-Regex DOS on Email Update/04-Practice Questions & Answers.md",
+    "API Security/24-Regular Expression DOS Attack/02-Regex DOS on Email Update/03-Regular Expression Denial of Service (ReDoS) Attacks.md",
+    "API Security/24-Regular Expression DOS Attack/03-Regex DOS on Register API",
+    "API Security/24-Regular Expression DOS Attack/02-Regex DOS on Email Update",
+    "API Security/24-Regular Expression DOS Attack/01-Regex DOS A Real Issue",
+    "API Security/24-Regular Expression DOS Attack",
+    "API Security/23-RCE Via Deserialization in API/02-RCE Demonstration"
   ]
 }
