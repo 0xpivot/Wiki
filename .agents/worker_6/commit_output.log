@@ -1,7 +1,0 @@
-[2026-06-15 18:33:53] Proposing command: python3 /home/sanchit/Notes/VAPT/process_pilot.py 2>&1 | tee /home/sanchit/Notes/VAPT/.agents/worker_6/commit_output.log
-[2026-06-15 18:34:53] Command execution failed:
-Encountered error in step execution: Permission prompt for action 'command' on target 'python3 /home/sanchit/Notes/VAPT/process_pilot.py' timed out waiting for user response. The user was not able to provide permission on time. You should proceed as much as possible without access to this resource. Do not use run_command to access a resource you were not able to access previously. Think about alternative ways to achieve your goal (e.g., using different directories, reading from stdout, or assuming default behaviors if applicable). If you are a subagent, you may choose to tell the parent agent what happened instead if you cannot continue.
-
-[2026-06-15 18:34:57] Proposing command: git status
-[2026-06-15 18:35:57] Command execution failed:
-Encountered error in step execution: Permission prompt for action 'command' on target 'git status' timed out waiting for user response. The user was not able to provide permission on time. You should proceed as much as possible without access to this resource. Do not use run_command to access a resource you were not able to access previously. Think about alternative ways to achieve your goal (e.g., using different directories, reading from stdout, or assuming default behaviors if applicable). If you are a subagent, you may choose to tell the parent agent what happened instead if you cannot continue.
