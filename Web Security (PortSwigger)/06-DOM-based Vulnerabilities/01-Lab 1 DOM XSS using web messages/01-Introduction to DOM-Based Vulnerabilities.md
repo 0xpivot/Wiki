@@ -88,7 +88,7 @@ document.getElementById('greeting').innerHTML = "Hello, " + name;
 
 ```javascript
 var name = window.location.search.substring(1);
-document.getElementById('greeting').textContent = "Hello, " + name;
+document.getElementById('greeting').textContent = "Hello, " + "name";
 ```
 
 ### Lab Setup: DOMXSS Using Web Messages
