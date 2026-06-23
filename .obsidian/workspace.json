@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/06 - Sliver Stagers and Shellcode Execution.md",
+                "file": "Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/01-Cross Site Scripting XSS Complete Guide/04-Content Security Policy Cheat Sheet.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "06 - Sliver Stagers and Shellcode Execution"
+              "title": "04-Content Security Policy Cheat Sheet"
             }
           }
         ]
@@ -185,6 +185,7 @@
   },
   "active": "51d30df0541a0fca",
   "lastOpenFiles": [
+    "Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/06 - Sliver Stagers and Shellcode Execution.md",
     "Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/04 - Cryptography for Custom C2 AES RSA and Key Exchange.md",
     "DevSecOps/DevSecOps Bootcamp/02-Security Governance & Compliance/01-Applying Compliance as Code in DevSecOps/01-Cloud Custodian/01-Introduction to Compliance as Code in DevSecOps.md",
     "Web Application Security/B - 01 - Foundations/21 - Packet Structure Reading Raw Traffic.md",
@@ -210,7 +211,6 @@
     "Web Security (PortSwigger)/04-Cross-Site Request Forgery (CSRF)/11-Lab 10 SameSite Strict bypass via client side redirect/01-Introduction to Cross-Site Request Forgery (CSRF).md",
     "Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/01-Cross Site Scripting XSS Complete Guide/03-Bypassing XSS Filters.md",
     "Specialized Testing/I - 49 - IoT Security/08 - Serial Console Access.md",
-    "Specialized Testing/I - 49 - IoT Security/19 - SCADA ICS Security Concepts.md",
     "API Security/25-Hidden API Functionality Exposure/04-Hidden API",
     "API Security/25-Hidden API Functionality Exposure/03-Hidden API Functionality Exposure",
     "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure",

@@ -1,0 +1,18 @@
+# Ignore all files by default
+*
+
+# Allow directories to be traversed
+!*/
+
+# Allow all markdown files
+!*.md
+
+# Ignore all python files explicitly
+*.py
+
+# Ignore hidden directories and files
+.*
+# But allow essential hidden folders/files
+!/.git/
+!/.obsidian/
+!/.gitignore
