@@ -1,0 +1,13 @@
+---
+tags: [overview]
+---
+
+# Lab 3 User role controlled by request parameter
+
+- [[Web Security (PortSwigger)/12-Access Control Vulnerabilities/04-Lab 3 User role controlled by request parameter/01-Introduction to Access Control Vulnerabilities|Introduction to Access Control Vulnerabilities]]
+- [[02-Access Control Vulnerabilities User Role Controlled by Request Parameter|Access Control Vulnerabilities User Role Controlled by Request Parameter]]
+- [[Web Security (PortSwigger)/12-Access Control Vulnerabilities/04-Lab 3 User role controlled by request parameter/03-Access Control Vulnerabilities|Access Control Vulnerabilities]]
+- [[Web Security (PortSwigger)/12-Access Control Vulnerabilities/04-Lab 3 User role controlled by request parameter/04-Background Theory|Background Theory]]
+- [[05-Lab Setup User Role Controlled by Request Parameter|Lab Setup User Role Controlled by Request Parameter]]
+- [[06-Understanding Access Control Vulnerabilities|Understanding Access Control Vulnerabilities]]
+- [[Web Security (PortSwigger)/12-Access Control Vulnerabilities/04-Lab 3 User role controlled by request parameter/07-Practice Questions & Answers|Practice Questions & Answers]]

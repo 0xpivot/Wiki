@@ -1,0 +1,31 @@
+---
+tags: [overview]
+---
+
+# API Security (OWASP API Top 10)
+
+- [[API Security/I - 31 - API Security/01 - API1 — Broken Object Level Authorization (BOLA)|API1 — Broken Object Level Authorization (BOLA)]]
+- [[API Security/I - 31 - API Security/02 - API2 — Broken Authentication|API2 — Broken Authentication]]
+- [[API Security/I - 31 - API Security/03 - API3 — Broken Object Property Level Authorization|API3 — Broken Object Property Level Authorization]]
+- [[API Security/I - 31 - API Security/04 - API4 — Unrestricted Resource Consumption|API4 — Unrestricted Resource Consumption]]
+- [[API Security/I - 31 - API Security/05 - API5 — Broken Function Level Authorization (BFLA)|API5 — Broken Function Level Authorization (BFLA)]]
+- [[API Security/I - 31 - API Security/06 - API6 — Unrestricted Access to Sensitive Business Flows|API6 — Unrestricted Access to Sensitive Business Flows]]
+- [[API Security/I - 31 - API Security/07 - API7 — Server Side Request Forgery (SSRF)|API7 — Server Side Request Forgery (SSRF)]]
+- [[API Security/I - 31 - API Security/08 - API8 — Security Misconfiguration|API8 — Security Misconfiguration]]
+- [[API Security/I - 31 - API Security/09 - API9 — Improper Inventory Management|API9 — Improper Inventory Management]]
+- [[API Security/I - 31 - API Security/10 - API10 — Unsafe Consumption of APIs|API10 — Unsafe Consumption of APIs]]
+- [[API Security/I - 31 - API Security/11 - API Key Exposure in Source Code JS Files|API Key Exposure in Source Code JS Files]]
+- [[API Security/I - 31 - API Security/12 - API Key in URL Parameters|API Key in URL Parameters]]
+- [[API Security/I - 31 - API Security/13 - API Versioning Abuse|API Versioning Abuse]]
+- [[API Security/I - 31 - API Security/14 - Mass Assignment in REST APIs|Mass Assignment in REST APIs]]
+- [[API Security/I - 31 - API Security/15 - Excessive Data Exposure|Excessive Data Exposure]]
+- [[API Security/I - 31 - API Security/16 - Lack of Resource Rate Limiting|Lack of Resource Rate Limiting]]
+- [[API Security/I - 31 - API Security/17 - API Fuzzing with ffuf and Burp|API Fuzzing with ffuf and Burp]]
+- [[API Security/I - 31 - API Security/18 - API Documentation Discovery|API Documentation Discovery]]
+- [[API Security/I - 31 - API Security/19 - REST API Method Override Attacks|REST API Method Override Attacks]]
+- [[API Security/I - 31 - API Security/20 - API Token Leakage in Logs|API Token Leakage in Logs]]
+- [[API Security/I - 31 - API Security/21 - API Key Rotation Failures|API Key Rotation Failures]]
+- [[API Security/I - 31 - API Security/22 - Unauthenticated API Endpoints|Unauthenticated API Endpoints]]
+- [[API Security/I - 31 - API Security/23 - SOAP API Attacks|SOAP API Attacks]]
+- [[API Security/I - 31 - API Security/24 - gRPC Security Testing|gRPC Security Testing]]
+- [[API Security/I - 31 - API Security/25 - Web LLM Attacks|Web LLM Attacks]]

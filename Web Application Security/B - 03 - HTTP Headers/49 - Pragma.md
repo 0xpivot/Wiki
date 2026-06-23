@@ -9,66 +9,96 @@ topic: "03.49 Pragma: no-cache — Legacy Cache Control"
 
 ## What is it?
 
-`Pragma: no-cache` is the HTTP/1.0 equivalent of `Cache-Control: no-cache`. It was the original way to request that caches not serve stale content. In modern HTTP, `Cache-Control` supersedes `Pragma`, but `Pragma` still appears in many apps for backward compatibility.
+`Pragma` is a legacy HTTP header introduced in HTTP/1.0. The most common directive, `Pragma: no-cache`, is used to instruct caches not to serve a cached copy of the requested resource. 
+
+In modern HTTP/1.1 and HTTP/2 implementations, `Cache-Control` has superseded `Pragma`. However, `Pragma` is still widely found in modern web traffic. This is because many developers include `Pragma: no-cache` in request and response headers to ensure backward compatibility with ancient proxies, clients, or Content Delivery Networks (CDNs) that do not support HTTP/1.1.
+
+According to RFC specifications, the `Pragma` header is defined as a *request* header, meaning clients use it to request that the proxy reload the resource from the origin server. However, it is frequently used incorrectly as a *response* header by backend applications attempting to prevent caching.
 
 ---
 
-## Modern Relevance
+## Use Cases
 
-```
-HTTP/1.0 (legacy):
-  Pragma: no-cache   → don't serve cached version
+### 1. Identifying Sensitive Pages Leaking to Public Caches
+When performing a Vulnerability Assessment and Penetration Testing (VAPT), security testers check if pages containing sensitive data (e.g., bank statements, profile configurations, personally identifiable information) are caching their content. If a backend application only returns `Pragma: no-cache` but fails to include modern `Cache-Control` headers (like `Cache-Control: no-store, private`), modern intermediate proxy servers and CDNs might cache the page. This leaves the sensitive page vulnerable to Web Cache Deception and unauthorized access.
 
-HTTP/1.1+ (modern):
-  Cache-Control: no-cache   → same meaning, takes precedence
-
-WHEN TO SET BOTH:
-  For maximum compatibility with old proxies and CDNs:
-  Cache-Control: no-store, no-cache
-  Pragma: no-cache
-```
+### 2. Backward Compatibility in Legacy Web Clients
+In older enterprise networks or legacy client systems (e.g., embedded software, ancient web browsers), HTTP/1.1 `Cache-Control` might not be fully parsed. Including `Pragma: no-cache` ensures that these legacy systems force a new request to the origin server rather than reading from a local browser cache.
 
 ---
 
-## VAPT Relevance: Missing Pragma on Sensitive Pages
+## Commands
 
-```
-Some apps only set Pragma: no-cache but forget Cache-Control.
-Old proxies honor Pragma, modern ones honor Cache-Control.
+Use these commands to analyze how target application servers handle caching and whether they rely solely on legacy headers.
 
-RESULT: Content may be cached in modern CDN even with Pragma: no-cache!
-
-SCENARIO:
-  Legacy banking app:
-    Pragma: no-cache     ← old way
-    (no Cache-Control)
-  
-  Modern CDN in front: ignores Pragma, caches response!
-  → Account pages cached!
-  → Cache deception possible!
-```
-
----
-
-## Testing
-
+### 1. Inspecting Cache Headers of a Target Endpoint
+Retrieve the headers of a specific page to check for the coexistence of `Pragma` and `Cache-Control`:
 ```bash
-# Check if Pragma is set alongside Cache-Control:
-curl -sI https://target.com/account | grep -iE "pragma|cache-control"
+curl -s -D - -o /dev/null https://target.local/dashboard.php | grep -iE "pragma|cache-control|expires"
+```
 
-# If only Pragma → check if CDN honors it or ignores it:
-curl -sI https://target.com/account | grep -i "age\|x-cache"
-# If Age header present → CDN is caching despite Pragma!
+### 2. Testing CDN Caching Behavior
+Determine if an intermediate CDN node caches a page by inspecting caching indicators (like `Age` or `X-Cache` headers) when only `Pragma` is present:
+```bash
+curl -s -I -H "Pragma: no-cache" https://target.local/static/profile.json | grep -iE "age|x-cache|cache-control"
+```
+
+---
+
+## Sample Output
+
+### Vulnerable Configuration (Legacy Header Only)
+The response contains only `Pragma` without modern `Cache-Control` headers. Additionally, the CDN is returning a `HIT` (cached copy) with an `Age` counter, indicating that the cache is ignoring `Pragma: no-cache`.
+```http
+HTTP/1.1 200 OK
+Date: Tue, 16 Jun 2026 10:27:00 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 320
+Connection: keep-alive
+Pragma: no-cache
+X-Cache: HIT
+Age: 120
+Server: CustomServer/1.0
+
+{
+  "user": "victim_user",
+  "ssn": "000-12-3456",
+  "balance": "$50,000"
+}
+```
+
+### Secure Configuration (Modern Cache Control Applied)
+The server correctly prevents caching by applying explicit HTTP/1.1 directives that instruct all layers (browsers, proxies, CDNs) to not cache or store the response.
+```http
+HTTP/1.1 200 OK
+Date: Tue, 16 Jun 2026 10:27:00 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 320
+Connection: keep-alive
+Cache-Control: no-store, no-cache, must-revalidate, private
+Pragma: no-cache
+Expires: 0
+X-Cache: MISS
+Server: CustomServer/1.0
+
+{
+  "user": "victim_user",
+  "ssn": "000-12-3456",
+  "balance": "$50,000"
+}
 ```
 
 ---
 
 ## How to Fix / Secure
 
-| Risk | Fix |
-|------|-----|
-| Only Pragma, no Cache-Control | Add `Cache-Control: no-store, private` for sensitive pages |
-| Relying on Pragma for security | Use Cache-Control instead (Pragma is deprecated for responses) |
+To secure sensitive endpoints against web caching vulnerabilities:
+
+| Risk | Fix / Mitigation |
+|------|------------------|
+| **Relying solely on Pragma** | Do not rely on `Pragma` to control cache behavior. Always set `Cache-Control: no-store, no-cache, must-revalidate` on all responses containing private or sensitive information. |
+| **Improper response header usage** | Note that RFC 7234 deprecates `Pragma` as a response header. If backward compatibility is required, keep `Pragma: no-cache`, but pair it with modern headers. |
+| **Web Cache Deception** | Configure the web server/CDN to restrict caching based on strict file extensions (e.g., only static assets like `.jpg`, `.css`) rather than trusting path segments or headers alone. |
 
 ---
 

@@ -1,0 +1,32 @@
+---
+tags: [overview]
+---
+
+# XXE Injection Complete Guide
+
+- [[01-Comprehensive Guide to XXE Injection|Comprehensive Guide to XXE Injection]]
+- [[02-Introduction to XML Entities and Document Type Definition (DTD)|Introduction to XML Entities and Document Type Definition (DTD)]]
+- [[03-Introduction to XML Entities and XXE Injection|Introduction to XML Entities and XXE Injection]]
+- [[04-Introduction to XML and XML Parsing|Introduction to XML and XML Parsing]]
+- [[05-Introduction to XML and XXE Injection|Introduction to XML and XXE Injection]]
+- [[06-Introduction to XXE Injection|Introduction to XXE Injection]]
+- [[07-What is an XXE Injection Vulnerability|What is an XXE Injection Vulnerability]]
+- [[08-XXE Injection A Comprehensive Guide|XXE Injection A Comprehensive Guide]]
+- [[09-XXE Injection Complete Guide|XXE Injection Complete Guide]]
+- [[10-Advanced Topics in XXE Injection|Advanced Topics in XXE Injection]]
+- [[11-Background Theory|Background Theory]]
+- [[12-Background on XML Entities and DTDs|Background on XML Entities and DTDs]]
+- [[13-Confirming XXE Vulnerabilities|Confirming XXE Vulnerabilities]]
+- [[14-Detailed Example Online Store Check Stock Functionality|Detailed Example Online Store Check Stock Functionality]]
+- [[15-Detailed Explanation of XXE Injection|Detailed Explanation of XXE Injection]]
+- [[16-External Entity Injection (XXE)|External Entity Injection (XXE)]]
+- [[17-How to Prevent  Defend Against XXE Injection|How to Prevent  Defend Against XXE Injection]]
+- [[18-Identifying Potential XXE Vulnerabilities|Identifying Potential XXE Vulnerabilities]]
+- [[19-Internal vs External XML Entities|Internal vs External XML Entities]]
+- [[20-Pitfalls and Common Mistakes|Pitfalls and Common Mistakes]]
+- [[21-Practice Labs|Practice Labs]]
+- [[22-Understanding XML and Its Role in Web Security|Understanding XML and Its Role in Web Security]]
+- [[23-XML External Entity (XXE) Injection|XML External Entity (XXE) Injection]]
+- [[24-XXE Injection Vulnerabilities|XXE Injection Vulnerabilities]]
+- [[Web Security (PortSwigger)/08-XXE Injection/01-XXE Injection Complete Guide/25-Conclusion|Conclusion]]
+- [[Web Security (PortSwigger)/08-XXE Injection/01-XXE Injection Complete Guide/26-Practice Questions & Answers|Practice Questions & Answers]]

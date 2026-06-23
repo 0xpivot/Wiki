@@ -1,0 +1,203 @@
+---
+course: DevSecOps
+topic: Image Scanning - Build Secure Docker Images
+tags: [devsecops]
+---
+
+## Introduction to Image Scanning in DevSecOps
+
+Image scanning is a crucial component of DevSecOps, ensuring that Docker images used in applications are free from vulnerabilities and malicious components. This process involves using automated tools to scan Docker images for known vulnerabilities, secrets, and other security issues. By integrating image scanning into your CI/CD pipeline, you can ensure that only secure images are deployed to production environments.
+
+### Why Image Scanning Matters
+
+In the context of containerized applications, Docker images are the building blocks of your application infrastructure. These images can contain various dependencies, libraries, and configurations that might introduce security risks. Without proper scanning, these risks can go unnoticed until they lead to a breach or compromise.
+
+Recent real-world examples highlight the importance of image scanning:
+
+- **CVE-2021-44228 (Log4j)**: This vulnerability affected numerous Java applications and libraries. Many Docker images contained vulnerable versions of Log4j, leading to widespread exploitation. Image scanning could have detected these vulnerabilities early, preventing their inclusion in production images.
+- **Secrets Exposure**: In 2022, several high-profile breaches occurred due to secrets (API keys, passwords) being exposed in Docker images. Automated scanning tools can detect such secrets during the build process, preventing them from reaching production.
+
+### Components of Image Scanning
+
+Image scanning typically involves the following components:
+
+1. **Scanning Tools**: Tools like Trivy, Clair, and Aqua Security are commonly used for scanning Docker images.
+2. **Configuration Options**: These tools allow you to configure the severity levels of issues to report and the actions to take based on the findings.
+3. **Integration with CI/CD Pipeline**: Scanning should be integrated into the CI/CD pipeline to ensure that images are scanned automatically during the build process.
+
+### Example Scanning Tool: Trivy
+
+Trivy is an open-source tool for scanning Docker images for vulnerabilities. Let's walk through how to configure Trivy for automated security scanning.
+
+#### Installation and Setup
+
+To install Trivy, you can use the following command:
+
+```bash
+curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/scripts/install.sh | sh -s -- -b /usr/local/bin v0.33.0
+```
+
+Once installed, you can scan a Docker image using the following command:
+
+```bash
+trivy image <image-name>
+```
+
+For example, to scan the `nginx:latest` image:
+
+```bash
+trivy image nginx:latest
+```
+
+### Configuring Severity Levels
+
+One of the key aspects of image scanning is configuring the severity levels of issues to report. This helps in prioritizing the issues based on their criticality.
+
+#### Severity Levels
+
+Trivy supports the following severity levels:
+
+- **Critical**
+- **High**
+- **Medium**
+- **Low**
+
+By default, Trivy reports all issues across all severity levels. However, you can configure it to report only specific severity levels.
+
+#### Example Configuration
+
+Let's configure Trivy to report only critical and high severity issues. You can achieve this by using the `--severity` flag:
+
+```bash
+trivy image --severity CRITICAL,HIGH <image-name>
+```
+
+For example:
+
+```bash
+trivy image --severity CRITICAL,HIGH nginx:latest
+```
+
+### Handling Exit Codes
+
+Trivy uses exit codes to indicate the outcome of the scan. The exit codes are as follows:
+
+- **0**: No vulnerabilities found.
+- **1**: Vulnerabilities found.
+- **2**: An error occurred during the scan.
+
+You can configure Trivy to fail the build if it finds at least one critical issue. This can be done by setting the appropriate exit code in your CI/CD pipeline.
+
+#### Example CI/CD Integration
+
+Here’s an example of how you can integrate Trivy into a CI/CD pipeline using a GitHub Actions workflow:
+
+```yaml
+name: Docker Image Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and push Docker image
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: false
+        tags: ${{ github.repository }}:latest
+
+    - name: Scan Docker image with Trivy
+      run: |
+        trivy image --severity CRITICAL,HIGH ${{ steps.docker_build.outputs.image_id }}
+        if [ $? -ne 0 ]; then
+          echo "Vulnerabilities found. Exiting..."
+          exit 1
+        fi
+```
+
+### Analyzing Fewer Issues Better
+
+By configuring Trivy to report only critical and high severity issues, you can focus on the most significant vulnerabilities first. This approach helps in managing the noise generated by lower severity issues and allows you to prioritize your efforts effectively.
+
+### How to Prevent / Defend
+
+#### Detection
+
+To detect vulnerabilities in Docker images, you should regularly scan your images using tools like Trivy. Integrating these scans into your CI/CD pipeline ensures that vulnerabilities are caught early in the development cycle.
+
+#### Prevention
+
+To prevent vulnerabilities from being included in your Docker images, follow these best practices:
+
+1. **Use Base Images from Trusted Sources**: Always use base images from trusted sources like official Docker repositories.
+2. **Keep Dependencies Updated**: Regularly update your dependencies to the latest versions to mitigate known vulnerabilities.
+3. **Avoid Exposing Secrets**: Ensure that secrets (API keys, passwords) are not included in your Docker images. Use environment variables or secrets management tools instead.
+
+#### Secure Coding Fixes
+
+Here’s an example of how to fix a vulnerable Dockerfile:
+
+**Vulnerable Dockerfile:**
+
+```Dockerfile
+FROM python:3.9-slim
+
+COPY . /app
+WORKDIR /app
+
+RUN pip install -r requirements.txt
+
+EXPOSE 8000
+
+CMD ["python", "app.py"]
+```
+
+**Fixed Dockerfile:**
+
+```Dockerfile
+FROM python:3.9-slim
+
+# Use a multi-stage build to reduce the final image size
+COPY requirements.txt /app/
+WORKDIR /app
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . /app
+
+EXPOSE 8000
+
+CMD ["python", "app.py"]
+```
+
+### Conclusion
+
+Image scanning is a vital part of DevSecOps, helping to ensure that Docker images are secure and free from vulnerabilities. By using tools like Trivy and configuring them appropriately, you can effectively manage the security of your containerized applications. Integrating these tools into your CI/CD pipeline ensures that security is a continuous process, not an afterthought.
+
+### Practice Labs
+
+For hands-on practice with image scanning, consider the following labs:
+
+- **PortSwigger Web Security Academy**: Offers a module on container security, including image scanning.
+- **OWASP Juice Shop**: A vulnerable web application that can be containerized and scanned for vulnerabilities.
+- **CloudGoat**: Provides scenarios for securing cloud environments, including containerized applications.
+
+These labs provide practical experience in applying the concepts learned in this chapter.
+
+---
+<!-- nav -->
+[[05-Introduction to Image Scanning in DevSecOps Part 4|Introduction to Image Scanning in DevSecOps Part 4]] | [[DevSecOps/DevSecOps Bootcamp/06-Container & Kubernetes Security/03-Image Scanning - Build Secure Docker Images/Configure Automated Security Scanning in Application Image/00-Overview|Overview]] | [[DevSecOps/DevSecOps Bootcamp/06-Container & Kubernetes Security/03-Image Scanning - Build Secure Docker Images/Configure Automated Security Scanning in Application Image/07-Introduction to Image Scanning in DevSecOps|Introduction to Image Scanning in DevSecOps]]

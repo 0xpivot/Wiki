@@ -1,0 +1,31 @@
+---
+tags: [overview]
+---
+
+# Cross-Site Scripting (XSS)
+
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/01-Cross Site Scripting XSS Complete Guide/00-Overview|Cross Site Scripting XSS Complete Guide]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/02-Lab 1 Reflected XSS into HTML context with nothing encoded/00-Overview|Lab 1 Reflected XSS into HTML context with nothing encoded]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/03-Lab 2 Stored XSS into HTML context with nothing encoded/00-Overview|Lab 2 Stored XSS into HTML context with nothing encoded]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/04-Lab 3 DOM XSS in documentwrite sink using source locationsearch/00-Overview|Lab 3 DOM XSS in documentwrite sink using source locationsearch]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/05-Lab 4 DOM XSS in innerHTML sink using source locationsearch/00-Overview|Lab 4 DOM XSS in innerHTML sink using source locationsearch]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/06-Lab 5 DOM XSS in jQuery anchor href attribute sink using locationsearch source/00-Overview|Lab 5 DOM XSS in jQuery anchor href attribute sink using locationsearch source]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/07-Lab 6 DOM XSS in jQuery selector sink using a hashchange event/00-Overview|Lab 6 DOM XSS in jQuery selector sink using a hashchange event]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/08-Lab 7 Reflected XSS into attribute with angle brackets HTML encoded/00-Overview|Lab 7 Reflected XSS into attribute with angle brackets HTML encoded]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/09-Lab 8 Stored XSS into anchor href attribute with double quotes HTML encoded/00-Overview|Lab 8 Stored XSS into anchor href attribute with double quotes HTML encoded]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/10-Lab 9 Reflected XSS into a JavaScript string with angle brackets HTML encoded/00-Overview|Lab 9 Reflected XSS into a JavaScript string with angle brackets HTML encoded]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/11-Lab 10 DOM XSS in documentwrite sink using source locationsearch inside a select element/00-Overview|Lab 10 DOM XSS in documentwrite sink using source locationsearch inside a select element]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/12-Lab 11 DOM XSS in AngularJS expression with angle brackets and double quotes HTML encoded/00-Overview|Lab 11 DOM XSS in AngularJS expression with angle brackets and double quotes HTML encoded]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/13-Lab 12 Reflected DOM XSS/00-Overview|Lab 12 Reflected DOM XSS]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/14-Lab 13 Stored DOM XSS/00-Overview|Lab 13 Stored DOM XSS]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/15-Lab 14 Exploiting cross site scripting to steal cookies/00-Overview|Lab 14 Exploiting cross site scripting to steal cookies]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/16-Lab 15 Exploiting cross site scripting to capture passwords/00-Overview|Lab 15 Exploiting cross site scripting to capture passwords]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/17-Lab 16 Exploiting XSS to perform CSRF/00-Overview|Lab 16 Exploiting XSS to perform CSRF]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/18-Lab 17 Reflected XSS into HTML context with most tags and attributes blocked/00-Overview|Lab 17 Reflected XSS into HTML context with most tags and attributes blocked]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/19-Lab 18 Reflected XSS into HTML context with all tags blocked except custom ones/00-Overview|Lab 18 Reflected XSS into HTML context with all tags blocked except custom ones]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/20-Lab 19 Reflected XSS with some SVG markup allowed/00-Overview|Lab 19 Reflected XSS with some SVG markup allowed]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/21-Lab 20 Reflected XSS in canonical link tag/00-Overview|Lab 20 Reflected XSS in canonical link tag]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/22-Lab 21 Reflected XSS into a JavaScript string with single quote and backslash escaped/00-Overview|Lab 21 Reflected XSS into a JavaScript string with single quote and backslash escaped]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/23-Lab 22 Reflected XSS into a JavaScript string with angle brackets and double quotes HTML encoded and single quotes escaped/00-Overview|Lab 22 Reflected XSS into a JavaScript string with angle brackets and double quotes HTML encoded and single quotes escaped]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/24-Lab 23 Stored XSS into onclick event with angle brackets and double quotes HTML encoded and single quotes and backslash escaped/00-Overview|Lab 23 Stored XSS into onclick event with angle brackets and double quotes HTML encoded and single quotes and backslash escaped]]
+- [[Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/25-Lab 24 Reflected XSS into a template literal with angle brackets single double quotes backslash and backticks Unicode escaped/00-Overview|Lab 24 Reflected XSS into a template literal with angle brackets single double quotes backslash and backticks Unicode escaped]]

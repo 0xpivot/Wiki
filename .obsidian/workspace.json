@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Cloud and Container Security/A - 82 - AWS Service-by-Service Exploitation/26 - Glue Exploitation.md",
+                "file": "Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/01-Cross Site Scripting XSS Complete Guide/04-Content Security Policy Cheat Sheet.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "26 - Glue Exploitation"
+              "title": "04-Content Security Policy Cheat Sheet"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 305.5086555480957
+    "width": 450.5086555480957
   },
   "right": {
     "id": "105865b2856041c7",
@@ -185,41 +185,41 @@
   },
   "active": "51d30df0541a0fca",
   "lastOpenFiles": [
-    "verify_enhancement.py",
-    "PROJECT.md",
-    "Active Directory/A - 36 - Active Directory Attacks/23 - BloodHound — Attack Path Analysis.md",
-    "Specialized Testing/I - 49 - IoT Security/19 - SCADA ICS Security Concepts.md",
-    "ORIGINAL_REQUEST.md",
-    "Specialized Testing/I - 49 - IoT Security/24 - Firmware Integrity and Update Verification.md",
-    "Specialized Testing/I - 49 - IoT Security/24 - Firmware Integrity and Update Verification.md.tmp.566944.d6942732a35f",
-    "Specialized Testing/I - 49 - IoT Security/23 - Secure Boot and Bootloader Testing.md",
-    "Specialized Testing/I - 49 - IoT Security/23 - Secure Boot and Bootloader Testing.md.tmp.566944.2ba164595e23",
-    "Specialized Testing/I - 49 - IoT Security/22 - Escaping Kiosk and Locked-Down GUI Applications.md",
-    "Specialized Testing/I - 49 - IoT Security/22 - Escaping Kiosk and Locked-Down GUI Applications.md.tmp.566944.a12fa9968932",
-    "Network Security/A - 81 - Network Service Pentesting/94 - PPPP P2P Cameras (Port 32100) Pentesting.md",
-    "Specialized Testing/I - 49 - IoT Security/21 - Physical Attacks and Hardware Implants.md",
-    "Specialized Testing/I - 49 - IoT Security/21 - Physical Attacks and Hardware Implants.md.tmp.566944.36a61141a7e7",
-    "Network Security/A - 81 - Network Service Pentesting/75 - SAProuter (Port 3299) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/74 - Bitcoin Node (Port 8333) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/72 - HSQLDB (Port 9001) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/71 - Hadoop (Ports 50070-9870) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/70 - GlusterFS (Ports 24007-49152) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/69 - iSCSI (Port 3260) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/64 - Modbus (Port 502) Pentesting.md",
-    "Web Application Security/I - 10 - Injection Attacks/22 - External Variable Modification.md.tmp.566944.401721eb2562",
-    "Web Application Security/I - 58 - Advanced Web Techniques/XX5MqqwE",
-    "Web Application Security/I - 58 - Advanced Web Techniques/sed2vJFfN",
-    "Network Security/A - 81 - Network Service Pentesting/68 - NDMP (Port 10000) Pentesting.md",
-    "Network Security/A - 81 - Network Service Pentesting/47 - FastCGI (Port 9000) Pentesting.md",
-    "Web Application Security/I - 10 - Injection Attacks/23 - Type Juggling.md",
-    "Web Application Security/I - 10 - Injection Attacks/23 - Type Juggling.md.tmp.566944.604cdc8c3594",
-    "Web Application Security/I - 10 - Injection Attacks/22 - External Variable Modification.md",
-    "Web Application Security/I - 10 - Injection Attacks/22 - External Variable Modification.md.tmp.566944.e4bec369baef",
-    "Web Application Security/I - 58 - Advanced Web Techniques/34 - Reverse Proxy Misconfigurations.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/34 - Reverse Proxy Misconfigurations.md.tmp.566944.2c4813ca5ad0",
-    "Web Application Security/I - 58 - Advanced Web Techniques/33 - ORM Leak.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/32 - Headless Browser Abuse.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/31 - Web LLM and Prompt Injection.md",
-    "Web Application Security/I - 58 - Advanced Web Techniques/30 - Dependency Confusion.md"
+    "Command and Control Operations/I - 95 - Sliver C2 Advanced Deployment and Profiles/06 - Sliver Stagers and Shellcode Execution.md",
+    "Command and Control Operations/A - 98 - Building Custom C2 Frameworks from Scratch/04 - Cryptography for Custom C2 AES RSA and Key Exchange.md",
+    "DevSecOps/DevSecOps Bootcamp/02-Security Governance & Compliance/01-Applying Compliance as Code in DevSecOps/01-Cloud Custodian/01-Introduction to Compliance as Code in DevSecOps.md",
+    "Web Application Security/B - 01 - Foundations/21 - Packet Structure Reading Raw Traffic.md",
+    "Web Application Security/B - 01 - Foundations/06 - TCP Three-Way Handshake.md",
+    "Web Application Security/B - 01 - Foundations/07 - UDP Connectionless Communication.md",
+    "Web Application Security/B - 01 - Foundations/05 - Ports and Protocols.md",
+    "Web Application Security/B - 01 - Foundations/02 - IP Addresses.md",
+    "Web Application Security/I - 19 - OAuth/02 - Authorization Code Flow — Step by Step.md",
+    "Web Application Security/I - 19 - OAuth/01 - OAuth 2.0 Overview and Flow Types.md",
+    "Web Application Security/I - 23 - Path Traversal/09 - LFI to RCE via PHP Session File.md",
+    "Web Application Security/I - 23 - Path Traversal/08 - LFI to RCE via _proc_self_environ.md",
+    "Web Application Security/I - 23 - Path Traversal/07 - LFI to RCE via Log Poisoning.md",
+    "Web Application Security/A - 80 - Enterprise Web Apps/06 - Attacking Microsoft SharePoint Servers.md",
+    "Web Application Security/B - 07 - XSS/02 - Reflected XSS.md",
+    "Web Application Security/B - 07 - XSS/04 - DOM-Based XSS.md",
+    "Web Security (PortSwigger)/16-HTTP Host Header Attacks/06-Lab 5 SSRF via flawed request parsing/02-HTTP Host Header Attacks and SSRF Vulnerabilities.md",
+    "Web Security (PortSwigger)/06-DOM-based Vulnerabilities/01-Lab 1 DOM XSS using web messages/02-DOM-Based Vulnerabilities and DOM-XSS Using Web Messages.md",
+    "Web Security (PortSwigger)/06-DOM-based Vulnerabilities/01-Lab 1 DOM XSS using web messages/01-Introduction to DOM-Based Vulnerabilities.md",
+    "Web Security (PortSwigger)/04-Cross-Site Request Forgery (CSRF)/09-Lab 8 CSRF with broken Referer validation/03-Cross-Site Request Forgery (CSRF).md",
+    "Web Security (PortSwigger)/04-Cross-Site Request Forgery (CSRF)/09-Lab 8 CSRF with broken Referer validation/02-Lab 8 CSRF with Broken Referer Validation.md",
+    "Web Security (PortSwigger)/04-Cross-Site Request Forgery (CSRF)/09-Lab 8 CSRF with broken Referer validation/01-Introduction to Cross-Site Request Forgery (CSRF).md",
+    "Web Security (PortSwigger)/04-Cross-Site Request Forgery (CSRF)/09-Lab 8 CSRF with broken Referer validation/00-Overview.md",
+    "Web Security (PortSwigger)/04-Cross-Site Request Forgery (CSRF)/11-Lab 10 SameSite Strict bypass via client side redirect/01-Introduction to Cross-Site Request Forgery (CSRF).md",
+    "Web Security (PortSwigger)/03-Cross-Site Scripting (XSS)/01-Cross Site Scripting XSS Complete Guide/03-Bypassing XSS Filters.md",
+    "Specialized Testing/I - 49 - IoT Security/08 - Serial Console Access.md",
+    "API Security/25-Hidden API Functionality Exposure/04-Hidden API",
+    "API Security/25-Hidden API Functionality Exposure/03-Hidden API Functionality Exposure",
+    "API Security/25-Hidden API Functionality Exposure/02-Hidden API Exposure",
+    "API Security/25-Hidden API Functionality Exposure/01-Dictionary Attack at API Endpoint",
+    "API Security/25-Hidden API Functionality Exposure",
+    "API Security/24-Regular Expression DOS Attack/03-Regex DOS on Register API",
+    "API Security/24-Regular Expression DOS Attack/02-Regex DOS on Email Update",
+    "API Security/24-Regular Expression DOS Attack/01-Regex DOS A Real Issue",
+    "API Security/24-Regular Expression DOS Attack",
+    "API Security/23-RCE Via Deserialization in API/02-RCE Demonstration"
   ]
 }

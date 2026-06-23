@@ -1,0 +1,31 @@
+---
+tags: [overview]
+---
+
+# Linux Software Installation Using Package Managers
+
+- [[01-Introduction to Linux Software Installation Using Package Managers|Introduction to Linux Software Installation Using Package Managers]]
+- [[02-Introduction to Package Management in Linux|Introduction to Package Management in Linux]]
+- [[03-Introduction to Package Managers in Linux|Introduction to Package Managers in Linux]]
+- [[04-'partner' repository.|'partner' repository.]]
+- [[05-Also, please note that software in backports WILL NOT receive any review|Also, please note that software in backports WILL NOT receive any review]]
+- [[06-Major bug fix updates produced after the final release of the|Major bug fix updates produced after the final release of the]]
+- [[07-N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu|N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu]]
+- [[08-N.B. software from this repository may not have been tested as|N.B. software from this repository may not have been tested as]]
+- [[09-This software is not part of Ubuntu, but is offered by Canonical and the|This software is not part of Ubuntu, but is offered by Canonical and the]]
+- [[10-This software is not part of Ubuntu, but is offered by third-party|This software is not part of Ubuntu, but is offered by third-party]]
+- [[11-Uncomment the following two lines to add software from Canonical's|Uncomment the following two lines to add software from Canonical's]]
+- [[12-Understanding Linux Distributions and Package Managers|Understanding Linux Distributions and Package Managers]]
+- [[13-developers who want to ship their latest software.|developers who want to ship their latest software.]]
+- [[14-distribution.|distribution.]]
+- [[15-extensively as that contained in the main release, although it includes|extensively as that contained in the main release, although it includes]]
+- [[16-multiverse WILL NOT receive any review or updates from the Ubuntu|multiverse WILL NOT receive any review or updates from the Ubuntu]]
+- [[17-newer versions of some applications which may provide useful features.|newer versions of some applications which may provide useful features.]]
+- [[18-or updates from the Ubuntu security team.|or updates from the Ubuntu security team.]]
+- [[19-respective vendors as a service to Ubuntu users.|respective vendors as a service to Ubuntu users.]]
+- [[20-review or updates from the Ubuntu security team.|review or updates from the Ubuntu security team.]]
+- [[21-security team.|security team.]]
+- [[22-team, and may not be under a free licence. Please satisfy yourself as to|team, and may not be under a free licence. Please satisfy yourself as to]]
+- [[23-team. Also, please note that software in universe WILL NOT receive any|team. Also, please note that software in universe WILL NOT receive any]]
+- [[24-your rights to use the software. Also, please note that software in|your rights to use the software. Also, please note that software in]]
+- [[DevOps/DevOps Bootcamp/01-Linux & OS Basics/13-Linux Software Installation Using Package Managers/25-Practice Questions & Answers|Practice Questions & Answers]]

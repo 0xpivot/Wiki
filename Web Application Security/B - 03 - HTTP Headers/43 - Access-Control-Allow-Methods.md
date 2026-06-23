@@ -9,92 +9,115 @@ topic: "03.43 Access-Control-Allow-Methods — CORS Method Control"
 
 ## What is it?
 
-`Access-Control-Allow-Methods` is returned in CORS preflight responses, specifying which HTTP methods are allowed for cross-origin requests. Misconfiguring this to allow dangerous methods like PUT, DELETE, or PATCH can open REST APIs to cross-origin exploitation.
+`Access-Control-Allow-Methods` is an HTTP response header returned during a CORS preflight request (`OPTIONS`) indicating which HTTP methods (e.g., `GET`, `POST`, `PUT`, `DELETE`, `PATCH`) are permitted when making a cross-origin request.
+
+If a web application wants to send a non-simple request (such as a request with a method other than `GET`, `HEAD`, or `POST`, or with custom content types/headers) to another domain, the browser first sends an `OPTIONS` request. The server responds with `Access-Control-Allow-Methods` to declare the HTTP methods it allows. If the method intended for the actual request is not in this list, the browser blocks the actual request.
+
+### Beginner Explanation
+Imagine you want to borrow a book from a library, but you also want to draw in it or return it to a different shelf. Before doing this, you ask the librarian: "Am I allowed to edit or delete pages in this book?" The librarian responds: "You can only read and borrow, but not delete." 
+`Access-Control-Allow-Methods` is like that list of permitted actions. It tells the browser what actions (methods like `GET` for reading, `PUT` for editing, or `DELETE` for deleting) the website on the other domain is allowed to perform on the server.
 
 ---
 
 ## Format
 
 ```
-Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
-
-PREFLIGHT REQUEST:
-  OPTIONS /api/resource HTTP/1.1
-  Origin: https://evil.com
-  Access-Control-Request-Method: DELETE   ← asking "can I use DELETE?"
-  
-PREFLIGHT RESPONSE:
-  Access-Control-Allow-Origin: https://evil.com
-  Access-Control-Allow-Methods: GET, POST, DELETE   ← DELETE allowed!
-  Access-Control-Max-Age: 3600
+Access-Control-Allow-Methods: <method>, <method>, ...
 ```
+
+Examples:
+- `Access-Control-Allow-Methods: GET, POST` (Only simple retrieving and posting are allowed)
+- `Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS` (Allows editing and deleting resources)
+- `Access-Control-Allow-Methods: *` (Wildcard: allows any HTTP method, though credentials cannot be used with wildcards in some older browser implementations)
 
 ---
 
-## Attack: Cross-Origin DELETE/PUT
+## Categories
+- **Security Concept:** Cross-Origin Resource Sharing (CORS)
+- **Header Type:** Response Header
+- **Context:** Web Application Security / API Endpoint Protection
+
+---
+
+## Use Cases
+
+1. **API Security Hardening:** Restricting third-party web applications to safe actions (e.g., only letting external apps fetch public data using `GET`, while preventing them from performing modifications via `PUT` or `DELETE`).
+2. **Feature Control:** Allowing internal or specific trusted subdomains to update/delete data cross-origin, while restricting other origins.
+3. **CORS Preflight Responses:** Responding to `OPTIONS` preflight requests so browsers know if they can proceed with the primary API call.
+
+---
+
+## Security Implication: Cross-Origin PUT/DELETE/PATCH
+
+If state-changing methods (such as `PUT`, `PATCH`, `DELETE`) are allowed cross-origin and combined with a loose `Access-Control-Allow-Origin` (ACAO) policy and credentials enabled (`Access-Control-Allow-Credentials: true`), attackers can perform actions on behalf of authenticated users.
 
 ```
-SCENARIO: API allows DELETE cross-origin.
+SCENARIO: An API allows DELETE requests cross-origin from any origin with credentials.
 
-EXPLOIT from evil.com:
-  fetch('https://target.com/api/user/victim123', {
-    method: 'DELETE',
-    credentials: 'include'
-  })
-  
-  → Victim's account deleted via CORS!
-
-EXPLOIT (PUT for privilege escalation):
-  fetch('https://target.com/api/user/victim123', {
-    method: 'PUT',
-    credentials: 'include',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({role: 'admin'})
-  })
+1. A victim is logged into target.com.
+2. The victim visits evil.com.
+3. evil.com executes JavaScript:
+   fetch('https://target.com/api/user/settings', {
+     method: 'DELETE',
+     credentials: 'include'
+   });
+4. The browser sends a preflight OPTIONS request.
+5. The server responds with:
+   Access-Control-Allow-Origin: https://evil.com
+   Access-Control-Allow-Methods: GET, POST, DELETE
+   Access-Control-Allow-Credentials: true
+6. The browser sends the actual DELETE request containing the victim's session cookies.
+7. The victim's settings are deleted.
 ```
 
 ---
 
 ## Simple Methods (No Preflight Needed)
 
-```
-GET, POST, HEAD are "simple" methods — no preflight required.
-Even without Access-Control-Allow-Methods:
-  GET and POST can be sent cross-origin!
-  (Though response is blocked unless ACAO is set)
+The methods `GET`, `POST`, and `HEAD` are classified as **simple methods**. They do not trigger a preflight `OPTIONS` request. 
+- Even without the `Access-Control-Allow-Methods` header, a browser will send `GET` or `POST` requests cross-origin.
+- The browser will block the JavaScript from *reading* the response if the server does not return the correct `Access-Control-Allow-Origin` header, but the server side actions (mutations) may still execute.
+- **CSRF Risk:** Because simple methods bypass the preflight check, they can be targeted using standard Cross-Site Request Forgery (CSRF) via simple HTML forms or image requests.
 
-ATTACK: Simple method CSRF still works via forms!
-  <form method="POST" action="https://target.com/delete">
-  → No CORS preflight → no CORS protection → CSRF!
+---
+
+## Commands
+
+To check the allowed HTTP methods for a CORS-enabled endpoint, send an `OPTIONS` request mimicking a preflight call using `curl`. You must include the `Origin` and `Access-Control-Request-Method` headers.
+
+```bash
+curl -X OPTIONS -I -s "https://httpbin.org/status/200" \
+  -H "Origin: https://example.com" \
+  -H "Access-Control-Request-Method: DELETE"
 ```
 
 ---
 
-## Testing
+## Sample Output
 
-```bash
-# Send preflight to test allowed methods:
-curl -X OPTIONS https://target.com/api/user \
-  -H "Origin: https://evil.com" \
-  -H "Access-Control-Request-Method: DELETE" \
-  -H "Access-Control-Request-Headers: Content-Type" \
-  -sI | grep -i "allow-methods"
+A secure server response to a preflight request will specify only the necessary allowed methods:
 
-# Test if wildcard methods allowed:
-curl -X OPTIONS https://target.com/api \
-  -H "Origin: https://evil.com" \
-  -H "Access-Control-Request-Method: PUT" -sI | grep -i "allow"
+```http
+HTTP/2 200 OK
+Date: Tue, 16 Jun 2026 10:20:38 GMT
+Content-Type: text/html; charset=utf-8
+Connection: keep-alive
+Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Methods: GET, POST
+Access-Control-Allow-Headers: Content-Type
+Access-Control-Max-Age: 86400
+Access-Control-Allow-Credentials: true
 ```
 
 ---
 
 ## How to Fix / Secure
 
-| Risk | Fix |
-|------|-----|
-| DELETE/PUT allowed cross-origin | Only allow GET and POST in CORS; protect others |
-| Wildcard method allowance | Explicitly list only needed methods |
-| State-changing GET endpoints | Don't perform mutations on GET requests |
+| Risk / Issue | Mitigation / Action |
+|--------------|---------------------|
+| **Dangerous Methods Allowed** | Do not include `PUT`, `PATCH`, or `DELETE` in `Access-Control-Allow-Methods` unless strictly required for cross-origin partners. |
+| **Wildcard Allowed Methods** | Avoid returning `*` for `Access-Control-Allow-Methods` in authenticated environments. Explicitly list allowed methods. |
+| **CORS and CSRF Link** | Ensure that all state-changing endpoints (even those requiring preflight) are protected with anti-CSRF tokens or `SameSite` cookie policies. |
 
 ---
 
